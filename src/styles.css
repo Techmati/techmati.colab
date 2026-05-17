@@ -1,3 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+
+@plugin "@iconify/tailwind4" {
+  prefixes: 'ri', 'lucide';
+}
+
+:is([class*='ri--'], [class*='lucide--'], [class*='healthicons']):not([class*='iconify-color']) {
+  @apply iconify;
+}
