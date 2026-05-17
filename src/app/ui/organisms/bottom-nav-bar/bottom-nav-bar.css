@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+.item {
+  color: var(--color-text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  border-top: 2px solid transparent;
+}
+
+.item-active {
+  color: var(--color-primary);
+  border-top-color: var(--color-primary);
+  background: color-mix(in oklab, var(--color-surface-soft) 55%, white);
+}

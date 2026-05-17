@@ -1,0 +1,29 @@
+<nav
+  class="bottom-nav-bar bg-card fixed inset-x-0 bottom-0 z-10 h-16 border-t border-border-subtle"
+  aria-label="Navegación principal"
+>
+  <ul class="mx-auto grid h-full max-w-sm grid-cols-2">
+    <li>
+      @let dashboardActive = active() === 'dashboard';
+      <a
+        class="text-secondary flex flex-col items-center justify-center gap-1 text-base border-t-2 border-solid border-transparent p-2"
+        [class.item-active]="dashboardActive"
+        href="/dashboard"
+      >
+        <span [class]="dashboardActive ? 'ri--dashboard-fill' : 'ri-dashboard-line'"></span>
+        Dashboard
+      </a>
+    </li>
+    <li>
+      @let profileActive = active() === 'profile';
+      <a
+        class="text-secondary flex flex-col items-center justify-center gap-1 text-base border-t-2 border-solid border-transparent p-2"
+        [class.item-active]="profileActive"
+        href="#"
+      >
+        <span [class]="profileActive ? 'ri--user-fill' : 'ri-user-line'" aria-hidden="true"></span>
+        Perfil
+      </a>
+    </li>
+  </ul>
+</nav>

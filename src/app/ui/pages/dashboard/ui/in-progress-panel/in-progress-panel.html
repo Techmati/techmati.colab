@@ -1,0 +1,28 @@
+<article class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
+  <header class="mb-4 flex items-center text-xl text-brand-green-600 justify-center gap-2">
+    <span class="ri--progress-5-line " aria-hidden="true"></span>
+    <h2 class="font-display font-semibold leading-9 text-brand-green-600">En progreso</h2>
+  </header>
+
+  <div class="space-y-3">
+    @for (item of cards; track item) {
+      <section class="rounded-lg bg-surface-success-soft p-4 flex flex-col gap-1" >
+        <p class="text-brand-green-600 text-sm font-semibold leading-7">Frases Cotidianas</p>
+        <p class="text-text-secondary text-xs leading-4">30 frases • Hace 5 minutos</p>
+        <div class="flex items-center justify-between text-xs leading-4 text-text-secondary">
+          <span>15/30 completadas</span>
+          <span>50%</span>
+        </div>
+        <div class="h-1.5 rounded-full bg-border-subtle">
+          <div class="h-full w-1/2 rounded-full bg-brand-green-600"></div>
+        </div>
+        <div class="flex items-center justify-end gap-2">
+          <button z-button zType="outline" class="border border-border text-brand-green-600">
+            Continuar
+            <span class="lucide--chevron-right"></span>
+          </button>
+        </div>
+      </section>
+    }
+  </div>
+</article>
