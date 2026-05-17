@@ -1,0 +1,27 @@
+<article class="rounded-xl border border-border-subtle bg-surface-card p-4 shadow-sm">
+  <div class="flex items-start justify-between gap-3">
+    <h3 class="text-secondary-foreground text-base font-medium leading-8">{{ card().title }}</h3>
+    <p class="text-text-tertiary text-xs leading-5">{{ card().date }}</p>
+  </div>
+
+  <div class="mt-2 flex items-center gap-2">
+    <span
+      class="bg-brand-green-100/55 border-2 border-brand-green-300/40 rounded-md font-medium text-brand-green-600 text-sm px-1 py-0.5"
+      >{{ card().status }}</span
+    >
+    <span class="text-text-secondary text-sm font-medium leading-5">• {{ card().timeAgo }}</span>
+  </div>
+
+  <p class="text-text-tertiary mt-1 text-sm leading-5">{{ card().totalPhrases }}</p>
+
+  <div class="mt-3 flex items-center justify-end gap-2">
+    <button z-button zType="outline" zSize="sm">
+      <span class="lucide--notebook-pen" aria-hidden="true"></span>
+      Detalles
+    </button>
+    <button z-button zType="default" zSize="sm">
+      <span class="lucide--redo-2" aria-hidden="true"></span>
+      Volver a hacer
+    </button>
+  </div>
+</article>

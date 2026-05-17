@@ -1,0 +1,12 @@
+:host {
+  display: block;
+}
+
+.badge {
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.25rem;
+  width: 2.25rem;
+}

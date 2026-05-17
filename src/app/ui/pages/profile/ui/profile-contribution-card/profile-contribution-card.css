@@ -1,0 +1,14 @@
+:host {
+  display: block;
+}
+
+.status-chip {
+  background: color-mix(in oklab, var(--color-brand-green-100) 55%, white);
+  border: 1px solid color-mix(in oklab, var(--color-brand-green-300) 40%, white);
+  border-radius: 0.25rem;
+  color: var(--color-brand-green-600);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  padding: 0.125rem 0.5rem;
+}

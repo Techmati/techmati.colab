@@ -1,0 +1,22 @@
+<article class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
+  <header class="mb-4 flex flex-col items-center justify-between gap-3">
+    <div class="flex items-center gap-2 text-xl ">
+      <span class="lucide--history text-primary" ></span>
+      <h2 class="font-display text-primary font-semibold leading-9">Contribuciones hechas</h2>
+    </div>
+
+    <a
+      routerLink="/profile/history"
+      class="inline-flex items-center gap-1 text-sm font-medium leading-4 text-brand-green-600 hover:underline self-end"
+    >
+      Ver todo
+      <span class="lucide--chevron-right size-3" ></span>
+    </a>
+  </header>
+
+  <div class="space-y-3">
+    @for (card of cards; track card.title + card.date) {
+      <tm-profile-contribution-card [card]="card" />
+    }
+  </div>
+</article>

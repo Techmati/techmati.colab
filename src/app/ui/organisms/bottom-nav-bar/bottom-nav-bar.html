@@ -8,9 +8,9 @@
       <a
         class="text-secondary flex flex-col items-center justify-center gap-1 text-base border-t-2 border-solid border-transparent p-2"
         [class.item-active]="dashboardActive"
-        href="/dashboard"
+        routerLink="/dashboard"
       >
-        <span [class]="dashboardActive ? 'ri--dashboard-fill' : 'ri-dashboard-line'"></span>
+        <span [class]="dashboardActive ? 'ri--dashboard-fill' : 'ri-dashboard-line'" aria-hidden="true"></span>
         Dashboard
       </a>
     </li>
@@ -19,7 +19,7 @@
       <a
         class="text-secondary flex flex-col items-center justify-center gap-1 text-base border-t-2 border-solid border-transparent p-2"
         [class.item-active]="profileActive"
-        href="#"
+        routerLink="/profile"
       >
         <span [class]="profileActive ? 'ri--user-fill' : 'ri-user-line'" aria-hidden="true"></span>
         Perfil
