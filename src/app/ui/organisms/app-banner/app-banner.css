@@ -1,0 +1,30 @@
+:host {
+  display: block;
+}
+.app-banner-icon-enter {
+  animation: appBannerIconEnter 360ms ease-out both;
+}
+
+.app-banner-overlay-leave {
+  animation: appBannerOverlayLeave 420ms ease-in both;
+}
+
+@keyframes appBannerIconEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes appBannerOverlayLeave {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

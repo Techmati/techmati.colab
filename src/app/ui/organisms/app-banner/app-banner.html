@@ -1,0 +1,16 @@
+@if (visible()) {
+  <div animate.leave="app-banner-overlay-leave" class="tm-app-banner-overlay fixed inset-0 z-50 flex items-center justify-center bg-white">
+    @if (showIcon()) {
+      <div animate.enter="app-banner-icon-enter" class="tm-app-banner-icon-wrap flex items-center justify-center">
+      <img
+          [ngSrc]="logoUrl"
+          width="281"
+          height="281"
+          priority
+          alt="Techmati"
+          class="h-auto w-72"
+        />
+      </div>
+    }
+  </div>
+}
