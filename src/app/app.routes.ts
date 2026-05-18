@@ -17,4 +17,8 @@ export const routes: Routes = [
     path: 'profile/history',
     loadComponent: () => import('./ui/pages/profile-history/profile-history.page').then((m) => m.ProfileHistoryPage),
   },
+  {
+    path: 'translate',
+    loadComponent: () => import('./ui/pages/translate/translate.page').then((m) => m.TranslatePage),
+  },
 ];

@@ -1,0 +1,32 @@
+:host {
+  display: block;
+}
+
+.bar {
+  background: var(--color-text-secondary);
+  border-radius: 9999px;
+  display: block;
+  width: 0.375rem;
+}
+
+.record-btn {
+  align-items: center;
+  background: var(--color-primary);
+  border-radius: 9999px;
+  box-shadow: 0 10px 15px rgb(0 0 0 / 12%);
+  display: inline-flex;
+  height: 5rem;
+  justify-content: center;
+  position: relative;
+  width: 5rem;
+}
+
+.record-btn::before {
+  background: color-mix(in oklab, var(--color-primary) 18%, white);
+  border-radius: 9999px;
+  content: '';
+  height: 6.5rem;
+  position: absolute;
+  width: 6.5rem;
+  z-index: -1;
+}

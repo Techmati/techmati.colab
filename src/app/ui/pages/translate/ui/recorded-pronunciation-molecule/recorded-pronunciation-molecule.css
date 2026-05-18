@@ -1,0 +1,36 @@
+:host {
+  display: block;
+}
+
+.audio-player {
+  align-items: center;
+  display: flex;
+}
+
+.play-btn {
+  align-items: center;
+  background: var(--color-primary);
+  border-radius: 9999px;
+  display: inline-flex;
+  height: 2.5rem;
+  justify-content: center;
+  width: 2.5rem;
+}
+
+.wave {
+  background: color-mix(in oklab, var(--color-primary) 45%, white);
+  border-radius: 9999px;
+  display: block;
+  width: 0.2rem;
+}
+
+.record-btn {
+  align-items: center;
+  background: var(--color-primary);
+  border-radius: 9999px;
+  box-shadow: 0 10px 15px rgb(0 0 0 / 12%);
+  display: inline-flex;
+  height: 5rem;
+  justify-content: center;
+  width: 5rem;
+}

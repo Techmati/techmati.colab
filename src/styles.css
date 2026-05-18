@@ -54,7 +54,8 @@
   --text-tertiary: var(--neutral-500);
   --text-on-brand: var(--neutral-0);
 
-  --border-subtle: oklch(0.9 0.013 286.1);
+  /* --border-subtle: oklch(0.9 0.013 286.1); */
+  --border-subtle: oklch(0.8462 0.013 286.1);
   --border-soft: oklch(0.958 0.01 255.8);
   --border-success: oklch(0.819 0.055 163.1);
 
