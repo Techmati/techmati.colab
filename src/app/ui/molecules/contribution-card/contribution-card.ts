@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import { ZardButtonComponent } from '@/shared/components/button';
 
-export interface ProfileContributionCardViewModel {
+export interface ContributionCardViewModel {
   readonly title: string;
   readonly date: string;
   readonly status: string;
@@ -13,10 +13,10 @@ export interface ProfileContributionCardViewModel {
 @Component({
   selector: 'tm-profile-contribution-card',
   imports: [ZardButtonComponent],
-  templateUrl: './profile-contribution-card.html',
-  styleUrl: './profile-contribution-card.css',
+  templateUrl: './contribution-card.html',
+  styleUrl: './contribution-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileContributionCard {
-  readonly card = input.required<ProfileContributionCardViewModel>();
+export class ContributionCard {
+  readonly card = input.required<ContributionCardViewModel>();
 }

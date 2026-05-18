@@ -1,19 +1,19 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import {
-  ProfileContributionCard,
-  ProfileContributionCardViewModel,
-} from '@/ui/pages/profile/ui/profile-contribution-card/profile-contribution-card';
+  ContributionCard,
+  ContributionCardViewModel,
+} from '@/ui/molecules/contribution-card/contribution-card';
 
 @Component({
   selector: 'tm-history-list-panel',
-  imports: [ProfileContributionCard],
+  imports: [ContributionCard],
   templateUrl: './history-list-panel.html',
   styleUrl: './history-list-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HistoryListPanel {
-  protected readonly cards: ProfileContributionCardViewModel[] = [
+  protected readonly cards: ContributionCardViewModel[] = [
     {
       title: 'Dolores de cabeza',
       date: 'Oct 24, 2025',
