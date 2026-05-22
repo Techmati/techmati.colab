@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { WelcomePanel } from './ui/welcome-panel/welcome-panel';
+import { WelcomePanel } from './ui/organisms/welcome-panelb/welcome-panel';
 
 @Component({
   selector: 'tm-welcome-page',
