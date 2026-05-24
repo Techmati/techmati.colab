@@ -4,6 +4,10 @@ const API = {
   CONTRIBUTORS: {
     REGISTER: `${BASE_URL}/contributors/register`,
     LOGIN: `${BASE_URL}/contributors/login`,
+    PROFILE: (id: string) => `${BASE_URL}/contributors/profile/${id}`,
+  },
+  PHRASE_SETS: {
+    SUMMARY: (id: string) => `${BASE_URL}/phrase-sets/summary/${id}`,
   },
 };
 

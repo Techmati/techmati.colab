@@ -14,4 +14,4 @@ import { InProgressPanel } from './ui/in-progress-panel/in-progress-panel';
   styleUrl: './dashboard.page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardPage {}
+export class DashboardPage { }

@@ -1,6 +1,7 @@
 import { API } from '@/core/config/api-uris.config';
+import { Contributor } from '@/core/types/contributor';
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { tap } from 'rxjs';
 
 @Injectable({
@@ -8,9 +9,10 @@ import { tap } from 'rxjs';
 })
 export class ContributorService {
   private readonly registerApi = API.CONTRIBUTORS.REGISTER;
-  private readonly loginApi = API.CONTRIBUTORS.LOGIN;
-
+  private readonly profileApi = API.CONTRIBUTORS.PROFILE;
   private readonly client = inject(HttpClient);
+
+  sessionId = signal(localStorage.getItem('sessionId'));
 
   access(data: { fullName: string }) {
     return this.client.post<{ message: string; sessionId: string }>(this.registerApi, data).pipe(
@@ -20,22 +22,17 @@ export class ContributorService {
     );
   }
 
-  // async login(data: { fullName: string }) {
-  //   let sessionId = localStorage.getItem('sessionId');
-  //   if (sessionId) {
-  //     return sessionId;
-  //   }
-  //   const [result, error] = await tryCatch(this.client.post<{ message: string; sessionId: string }>(this.loginApi, data))
-  //   if(error) {
-  //     throw new Error('Error al iniciar sesión');
-  //   }
-  //   localStorage.setItem('sessionId', result.sessionId);
-  //   return result.sessionId;
-  // }
-
   isLoggedIn(): boolean {
-    const sessionId = localStorage.getItem('sessionId');
+    const sessionId = this.sessionId();
     console.log('Session ID:', sessionId); // Debug log
     return !!sessionId;
+  }
+
+  getProfile(sessionId: string) {
+    return this.client.get<Contributor>(this.profileApi(sessionId));
+  }
+
+  getSessionId(): string | null {
+    return localStorage.getItem('sessionId');
   }
 }
