@@ -12,30 +12,44 @@
     <p class="text-text-secondary max-w-xs text-lg leading-7">Ingresa tu nombre para comenzar a colaborar en la comunidad.</p>
   </header>
 
-  <form [formGroup]="form()" class="mt-8 space-y-6" (ngSubmit)="submit.emit()" novalidate>
+  <form class="mt-8 space-y-6" (submit)="onSubmit($event)" novalidate>
     <ng-template #userIcon>
-      <span class="lucide--user size-4 text-muted-foreground" aria-hidden="true"></span>
+      <span class="lucide--user size-4 " [ngClass]="isInvalid() ?  'text-destructive' : 'text-muted-foreground'" aria-hidden="true"></span>
     </ng-template>
 
     <div class="space-y-2">
       <label for="username" class="text-text-secondary text-xs font-medium leading-4">Nombre de usuario</label>
-      <z-input-group [zAddonBefore]="userIcon">
+      <z-input-group [zAddonBefore]="userIcon" [class.border-destructive!]="isInvalid()" [zDisabled]="isLoading()" >
         <input
-          id="username"
           z-input
           type="text"
-          formControlName="username"
           placeholder="Ej. Xochitl Tonalli"
-          autocomplete="username"
-          aria-describedby="username-hint"
+          [formField]="form.fullName"
+          [zStatus]="isInvalid() ? 'error' : undefined"
         />
       </z-input-group>
-      <p id="username-hint" class="sr-only">Campo obligatorio para continuar.</p>
+      @if (isInvalid()) {
+        <div class="bg-destructive/20 py-0.5 px-3 rounded-sm text-sm text-destructive ">
+          @for (error of form.fullName().errors(); track error.kind) {
+            <div class="flex items-center gap-2">
+              <span class="lucide--badge-alert text-lg shrink-0"></span>
+              <span >{{ error.message }}</span>
+            </div>
+          }
+        </div>
+      }
+      @if(error()) {
+        <div class="bg-destructive/20 py-0.5 px-3 rounded-sm text-sm text-destructive ">
+          <div class="flex items-center gap-2">
+            <span class="lucide--x-circle my-auto text-lg shrink-0"></span>
+            <span>{{ error() }}</span>
+          </div>
+        </div>
+      }
     </div>
-
-    <button z-button zType="default" zSize="lg" zFull type="submit" class="font-semibold">
+    <button z-button zType="default" zSize="lg" [zLoading]="isLoading()" [zDisabled]="isInvalid()" zFull type="submit" class="font-semibold">
       Continuar
-      <span class="lucide--arrow-right ml-1 size-4" aria-hidden="true"></span>
+      <span class="lucide--arrow-right ml-1 size-5" aria-hidden="true"></span>
     </button>
   </form>
 </div>

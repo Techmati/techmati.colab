@@ -1,16 +1,28 @@
-import { NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { ReactiveFormsModule, type FormGroup } from '@angular/forms';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  input,
+  model,
+  output,
+  signal,
+} from '@angular/core';
 
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardInputDirective } from '@/shared/components/input';
 import { ZardInputGroupComponent } from '@/shared/components/input-group';
+import { form, FormField, minLength, required } from '@angular/forms/signals';
+
+export type RegisterFormData = { fullName: string };
 
 @Component({
   selector: 'tm-welcome-panel',
   imports: [
-    ReactiveFormsModule,
     NgOptimizedImage,
+    FormField,
+    CommonModule,
     ZardButtonComponent,
     ZardInputDirective,
     ZardInputGroupComponent,
@@ -20,8 +32,34 @@ import { ZardInputGroupComponent } from '@/shared/components/input-group';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WelcomePanel {
-  readonly form = input.required<FormGroup>();
-  readonly submit = output();
+  readonly isLoading = input.required<boolean>();
+  readonly error = input<string | null>();
 
-  protected readonly logoUrl = 'https://www.figma.com/api/mcp/asset/165e82df-7b23-42f7-b342-fb7fa1c9b15a';
+  readonly formSubmitted = output<RegisterFormData>();
+  readonly model = signal<RegisterFormData>({ fullName: '' });
+  readonly form = form(this.model, (schema) => {
+    required(schema.fullName, { message: 'El nombre es obligatorio.' });
+    minLength(schema.fullName, 3, { message: 'El nombre debe de ser de al menos 3 caracteres.' });
+  });
+
+  readonly isInvalid = computed(() => this.form().invalid() && this.form().touched());
+
+  readonly name = model();
+
+  constructor() {
+    effect(() => console.log('invalid', this.isInvalid()));
+  }
+
+  protected readonly logoUrl = '/res/brand.jpg';
+
+  onSubmit(event: Event) {
+    event.preventDefault();
+    console.log('submit', this.model());
+    if (this.form().invalid()) {
+      this.form.fullName().markAsTouched();
+      return;
+    }
+    this.formSubmitted.emit(this.model());
+    console.log('emitted');
+  }
 }

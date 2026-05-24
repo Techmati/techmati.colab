@@ -29,7 +29,11 @@ export const inputVariants = cva('w-full min-w-0', {
     zSize: 'default',
   },
   compoundVariants: [
-    { zType: 'default', zSize: 'default', class: 'h-9 py-1 file:h-7 file:text-sm file:max-md:py-0' },
+    {
+      zType: 'default',
+      zSize: 'default',
+      class: 'h-9 py-1 file:h-7 file:text-sm file:max-md:py-0',
+    },
     { zType: 'default', zSize: 'sm', class: 'h-8 py-1 file:h-6 file:text-sm file:max-md:py-1.5' },
     { zType: 'default', zSize: 'lg', class: 'h-10 py-1 file:h-7 file:text-sm file:max-md:py-2.5' },
   ],
