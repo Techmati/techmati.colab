@@ -46,8 +46,16 @@
           </div>
         </div>
       }
+      @if(success()) {
+        <div class="rounded-sm bg-accent px-3 py-1.5 text-sm text-accent-foreground">
+          <div class="flex items-center gap-2">
+            <span class="lucide--circle-check-big my-auto text-lg shrink-0"></span>
+            <span>{{ success() }}</span>
+          </div>
+        </div>
+      }
     </div>
-    <button z-button zType="default" zSize="lg" [zLoading]="isLoading()" [zDisabled]="isInvalid()" zFull type="submit" class="font-semibold">
+    <button z-button zType="default" zSize="lg" [zLoading]="isLoading()" [zDisabled]="isInvalid() || !!success()" zFull type="submit" class="font-semibold">
       Continuar
       <span class="lucide--arrow-right ml-1 size-5" aria-hidden="true"></span>
     </button>

@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   input,
   model,
   output,
@@ -33,6 +32,7 @@ export type RegisterFormData = { fullName: string };
 })
 export class WelcomePanel {
   readonly isLoading = input.required<boolean>();
+  readonly success = input<string | null>();
   readonly error = input<string | null>();
 
   readonly formSubmitted = output<RegisterFormData>();
@@ -46,20 +46,14 @@ export class WelcomePanel {
 
   readonly name = model();
 
-  constructor() {
-    effect(() => console.log('invalid', this.isInvalid()));
-  }
-
   protected readonly logoUrl = '/res/brand.jpg';
 
   onSubmit(event: Event) {
     event.preventDefault();
-    console.log('submit', this.model());
     if (this.form().invalid()) {
       this.form.fullName().markAsTouched();
       return;
     }
     this.formSubmitted.emit(this.model());
-    console.log('emitted');
   }
 }

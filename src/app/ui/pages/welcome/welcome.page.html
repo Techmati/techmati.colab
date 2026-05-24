@@ -2,6 +2,7 @@
   <section class="mx-auto w-full max-w-sm">
     <tm-welcome-panel
       [isLoading]="isLoading()"
+      [success]="success()"
       [error]="error()"
       (formSubmitted)="onSubmit($event)"
     />
