@@ -13,10 +13,9 @@ export class PhraseSetsService {
   private readonly summaryApi = API.PHRASE_SETS.SUMMARY;
   private readonly client = inject(HttpClient);
 
-  getContributorSummary() {
-    const sessionId = this.contributorService.getSessionId();
-    if (!sessionId) throw new Error('User not logged in');
-    const uri = this.summaryApi(sessionId);
+  getContributorSummary(contributorId: string) {
+    const uri = this.summaryApi(contributorId);
+    console.log({ uri });
     return this.client.get<ContributorSummaryResponse>(uri);
   }
 }

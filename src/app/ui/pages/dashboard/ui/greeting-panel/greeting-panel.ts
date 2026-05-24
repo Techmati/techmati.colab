@@ -13,10 +13,7 @@ export class GreetingPanel {
 
   readonly contributor = rxResource({
     params: computed(() => ({ id: this.contributorService.sessionId() })),
-    stream: ({ params: { id } }) => {
-      if (!id) throw new Error('No session ID found. User might not be logged in.');
-      return this.contributorService.getProfile(id);
-    },
+    stream: ({ params: { id } }) => this.contributorService.getProfile(id),
   });
 
   readonly singleName = computed(
