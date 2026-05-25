@@ -1,5 +1,5 @@
 import { ZardDividerComponent } from '@/shared/components/divider';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'tm-source-text-panel',
@@ -8,4 +8,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './source-text-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SourceTextPanel { }
+export class SourceTextPanel {
+  readonly text = input<string | null | undefined>();
+  readonly context = input<string | null | undefined>();
+  readonly sourceLanguage = input<string | null | undefined>();
+}

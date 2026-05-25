@@ -1,9 +1,12 @@
 import { API } from '@/core/config/api-uris.config';
-import { ContributorSummaryResponse } from '@/core/types/contributor-summary-response.type';
+import {
+  ContributorSummaryResponse,
+  PhraseSetsInProgress,
+} from '@/core/types/contributor-summary-response.type';
 import { PhraseSet } from '@/core/types/phrase-set.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import { ContributorService } from '../contributor/contributor.service';
 
 @Injectable({
@@ -13,13 +16,24 @@ export class PhraseSetsService {
   private readonly contributorService = inject(ContributorService);
 
   private readonly phraseSetsApi = API.PHRASE_SETS.PAGINATED;
-  private readonly summaryApi = API.PHRASE_SETS.SUMMARY;
+  private readonly contributorSummaryApi = API.PHRASE_SETS.CONTRIBUTOR_SUMMARY;
+  private readonly phraseSetSummaryApi = API.PHRASE_SETS.SUMMARY;
   private readonly client = inject(HttpClient);
 
-  getContributorSummary(contributorId: string) {
-    const uri = this.summaryApi(contributorId);
-    console.log({ uri });
-    return this.client.get<ContributorSummaryResponse>(uri);
+  getContributorSummary() {
+    return this.contributorService.getProfile(this.contributorService.sessionId()).pipe(
+      map((profile) => this.contributorSummaryApi(profile.id)),
+      switchMap((uri) => this.client.get<ContributorSummaryResponse>(uri)),
+    );
+  }
+
+  getPhraseSetSummaryByPhraseSetId(phraseSetId: string): Observable<PhraseSetsInProgress> {
+    return this.contributorService.getProfile(this.contributorService.sessionId()).pipe(
+      map((profile) => ({ contributorId: profile.id })),
+      switchMap(({ contributorId }) =>
+        this.client.get<PhraseSetsInProgress>(this.phraseSetSummaryApi(phraseSetId, contributorId)),
+      ),
+    );
   }
 
   getPhraseSets(page: number, size: number) {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import { ZardInputDirective } from '@/shared/components/input';
 
@@ -8,4 +8,6 @@ import { ZardInputDirective } from '@/shared/components/input';
   templateUrl: './translation-input-panel.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TranslationInputPanel {}
+export class TranslationInputPanel {
+  readonly targetLanguage = input<string | null | undefined>();
+}

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'tm-batch-progress-panel',
@@ -6,4 +6,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './batch-progress-panel.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BatchProgressPanel {}
+export class BatchProgressPanel {
+  readonly progressPercentage = input<number | null | undefined>(0);
+  readonly contributedEntriesCount = input<number | null | undefined>(0);
+  readonly totalPhrases = input<number | null | undefined>(0);
+}

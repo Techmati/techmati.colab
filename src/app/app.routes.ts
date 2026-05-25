@@ -15,10 +15,11 @@ export const routes: Routes = [
   },
   {
     path: 'profile/history',
-    loadComponent: () => import('./ui/pages/profile-history/profile-history.page').then((m) => m.ProfileHistoryPage),
+    loadComponent: () =>
+      import('./ui/pages/profile-history/profile-history.page').then((m) => m.ProfileHistoryPage),
   },
   {
-    path: 'translate',
+    path: 'translate/:phraseSetId',
     loadComponent: () => import('./ui/pages/translate/translate.page').then((m) => m.TranslatePage),
   },
 ];

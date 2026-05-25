@@ -8,7 +8,14 @@ const API = {
   },
   PHRASE_SETS: {
     PAGINATED: `${BASE_URL}/phrase-sets`,
-    SUMMARY: (id: string) => `${BASE_URL}/phrase-sets/summary/${id}`,
+    CONTRIBUTOR_SUMMARY: (contributorId: string) =>
+      `${BASE_URL}/phrase-sets/summary/${contributorId}`,
+    SUMMARY: (phraseSetId: string, contributorId: string) =>
+      `${BASE_URL}/phrase-sets/summary/set/${phraseSetId}/contributor/${contributorId}`,
+  },
+  TRANSLATION_ENTRIES: {
+    NEXT_PHRASE_IN_SET: (contributorId: string, phraseSetId: string) =>
+      `${BASE_URL}/translation-entries/contributor/${contributorId}/phrase-set/${phraseSetId}/next`,
   },
 };
 

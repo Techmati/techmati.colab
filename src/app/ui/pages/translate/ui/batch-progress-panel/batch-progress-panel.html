@@ -1,9 +1,12 @@
 <section class="space-y-2">
   <div class="flex items-center justify-between text-xs font-medium leading-4 text-text-secondary">
     <span>Progreso del lote</span>
-    <span>2 de 10</span>
+    <span>{{ contributedEntriesCount() || 0 }} de {{ totalPhrases() || 0 }}</span>
   </div>
   <div class="h-1.5 rounded-full bg-state-info-soft">
-    <div class="h-full w-1/5 rounded-full bg-brand-green-600"></div>
+    <div
+      class="h-full rounded-full bg-brand-green-600"
+      [style]="{ width: (progressPercentage() || 0) + '%' }"
+    ></div>
   </div>
 </section>

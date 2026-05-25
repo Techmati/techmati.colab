@@ -6,23 +6,7 @@
 
   <div class="space-y-3">
     @for (task of inProgress(); track task) {
-      <section class="rounded-lg bg-surface-success-soft p-4 flex flex-col gap-1" >
-        <p class="text-brand-green-600 text-sm font-semibold leading-7">{{task.phraseSet.title}}</p>
-        <p class="text-text-secondary text-xs leading-4">{{task.totalPhrases}} frases • {{task.lastUpdate | timeAgo}} </p>
-        <div class="flex items-center justify-between text-xs leading-4 text-text-secondary">
-          <span>{{task.contributedEntriesCount}}/{{task.totalPhrases}} completadas</span>
-          <span>{{task.progressPercentage}}%</span>
-        </div>
-        <div class="h-1.5 rounded-full bg-border-subtle">
-          <div class="h-full rounded-full bg-brand-green-600" [style]="{width: `${task.progressPercentage}%`}"></div>
-        </div>
-        <div class="flex items-center justify-end gap-2">
-          <button z-button zType="outline" class="border border-border text-brand-green-600 mt-1">
-            Continuar
-            <span class="lucide--chevron-right"></span>
-          </button>
-        </div>
-      </section>
+      <tm-in-progress-card [task]="task" />
     }@empty {
       <p class="text-center text-sm text-text-secondary">No tienes tareas en progreso.</p>
     }
