@@ -1,0 +1,17 @@
+<section class="space-y-2">
+  <label for="translation" class="text-text-primary text-base font-semibold leading-5"
+    >Traducción en {{ targetLanguage() || 'nahuatl' }}</label
+  >
+  <textarea
+    id="translation"
+    z-input
+    rows="2"
+    class="rounded-xl border-border-subtle bg-card px-4 py-4 text-base leading-7"
+    placeholder="Escribe la traducción precisa aquí..."
+    [attr.aria-label]="'Traducción en ' + (targetLanguage() || 'nahuatl')"
+    [value]="value()"
+    [disabled]="disabled()"
+    (input)="onInput($event)"
+    (blur)="onBlur()"
+  ></textarea>
+</section>

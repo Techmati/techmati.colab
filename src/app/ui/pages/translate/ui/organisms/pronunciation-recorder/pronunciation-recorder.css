@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+.record-btn {
+  align-items: center;
+  background: var(--color-primary);
+  border-radius: 9999px;
+  box-shadow: 0 10px 15px rgb(0 0 0 / 12%);
+  display: inline-flex;
+  height: 5rem;
+  justify-content: center;
+  width: 5rem;
+}
+
+.record-btn.recording {
+  background: color-mix(in oklab, var(--color-primary) 82%, black);
+}
+
+.record-btn:disabled {
+  opacity: 0.55;
+}

@@ -7,32 +7,31 @@ import {
   Component,
   computed,
   DestroyRef,
-  effect,
   inject,
   input,
   signal,
 } from '@angular/core';
+import { form, FormField, minLength, required } from '@angular/forms/signals';
 import { rxResource } from '@angular/core/rxjs-interop';
 
 import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { tryCatch } from '@/core/utils/try.util';
 import { BatchProgressPanel } from './ui/batch-progress-panel/batch-progress-panel';
 import { BottomActionBar } from './ui/bottom-action-bar/bottom-action-bar';
-import { PronunciationPanel } from './ui/pronunciation-panel/pronunciation-panel';
-import { RecordedPronunciationMolecule } from './ui/recorded-pronunciation-molecule/recorded-pronunciation-molecule';
+import { PronunciationRecorder } from './ui/organisms/pronunciation-recorder/pronunciation-recorder';
+import { TranslationTextarea } from './ui/organisms/translation-textarea/translation-textarea';
 import { SourceTextPanel } from './ui/source-text-panel/source-text-panel';
 import { TaskTopBar } from './ui/task-top-bar/task-top-bar';
-import { TranslationInputPanel } from './ui/translation-input-panel/translation-input-panel';
 
 @Component({
   selector: 'tm-translate-page',
   imports: [
+    FormField,
     TaskTopBar,
     BatchProgressPanel,
     SourceTextPanel,
-    TranslationInputPanel,
-    PronunciationPanel,
-    RecordedPronunciationMolecule,
+    TranslationTextarea,
+    PronunciationRecorder,
     BottomActionBar,
   ],
   templateUrl: './translate.page.html',
@@ -46,12 +45,16 @@ export class TranslatePage {
 
   readonly phraseSetId = input.required<string>();
 
-  protected readonly showRecordedPronunciation = signal(false);
-  protected readonly recordedAudio = signal<RecordedAudioFile | null>(null);
-  protected readonly writtenTranslation = signal('');
   protected readonly isLoading = signal(false);
-  protected readonly pronunciationMissing = signal(false);
-  protected readonly translationMissing = signal(false);
+  protected readonly model = signal<{ translation: string; pronunciation: RecordedAudioFile | null }>({
+    translation: '',
+    pronunciation: null,
+  });
+  protected readonly form = form(this.model, (schema) => {
+    required(schema.translation, { message: 'Añade una traducción escrita.' });
+    minLength(schema.translation, 3, { message: 'La traducción debe tener al menos 3 caracteres.' });
+    required(schema.pronunciation, { message: 'Añade una pronunciación grabada.' });
+  });
 
   readonly phraseRes = rxResource({
     params: computed(() => ({ phraseSetId: this.phraseSetId() })),
@@ -71,77 +74,32 @@ export class TranslatePage {
   );
 
   constructor() {
-    const translationEffect = effect(() => {
-      this.translationMissing.set(!this.writtenTranslation());
-    });
     this.destroyRef.onDestroy(() => {
-      const currentAudio = this.recordedAudio();
+      const currentAudio = this.model().pronunciation;
       if (currentAudio) {
         URL.revokeObjectURL(currentAudio.url);
       }
-      translationEffect.destroy();
     });
   }
 
-  async goToNextPhrase() {
+  protected async goToNextPhrase() {
+    this.form.translation().markAsTouched();
+    this.form.pronunciation().markAsTouched();
+
+    if (this.form().invalid()) {
+      return;
+    }
+
     const phrase = this.phrase();
-    const pronunciation = this.getAudio();
-    const translation = this.getTranslation();
-    console.log(phrase, pronunciation);
-    if (!phrase || !pronunciation || !translation) {
+    const pronunciation = this.model().pronunciation?.file ?? null;
+    const translation = this.model().translation;
+    if (!phrase || !pronunciation) {
       return;
     }
 
     const entry = { phraseId: phrase.id, translation };
-    console.log(entry);
     this.isLoading.set(true);
-    const [result, error] = await tryCatch(
-      this.translationEntryService.submit(entry, pronunciation),
-    );
-    console.log(result, error);
+    const [_result, _error] = await tryCatch(this.translationEntryService.submit(entry, pronunciation));
     this.isLoading.set(false);
-  }
-
-  private getAudio() {
-    const audio = this.recordedAudio()?.file;
-    if (!audio) {
-      this.pronunciationMissing.set(true);
-      return null;
-      // throw new Error('No recorded pronunciation available.');
-    }
-    this.pronunciationMissing.set(false);
-    return audio;
-  }
-
-  private getTranslation() {
-    const translation = this.writtenTranslation();
-    if (!translation) {
-      this.translationMissing.set(true);
-      return null;
-      // throw new Error('No written translation provided.');
-    }
-    this.translationMissing.set(false);
-    return translation;
-  }
-
-  protected onAudioRecorded(recordedAudio: RecordedAudioFile): void {
-    const previousAudio = this.recordedAudio();
-    if (previousAudio) {
-      URL.revokeObjectURL(previousAudio.url);
-    }
-    this.pronunciationMissing.set(false);
-
-    this.recordedAudio.set(recordedAudio);
-    this.showRecordedPronunciation.set(true);
-  }
-
-  protected onRetryRecording(): void {
-    const currentAudio = this.recordedAudio();
-    if (currentAudio) {
-      URL.revokeObjectURL(currentAudio.url);
-    }
-
-    this.recordedAudio.set(null);
-    this.showRecordedPronunciation.set(false);
   }
 }
