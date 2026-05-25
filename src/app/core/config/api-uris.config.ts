@@ -7,6 +7,7 @@ const API = {
     PROFILE: (id: string) => `${BASE_URL}/contributors/profile/${id}`,
   },
   PHRASE_SETS: {
+    PAGINATED: `${BASE_URL}/phrase-sets`,
     SUMMARY: (id: string) => `${BASE_URL}/phrase-sets/summary/${id}`,
   },
 };

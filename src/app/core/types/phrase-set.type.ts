@@ -6,4 +6,5 @@ export interface PhraseSet {
   published: boolean;
   created_at: string;
   published_at: string | null;
+  phrasesCount: number;
 }
