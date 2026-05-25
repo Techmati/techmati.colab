@@ -32,7 +32,7 @@ export class ContributorService {
     return !!sessionId;
   }
 
-  getProfile(sessionId: string) {
+  getProfile(sessionId: string = this.sessionId()) {
     return this.client.get<Contributor>(this.profileApi(sessionId));
   }
 }

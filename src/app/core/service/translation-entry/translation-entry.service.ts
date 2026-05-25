@@ -28,11 +28,17 @@ export class TranslationEntryService {
     );
   }
 
-  submit(entry: TranslationEntry, audio: File) {
-    const formData = new FormData();
-    formData.append('data', new Blob([JSON.stringify(entry)], { type: 'application/json' }));
-    formData.append('audio', audio);
-
-    return this.client.post(this.submitApi, formData);
+  submit(data: Omit<TranslationEntry, 'contributorId'>, audio: File) {
+    return this.contributorService.getProfile().pipe(
+      map((profile) => profile.id),
+      map((contributorId) => ({ ...data, contributorId })),
+      map((entry) => {
+        const formData = new FormData();
+        formData.append('data', JSON.stringify(entry));
+        formData.append('audio', audio);
+        return formData;
+      }),
+      switchMap((formData) => this.client.post(this.submitApi, formData)),
+    );
   }
 }

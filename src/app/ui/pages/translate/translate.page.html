@@ -12,8 +12,13 @@
       [context]="phrase()?.context"
       [sourceLanguage]="phrase()?.sourceLanguage"
     />
-    <tm-translation-input-panel [targetLanguage]="phrase()?.targetLanguage" />
-
+    <tm-translation-input-panel [disabled]="isLoading()" [targetLanguage]="phrase()?.targetLanguage" [(translation)]="writtenTranslation"/>
+    @if(translationMissing()) {
+      <div class="rounded-xl border border-red-500 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+        <strong class="font-bold">¡Atención!</strong>
+        <span class="block sm:inline">No haz añadido una traducción escrita para esta frase. Por favor, añade una.</span>
+      </div>
+    }
     @if (showRecordedPronunciation()) {
       <tm-recorded-pronunciation-molecule
         [recordedAudio]="recordedAudio()!"
@@ -22,7 +27,14 @@
     } @else {
       <tm-pronunciation-panel (recorded)="onAudioRecorded($event)" />
     }
+    @if(pronunciationMissing()) {
+      <div class="rounded-xl border border-red-500 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+        <strong class="font-bold">¡Atención!</strong>
+        <span class="block sm:inline">No haz añadido una pronunciación para esta frase, Por favor, añade una.</span>
+      </div>
+    }
+
   </section>
 
-  <tm-bottom-action-bar (continueClick)="goToNextPhrase()"/>
+  <tm-bottom-action-bar [loading]="isLoading()" (continueClick)="goToNextPhrase()"/>
 </main>

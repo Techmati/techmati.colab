@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
 import { ZardButtonComponent } from '@/shared/components/button';
 
@@ -11,4 +11,5 @@ import { ZardButtonComponent } from '@/shared/components/button';
 })
 export class BottomActionBar {
   continueClick = output<void>();
+  readonly loading = input.required<boolean>();
 }

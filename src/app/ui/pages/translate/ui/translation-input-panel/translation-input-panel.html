@@ -5,6 +5,8 @@
   <textarea
     id="translation"
     z-input
+    [(ngModel)]="translation"
+    [disabled]="disabled()"
     rows="2"
     class="rounded-xl border-border-subtle bg-card px-4 py-4 text-base leading-7"
     placeholder="Escribe la traducción precisa aquí..."
