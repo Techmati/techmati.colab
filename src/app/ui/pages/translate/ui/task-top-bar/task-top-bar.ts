@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Location } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 @Component({
   selector: 'tm-task-top-bar',
@@ -7,4 +8,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './task-top-bar.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TaskTopBar {}
+export class TaskTopBar {
+  private readonly location = inject(Location);
+
+  goBack() {
+    this.location.back();
+  }
+}
