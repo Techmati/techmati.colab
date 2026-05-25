@@ -2,8 +2,16 @@
   <h3 class="text-text-primary text-base font-semibold leading-5">Pronunciación</h3>
 
   <div class="audio-player rounded-full border border-border-subtle bg-card px-4 py-2 shadow-sm">
-    <button type="button" class="play-btn" aria-label="Reproducir audio">
-      <span class="lucide--play size-4 text-white" aria-hidden="true"></span>
+    <button
+      type="button"
+      class="play-btn"
+      [attr.aria-label]="playing() ? 'Pausar audio' : 'Reproducir audio'"
+      (click)="togglePlayback()"
+    >
+      <span
+        [class]="playing() ? 'lucide--pause size-4 text-white' : 'lucide--play size-4 text-white'"
+        aria-hidden="true"
+      ></span>
     </button>
 
     <div class="mx-3 flex flex-1 items-end gap-1" aria-hidden="true">
@@ -26,12 +34,23 @@
       <span class="wave h-5"></span>
     </div>
 
-    <span class="text-text-secondary text-sm leading-4">0:04</span>
+    <span class="text-text-secondary text-sm leading-4"
+      >{{ elapsedLabel }} / {{ durationLabel }}</span
+    >
+
+    <audio
+      #audioRef
+      class="hidden"
+      [src]="recordedAudio().url"
+      (timeupdate)="onTimeUpdate()"
+      (ended)="onEnded()"
+      preload="metadata"
+    ></audio>
   </div>
 
   <div class="flex justify-center pt-2">
-    <button type="button" class="record-btn" aria-label="Volver a grabar">
-      <span class="lucide--mic size-7 text-white" aria-hidden="true"></span>
+    <button type="button" class="record-btn" aria-label="Volver a grabar" (click)="onRetryClick()">
+      <span class="lucide--mic size-7 text-4xl text-white" aria-hidden="true"></span>
     </button>
   </div>
 

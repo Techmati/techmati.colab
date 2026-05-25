@@ -16,6 +16,7 @@ const API = {
   TRANSLATION_ENTRIES: {
     NEXT_PHRASE_IN_SET: (contributorId: string, phraseSetId: string) =>
       `${BASE_URL}/translation-entries/contributor/${contributorId}/phrase-set/${phraseSetId}/next`,
+    SUBMIT: `${BASE_URL}/translation-entries`,
   },
 };
 

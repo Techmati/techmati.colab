@@ -1,24 +1,23 @@
 <section class="space-y-4">
   <h3 class="text-text-primary text-base font-semibold leading-5">Pronunciación</h3>
-  <div class="">
-    <!-- <div class="flex h-16 items-end justify-center gap-1 opacity-30" aria-hidden="true"> -->
-    <!--   <span class="bar h-2"></span> -->
-    <!--   <span class="bar h-4"></span> -->
-    <!--   <span class="bar h-8"></span> -->
-    <!--   <span class="bar h-12"></span> -->
-    <!--   <span class="bar h-6"></span> -->
-    <!--   <span class="bar h-10"></span> -->
-    <!--   <span class="bar h-14"></span> -->
-    <!--   <span class="bar h-7"></span> -->
-    <!--   <span class="bar h-3"></span> -->
-    <!--   <span class="bar h-9"></span> -->
-    <!--   <span class="bar h-5"></span> -->
-    <!--   <span class="bar h-2"></span> -->
-    <!-- </div> -->
-    <div class="flex justify-center pt-2">
-      <button type="button" class="record-btn" aria-label="Grabar pronunciación">
-        <span class="lucide--mic text-4xl text-white" aria-hidden="true"></span>
-      </button>
-    </div>
+
+  <div class="flex justify-center pt-2">
+    <button
+      type="button"
+      class="record-btn"
+      [class.recording]="isRecording()"
+      [attr.aria-label]="isRecording() ? 'Detener grabación' : 'Grabar pronunciación'"
+      (click)="onRecordButtonClick()"
+    >
+      <span [class]="isRecording() ? 'lucide--square text-4xl text-white' : 'lucide--mic text-4xl text-white'" aria-hidden="true"></span>
+    </button>
   </div>
+
+  <p class="text-text-secondary text-center text-sm font-semibold leading-5">
+    {{ isRecording() ? 'Grabando... toca para detener' : 'Toca para empezar a grabar' }}
+  </p>
+
+  @if (errorMessage()) {
+    <p class="text-destructive text-center text-xs leading-4">{{ errorMessage() }}</p>
+  }
 </section>

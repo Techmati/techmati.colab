@@ -15,9 +15,12 @@
     <tm-translation-input-panel [targetLanguage]="phrase()?.targetLanguage" />
 
     @if (showRecordedPronunciation()) {
-      <tm-recorded-pronunciation-molecule />
+      <tm-recorded-pronunciation-molecule
+        [recordedAudio]="recordedAudio()!"
+        (retry)="onRetryRecording()"
+      />
     } @else {
-      <tm-pronunciation-panel />
+      <tm-pronunciation-panel (recorded)="onAudioRecorded($event)" />
     }
   </section>
 

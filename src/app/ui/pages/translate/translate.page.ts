@@ -1,10 +1,12 @@
 import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
 import { type PhraseSetsInProgress } from '@/core/types/contributor-summary-response.type';
 import { Phrase } from '@/core/types/phrase.type';
+import { type RecordedAudioFile } from '@/core/utils/audio-recorder.util';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   inject,
   input,
   signal,
@@ -38,8 +40,10 @@ import { TranslationInputPanel } from './ui/translation-input-panel/translation-
 export class TranslatePage {
   private readonly translationEntryService = inject(TranslationEntryService);
   private readonly phraseSetsService = inject(PhraseSetsService);
+  private readonly destroyRef = inject(DestroyRef);
 
   protected readonly showRecordedPronunciation = signal(false);
+  protected readonly recordedAudio = signal<RecordedAudioFile | null>(null);
   readonly phraseSetId = input.required<string>();
 
   readonly phraseRes = rxResource({
@@ -58,4 +62,33 @@ export class TranslatePage {
   readonly phraseSetSummary = computed<PhraseSetsInProgress | null>(
     () => this.phraseSetSummaryRes.value() ?? null,
   );
+
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      const currentAudio = this.recordedAudio();
+      if (currentAudio) {
+        URL.revokeObjectURL(currentAudio.url);
+      }
+    });
+  }
+
+  protected onAudioRecorded(recordedAudio: RecordedAudioFile): void {
+    const previousAudio = this.recordedAudio();
+    if (previousAudio) {
+      URL.revokeObjectURL(previousAudio.url);
+    }
+
+    this.recordedAudio.set(recordedAudio);
+    this.showRecordedPronunciation.set(true);
+  }
+
+  protected onRetryRecording(): void {
+    const currentAudio = this.recordedAudio();
+    if (currentAudio) {
+      URL.revokeObjectURL(currentAudio.url);
+    }
+
+    this.recordedAudio.set(null);
+    this.showRecordedPronunciation.set(false);
+  }
 }
