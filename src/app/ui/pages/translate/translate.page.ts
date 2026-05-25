@@ -72,6 +72,10 @@ export class TranslatePage {
     });
   }
 
+  goToNextPhrase() {
+    //TODO: implement logic
+  }
+
   protected onAudioRecorded(recordedAudio: RecordedAudioFile): void {
     const previousAudio = this.recordedAudio();
     if (previousAudio) {

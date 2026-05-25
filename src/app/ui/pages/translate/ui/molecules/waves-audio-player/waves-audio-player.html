@@ -1,0 +1,19 @@
+<div class="audio-player rounded-full border border-border-subtle bg-card px-4 py-2 shadow-sm">
+  <button
+    type="button"
+    class="play-btn"
+    [attr.aria-label]="playing() ? 'Pausar audio' : 'Reproducir audio'"
+    (click)="togglePlayback()"
+  >
+    <span
+      [class]="playing() ? 'lucide--pause size-4 text-white' : 'lucide--play size-4 text-white'"
+      aria-hidden="true"
+    ></span>
+  </button>
+
+  <div class="mx-3 flex-1 overflow-hidden">
+    <div #waveform class="waveform"></div>
+  </div>
+
+  <span class="text-text-secondary text-sm leading-4">{{ elapsedLabel }} / {{ durationLabel }}</span>
+</div>

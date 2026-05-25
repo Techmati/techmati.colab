@@ -1,6 +1,13 @@
 <footer class="fixed inset-x-0 bottom-0 border-t border-border-soft bg-surface-page px-5 pb-5 pt-4">
   <div class="mx-auto w-full max-w-sm">
-    <button z-button zType="default" zSize="lg" zFull class="bg-brand-green-600 hover:bg-brand-green-500">
+    <button
+      z-button
+      (click)="continueClick.emit()"
+      zType="default"
+      zSize="lg"
+      zFull
+      class="bg-brand-green-600 hover:bg-brand-green-500"
+    >
       Siguiente
       <span class="lucide--arrow-right size-4" aria-hidden="true"></span>
     </button>

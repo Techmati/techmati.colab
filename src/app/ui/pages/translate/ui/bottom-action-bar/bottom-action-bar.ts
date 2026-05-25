@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 
 import { ZardButtonComponent } from '@/shared/components/button';
 
@@ -9,4 +9,6 @@ import { ZardButtonComponent } from '@/shared/components/button';
   styleUrl: './bottom-action-bar.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BottomActionBar {}
+export class BottomActionBar {
+  continueClick = output<void>();
+}

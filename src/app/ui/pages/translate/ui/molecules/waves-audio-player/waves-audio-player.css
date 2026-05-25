@@ -2,13 +2,22 @@
   display: block;
 }
 
-.record-btn {
+.audio-player {
+  align-items: center;
+  display: flex;
+}
+
+.play-btn {
   align-items: center;
   background: var(--color-primary);
   border-radius: 9999px;
-  box-shadow: 0 10px 15px rgb(0 0 0 / 12%);
   display: inline-flex;
-  height: 5rem;
+  height: 2.5rem;
   justify-content: center;
-  width: 5rem;
+  width: 2.5rem;
+}
+
+.waveform {
+  min-height: 24px;
+  width: 100%;
 }
