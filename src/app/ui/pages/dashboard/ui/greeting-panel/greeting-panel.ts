@@ -1,5 +1,5 @@
 import { ContributorService } from '@/core/service/contributor/contributor.service';
-import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 
 import { rxResource } from '@angular/core/rxjs-interop';
 @Component({
@@ -19,13 +19,4 @@ export class GreetingPanel {
   readonly singleName = computed(
     () => this.contributor.value()?.fullName.split(' ')[0] ?? 'Contribuidor',
   );
-
-  constructor() {
-    //debug effect TODO: remove it
-    effect(() => {
-      console.log('Contributor: ', this.contributor.value());
-      const name = this.singleName();
-      console.log(`Olá, ${name}!`);
-    });
-  }
 }

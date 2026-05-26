@@ -8,12 +8,12 @@ const API = {
   },
   PHRASE_SETS: {
     PAGINATED: `${BASE_URL}/phrase-sets`,
-    CONTRIBUTOR_SUMMARY: (contributorId: string) =>
-      `${BASE_URL}/phrase-sets/summary/${contributorId}`,
-    SUMMARY: (phraseSetId: string, contributorId: string) =>
-      `${BASE_URL}/phrase-sets/summary/set/${phraseSetId}/contributor/${contributorId}`,
   },
   TRANSLATION_ENTRIES: {
+    CONTRIBUTOR_SUMMARY: (contributorId: string) =>
+      `${BASE_URL}/translation-entries/contributor/${contributorId}/summary`,
+    PHRASE_SET_SUMMARY: (contributorId: string, phraseSetId: string) =>
+      `${BASE_URL}/translation-entries/contributor/${contributorId}/phrase-set/${phraseSetId}/summary`,
     NEXT_PHRASE_IN_SET: (contributorId: string, phraseSetId: string) =>
       `${BASE_URL}/translation-entries/contributor/${contributorId}/phrase-set/${phraseSetId}/next`,
     SUBMIT: `${BASE_URL}/translation-entries`,

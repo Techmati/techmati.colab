@@ -7,14 +7,14 @@ import {
   Component,
   computed,
   DestroyRef,
+  effect,
   inject,
   input,
   signal,
 } from '@angular/core';
-import { form, FormField, minLength, required } from '@angular/forms/signals';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { form, FormField, minLength, required } from '@angular/forms/signals';
 
-import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { tryCatch } from '@/core/utils/try.util';
 import { BatchProgressPanel } from './ui/batch-progress-panel/batch-progress-panel';
 import { BottomActionBar } from './ui/bottom-action-bar/bottom-action-bar';
@@ -40,38 +40,45 @@ import { TaskTopBar } from './ui/task-top-bar/task-top-bar';
 })
 export class TranslatePage {
   private readonly translationEntryService = inject(TranslationEntryService);
-  private readonly phraseSetsService = inject(PhraseSetsService);
   private readonly destroyRef = inject(DestroyRef);
 
   readonly phraseSetId = input.required<string>();
 
   protected readonly isLoading = signal(false);
-  protected readonly model = signal<{ translation: string; pronunciation: RecordedAudioFile | null }>({
+  private readonly nextPhraseTick = signal(0);
+
+  protected readonly model = signal<{
+    translation: string;
+    pronunciation: RecordedAudioFile | null;
+  }>({
     translation: '',
     pronunciation: null,
   });
   protected readonly form = form(this.model, (schema) => {
     required(schema.translation, { message: 'Añade una traducción escrita.' });
-    minLength(schema.translation, 3, { message: 'La traducción debe tener al menos 3 caracteres.' });
+    minLength(schema.translation, 3, {
+      message: 'La traducción debe tener al menos 3 caracteres.',
+    });
     required(schema.pronunciation, { message: 'Añade una pronunciación grabada.' });
   });
 
   readonly phraseRes = rxResource({
-    params: computed(() => ({ phraseSetId: this.phraseSetId() })),
+    params: computed(() => ({ phraseSetId: this.phraseSetId(), tick: this.nextPhraseTick() })),
     stream: ({ params: { phraseSetId } }) => {
       return this.translationEntryService.getNextPhraseInPhraseSet(phraseSetId);
     },
   });
   readonly phraseSetSummaryRes = rxResource({
-    params: computed(() => ({ phraseSetId: this.phraseSetId() })),
+    params: computed(() => ({ phraseSetId: this.phraseSetId(), tick: this.nextPhraseTick() })),
     stream: ({ params: { phraseSetId } }) =>
-      this.phraseSetsService.getPhraseSetSummaryByPhraseSetId(phraseSetId),
+      this.translationEntryService.getPhraseSetSummary(phraseSetId),
   });
 
   readonly phrase = computed<Phrase | null>(() => this.phraseRes.value() ?? null);
-  readonly phraseSetSummary = computed<PhraseSetsInProgress | null>(
-    () => this.phraseSetSummaryRes.value() ?? null,
-  );
+  readonly phraseSetSummary = computed<PhraseSetsInProgress | null>(() => {
+    console.log('Computing phrase set summary, resource value:', this.phraseSetSummaryRes.value());
+    return this.phraseSetSummaryRes.value() ?? null;
+  });
 
   constructor() {
     this.destroyRef.onDestroy(() => {
@@ -80,11 +87,11 @@ export class TranslatePage {
         URL.revokeObjectURL(currentAudio.url);
       }
     });
+    effect(() => console.log({ phrase: this.phrase(), phraseSetSummary: this.phraseSetSummary() }));
   }
 
   protected async goToNextPhrase() {
-    this.form.translation().markAsTouched();
-    this.form.pronunciation().markAsTouched();
+    this.form().markAsTouched();
 
     if (this.form().invalid()) {
       return;
@@ -99,7 +106,15 @@ export class TranslatePage {
 
     const entry = { phraseId: phrase.id, translation };
     this.isLoading.set(true);
-    const [_result, _error] = await tryCatch(this.translationEntryService.submit(entry, pronunciation));
+    const [_result, error] = await tryCatch(
+      this.translationEntryService.submit(entry, pronunciation),
+    );
     this.isLoading.set(false);
+    if (error) {
+      //TODO: add error handling (toast)
+    } else {
+      this.nextPhraseTick.update((tick) => tick + 1);
+      this.form().reset({ translation: '', pronunciation: null });
+    }
   }
 }

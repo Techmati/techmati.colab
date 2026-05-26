@@ -2,8 +2,12 @@ import { API } from '@/core/config/api-uris.config';
 import { Phrase } from '@/core/types/phrase.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { map, switchMap } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 
+import {
+  ContributorSummaryResponse,
+  PhraseSetsInProgress,
+} from '@/core/types/contributor-summary-response.type';
 import { TranslationEntry } from '@/core/types/translation-entry.type';
 import { ContributorService } from '../contributor/contributor.service';
 
@@ -12,6 +16,9 @@ import { ContributorService } from '../contributor/contributor.service';
 })
 export class TranslationEntryService {
   private readonly submitApi = API.TRANSLATION_ENTRIES.SUBMIT;
+
+  private readonly contributorSummaryApi = API.TRANSLATION_ENTRIES.CONTRIBUTOR_SUMMARY;
+  private readonly phraseSetSummaryApi = API.TRANSLATION_ENTRIES.PHRASE_SET_SUMMARY;
 
   private readonly contributorService = inject(ContributorService);
   private readonly client = inject(HttpClient);
@@ -39,6 +46,22 @@ export class TranslationEntryService {
         return formData;
       }),
       switchMap((formData) => this.client.post(this.submitApi, formData)),
+    );
+  }
+
+  getContributorSummary() {
+    return this.contributorService.getProfile(this.contributorService.sessionId()).pipe(
+      map((profile) => this.contributorSummaryApi(profile.id)),
+      switchMap((uri) => this.client.get<ContributorSummaryResponse>(uri)),
+    );
+  }
+
+  getPhraseSetSummary(phraseSetId: string): Observable<PhraseSetsInProgress> {
+    return this.contributorService.getProfile(this.contributorService.sessionId()).pipe(
+      map((profile) => profile.id),
+      switchMap((contributorId) =>
+        this.client.get<PhraseSetsInProgress>(this.phraseSetSummaryApi(contributorId, phraseSetId)),
+      ),
     );
   }
 }
