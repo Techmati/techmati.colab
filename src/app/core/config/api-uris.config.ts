@@ -16,6 +16,10 @@ const API = {
       `${BASE_URL}/translation-entries/contributor/${contributorId}/phrase-set/${phraseSetId}/summary`,
     NEXT_PHRASE_IN_SET: (contributorId: string, phraseSetId: string) =>
       `${BASE_URL}/translation-entries/contributor/${contributorId}/phrase-set/${phraseSetId}/next`,
+    TODAY_COUNT: (contributorId: string) =>
+      `${BASE_URL}/translation-entries/contributor/${contributorId}/today-count`,
+    NEXT_PHRASE_SET: (contributorId: string) =>
+      `${BASE_URL}/translation-entries/contributor/${contributorId}/next-set`,
     SUBMIT: `${BASE_URL}/translation-entries`,
   },
 };

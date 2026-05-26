@@ -64,4 +64,29 @@ export class TranslationEntryService {
       ),
     );
   }
+
+  //TODO: refactor to avoid multiple calls to getProfile if possible
+  getTodayTranslationCount() {
+    return this.contributorService.getProfile(this.contributorService.sessionId()).pipe(
+      map((profile) => profile.id),
+      switchMap((contributorId) =>
+        this.client.get<{ translations: number }>(
+          API.TRANSLATION_ENTRIES.TODAY_COUNT(contributorId),
+        ),
+      ),
+      map((response) => response.translations),
+    );
+  }
+
+  getNextPhraseSet() {
+    return this.contributorService.getProfile(this.contributorService.sessionId()).pipe(
+      map((profile) => profile.id),
+      switchMap((contributorId) =>
+        this.client.get<{ phraseSet: string }>(
+          API.TRANSLATION_ENTRIES.NEXT_PHRASE_SET(contributorId),
+        ),
+      ),
+      map((response) => response.phraseSet),
+    );
+  }
 }

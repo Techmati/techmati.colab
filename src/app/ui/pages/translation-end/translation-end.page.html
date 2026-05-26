@@ -33,14 +33,16 @@
       <div class="grid grid-cols-2 gap-4">
         <div class="rounded-lg bg-brand-purple-100 p-4 font-semibold text-center">
           <span class="lucide--languages text-primary text-lg" aria-hidden="true"></span>
-          <p class="font-display text-primary text-2xl">10</p>
+          <p class="font-display text-primary text-2xl">{{ phraseSetCount() }}</p>
           <p class="text-text-secondary text-sm leading-5">Frases completadas</p>
         </div>
 
         <div class="rounded-lg bg-brand-green-100/60 p-4 text-center font-semibold">
           <span class="lucide--file-text text-lg text-brand-green-600" aria-hidden="true"></span>
-          <p class="font-display mt-1 text-2xl text-brand-green-600">128</p>
-          <p class="text-text-secondary text-sm leading-5">Palabras hoy</p>
+          <p class="font-display mt-1 text-2xl text-brand-green-600">
+            {{ translationCountRes.value() || '...' }}
+          </p>
+          <p class="text-text-secondary text-sm leading-5">Frases hoy</p>
         </div>
       </div>
     </article>
@@ -55,9 +57,11 @@
         zType="default"
         zSize="lg"
         zFull
-        [routerLink]="['/translate', currentPhraseSetId]"
         class="justify-center"
+        [zLoading]="nextSet.isLoading()"
+        (click)="goToNextSet()"
       >
+        <!-- [routerLink]="['/translate', currentPhraseSetId]" -->
         <span class="lucide--skip-forward size-4" aria-hidden="true"></span>
         Siguiente set
       </a>
