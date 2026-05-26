@@ -4,10 +4,11 @@ import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.servic
 import { ZardButtonComponent } from '@/shared/components/button';
 import { DatePipe } from '@angular/common';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'tm-available-contributions-panel',
-  imports: [ZardButtonComponent, DatePipe],
+  imports: [ZardButtonComponent, DatePipe, RouterLink],
   providers: [DatePipe],
   templateUrl: './available-contributions-panel.html',
   styleUrl: './available-contributions-panel.css',
