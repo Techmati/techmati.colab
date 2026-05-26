@@ -27,7 +27,7 @@ export class PhraseSetsService {
     );
   }
 
-  getPhraseSetSummaryByPhraseSetId(phraseSetId: string): Observable<PhraseSetsInProgress> {
+  getPhraseSetSummary(phraseSetId: string): Observable<PhraseSetsInProgress> {
     return this.contributorService.getProfile(this.contributorService.sessionId()).pipe(
       map((profile) => ({ contributorId: profile.id })),
       switchMap(({ contributorId }) =>

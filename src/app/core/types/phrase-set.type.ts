@@ -4,7 +4,7 @@ export interface PhraseSet {
   description: string;
   language: string;
   published: boolean;
-  created_at: string;
-  published_at: string | null;
+  createdAt: string;
+  publishedAt: string | null;
   phrasesCount: number;
 }
