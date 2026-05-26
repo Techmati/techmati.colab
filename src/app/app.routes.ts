@@ -22,4 +22,9 @@ export const routes: Routes = [
     path: 'translate/:phraseSetId',
     loadComponent: () => import('./ui/pages/translate/translate.page').then((m) => m.TranslatePage),
   },
+  {
+    path: 'translate/:phraseSetId/end',
+    loadComponent: () =>
+      import('./ui/pages/translation-end/translation-end.page').then((m) => m.TranslationEndPage),
+  },
 ];
