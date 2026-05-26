@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
 import { ZardButtonComponent } from '@/shared/components/button';
@@ -17,11 +17,12 @@ export class TranslationEndPage {
   readonly phraseSetCount = input.required<number>();
 
   private readonly translationEntryService = inject(TranslationEntryService);
-  private readonly router = inject(Router);
 
   readonly translationCountRes = rxResource({
     stream: () => this.translationEntryService.getTodayTranslationCount(),
   });
+
+  readonly noNextSet = computed(() => this.nextSet.value()?.state == 'finished');
 
   readonly nextSet = rxResource({
     stream: () => this.translationEntryService.getNextPhraseSet(),
@@ -31,9 +32,5 @@ export class TranslationEndPage {
     effect(() => console.log(this.phraseSetCount()));
     effect(() => console.log(this.phraseSetId()));
     effect(() => console.log(this.nextSet.value()));
-  }
-
-  protected goToNextSet() {
-    this.router.navigate(['/translate', this.nextSet.value()]);
   }
 }

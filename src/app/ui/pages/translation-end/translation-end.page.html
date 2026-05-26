@@ -59,13 +59,14 @@
         zFull
         class="justify-center"
         [zLoading]="nextSet.isLoading()"
-        (click)="goToNextSet()"
+        [zDisabled]="noNextSet()"
+        [routerLink]="['/translate', nextSet.value()?.phraseSet]"
       >
-        <!-- [routerLink]="['/translate', currentPhraseSetId]" -->
         <span class="lucide--skip-forward size-4" aria-hidden="true"></span>
-        Siguiente set
+        {{ noNextSet() ? 'No hay más sets disponibles' : 'Siguiente set' }}
       </a>
       <a z-button zType="outline" zSize="lg" zFull routerLink="/dashboard" class="justify-center">
+        <span class="lucide--home"></span>
         Regresar al menú principal
       </a>
     </div>

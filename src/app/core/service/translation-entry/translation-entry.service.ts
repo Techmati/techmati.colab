@@ -27,11 +27,10 @@ export class TranslationEntryService {
     return this.contributorService.getProfile(this.contributorService.sessionId()).pipe(
       map((profile) => profile.id),
       switchMap((contributorId) =>
-        this.client.get<{ phrase: Phrase }>(
+        this.client.get<{ phrase: Phrase; state: 'finished' | 'in-progress' }>(
           API.TRANSLATION_ENTRIES.NEXT_PHRASE_IN_SET(contributorId, phraseSetId),
         ),
       ),
-      map((response) => response.phrase),
     );
   }
 
@@ -82,11 +81,10 @@ export class TranslationEntryService {
     return this.contributorService.getProfile(this.contributorService.sessionId()).pipe(
       map((profile) => profile.id),
       switchMap((contributorId) =>
-        this.client.get<{ phraseSet: string }>(
+        this.client.get<{ phraseSet: string; state: 'finished' | 'in-progress' }>(
           API.TRANSLATION_ENTRIES.NEXT_PHRASE_SET(contributorId),
         ),
       ),
-      map((response) => response.phraseSet),
     );
   }
 }

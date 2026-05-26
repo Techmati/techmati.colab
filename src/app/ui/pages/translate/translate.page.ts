@@ -16,6 +16,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { form, FormField, minLength, required } from '@angular/forms/signals';
 
 import { tryCatch } from '@/core/utils/try.util';
+import { Router } from '@angular/router';
 import { BatchProgressPanel } from './ui/batch-progress-panel/batch-progress-panel';
 import { BottomActionBar } from './ui/bottom-action-bar/bottom-action-bar';
 import { PronunciationRecorder } from './ui/organisms/pronunciation-recorder/pronunciation-recorder';
@@ -39,8 +40,9 @@ import { TaskTopBar } from './ui/task-top-bar/task-top-bar';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TranslatePage {
-  private readonly translationEntryService = inject(TranslationEntryService);
+  private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly translationEntryService = inject(TranslationEntryService);
 
   readonly phraseSetId = input.required<string>();
 
@@ -74,18 +76,26 @@ export class TranslatePage {
       this.translationEntryService.getPhraseSetSummary(phraseSetId),
   });
 
-  readonly phrase = computed<Phrase | null>(() => this.phraseRes.value() ?? null);
+  readonly phrase = computed<Phrase | null>(() => this.phraseRes.value()?.phrase ?? null);
   readonly phraseSetSummary = computed<PhraseSetsInProgress | null>(() => {
     console.log('Computing phrase set summary, resource value:', this.phraseSetSummaryRes.value());
     return this.phraseSetSummaryRes.value() ?? null;
   });
 
   constructor() {
+    const endEffect = effect(() => {
+      if (this.phraseRes.value()?.state === 'finished') {
+        this.router.navigate(['/translate', this.phraseSetId(), 'end'], {
+          queryParams: { phraseSetCount: this.phraseSetSummary()?.totalPhrases },
+        });
+      }
+    });
     this.destroyRef.onDestroy(() => {
       const currentAudio = this.model().pronunciation;
       if (currentAudio) {
         URL.revokeObjectURL(currentAudio.url);
       }
+      endEffect.destroy();
     });
     effect(() => console.log({ phrase: this.phrase(), phraseSetSummary: this.phraseSetSummary() }));
   }
