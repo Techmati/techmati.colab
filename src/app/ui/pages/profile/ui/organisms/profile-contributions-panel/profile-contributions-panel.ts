@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import {
   ContributionCard,
   type ContributionCardViewModel,
-} from '../../../../molecules/contribution-card/contribution-card';
+} from '@/ui/molecules/contribution-card/contribution-card';
 
 @Component({
   selector: 'tm-profile-contributions-panel',
