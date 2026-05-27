@@ -1,5 +1,4 @@
 import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
-import { type PhraseSetsInProgress } from '@/core/types/contributor-summary-response.type';
 import { Phrase } from '@/core/types/phrase.type';
 import { type RecordedAudioFile } from '@/core/utils/audio-recorder.util';
 import {
@@ -7,10 +6,9 @@ import {
   Component,
   computed,
   DestroyRef,
-  effect,
   inject,
   input,
-  signal,
+  signal
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { form, FormField, minLength, required } from '@angular/forms/signals';
@@ -47,7 +45,7 @@ export class TranslatePage {
   readonly phraseSetId = input.required<string>();
 
   protected readonly isLoading = signal(false);
-  private readonly nextPhraseTick = signal(0);
+  protected readonly nextPhraseTick = signal(0);
 
   protected readonly model = signal<{
     translation: string;
@@ -70,34 +68,16 @@ export class TranslatePage {
       return this.translationEntryService.getNextPhraseInPhraseSet(phraseSetId);
     },
   });
-  readonly phraseSetSummaryRes = rxResource({
-    params: computed(() => ({ phraseSetId: this.phraseSetId(), tick: this.nextPhraseTick() })),
-    stream: ({ params: { phraseSetId } }) =>
-      this.translationEntryService.getPhraseSetSummary(phraseSetId),
-  });
 
   readonly phrase = computed<Phrase | null>(() => this.phraseRes.value()?.phrase ?? null);
-  readonly phraseSetSummary = computed<PhraseSetsInProgress | null>(() => {
-    console.log('Computing phrase set summary, resource value:', this.phraseSetSummaryRes.value());
-    return this.phraseSetSummaryRes.value() ?? null;
-  });
 
   constructor() {
-    const endEffect = effect(() => {
-      if (this.phraseRes.value()?.state === 'finished') {
-        this.router.navigate(['/translate', this.phraseSetId(), 'end'], {
-          queryParams: { phraseSetCount: this.phraseSetSummary()?.totalPhrases },
-        });
-      }
-    });
     this.destroyRef.onDestroy(() => {
       const currentAudio = this.model().pronunciation;
       if (currentAudio) {
         URL.revokeObjectURL(currentAudio.url);
       }
-      endEffect.destroy();
     });
-    effect(() => console.log({ phrase: this.phrase(), phraseSetSummary: this.phraseSetSummary() }));
   }
 
   protected async goToNextPhrase() {

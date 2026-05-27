@@ -8,6 +8,5 @@ export interface PhraseSetsInProgress {
   phraseSet: PhraseSet;
   progressPercentage: number;
   contributedEntriesCount: number;
-  totalPhrases: number;
   lastUpdate: string;
 }

@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  DestroyRef,
+  effect,
+  inject,
+  input,
+} from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tm-batch-progress-panel',
@@ -7,7 +18,31 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BatchProgressPanel {
-  readonly progressPercentage = input<number | null | undefined>(0);
-  readonly contributedEntriesCount = input<number | null | undefined>(0);
-  readonly totalPhrases = input<number | null | undefined>(0);
+  private readonly translationEntryService = inject(TranslationEntryService);
+  private readonly router = inject(Router);
+
+  private readonly destroyRef = inject(DestroyRef);
+
+  readonly phraseSetId = input.required<string>();
+  readonly nextPhraseTick = input.required<number>();
+
+  readonly summary = rxResource({
+    params: computed(() => ({ phraseSetId: this.phraseSetId(), tick: this.nextPhraseTick() })),
+    stream: ({ params: { phraseSetId } }) =>
+      this.translationEntryService.getPhraseSetSummary(phraseSetId),
+  });
+
+  constructor() {
+    const endEffect = effect(() => {
+      if (this.summary.value()?.progressPercentage === 100) {
+        this.router.navigate(['/translate', this.phraseSetId(), 'end'], {
+          queryParams: { phraseSetCount: this.summary.value()?.phraseSet?.phraseCount },
+        });
+      }
+    });
+    this.destroyRef.onDestroy(() => {
+      endEffect.destroy();
+    });
+    effect(() => console.log(this.summary.value()));
+  }
 }

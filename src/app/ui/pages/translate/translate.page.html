@@ -2,11 +2,7 @@
   <tm-task-top-bar />
 
   <section class="mx-auto flex w-full max-w-sm flex-col gap-4 px-5 pb-5 pt-2">
-    <tm-batch-progress-panel
-      [progressPercentage]="phraseSetSummary()?.progressPercentage"
-      [contributedEntriesCount]="phraseSetSummary()?.contributedEntriesCount"
-      [totalPhrases]="phraseSetSummary()?.totalPhrases"
-    />
+    <tm-batch-progress-panel [nextPhraseTick]="nextPhraseTick()" [phraseSetId]="phraseSetId()" />
     <tm-source-text-panel
       [text]="phrase()?.sourceText"
       [context]="phrase()?.context"
