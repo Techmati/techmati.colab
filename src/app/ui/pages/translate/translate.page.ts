@@ -14,12 +14,12 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { form, FormField, minLength, required } from '@angular/forms/signals';
 
 import { tryCatch } from '@/core/utils/try.util';
-import { BatchProgressPanel } from './ui/batch-progress-panel/batch-progress-panel';
-import { BottomActionBar } from './ui/bottom-action-bar/bottom-action-bar';
+import { BatchProgressPanel } from './ui/organisms/batch-progress-panel/batch-progress-panel';
+import { BottomActionBar } from './ui/organisms/bottom-action-bar/bottom-action-bar';
 import { PronunciationRecorder } from './ui/organisms/pronunciation-recorder/pronunciation-recorder';
+import { SourceTextPanel } from './ui/organisms/source-text-panel/source-text-panel';
+import { TaskTopBar } from './ui/organisms/task-top-bar/task-top-bar';
 import { TranslationTextarea } from './ui/organisms/translation-textarea/translation-textarea';
-import { SourceTextPanel } from './ui/source-text-panel/source-text-panel';
-import { TaskTopBar } from './ui/task-top-bar/task-top-bar';
 
 @Component({
   selector: 'tm-translate-page',

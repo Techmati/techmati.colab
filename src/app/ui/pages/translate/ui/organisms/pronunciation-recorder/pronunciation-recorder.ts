@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { WavesAudioPlayer } from '../../molecules/waves-audio-player/waves-audio-player';
+import { WavesAudioPlayer } from '../../../../../molecules/waves-audio-player/waves-audio-player';
 
 type OnChangeFn = (value: RecordedAudioFile | null) => void;
 type OnTouchedFn = () => void;
