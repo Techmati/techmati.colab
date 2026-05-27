@@ -4,7 +4,6 @@ import {
   computed,
   effect,
   inject,
-  input,
   output,
 } from '@angular/core';
 
@@ -13,11 +12,10 @@ import { ZardButtonComponent } from '@/shared/components/button';
 import { DatePipe } from '@angular/common';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { SkeletonComponent } from 'boneyard-js/angular';
 
 @Component({
   selector: 'tm-available-contributions-panel',
-  imports: [ZardButtonComponent, DatePipe, RouterLink, SkeletonComponent],
+  imports: [ZardButtonComponent, DatePipe, RouterLink],
   providers: [DatePipe],
   templateUrl: './available-contributions-panel.html',
   styleUrl: './available-contributions-panel.css',
@@ -25,6 +23,8 @@ import { SkeletonComponent } from 'boneyard-js/angular';
 })
 export class AvailableContributionsPanel {
   private readonly phraseSetService = inject(PhraseSetsService);
+
+  readonly loading = output<boolean>();
 
   readonly phraseSetsRes = rxResource({
     stream: () => this.phraseSetService.getFiltered(1, 3, 'untouched'),
@@ -35,8 +35,6 @@ export class AvailableContributionsPanel {
   date(string: string) {
     return new Date(string);
   }
-  readonly loading = output<boolean>();
-  readonly sharedLoading = input.required<boolean>();
   constructor() {
     effect(() => {
       this.loading.emit(this.phraseSetsRes.isLoading());

@@ -5,21 +5,21 @@ import {
   computed,
   effect,
   inject,
-  input,
   output,
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { SkeletonComponent } from 'boneyard-js/angular';
 import { InProgressCard } from '../in-progress-card/in-progress-card';
 
 @Component({
   selector: 'tm-in-progress-panel',
-  imports: [InProgressCard, SkeletonComponent],
+  imports: [InProgressCard],
   templateUrl: './in-progress-panel.html',
   styleUrl: './in-progress-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InProgressPanel {
+  readonly loading = output<boolean>();
+
   private readonly translationEntryService = inject(TranslationEntryService);
 
   readonly inProgressRes = rxResource({
@@ -28,8 +28,6 @@ export class InProgressPanel {
 
   readonly inProgress = computed(() => this.inProgressRes.value()?.phraseSetsInProgress || []);
 
-  readonly loading = output<boolean>();
-  readonly sharedLoading = input.required<boolean>();
   constructor() {
     effect(() => {
       this.loading.emit(this.inProgressRes.isLoading());

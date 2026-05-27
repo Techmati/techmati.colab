@@ -5,20 +5,20 @@ import {
   computed,
   effect,
   inject,
-  input,
   output,
 } from '@angular/core';
 
 import { rxResource } from '@angular/core/rxjs-interop';
-import { SkeletonComponent } from 'boneyard-js/angular';
 @Component({
   selector: 'tm-greeting-panel',
-  imports: [SkeletonComponent],
+  imports: [],
   templateUrl: './greeting-panel.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GreetingPanel {
   private readonly contributorService = inject(ContributorService);
+
+  readonly loading = output<boolean>();
 
   readonly contributor = rxResource({
     params: computed(() => ({ id: this.contributorService.sessionId() })),
@@ -28,9 +28,6 @@ export class GreetingPanel {
   readonly singleName = computed(
     () => this.contributor.value()?.fullName.split(' ')[0] ?? 'Contribuidor',
   );
-
-  readonly loading = output<boolean>();
-  readonly sharedLoading = input.required<boolean>();
 
   constructor() {
     effect(() => {

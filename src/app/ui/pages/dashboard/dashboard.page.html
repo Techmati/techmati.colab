@@ -3,16 +3,9 @@
 
   <boneyard-skeleton [loading]="isLoading()" name="dashboard-page">
     <section class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-4">
-      <tm-greeting-panel
-        [sharedLoading]="isLoading()"
-        (loading)="isGreetingPanelLoading.set($event)"
-      />
-      <tm-in-progress-panel
-        [sharedLoading]="isLoading()"
-        (loading)="isInProgressPanelLoading.set($event)"
-      />
+      <tm-greeting-panel (loading)="isGreetingPanelLoading.set($event)" />
+      <tm-in-progress-panel (loading)="isInProgressPanelLoading.set($event)" />
       <tm-available-contributions-panel
-        [sharedLoading]="isLoading()"
         (loading)="isAvailableContributionsPanelLoading.set($event)"
       />
     </section>
