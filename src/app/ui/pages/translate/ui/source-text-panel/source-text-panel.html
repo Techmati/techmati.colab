@@ -6,11 +6,16 @@
     >
       <span class="lucide--languages size-4"></span>
     </span>
-    <p class="text-primary text-xs font-medium uppercase tracking-wide">Frase en {{ sourceLanguage() || 'español' }}</p>
+    <p class="text-primary text-xs font-medium uppercase tracking-wide">
+      Frase en {{ sourceLanguage() || 'español' }}
+    </p>
   </header>
 
-  <h2 class="font-display text-text-primary text-2xl font-bold leading-tight text-center">
-    {{ text() || 'Cargando frase...' }}
+  <h2
+    class="font-display text-text-primary text-2xl font-bold leading-tight text-center"
+    [ngClass]="isLoading() ? 'animate-pulse text-muted-foreground' : ''"
+  >
+    {{ isLoading() ? 'Cargando...' : text() }}
   </h2>
 
   <z-divider zSpacing="default"></z-divider>

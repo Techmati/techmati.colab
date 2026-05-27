@@ -2,5 +2,7 @@
   "routes": ["/dashboard"],
   "setup": "./boneyard.setup.js",
   "color": "oklch(0.870 0.042 164.9)",
+  "animate": "pulse",
+  "speed": "1.8s",
   "stagger": 80
 }

@@ -1,13 +1,17 @@
-<section class="space-y-2">
-  @let value = summary.value();
-  <div class="flex items-center justify-between text-xs font-medium leading-4 text-text-secondary">
-    <span>Progreso del lote</span>
-    <span>{{ value?.contributedEntriesCount || 0 }} de {{ value?.phraseSet?.phraseCount }}</span>
-  </div>
-  <div class="h-1.5 rounded-full bg-state-info-soft">
+<boneyard-skeleton [loading]="isLoading()" name="batch-progress-panel">
+  <section class="space-y-2">
+    @let value = summary.value();
     <div
-      class="h-full rounded-full bg-brand-green-600 transition-[width]"
-      [style]="{ width: (value?.progressPercentage || 0) + '%' }"
-    ></div>
-  </div>
-</section>
+      class="flex items-center justify-between text-xs font-medium leading-4 text-text-secondary"
+    >
+      <span>Progreso del lote</span>
+      <span>{{ value?.contributedEntriesCount || 0 }} de {{ value?.phraseSet?.phraseCount }}</span>
+    </div>
+    <div class="h-1.5 rounded-full bg-state-info-soft">
+      <div
+        class="h-full rounded-full bg-brand-green-600 transition-[width]"
+        [style]="{ width: progressPercentage() + '%' }"
+      ></div>
+    </div>
+  </section>
+</boneyard-skeleton>

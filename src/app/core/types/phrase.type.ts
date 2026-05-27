@@ -4,8 +4,7 @@ export interface Phrase {
   sourceText: string;
   context: string;
   position: number;
-  sourceLanguage: string;
-  targetLanguage: string;
+  language: 'nahuatl_to_spanish' | 'spanish_to_nahuatl';
   createdAt: string;
   updatedAt: string;
 }

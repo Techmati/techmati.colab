@@ -5,6 +5,7 @@ import {
   DestroyRef,
   forwardRef,
   inject,
+  model,
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -32,9 +33,9 @@ export class PronunciationRecorder implements ControlValueAccessor {
   private readonly recorder = new AudioRecorder();
   private readonly destroyRef = inject(DestroyRef);
 
+  readonly disabled = model(false);
   protected readonly isRecording = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
-  protected readonly disabled = signal(false);
   protected readonly recordedAudio = signal<RecordedAudioFile | null>(null);
 
   private onChange: OnChangeFn = () => undefined;

@@ -7,32 +7,46 @@ import {
   effect,
   inject,
   input,
+  linkedSignal,
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { SkeletonComponent } from 'boneyard-js/angular';
 
 @Component({
   selector: 'tm-batch-progress-panel',
-  imports: [],
+  imports: [SkeletonComponent],
   templateUrl: './batch-progress-panel.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BatchProgressPanel {
-  private readonly translationEntryService = inject(TranslationEntryService);
-  private readonly router = inject(Router);
-
-  private readonly destroyRef = inject(DestroyRef);
-
   readonly phraseSetId = input.required<string>();
   readonly nextPhraseTick = input.required<number>();
+
+  private readonly translationEntryService = inject(TranslationEntryService);
+  private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
+
+  private initialLoad = false;
 
   readonly summary = rxResource({
     params: computed(() => ({ phraseSetId: this.phraseSetId(), tick: this.nextPhraseTick() })),
     stream: ({ params: { phraseSetId } }) =>
       this.translationEntryService.getPhraseSetSummary(phraseSetId),
   });
+  readonly progressPercentage = linkedSignal<number | undefined, number>({
+    source: () => this.summary.value()?.progressPercentage || 0,
+    computation: (source, previous) => source || previous?.value || 0,
+  });
+
+  readonly isLoading = computed(() => this.summary.isLoading() && !this.initialLoad);
 
   constructor() {
+    const initialLoadEffect = effect(() => {
+      if (!this.summary.isLoading()) {
+        this.initialLoad = true;
+      }
+    });
     const endEffect = effect(() => {
       if (this.summary.value()?.progressPercentage === 100) {
         this.router.navigate(['/translate', this.phraseSetId(), 'end'], {
@@ -42,7 +56,9 @@ export class BatchProgressPanel {
     });
     this.destroyRef.onDestroy(() => {
       endEffect.destroy();
+      initialLoadEffect.destroy();
     });
-    effect(() => console.log(this.summary.value()));
+
+    effect(() => console.log('progressPercentage', this.progressPercentage()));
   }
 }

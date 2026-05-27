@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, forwardRef, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  forwardRef,
+  input,
+  model,
+  signal,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { ZardInputDirective } from '@/shared/components/input';
@@ -21,10 +29,19 @@ type OnTouchedFn = () => void;
   ],
 })
 export class TranslationTextarea implements ControlValueAccessor {
-  readonly targetLanguage = input<string | null | undefined>();
+  readonly language = input<string | null | undefined>();
 
+  readonly disabled = model(false);
   protected readonly value = signal('');
-  protected readonly disabled = signal(false);
+
+  protected readonly targetLanguage = computed(() => {
+    const language = this.language() || 'spanish_to_nahuatl';
+    const map: { [key: string]: string } = {
+      nahuatl_to_spanish: 'español',
+      spanish_to_nahuatl: 'náhuatl',
+    };
+    return map[language];
+  });
 
   private onChange: OnChangeFn = () => undefined;
   private onTouched: OnTouchedFn = () => undefined;

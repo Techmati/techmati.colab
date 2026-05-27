@@ -8,13 +8,12 @@ import {
   DestroyRef,
   inject,
   input,
-  signal
+  signal,
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { form, FormField, minLength, required } from '@angular/forms/signals';
 
 import { tryCatch } from '@/core/utils/try.util';
-import { Router } from '@angular/router';
 import { BatchProgressPanel } from './ui/batch-progress-panel/batch-progress-panel';
 import { BottomActionBar } from './ui/bottom-action-bar/bottom-action-bar';
 import { PronunciationRecorder } from './ui/organisms/pronunciation-recorder/pronunciation-recorder';
@@ -38,14 +37,16 @@ import { TaskTopBar } from './ui/task-top-bar/task-top-bar';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TranslatePage {
-  private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   private readonly translationEntryService = inject(TranslationEntryService);
 
   readonly phraseSetId = input.required<string>();
+  readonly phraseId = signal('');
 
-  protected readonly isLoading = signal(false);
+  protected readonly isUploading = signal(false);
   protected readonly nextPhraseTick = signal(0);
+
+  protected readonly isLoading = computed(() => this.phraseRes.isLoading() || this.isUploading());
 
   protected readonly model = signal<{
     translation: string;
@@ -70,7 +71,6 @@ export class TranslatePage {
   });
 
   readonly phrase = computed<Phrase | null>(() => this.phraseRes.value()?.phrase ?? null);
-
   constructor() {
     this.destroyRef.onDestroy(() => {
       const currentAudio = this.model().pronunciation;
@@ -95,11 +95,11 @@ export class TranslatePage {
     }
 
     const entry = { phraseId: phrase.id, translation };
-    this.isLoading.set(true);
+    this.isUploading.set(true);
     const [_result, error] = await tryCatch(
       this.translationEntryService.submit(entry, pronunciation),
     );
-    this.isLoading.set(false);
+    this.isUploading.set(false);
     if (error) {
       //TODO: add error handling (toast)
     } else {
