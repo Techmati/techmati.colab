@@ -42,23 +42,18 @@ export class BatchProgressPanel {
   readonly isLoading = computed(() => this.summary.isLoading() && !this.initialLoad);
 
   constructor() {
-    const initialLoadEffect = effect(() => {
+    effect(() => {
       if (!this.summary.isLoading()) {
         this.initialLoad = true;
       }
     });
-    const endEffect = effect(() => {
+    effect(() => {
       if (this.summary.value()?.progressPercentage === 100) {
         this.router.navigate(['/translate', this.phraseSetId(), 'end'], {
           queryParams: { phraseSetCount: this.summary.value()?.phraseSet?.phraseCount },
         });
       }
     });
-    this.destroyRef.onDestroy(() => {
-      endEffect.destroy();
-      initialLoadEffect.destroy();
-    });
-
     effect(() => console.log('progressPercentage', this.progressPercentage()));
   }
 }

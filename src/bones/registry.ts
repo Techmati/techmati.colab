@@ -2,20 +2,22 @@
 import { registerBones } from 'boneyard-js'
 import { configureBoneyard } from 'boneyard-js/angular'
 
-import _batch_progress_panel from './batch-progress-panel.bones.json'
-import _available_contributions_panel from './available-contributions-panel.bones.json'
-import _dashboard from './dashboard.bones.json'
 import _greeting_panel from './greeting-panel.bones.json'
 import _in_progress_panel from './in-progress-panel.bones.json'
+import _available_contributions_panel from './available-contributions-panel.bones.json'
+import _dashboard_page from './dashboard-page.bones.json'
+import _batch_progress_panel from './batch-progress-panel.bones.json'
+import _dashboard from './dashboard.bones.json'
 import _welcome from './welcome.bones.json'
 
-configureBoneyard({"color":"oklch(0.870 0.042 164.9)","stagger":80})
+configureBoneyard({"color":"oklch(0.870 0.042 164.9)","animate":"pulse","stagger":80})
 
 registerBones({
-  "batch-progress-panel": _batch_progress_panel,
-  "available-contributions-panel": _available_contributions_panel,
-  "dashboard": _dashboard,
   "greeting-panel": _greeting_panel,
   "in-progress-panel": _in_progress_panel,
+  "available-contributions-panel": _available_contributions_panel,
+  "dashboard-page": _dashboard_page,
+  "batch-progress-panel": _batch_progress_panel,
+  "dashboard": _dashboard,
   "welcome": _welcome,
 })

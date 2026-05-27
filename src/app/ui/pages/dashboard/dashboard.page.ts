@@ -3,13 +3,21 @@ import { ChangeDetectionStrategy, Component, computed, effect, signal } from '@a
 import { BottomNavBar } from '@/ui/organisms/bottom-nav-bar/bottom-nav-bar';
 import { TopAppBar } from '@/ui/organisms/top-app-bar/top-app-bar';
 
+import { SkeletonComponent } from 'boneyard-js/angular';
 import { AvailableContributionsPanel } from './ui/available-contributions-panel/available-contributions-panel';
 import { GreetingPanel } from './ui/greeting-panel/greeting-panel';
 import { InProgressPanel } from './ui/in-progress-panel/in-progress-panel';
 
 @Component({
   selector: 'tm-dashboard-page',
-  imports: [TopAppBar, BottomNavBar, GreetingPanel, InProgressPanel, AvailableContributionsPanel],
+  imports: [
+    TopAppBar,
+    BottomNavBar,
+    GreetingPanel,
+    InProgressPanel,
+    AvailableContributionsPanel,
+    SkeletonComponent,
+  ],
   templateUrl: './dashboard.page.html',
   styleUrl: './dashboard.page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
