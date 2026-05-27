@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 
 import { ContributorService } from '@/core/service/contributor/contributor.service';
 import { tryCatch } from '@/core/utils/try.util';
-import { RegisterFormData, WelcomePanel } from './ui/organisms/welcome-panelb/welcome-panel';
+import { RegisterFormData, WelcomePanel } from './ui/organisms/welcome-panel/welcome-panel';
 
 @Component({
   selector: 'tm-welcome-page',
