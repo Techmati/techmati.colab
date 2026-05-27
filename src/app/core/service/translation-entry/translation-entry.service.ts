@@ -87,4 +87,15 @@ export class TranslationEntryService {
       ),
     );
   }
+
+  getStats() {
+    return this.contributorService.getProfile().pipe(
+      map((profile) => profile.id),
+      switchMap((contributorId) =>
+        this.client.get<{ allTimeCount: number; weekCount: number; todayCount: number }>(
+          API.TRANSLATION_ENTRIES.STATS(contributorId),
+        ),
+      ),
+    );
+  }
 }

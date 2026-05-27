@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'tm-profile-summary-panel',
@@ -7,4 +9,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './profile-summary-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileSummaryPanel {}
+export class ProfileSummaryPanel {
+  private readonly translationEntryService = inject(TranslationEntryService);
+
+  readonly stats = rxResource({
+    stream: () => this.translationEntryService.getStats(),
+  });
+}

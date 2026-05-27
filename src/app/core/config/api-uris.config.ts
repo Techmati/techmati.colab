@@ -20,6 +20,8 @@ const API = {
       `${BASE_URL}/translation-entries/contributor/${contributorId}/today-count`,
     NEXT_PHRASE_SET: (contributorId: string) =>
       `${BASE_URL}/translation-entries/contributor/${contributorId}/next-set`,
+    STATS: (contributorId: string) =>
+      `${BASE_URL}/translation-entries/contributor/${contributorId}/stats`,
     SUBMIT: `${BASE_URL}/translation-entries`,
   },
 };
