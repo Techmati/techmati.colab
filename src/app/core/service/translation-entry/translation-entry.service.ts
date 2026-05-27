@@ -24,7 +24,7 @@ export class TranslationEntryService {
   private readonly client = inject(HttpClient);
 
   getNextPhraseInPhraseSet(phraseSetId: string) {
-    return this.contributorService.getProfile(this.contributorService.sessionId()).pipe(
+    return this.contributorService.getProfile().pipe(
       map((profile) => profile.id),
       switchMap((contributorId) =>
         this.client.get<{ phrase: Phrase; state: 'finished' | 'in-progress' }>(
@@ -49,14 +49,14 @@ export class TranslationEntryService {
   }
 
   getContributorSummary() {
-    return this.contributorService.getProfile(this.contributorService.sessionId()).pipe(
+    return this.contributorService.getProfile().pipe(
       map((profile) => this.contributorSummaryApi(profile.id)),
       switchMap((uri) => this.client.get<ContributorSummaryResponse>(uri)),
     );
   }
 
   getPhraseSetSummary(phraseSetId: string): Observable<PhraseSetsInProgress> {
-    return this.contributorService.getProfile(this.contributorService.sessionId()).pipe(
+    return this.contributorService.getProfile().pipe(
       map((profile) => profile.id),
       switchMap((contributorId) =>
         this.client.get<PhraseSetsInProgress>(this.phraseSetSummaryApi(contributorId, phraseSetId)),
@@ -66,7 +66,7 @@ export class TranslationEntryService {
 
   //TODO: refactor to avoid multiple calls to getProfile if possible
   getTodayTranslationCount() {
-    return this.contributorService.getProfile(this.contributorService.sessionId()).pipe(
+    return this.contributorService.getProfile().pipe(
       map((profile) => profile.id),
       switchMap((contributorId) =>
         this.client.get<{ translations: number }>(
@@ -78,7 +78,7 @@ export class TranslationEntryService {
   }
 
   getNextPhraseSet() {
-    return this.contributorService.getProfile(this.contributorService.sessionId()).pipe(
+    return this.contributorService.getProfile().pipe(
       map((profile) => profile.id),
       switchMap((contributorId) =>
         this.client.get<{ phraseSet: string; state: 'finished' | 'in-progress' }>(

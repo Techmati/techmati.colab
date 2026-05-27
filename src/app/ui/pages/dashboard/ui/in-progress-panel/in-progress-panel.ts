@@ -1,11 +1,12 @@
 import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { SkeletonComponent } from 'boneyard-js/angular';
 import { InProgressCard } from '../in-progress-card/in-progress-card';
 
 @Component({
   selector: 'tm-in-progress-panel',
-  imports: [InProgressCard],
+  imports: [InProgressCard, SkeletonComponent],
   templateUrl: './in-progress-panel.html',
   styleUrl: './in-progress-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,8 +1,10 @@
-<div class="space-y-1">
-  <h1 class="font-display text-text-primary text-3xl font-bold leading-tight tracking-tight">
-    Hola, <span class="text-primary">{{ singleName() }}</span>
-  </h1>
-  <p class="text-text-secondary text-base leading-7">
-    Aquí está tu resumen de traducciones pendientes.
-  </p>
-</div>
+<boneyard-skeleton name="greeting-panel" [loading]="contributor.isLoading()">
+  <div class="space-y-1">
+    <h1 class="font-display text-text-primary text-3xl font-bold leading-tight tracking-tight">
+      Hola, <span class="text-primary">{{ singleName() }}</span>
+    </h1>
+    <p class="text-text-secondary text-base leading-7">
+      Aquí está tu resumen de traducciones pendientes.
+    </p>
+  </div>
+</boneyard-skeleton>

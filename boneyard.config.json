@@ -1,0 +1,6 @@
+{
+  "routes": ["/dashboard"],
+  "setup": "./boneyard.setup.js",
+  "color": "oklch(0.870 0.042 164.9)",
+  "stagger": 80
+}

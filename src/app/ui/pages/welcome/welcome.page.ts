@@ -53,6 +53,7 @@ export class WelcomePage {
     this.isLoading.set(false);
 
     if (error) {
+      console.log(error);
       return;
     }
 
