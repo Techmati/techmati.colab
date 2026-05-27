@@ -6,22 +6,25 @@
     <li>
       @let dashboardActive = active() === 'dashboard';
       <a
-        class="text-secondary flex flex-col items-center justify-center gap-1 text-base border-t-2 border-solid border-transparent p-2"
+        class="text-muted-foreground flex flex-col items-center justify-center gap-1 text-base border-t-2 border-solid border-transparent p-2"
         [class.item-active]="dashboardActive"
         routerLink="/dashboard"
       >
-        <span [class]="dashboardActive ? 'ri--dashboard-fill' : 'ri-dashboard-line'" aria-hidden="true"></span>
+        <span
+          [class]="dashboardActive ? 'ri--dashboard-fill' : 'ri--dashboard-line'"
+          aria-hidden="true"
+        ></span>
         Dashboard
       </a>
     </li>
     <li>
       @let profileActive = active() === 'profile';
       <a
-        class="text-secondary flex flex-col items-center justify-center gap-1 text-base border-t-2 border-solid border-transparent p-2"
+        class="text-muted-foreground flex flex-col items-center justify-center gap-1 text-base border-t-2 border-solid border-transparent p-2"
         [class.item-active]="profileActive"
         routerLink="/profile"
       >
-        <span [class]="profileActive ? 'ri--user-fill' : 'ri-user-line'" aria-hidden="true"></span>
+        <span [class]="profileActive ? 'ri--user-fill' : 'ri--user-line'" aria-hidden="true"></span>
         Perfil
       </a>
     </li>
