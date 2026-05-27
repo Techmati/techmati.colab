@@ -8,7 +8,7 @@ import {
   output,
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { InProgressCard } from '../in-progress-card/in-progress-card';
+import { InProgressCard } from '../../molecules/in-progress-card/in-progress-card';
 
 @Component({
   selector: 'tm-in-progress-panel',
