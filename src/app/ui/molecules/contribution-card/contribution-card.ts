@@ -11,7 +11,7 @@ export interface ContributionCardViewModel {
 }
 
 @Component({
-  selector: 'tm-profile-contribution-card',
+  selector: 'tm-contribution-card',
   imports: [ZardButtonComponent],
   templateUrl: './contribution-card.html',
   styleUrl: './contribution-card.css',
