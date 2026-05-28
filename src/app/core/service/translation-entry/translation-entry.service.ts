@@ -23,6 +23,22 @@ export class TranslationEntryService {
   private readonly contributorService = inject(ContributorService);
   private readonly client = inject(HttpClient);
 
+  getFiltered(
+    page: number = 10,
+    size: number = 1,
+    filter: 'all' | 'incomplete' | 'completed' = 'all',
+  ) {
+    return this.contributorService.getProfile().pipe(
+      map((profile) => profile.id),
+      switchMap((contributorId) =>
+        this.client.get<{ data: PhraseSetsInProgress[]; total: number }>(
+          API.TRANSLATION_ENTRIES.FILTERED(contributorId),
+          { params: { page, size, filter } },
+        ),
+      ),
+    );
+  }
+
   getNextPhraseInPhraseSet(phraseSetId: string) {
     return this.contributorService.getProfile().pipe(
       map((profile) => profile.id),

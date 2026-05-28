@@ -5,7 +5,7 @@ import { inject, Injectable } from '@angular/core';
 import { map, switchMap } from 'rxjs';
 import { ContributorService } from '../contributor/contributor.service';
 
-export type PhraseSetFilter = 'all' | 'incomplete' | 'completed' | 'untouched';
+export type PhraseSetFilter = 'all' | 'incomplete' | 'complete' | 'untouched';
 @Injectable({
   providedIn: 'root',
 })

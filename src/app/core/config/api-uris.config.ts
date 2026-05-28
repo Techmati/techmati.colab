@@ -10,6 +10,8 @@ const API = {
     PAGINATED: `${BASE_URL}/phrase-sets`,
   },
   TRANSLATION_ENTRIES: {
+    FILTERED: (contributorId: string) =>
+      `${BASE_URL}/translation-entries/contributor/${contributorId}/summaries`,
     CONTRIBUTOR_SUMMARY: (contributorId: string) =>
       `${BASE_URL}/translation-entries/contributor/${contributorId}/summary`,
     PHRASE_SET_SUMMARY: (contributorId: string, phraseSetId: string) =>
