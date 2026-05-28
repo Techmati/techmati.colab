@@ -15,7 +15,7 @@
   </header>
 
   <div class="space-y-3">
-    @for (set of sets().data; track set.phraseSet.id) {
+    @for (set of sets().summaries; track set.phraseSet.id) {
       <tm-contribution-card [card]="set" />
     }
   </div>
