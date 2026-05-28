@@ -14,8 +14,6 @@ const API = {
       `${BASE_URL}/translation-entries/contributor/${contributorId}/summaries`,
     CONTRIBUTOR_SUMMARY: (contributorId: string) =>
       `${BASE_URL}/translation-entries/contributor/${contributorId}/summary`,
-    PHRASE_SET_SUMMARY: (contributorId: string, phraseSetId: string) =>
-      `${BASE_URL}/translation-entries/contributor/${contributorId}/phrase-set/${phraseSetId}/summary`,
     NEXT_PHRASE_IN_SET: (contributorId: string, phraseSetId: string) =>
       `${BASE_URL}/translation-entries/contributor/${contributorId}/phrase-set/${phraseSetId}/next`,
     TODAY_COUNT: (contributorId: string) =>

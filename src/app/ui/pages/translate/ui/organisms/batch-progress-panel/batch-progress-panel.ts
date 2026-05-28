@@ -1,9 +1,8 @@
-import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
+import { SummaryService } from '@/core/service/summary/summary.service';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  DestroyRef,
   effect,
   inject,
   input,
@@ -23,17 +22,17 @@ export class BatchProgressPanel {
   readonly phraseSetId = input.required<string>();
   readonly nextPhraseTick = input.required<number>();
 
-  private readonly translationEntryService = inject(TranslationEntryService);
+  private readonly summaryService = inject(SummaryService);
+
   private readonly router = inject(Router);
-  private readonly destroyRef = inject(DestroyRef);
 
   private initialLoad = false;
 
   readonly summary = rxResource({
     params: computed(() => ({ phraseSetId: this.phraseSetId(), tick: this.nextPhraseTick() })),
-    stream: ({ params: { phraseSetId } }) =>
-      this.translationEntryService.getPhraseSetSummary(phraseSetId),
+    stream: ({ params: { phraseSetId } }) => this.summaryService.getPhraseSumary(phraseSetId),
   });
+
   readonly progressPercentage = linkedSignal<number | undefined, number>({
     source: () => this.summary.value()?.progressPercentage || 0,
     computation: (source, previous) => source || previous?.value || 0,
