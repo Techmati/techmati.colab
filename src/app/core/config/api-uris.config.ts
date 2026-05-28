@@ -10,18 +10,10 @@ const API = {
     PAGINATED: `${BASE_URL}/phrase-sets`,
   },
   TRANSLATION_ENTRIES: {
-    FILTERED: (contributorId: string) =>
-      `${BASE_URL}/translation-entries/contributor/${contributorId}/summaries`,
-    CONTRIBUTOR_SUMMARY: (contributorId: string) =>
-      `${BASE_URL}/translation-entries/contributor/${contributorId}/summary`,
     NEXT_PHRASE_IN_SET: (contributorId: string, phraseSetId: string) =>
       `${BASE_URL}/translation-entries/contributor/${contributorId}/phrase-set/${phraseSetId}/next`,
-    TODAY_COUNT: (contributorId: string) =>
-      `${BASE_URL}/translation-entries/contributor/${contributorId}/today-count`,
     NEXT_PHRASE_SET: (contributorId: string) =>
       `${BASE_URL}/translation-entries/contributor/${contributorId}/next-set`,
-    STATS: (contributorId: string) =>
-      `${BASE_URL}/translation-entries/contributor/${contributorId}/stats`,
     SUBMIT: `${BASE_URL}/translation-entries`,
   },
   SUMMARY: {

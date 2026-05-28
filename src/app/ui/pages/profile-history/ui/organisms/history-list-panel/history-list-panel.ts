@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, linkedSignal } from '@angular/core';
 
-import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
-import { PhraseSetsInProgress } from '@/core/types/contributor-summary-response.type';
+import { SummaryService } from '@/core/service/summary/summary.service';
+import { FullSummary } from '@/core/types/summary.type';
 import { ContributionCard } from '@/ui/molecules/contribution-card/contribution-card';
 import { rxResource } from '@angular/core/rxjs-interop';
 
@@ -15,16 +15,17 @@ import { rxResource } from '@angular/core/rxjs-interop';
 })
 export class HistoryListPanel {
   private readonly FILTER = 'completed';
-  private readonly translationEntryService = inject(TranslationEntryService);
+  private readonly summaryService = inject(SummaryService);
+
   readonly completedSets = rxResource({
-    stream: () => this.translationEntryService.getFiltered(1, 10, this.FILTER),
+    stream: () => this.summaryService.getFiltered({ page: 1, size: 10 }, this.FILTER),
   });
 
   protected readonly sets = linkedSignal<
-    { data: PhraseSetsInProgress[]; total: number } | undefined,
-    { data: PhraseSetsInProgress[]; total: number }
+    { summaries: FullSummary[]; total: number } | undefined,
+    { summaries: FullSummary[]; total: number }
   >({
     source: () => this.completedSets.value(),
-    computation: (source, previous) => source || previous?.value || { data: [], total: 0 },
+    computation: (source, previous) => source || previous?.value || { summaries: [], total: 0 },
   });
 }

@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, switchMap } from 'rxjs';
 
-import { PhraseSetsInProgress } from '@/core/types/contributor-summary-response.type';
 import { TranslationEntry } from '@/core/types/translation-entry.type';
 import { ContributorService } from '../contributor/contributor.service';
 
@@ -16,22 +15,6 @@ export class TranslationEntryService {
 
   private readonly contributorService = inject(ContributorService);
   private readonly client = inject(HttpClient);
-
-  getFiltered(
-    page: number = 10,
-    size: number = 1,
-    filter: 'all' | 'incomplete' | 'completed' = 'all',
-  ) {
-    return this.contributorService.getProfile().pipe(
-      map((profile) => profile.id),
-      switchMap((contributorId) =>
-        this.client.get<{ data: PhraseSetsInProgress[]; total: number }>(
-          API.TRANSLATION_ENTRIES.FILTERED(contributorId),
-          { params: { page, size, filter } },
-        ),
-      ),
-    );
-  }
 
   getNextPhraseInPhraseSet(phraseSetId: string) {
     return this.contributorService.getProfile().pipe(
@@ -70,15 +53,4 @@ export class TranslationEntryService {
       ),
     );
   }
-
-// getStats() {
-//   return this.contributorService.getProfile().pipe(
-//     map((profile) => profile.id),
-//     switchMap((contributorId) =>
-//       this.client.get<{ allTimeCount: number; weekCount: number; todayCount: number }>(
-//         API.TRANSLATION_ENTRIES.STATS(contributorId),
-//       ),
-//     ),
-//   );
-// }
 }
