@@ -46,9 +46,7 @@ export class SummaryService {
   getStats() {
     return this.contributorService.getProfile().pipe(
       map((contributor) => contributor.id),
-      switchMap((contributorId) =>
-        this.client.get<ContributorStats>(API.SUMMARY.STATS(contributorId)),
-      ),
+      switchMap((contributorId) => this.client.get<ContributorStats>(this.statsApi(contributorId))),
     );
   }
 }

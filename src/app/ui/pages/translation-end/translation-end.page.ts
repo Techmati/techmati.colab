@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { SummaryService } from '@/core/service/summary/summary.service';
@@ -29,10 +29,4 @@ export class TranslationEndPage {
   readonly nextSet = rxResource({
     stream: () => this.translationEntryService.getNextPhraseSet(),
   });
-
-  constructor() {
-    effect(() => console.log(this.phraseSetCount()));
-    effect(() => console.log(this.phraseSetId()));
-    effect(() => console.log(this.nextSet.value()));
-  }
 }

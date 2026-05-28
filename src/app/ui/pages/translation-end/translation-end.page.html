@@ -40,7 +40,7 @@
         <div class="rounded-lg bg-brand-green-100/60 p-4 text-center font-semibold">
           <span class="lucide--file-text text-lg text-brand-green-600" aria-hidden="true"></span>
           <p class="font-display mt-1 text-2xl text-brand-green-600">
-            {{ translationCountRes.value() || '...' }}
+            {{ translationCountRes.value()?.todayCount }}
           </p>
           <p class="text-text-secondary text-sm leading-5">Frases hoy</p>
         </div>
