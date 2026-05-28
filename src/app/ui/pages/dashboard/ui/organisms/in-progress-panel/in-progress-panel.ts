@@ -1,4 +1,4 @@
-import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
+import { SummaryService } from '@/core/service/summary/summary.service';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -20,13 +20,15 @@ import { InProgressCard } from '../../molecules/in-progress-card/in-progress-car
 export class InProgressPanel {
   readonly loading = output<boolean>();
 
-  private readonly translationEntryService = inject(TranslationEntryService);
+  private readonly summaryService = inject(SummaryService);
 
   readonly inProgressRes = rxResource({
-    stream: () => this.translationEntryService.getContributorSummary(),
+    params: computed(() => ({ page: 1, size: 3 })),
+    stream: ({ params: { page, size } }) =>
+      this.summaryService.getFiltered({ page, size }, 'in_progress'),
   });
 
-  readonly inProgress = computed(() => this.inProgressRes.value()?.phraseSetsInProgress || []);
+  readonly inProgress = computed(() => this.inProgressRes.value()?.summaries || []);
 
   constructor() {
     effect(() => {

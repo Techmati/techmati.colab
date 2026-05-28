@@ -1,4 +1,4 @@
-import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
+import { SummaryService } from '@/core/service/summary/summary.service';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 
@@ -10,9 +10,9 @@ import { rxResource } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileSummaryPanel {
-  private readonly translationEntryService = inject(TranslationEntryService);
+  private readonly summaryService = inject(SummaryService);
 
   readonly stats = rxResource({
-    stream: () => this.translationEntryService.getStats(),
+    stream: () => this.summaryService.getStats(),
   });
 }

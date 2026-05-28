@@ -28,6 +28,7 @@ const API = {
     FILTERED: `${BASE_URL}/summary`,
     PHRASE_SET: (contributorId: string, phraseSetId: string) =>
       `${BASE_URL}/summary/contributor/${contributorId}/phrase-set/${phraseSetId}`,
+    STATS: (contributorId: string) => `${BASE_URL}/summary/contributor/${contributorId}/stats`,
   },
 };
 

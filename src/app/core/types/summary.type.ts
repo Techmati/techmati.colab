@@ -11,5 +11,8 @@ export interface Summary {
 }
 
 export type FullSummary = Summary & { phraseSet: PhraseSet };
+export type EmptySummary = Omit<FullSummary, 'lastUpdate'> & {
+  lastUpdate: null;
+};
 
 export type SummaryFilter = 'all' | 'in_progress' | 'completed';

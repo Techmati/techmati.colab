@@ -4,10 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, switchMap } from 'rxjs';
 
-import {
-  ContributorSummaryResponse,
-  PhraseSetsInProgress,
-} from '@/core/types/contributor-summary-response.type';
+import { PhraseSetsInProgress } from '@/core/types/contributor-summary-response.type';
 import { TranslationEntry } from '@/core/types/translation-entry.type';
 import { ContributorService } from '../contributor/contributor.service';
 
@@ -16,7 +13,6 @@ import { ContributorService } from '../contributor/contributor.service';
 })
 export class TranslationEntryService {
   private readonly submitApi = API.TRANSLATION_ENTRIES.SUBMIT;
-  private readonly contributorSummaryApi = API.TRANSLATION_ENTRIES.CONTRIBUTOR_SUMMARY;
 
   private readonly contributorService = inject(ContributorService);
   private readonly client = inject(HttpClient);
@@ -62,25 +58,19 @@ export class TranslationEntryService {
     );
   }
 
-  getContributorSummary() {
-    return this.contributorService.getProfile().pipe(
-      map((profile) => this.contributorSummaryApi(profile.id)),
-      switchMap((uri) => this.client.get<ContributorSummaryResponse>(uri)),
-    );
-  }
-
   //TODO: refactor to avoid multiple calls to getProfile if possible
-  getTodayTranslationCount() {
-    return this.contributorService.getProfile().pipe(
-      map((profile) => profile.id),
-      switchMap((contributorId) =>
-        this.client.get<{ translations: number }>(
-          API.TRANSLATION_ENTRIES.TODAY_COUNT(contributorId),
-        ),
-      ),
-      map((response) => response.translations),
-    );
-  }
+
+  // getTodayTranslationCount() {
+  //   return this.contributorService.getProfile().pipe(
+  //     map((profile) => profile.id),
+  //     switchMap((contributorId) =>
+  //       this.client.get<{ translations: number }>(
+  //         API.TRANSLATION_ENTRIES.TODAY_COUNT(contributorId),
+  //       ),
+  //     ),
+  //     map((response) => response.translations),
+  //   );
+  // }
 
   getNextPhraseSet() {
     return this.contributorService.getProfile().pipe(
@@ -93,14 +83,14 @@ export class TranslationEntryService {
     );
   }
 
-  getStats() {
-    return this.contributorService.getProfile().pipe(
-      map((profile) => profile.id),
-      switchMap((contributorId) =>
-        this.client.get<{ allTimeCount: number; weekCount: number; todayCount: number }>(
-          API.TRANSLATION_ENTRIES.STATS(contributorId),
-        ),
-      ),
-    );
-  }
+// getStats() {
+//   return this.contributorService.getProfile().pipe(
+//     map((profile) => profile.id),
+//     switchMap((contributorId) =>
+//       this.client.get<{ allTimeCount: number; weekCount: number; todayCount: number }>(
+//         API.TRANSLATION_ENTRIES.STATS(contributorId),
+//       ),
+//     ),
+//   );
+// }
 }
