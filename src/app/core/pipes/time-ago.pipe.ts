@@ -8,6 +8,7 @@ export class TimeAgoPipe implements PipeTransform {
     if (value === null || value === undefined || value === '') {
       return '';
     }
+    console.log({ value, dateValue: new Date(value) });
 
     const targetTime = this.toUnixMs(value);
     if (targetTime === null) {

@@ -3,16 +3,21 @@
     <h3 class="text-secondary-foreground text-base font-medium leading-8">
       {{ card().phraseSet.title }}
     </h3>
-    <p class="text-text-tertiary text-xs leading-5">{{ card().phraseSet.publishedAt }}</p>
+    <p class="text-text-tertiary text-xs leading-5">
+      {{ card().phraseSet.publishedAt | date: "d 'de' MMMM yyyy" : '' : 'es-MX' }}
+    </p>
   </div>
 
-  <!-- <div class="mt-2 flex items-center gap-2"> -->
-  <!--   <span -->
-  <!--     class="bg-brand-green-100/55 border-2 border-brand-green-300/40 rounded-md font-medium text-brand-green-600 text-sm px-1 py-0.5" -->
-  <!--     >{{ card().status }}</span -->
-  <!--   > -->
-  <!--   <span class="text-text-secondary text-sm font-medium leading-5">• {{ card().timeAgo }}</span> -->
-  <!-- </div> -->
+  <div class="mt-2 flex items-center gap-2">
+    <span
+      class="bg-brand-green-100/55 border-2 border-brand-green-300/40 rounded-md font-medium text-brand-green-600 text-sm px-1 py-0.5"
+    >
+      {{ card().inProgress ? 'En progreso' : 'Completado' }}
+    </span>
+    <span class="text-text-secondary text-sm font-medium leading-5"
+      >• {{ card().lastUpdate | timeAgo }}</span
+    >
+  </div>
 
   <p class="text-text-tertiary mt-1 text-sm leading-5">{{ card().phraseSet.phraseCount }}</p>
 
@@ -21,9 +26,5 @@
       <span class="lucide--notebook-pen" aria-hidden="true"></span>
       Detalles
     </button>
-    <!-- <button z-button zType="default" zSize="sm"> -->
-    <!--   <span class="lucide--redo-2" aria-hidden="true"></span> -->
-    <!--   Volver a hacer -->
-    <!-- </button> -->
   </div>
 </article>

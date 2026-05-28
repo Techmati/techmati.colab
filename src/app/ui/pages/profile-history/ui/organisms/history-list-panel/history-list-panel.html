@@ -1,5 +1,5 @@
 <div class="space-y-3">
-  @for (card of cards; track card.title + card.date) {
-    <tm-contribution-card [card]="card" />
+  @for (set of sets().data; track set.phraseSet.id){
+    <tm-contribution-card [card]="set" />
   }
 </div>

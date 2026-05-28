@@ -9,4 +9,6 @@ export interface PhraseSetsInProgress {
   progressPercentage: number;
   contributedEntriesCount: number;
   lastUpdate: string;
+  inProgress: boolean;
+  completed: boolean;
 }

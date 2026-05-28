@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, linkedSignal } from '@angular/core';
 
-import {
-  ContributionCard,
-  ContributionCardViewModel,
-} from '@/ui/molecules/contribution-card/contribution-card';
+import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
+import { PhraseSetsInProgress } from '@/core/types/contributor-summary-response.type';
+import { ContributionCard } from '@/ui/molecules/contribution-card/contribution-card';
+import { rxResource } from '@angular/core/rxjs-interop';
 
+//TODO: refactor duplicated code
 @Component({
   selector: 'tm-history-list-panel',
   imports: [ContributionCard],
@@ -13,27 +14,17 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HistoryListPanel {
-  protected readonly cards: ContributionCardViewModel[] = [
-    {
-      title: 'Dolores de cabeza',
-      date: 'Oct 24, 2025',
-      status: 'Terminado',
-      timeAgo: 'Hace 2 horas',
-      totalPhrases: '30 frases',
-    },
-    {
-      title: 'Dolores de cabeza',
-      date: 'Oct 24, 2025',
-      status: 'Terminado',
-      timeAgo: 'Hace 2 horas',
-      totalPhrases: '30 frases',
-    },
-    {
-      title: 'Dolores de cabeza',
-      date: 'Oct 24, 2025',
-      status: 'Terminado',
-      timeAgo: 'Hace 2 horas',
-      totalPhrases: '30 frases',
-    },
-  ];
+  private readonly FILTER = 'completed';
+  private readonly translationEntryService = inject(TranslationEntryService);
+  readonly completedSets = rxResource({
+    stream: () => this.translationEntryService.getFiltered(1, 10, this.FILTER),
+  });
+
+  protected readonly sets = linkedSignal<
+    { data: PhraseSetsInProgress[]; total: number } | undefined,
+    { data: PhraseSetsInProgress[]; total: number }
+  >({
+    source: () => this.completedSets.value(),
+    computation: (source, previous) => source || previous?.value || { data: [], total: 0 },
+  });
 }
