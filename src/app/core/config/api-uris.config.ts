@@ -26,6 +26,11 @@ const API = {
       `${BASE_URL}/translation-entries/contributor/${contributorId}/stats`,
     SUBMIT: `${BASE_URL}/translation-entries`,
   },
+  SUMMARY: {
+    FILTERED: `${BASE_URL}/summary`,
+    PHRASE_SET: (contributorId: string, phraseSetId: string) =>
+      `${BASE_URL}/summary/contributor/${contributorId}/phrase-set/${phraseSetId}`,
+  },
 };
 
 export { API };
