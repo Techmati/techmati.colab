@@ -27,4 +27,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./ui/pages/translation-end/translation-end.page').then((m) => m.TranslationEndPage),
   },
+  {
+    path: 'set-entries/:id',
+    loadComponent: () =>
+      import('./ui/pages/trans-entry/trans-entry.page').then((m) => m.TransEntryPage),
+  },
 ];

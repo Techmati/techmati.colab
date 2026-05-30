@@ -15,6 +15,8 @@ const API = {
     NEXT_PHRASE_SET: (contributorId: string) =>
       `${BASE_URL}/translation-entries/contributor/${contributorId}/next-set`,
     SUBMIT: `${BASE_URL}/translation-entries`,
+    GET_BY_ID: (contributorId: string, entryId: string) =>
+      `${BASE_URL}/translation-entries/contributor/${contributorId}/set-entries/${entryId}`,
   },
   SUMMARY: {
     FILTERED: `${BASE_URL}/summary`,

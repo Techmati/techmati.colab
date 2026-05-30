@@ -4,7 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, switchMap } from 'rxjs';
 
-import { TranslationEntry } from '@/core/types/translation-entry.type';
+import {
+  TranslatedPhrase,
+  TranslationEntrySubmitRequest,
+} from '@/core/types/translation-entry.type';
 import { ContributorService } from '../contributor/contributor.service';
 
 @Injectable({
@@ -12,22 +15,36 @@ import { ContributorService } from '../contributor/contributor.service';
 })
 export class TranslationEntryService {
   private readonly submitApi = API.TRANSLATION_ENTRIES.SUBMIT;
+  private readonly nextPhraseInSetApi = API.TRANSLATION_ENTRIES.NEXT_PHRASE_IN_SET;
+  private readonly nextPhraseSetApi = API.TRANSLATION_ENTRIES.NEXT_PHRASE_SET;
+  private readonly entriesByPhraseSetIdApi = API.TRANSLATION_ENTRIES.GET_BY_ID;
 
   private readonly contributorService = inject(ContributorService);
   private readonly client = inject(HttpClient);
+
+  findEntriesByPhraseSetId(id: string) {
+    return this.contributorService.getProfile().pipe(
+      map((profile) => profile.id),
+      switchMap((contributorId) =>
+        this.client.get<{ entries: TranslatedPhrase[] }>(
+          this.entriesByPhraseSetIdApi(contributorId, id),
+        ),
+      ),
+    );
+  }
 
   getNextPhraseInPhraseSet(phraseSetId: string) {
     return this.contributorService.getProfile().pipe(
       map((profile) => profile.id),
       switchMap((contributorId) =>
         this.client.get<{ phrase: Phrase; state: 'finished' | 'in-progress' }>(
-          API.TRANSLATION_ENTRIES.NEXT_PHRASE_IN_SET(contributorId, phraseSetId),
+          this.nextPhraseInSetApi(contributorId, phraseSetId),
         ),
       ),
     );
   }
 
-  submit(data: Omit<TranslationEntry, 'contributorId'>, audio: File) {
+  submit(data: TranslationEntrySubmitRequest, audio: File) {
     return this.contributorService.getProfile().pipe(
       map((profile) => profile.id),
       map((contributorId) => ({ ...data, contributorId })),
@@ -48,7 +65,7 @@ export class TranslationEntryService {
       map((profile) => profile.id),
       switchMap((contributorId) =>
         this.client.get<{ phraseSet: string; state: 'finished' | 'in-progress' }>(
-          API.TRANSLATION_ENTRIES.NEXT_PHRASE_SET(contributorId),
+          this.nextPhraseSetApi(contributorId),
         ),
       ),
     );
