@@ -25,25 +25,29 @@
     } @else if (cards().length) {
       <div class="flex flex-col gap-4">
         @for (card of cards(); track card.phraseId; let index = $index) {
-          <article class="rounded-xl border border-border-soft bg-surface-card p-4 shadow-sm flex flex-col gap-1">
-            <p class="text-text-tertiary text-xs font-medium leading-4">Traducción {{ index + 1 }}</p>
+          <article class="rounded-xl border border-border-soft bg-surface-card p-4 shadow-sm flex flex-col">
+            <p class="text-text-tertiary text-xs font-medium leading-4 mb-2">Traducción {{ index + 1 }}</p>
+            <div class="flex justify-between">
 
-            <div >
-              <p class="text-primary text-xs font-medium uppercase leading-4 tracking-wide">
-                Frase en
-                {{card.phrase.language == "nahuatl_to_spanish" ? "nahuatl" : "español"}}
-              </p>
-              <p class="text-text-primary mt-1 text-lg leading-7">{{ card.phrase.sourceText }}</p>
-            </div>
-
-            <div class="border-border-soft border-t">
-              <p class="text-brand-green-600 text-xs font-medium uppercase leading-4 tracking-wide">
-                Traducción al
-                {{card.phrase.language == "nahuatl_to_spanish" ? "español" : "náhuatl"}}
-              </p>
-              <p class="font-display text-text-primary mt-1 text-xl font-semibold leading-7">
-                {{ card.translation }}
-              </p>
+              <div class="flex justify-between">
+                <div class="shrink grow basis-0">
+                  <p class="text-primary text-xs font-medium uppercase leading-4 tracking-wide">
+                    Frase en
+                    {{card.phrase.language == "nahuatl_to_spanish" ? "nahuatl" : "español"}}
+                  </p>
+                  <p class="text-text-primary mt-1 text-lg leading-7">{{ card.phrase.sourceText }}</p>
+                </div>
+                <z-divider zOrientation="vertical"/>
+                <div class="shrink grow basis-0">
+                  <p class="text-brand-green-600 text-xs font-medium uppercase leading-4 tracking-wide">
+                    Traducción al
+                    {{card.phrase.language == "nahuatl_to_spanish" ? "español" : "náhuatl"}}
+                  </p>
+                  <p class="font-display text-text-primary mt-1 text-xl font-semibold leading-7">
+                    {{ card.translation }}
+                  </p>
+                </div>
+              </div>
             </div>
                   <tm-waves-audio-player class="mt-4"
                     [audioUrl]="card.audioUrl"

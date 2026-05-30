@@ -2,12 +2,13 @@ import { Location } from '@angular/common';
 import { rxResource } from '@angular/core/rxjs-interop';
 
 import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
+import { ZardDividerComponent } from '@/shared/components/divider';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { WavesAudioPlayer } from '../../molecules/waves-audio-player/waves-audio-player';
 
 @Component({
   selector: 'tm-trans-entry-page',
-  imports: [WavesAudioPlayer],
+  imports: [WavesAudioPlayer, ZardDividerComponent],
   templateUrl: './trans-entry.page.html',
   styleUrl: './trans-entry.page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
