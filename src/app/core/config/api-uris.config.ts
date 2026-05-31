@@ -1,4 +1,8 @@
-const BASE_URL = 'http://localhost:54321/functions/v1/techmati-api';
+const BASE_URL =
+  import.meta.env['NG_APP_ENV'] === 'production'
+    ? import.meta.env['NG_APP_PROD_API_URL']
+    : 'http:://localhost:54321/function/v1/techmati-api';
+
 const API = {
   BASE_URL,
   CONTRIBUTORS: {
