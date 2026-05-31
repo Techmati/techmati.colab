@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, effect, inject, linkedSignal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  linkedSignal,
+  output,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { SummaryService } from '@/core/service/summary/summary.service';
@@ -18,6 +25,8 @@ export class ProfileContributionsPanel {
   private readonly FILTER = 'completed';
   private readonly summaryService = inject(SummaryService);
 
+  readonly isLoading = output<boolean>();
+
   readonly completedSets = rxResource({
     stream: () => this.summaryService.getFiltered({ page: 1, size: 10 }, this.FILTER),
   });
@@ -31,6 +40,6 @@ export class ProfileContributionsPanel {
   });
 
   constructor() {
-    effect(() => console.log(this.sets()));
+    effect(() => this.isLoading.emit(this.completedSets.isLoading()));
   }
 }

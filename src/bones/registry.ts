@@ -2,9 +2,10 @@
 import { registerBones } from 'boneyard-js'
 import { configureBoneyard } from 'boneyard-js/angular'
 
-import _dashboard_page from './dashboard-page.bones.json'
+import _profile_page from './profile-page.bones.json'
 import _available_contributions_panel from './available-contributions-panel.bones.json'
 import _batch_progress_panel from './batch-progress-panel.bones.json'
+import _dashboard_page from './dashboard-page.bones.json'
 import _dashboard from './dashboard.bones.json'
 import _greeting_panel from './greeting-panel.bones.json'
 import _in_progress_panel from './in-progress-panel.bones.json'
@@ -13,9 +14,10 @@ import _welcome from './welcome.bones.json'
 configureBoneyard({"color":"oklch(0.870 0.042 164.9)","animate":"pulse","stagger":80})
 
 registerBones({
-  "dashboard-page": _dashboard_page,
+  "profile-page": _profile_page,
   "available-contributions-panel": _available_contributions_panel,
   "batch-progress-panel": _batch_progress_panel,
+  "dashboard-page": _dashboard_page,
   "dashboard": _dashboard,
   "greeting-panel": _greeting_panel,
   "in-progress-panel": _in_progress_panel,

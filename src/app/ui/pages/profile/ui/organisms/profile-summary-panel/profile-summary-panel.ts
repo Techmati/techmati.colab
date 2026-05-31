@@ -1,5 +1,5 @@
 import { SummaryService } from '@/core/service/summary/summary.service';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, output } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -11,8 +11,15 @@ import { rxResource } from '@angular/core/rxjs-interop';
 })
 export class ProfileSummaryPanel {
   private readonly summaryService = inject(SummaryService);
+  readonly isLoading = output<boolean>();
 
   readonly stats = rxResource({
     stream: () => this.summaryService.getStats(),
   });
+
+  constructor() {
+    effect(() => {
+      this.isLoading.emit(this.stats.isLoading());
+    });
+  }
 }
