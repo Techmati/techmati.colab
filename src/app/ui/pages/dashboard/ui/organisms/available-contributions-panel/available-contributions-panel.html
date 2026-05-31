@@ -13,7 +13,7 @@
           <div class="flex justify-between">
             <p class="text-text-tertiary mt-1 text-xs leading-4">{{ set.phraseCount }} frases</p>
             @if(set.publishedAt) {
-              <p class="text-muted-foreground text-xs leading-4">{{ date(set.publishedAt || '') | date:"d 'de' MMMM yyyy" : '' : 'es-MX'}}</p>
+              <p class="text-muted-foreground text-xs leading-4">{{ date(set.publishedAt || '') | date:"d 'de' MMMM 'del' yyyy" : '' : 'es-MX'}}</p>
             }@else {
               <p class="text-muted-foreground text-xs leading-4">No publicada aún</p>
             }

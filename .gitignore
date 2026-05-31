@@ -44,3 +44,4 @@ __screenshots__/
 Thumbs.db
 
 boneyard.setup.js
+.nvim.lua
