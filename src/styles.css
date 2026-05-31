@@ -3,10 +3,12 @@
 @plugin "tailwindcss-animate";
 
 @plugin "@iconify/tailwind4" {
-  prefixes: 'ri', 'lucide';
+  prefixes: 'ri', 'lucide', 'game-icons';
 }
 
-:is([class*='ri--'], [class*='lucide--'], [class*='healthicons']):not([class*='iconify-color']) {
+:is([class*='ri--'], [class*='lucide--'], [class*='healthicons'], [class*='game-icons']):not(
+  [class*='iconify-color']
+) {
   @apply iconify;
 }
 

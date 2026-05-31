@@ -32,6 +32,7 @@
     "@angular/build": "^21.2.2",
     "@angular/cli": "^21.2.2",
     "@angular/compiler-cli": "^21.2.0",
+    "@iconify-json/game-icons": "^1.2.4",
     "@iconify-json/lucide": "^1.2.108",
     "@iconify-json/ri": "^1.2.10",
     "@iconify/tailwind4": "^1.2.3",

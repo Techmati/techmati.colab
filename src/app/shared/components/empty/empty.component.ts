@@ -42,7 +42,7 @@ import {
         </div>
       } @else if (icon) {
         <div [class]="iconClasses()" data-testid="icon">
-          <span [ngClass]="[icon, 'size-5']"></span>
+          <span [ngClass]="[icon, 'text-9xl', 'scale-200']"></span>
         </div>
       }
 

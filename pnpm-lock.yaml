@@ -66,6 +66,9 @@ importers:
       '@angular/compiler-cli':
         specifier: ^21.2.0
         version: 21.2.13(@angular/compiler@21.2.13)(typescript@5.9.3)
+      '@iconify-json/game-icons':
+        specifier: ^1.2.4
+        version: 1.2.4
       '@iconify-json/lucide':
         specifier: ^1.2.108
         version: 1.2.108
@@ -631,6 +634,9 @@ packages:
     engines: {node: '>=18.14.1'}
     peerDependencies:
       hono: ^4
+
+  '@iconify-json/game-icons@1.2.4':
+    resolution: {integrity: sha512-/HDDZxowXgDJcOEwPspUCq5RuDdl25OyZKdtxqqiPJQNTrWIym7r4StLzIVs77DyNzOWWhH5wDqwYR3WHeDfkg==}
 
   '@iconify-json/lucide@1.2.108':
     resolution: {integrity: sha512-jnmMx7xxShfsKeNNJhn47IKj3gD/AbRz+poKLIPn4rSIXw+yVbXCfUBXza/Jo9YIEEFajBk6Zayet8DqGCvX6w==}
@@ -3629,6 +3635,10 @@ snapshots:
   '@hono/node-server@1.19.14(hono@4.12.19)':
     dependencies:
       hono: 4.12.19
+
+  '@iconify-json/game-icons@1.2.4':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify-json/lucide@1.2.108':
     dependencies:
