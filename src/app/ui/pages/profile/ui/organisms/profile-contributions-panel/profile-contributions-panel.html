@@ -4,7 +4,7 @@
       <span class="lucide--history text-primary" ></span>
       <h2 class="font-display text-primary font-semibold leading-9">Contribuciones hechas</h2>
     </div>
-
+    @if(sets().total) {
     <a
       routerLink="/profile/history"
       class="inline-flex items-center gap-1 text-sm font-medium leading-4 text-brand-green-600 hover:underline self-end"
@@ -12,11 +12,20 @@
       Ver todo
       <span class="lucide--chevron-right size-3" ></span>
     </a>
+    }
   </header>
 
   <div class="space-y-3">
     @for (set of sets().summaries; track set.phraseSet.id) {
       <tm-contribution-card [card]="set" />
+    }@empty {
+      <z-empty
+        zTitle="La cosas se ven un poco vacías por aquí"
+        zDescription="Parece que aún no has hecho ninguna contribución. ¡Empieza a contribuir para llenar este espacio con tus aportes!"
+        zIcon="lucide--history"
+      >
+
+      </z-empty>
     }
   </div>
 </article>

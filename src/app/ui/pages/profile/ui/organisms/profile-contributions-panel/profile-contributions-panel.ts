@@ -3,12 +3,13 @@ import { RouterLink } from '@angular/router';
 
 import { SummaryService } from '@/core/service/summary/summary.service';
 import { FullSummary } from '@/core/types/summary.type';
+import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ContributionCard } from '@/ui/molecules/contribution-card/contribution-card';
 import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'tm-profile-contributions-panel',
-  imports: [RouterLink, ContributionCard],
+  imports: [RouterLink, ContributionCard, ZardEmptyComponent],
   templateUrl: './profile-contributions-panel.html',
   styleUrl: './profile-contributions-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
