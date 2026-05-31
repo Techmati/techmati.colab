@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, linkedSignal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  linkedSignal,
+  output,
+} from '@angular/core';
 
 import { SummaryService } from '@/core/service/summary/summary.service';
 import { FullSummary } from '@/core/types/summary.type';
@@ -21,6 +28,8 @@ export class HistoryListPanel {
     stream: () => this.summaryService.getFiltered({ page: 1, size: 10 }, this.FILTER),
   });
 
+  readonly isLoading = output<boolean>();
+
   protected readonly sets = linkedSignal<
     { summaries: FullSummary[]; total: number } | undefined,
     { summaries: FullSummary[]; total: number }
@@ -28,4 +37,8 @@ export class HistoryListPanel {
     source: () => this.completedSets.value(),
     computation: (source, previous) => source || previous?.value || { summaries: [], total: 0 },
   });
+
+  constructor() {
+    effect(() => this.isLoading.emit(this.completedSets.isLoading()));
+  }
 }

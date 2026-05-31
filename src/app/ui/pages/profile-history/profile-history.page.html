@@ -1,15 +1,16 @@
 <main class="min-h-screen bg-background pb-24">
   <tm-top-app-bar />
+  <boneyard-skeleton name="profile-history-page" [loading]="isLoading()">
+    <section class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-5 py-6">
+      <header>
+        <h1 class="font-display text-primary text-3xl font-bold leading-tight tracking-tight">
+          Mis Contribuciones
+        </h1>
+      </header>
 
-  <section class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-5 py-6">
-    <header>
-      <h1 class="font-display text-primary text-3xl font-bold leading-tight tracking-tight">
-        Mis Contribuciones
-      </h1>
-    </header>
-
-    <tm-history-list-panel />
-  </section>
+      <tm-history-list-panel (isLoading)="isLoading.set($event)" />
+    </section>
+  </boneyard-skeleton>
 
   <tm-bottom-nav-bar active="profile" />
 </main>
