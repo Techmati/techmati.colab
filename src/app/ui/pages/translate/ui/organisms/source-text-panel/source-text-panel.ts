@@ -1,13 +1,14 @@
 import { Phrase } from '@/core/types/phrase.type';
 import { ZardDividerComponent } from '@/shared/components/divider';
 import { CommonModule } from '@angular/common';
-import { Component, computed, input, linkedSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, linkedSignal } from '@angular/core';
 
 @Component({
   selector: 'tm-source-text-panel',
   imports: [ZardDividerComponent, CommonModule],
   templateUrl: './source-text-panel.html',
   styleUrl: './source-text-panel.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SourceTextPanel {
   readonly phrase = input.required<Phrase | null>();
