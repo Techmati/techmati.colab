@@ -1,39 +1,35 @@
 import { Routes } from '@angular/router';
-import { DashboardPage } from './ui/pages/dashboard/dashboard.page';
-import { ProfileHistoryPage } from './ui/pages/profile-history/profile-history.page';
-import { ProfilePage } from './ui/pages/profile/profile.page';
-import { TransEntryPage } from './ui/pages/trans-entry/trans-entry.page';
-import { TranslatePage } from './ui/pages/translate/translate.page';
-import { TranslationEndPage } from './ui/pages/translation-end/translation-end.page';
-import { WelcomePage } from './ui/pages/welcome/welcome.page';
 
 export const routes: Routes = [
   {
     path: '',
-    component: WelcomePage,
+    loadComponent: () => import('./ui/pages/welcome/welcome.page').then((m) => m.WelcomePage),
   },
   {
     path: 'dashboard',
-    component: DashboardPage,
+    loadComponent: () => import('./ui/pages/dashboard/dashboard.page').then((m) => m.DashboardPage),
   },
   {
     path: 'profile',
-    component: ProfilePage,
+    loadComponent: () => import('./ui/pages/profile/profile.page').then((m) => m.ProfilePage),
   },
   {
     path: 'profile/history',
-    component: ProfileHistoryPage,
+    loadComponent: () =>
+      import('./ui/pages/profile-history/profile-history.page').then((m) => m.ProfileHistoryPage),
   },
   {
     path: 'translate/:phraseSetId',
-    component: TranslatePage,
+    loadComponent: () => import('./ui/pages/translate/translate.page').then((m) => m.TranslatePage),
   },
   {
     path: 'translate/:phraseSetId/end',
-    component: TranslationEndPage,
+    loadComponent: () =>
+      import('./ui/pages/translation-end/translation-end.page').then((m) => m.TranslationEndPage),
   },
   {
     path: 'set-entries/:id',
-    component: TransEntryPage,
+    loadComponent: () =>
+      import('./ui/pages/trans-entry/trans-entry.page').then((m) => m.TransEntryPage),
   },
 ];
