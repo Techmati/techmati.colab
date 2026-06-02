@@ -1,8 +1,4 @@
-import {
-  ApplicationConfig,
-  provideBrowserGlobalErrorListeners,
-  provideZoneChangeDetection,
-} from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 
 import { provideZard } from '@/shared/core/provider/providezard';
@@ -18,7 +14,6 @@ configureBoneyard({
 registerLocaleData(localeEsMx);
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection(),
     provideBrowserGlobalErrorListeners(),
     provideRouter(
       routes,

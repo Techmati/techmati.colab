@@ -26,8 +26,7 @@
     "tailwind-merge": "^3.6.0",
     "tailwindcss-animate": "^1.0.7",
     "tslib": "^2.3.0",
-    "wavesurfer.js": "^7.12.7",
-    "zone.js": "^0.16.2"
+    "wavesurfer.js": "^7.12.7"
   },
   "devDependencies": {
     "@angular/build": "^21.2.2",
