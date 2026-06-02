@@ -2,14 +2,13 @@ import { TranslationEntryService } from '@/core/service/translation-entry/transl
 import { Phrase } from '@/core/types/phrase.type';
 import { type RecordedAudioFile } from '@/core/utils/audio-recorder.util';
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
   effect,
   inject,
   input,
-  signal,
+  signal
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { form, FormField, minLength, required } from '@angular/forms/signals';
@@ -35,7 +34,6 @@ import { TranslationTextarea } from './ui/organisms/translation-textarea/transla
   ],
   templateUrl: './translate.page.html',
   styleUrl: './translate.page.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TranslatePage {
   private readonly destroyRef = inject(DestroyRef);
