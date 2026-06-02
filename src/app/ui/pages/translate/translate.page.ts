@@ -6,6 +6,7 @@ import {
   Component,
   computed,
   DestroyRef,
+  effect,
   inject,
   input,
   signal,
@@ -78,6 +79,9 @@ export class TranslatePage {
         URL.revokeObjectURL(currentAudio.url);
       }
     });
+    effect(() => {
+      console.log('Current phrase:', this.phrase());
+    });
   }
 
   protected async goToNextPhrase() {
@@ -101,6 +105,7 @@ export class TranslatePage {
     );
     this.isUploading.set(false);
     if (error) {
+      console.error('Error submitting translation entry:', error);
       //TODO: add error handling (toast)
     } else {
       this.nextPhraseTick.update((tick) => tick + 1);
