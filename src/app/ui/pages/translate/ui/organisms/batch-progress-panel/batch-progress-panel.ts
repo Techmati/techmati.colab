@@ -1,12 +1,11 @@
 import { SummaryService } from '@/core/service/summary/summary.service';
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
   inject,
   input,
-  linkedSignal,
+  linkedSignal
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
@@ -16,7 +15,6 @@ import { SkeletonComponent } from 'boneyard-js/angular';
   selector: 'tm-batch-progress-panel',
   imports: [SkeletonComponent],
   templateUrl: './batch-progress-panel.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BatchProgressPanel {
   readonly phraseSetId = input.required<string>();

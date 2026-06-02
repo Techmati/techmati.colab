@@ -1,11 +1,10 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   forwardRef,
   input,
   model,
-  signal,
+  signal
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -19,7 +18,6 @@ type OnTouchedFn = () => void;
   imports: [ZardInputDirective],
   templateUrl: './translation-textarea.html',
   styleUrl: './translation-textarea.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
