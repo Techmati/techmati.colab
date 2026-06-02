@@ -18,7 +18,7 @@ configureBoneyard({
 registerLocaleData(localeEsMx);
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZoneChangeDetection(),
     provideBrowserGlobalErrorListeners(),
     provideRouter(
       routes,
