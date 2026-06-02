@@ -1,12 +1,12 @@
 import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
+import { Phrase } from '@/core/types/phrase.type';
 import { type RecordedAudioFile } from '@/core/utils/audio-recorder.util';
 import { Component, computed, DestroyRef, effect, inject, input, signal } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { form, FormField, minLength, required } from '@angular/forms/signals';
 
 import { tryCatch } from '@/core/utils/try.util';
 import { JsonPipe } from '@angular/common';
-import { map, shareReplay, startWith, switchMap, tap } from 'rxjs';
 import { BatchProgressPanel } from './ui/organisms/batch-progress-panel/batch-progress-panel';
 import { BottomActionBar } from './ui/organisms/bottom-action-bar/bottom-action-bar';
 import { PronunciationRecorder } from './ui/organisms/pronunciation-recorder/pronunciation-recorder';
@@ -39,7 +39,7 @@ export class TranslatePage {
   protected readonly isUploading = signal(false);
   protected readonly nextPhraseTick = signal(0);
 
-  // protected readonly isLoading = computed(() => this.phraseRes.isLoading() || this.isUploading());
+  protected readonly isLoading = computed(() => this.phraseRes.isLoading() || this.isUploading());
 
   protected readonly model = signal<{
     translation: string;
@@ -56,31 +56,14 @@ export class TranslatePage {
     required(schema.pronunciation, { message: 'Añade una pronunciación grabada.' });
   });
 
-  // ADD this
-  private readonly phraseParams = computed(() => ({
-    phraseSetId: this.phraseSetId(),
-    tick: this.nextPhraseTick(),
-  }));
+  readonly phraseRes = rxResource({
+    params: computed(() => ({ phraseSetId: this.phraseSetId(), tick: this.nextPhraseTick() })),
+    stream: ({ params: { phraseSetId } }) => {
+      return this.translationEntryService.getNextPhraseInPhraseSet(phraseSetId);
+    },
+  });
 
-  private readonly phrase$ = toObservable(this.phraseParams).pipe(
-    switchMap(({ phraseSetId }) =>
-      this.translationEntryService.getNextPhraseInPhraseSet(phraseSetId),
-    ),
-    shareReplay(1),
-  );
-
-  protected readonly phraseLoading = signal(true);
-  readonly phrase = toSignal(
-    this.phrase$.pipe(
-      tap(() => this.phraseLoading.set(false)),
-      map((res) => res.phrase ?? null),
-      startWith(null),
-    ),
-    { initialValue: null },
-  );
-
-  protected readonly isLoading = computed(() => this.phraseLoading() || this.isUploading());
-
+  readonly phrase = computed<Phrase | null>(() => this.phraseRes.value()?.phrase ?? null);
   constructor() {
     this.destroyRef.onDestroy(() => {
       const currentAudio = this.model().pronunciation;
