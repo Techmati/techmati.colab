@@ -1,12 +1,19 @@
 import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
 import { Phrase } from '@/core/types/phrase.type';
 import { type RecordedAudioFile } from '@/core/utils/audio-recorder.util';
-import { Component, computed, DestroyRef, effect, inject, input, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  effect,
+  inject,
+  input,
+  signal
+} from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { form, FormField, minLength, required } from '@angular/forms/signals';
 
 import { tryCatch } from '@/core/utils/try.util';
-import { JsonPipe } from '@angular/common';
 import { BatchProgressPanel } from './ui/organisms/batch-progress-panel/batch-progress-panel';
 import { BottomActionBar } from './ui/organisms/bottom-action-bar/bottom-action-bar';
 import { PronunciationRecorder } from './ui/organisms/pronunciation-recorder/pronunciation-recorder';
@@ -24,7 +31,6 @@ import { TranslationTextarea } from './ui/organisms/translation-textarea/transla
     TranslationTextarea,
     PronunciationRecorder,
     BottomActionBar,
-    JsonPipe,
   ],
   templateUrl: './translate.page.html',
   styleUrl: './translate.page.css',
