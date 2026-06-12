@@ -5,7 +5,7 @@ import { SummaryService } from '@/core/service/summary/summary.service';
 import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { NextSetActionSkeleton } from './ui/organisms/next-set-action-skeleton/next-set-action-skeleton';
+import { NextSetActionSkeleton } from './ui/molecules/next-set-action-skeleton/next-set-action-skeleton';
 import { TranslationSummarySkeleton } from './ui/organisms/translation-summary-skeleton/translation-summary-skeleton';
 
 @Component({
