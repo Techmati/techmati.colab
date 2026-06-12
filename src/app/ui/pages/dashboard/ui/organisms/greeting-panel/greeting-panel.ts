@@ -1,4 +1,4 @@
-import { ContributorService } from '@/core/service/contributor/contributor.service';
+import { AuthenticationService } from '@/core/service/authentication/authentication.service';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,7 +8,6 @@ import {
   output,
 } from '@angular/core';
 
-import { rxResource } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'tm-greeting-panel',
   imports: [],
@@ -16,22 +15,17 @@ import { rxResource } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GreetingPanel {
-  private readonly contributorService = inject(ContributorService);
+  private readonly authenticationService = inject(AuthenticationService);
 
   readonly loading = output<boolean>();
 
-  readonly contributor = rxResource({
-    params: computed(() => ({ id: this.contributorService.sessionId() })),
-    stream: ({ params: { id } }) => this.contributorService.getProfile(id || ''),
-  });
-
   readonly singleName = computed(
-    () => this.contributor.value()?.fullName.split(' ')[0] ?? 'Contribuidor',
+    () => this.authenticationService.displayName().split(' ')[0] ?? 'Contribuidor',
   );
 
   constructor() {
     effect(() => {
-      this.loading.emit(this.contributor.isLoading());
+      this.loading.emit(!this.authenticationService.initialized());
     });
   }
 }

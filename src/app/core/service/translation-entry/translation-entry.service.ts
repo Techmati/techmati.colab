@@ -2,13 +2,13 @@ import { API } from '@/core/config/api-uris.config';
 import { Phrase } from '@/core/types/phrase.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { map, switchMap } from 'rxjs';
+import { from, map, switchMap } from 'rxjs';
 
 import {
   TranslatedPhrase,
   TranslationEntrySubmitRequest,
 } from '@/core/types/translation-entry.type';
-import { ContributorService } from '../contributor/contributor.service';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,34 +19,21 @@ export class TranslationEntryService {
   private readonly nextPhraseSetApi = API.TRANSLATION_ENTRIES.NEXT_PHRASE_SET;
   private readonly entriesByPhraseSetIdApi = API.TRANSLATION_ENTRIES.GET_BY_ID;
 
-  private readonly contributorService = inject(ContributorService);
+  private readonly authenticationService = inject(AuthenticationService);
   private readonly client = inject(HttpClient);
 
   findEntriesByPhraseSetId(id: string) {
-    return this.contributorService.getProfile().pipe(
-      map((profile) => profile.id),
-      switchMap((contributorId) =>
-        this.client.get<{ entries: TranslatedPhrase[] }>(
-          this.entriesByPhraseSetIdApi(contributorId, id),
-        ),
-      ),
-    );
+    return this.client.get<{ entries: TranslatedPhrase[] }>(this.entriesByPhraseSetIdApi(id));
   }
 
   getNextPhraseInPhraseSet(phraseSetId: string) {
-    return this.contributorService.getProfile().pipe(
-      map((profile) => profile.id),
-      switchMap((contributorId) =>
-        this.client.get<{ phrase: Phrase; state: 'finished' | 'in-progress' }>(
-          this.nextPhraseInSetApi(contributorId, phraseSetId),
-        ),
-      ),
+    return this.client.get<{ phrase: Phrase; state: 'finished' | 'in-progress' }>(
+      this.nextPhraseInSetApi(phraseSetId),
     );
   }
 
   submit(data: TranslationEntrySubmitRequest, audio: File) {
-    return this.contributorService.getProfile().pipe(
-      map((profile) => profile.id),
+    return from(this.authenticationService.getUserId()).pipe(
       map((contributorId) => ({ ...data, contributorId })),
       map((entry) => {
         const formData = new FormData();
@@ -58,16 +45,9 @@ export class TranslationEntryService {
     );
   }
 
-  //TODO: refactor to avoid multiple calls to getProfile if possible
-
   getNextPhraseSet() {
-    return this.contributorService.getProfile().pipe(
-      map((profile) => profile.id),
-      switchMap((contributorId) =>
-        this.client.get<{ phraseSet: string; state: 'finished' | 'in-progress' }>(
-          this.nextPhraseSetApi(contributorId),
-        ),
-      ),
+    return this.client.get<{ phraseSet: string; state: 'finished' | 'in-progress' }>(
+      this.nextPhraseSetApi,
     );
   }
 }

@@ -31,7 +31,7 @@ export class AvailableContributionsPanel {
     stream: () => this.phraseSetService.getFiltered(1, 3, 'untouched'),
   });
 
-  readonly phraseSets = computed(() => this.phraseSetsRes.value() ?? []);
+  readonly phraseSets = computed(() => this.phraseSetsRes.value()?.phraseSets ?? []);
 
   date(string: string) {
     return new Date(string);

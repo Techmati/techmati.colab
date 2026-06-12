@@ -1,6 +1,6 @@
-import { ContributorService } from '@/core/service/contributor/contributor.service';
+import { AuthenticationService } from '@/core/service/authentication/authentication.service';
 import { ZardButtonComponent } from '@/shared/components/button';
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,13 +14,20 @@ export class TopAppBar {
   readonly title = input('Techmati');
   readonly subtitle = input('');
 
-  private readonly contributorService = inject(ContributorService);
+  private readonly authenticationService = inject(AuthenticationService);
   private readonly router = inject(Router);
+  protected readonly isSigningOut = signal(false);
 
-  logout() {
-    console.log('Logging out...'); // Debug log
-    this.contributorService.logout();
-    this.router.navigate(['/']);
-    console.log('Logged out'); // Debug log
+  protected async logout(): Promise<void> {
+    this.isSigningOut.set(true);
+
+    try {
+      await this.authenticationService.signOut();
+      await this.router.navigate(['/']);
+    } catch (error) {
+      console.error('Failed to sign out', error);
+    } finally {
+      this.isSigningOut.set(false);
+    }
   }
 }

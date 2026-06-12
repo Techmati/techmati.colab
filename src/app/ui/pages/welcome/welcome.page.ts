@@ -1,71 +1,80 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  effect,
-  inject,
-  signal,
-} from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ContributorService } from '@/core/service/contributor/contributor.service';
-import { tryCatch } from '@/core/utils/try.util';
-import { RegisterFormData, WelcomePanel } from './ui/organisms/welcome-panel/welcome-panel';
+import { AuthenticationService } from '@/core/service/authentication/authentication.service';
+import { AuthCredentials, WelcomePanel } from './ui/organisms/welcome-panel/welcome-panel';
 
 @Component({
   selector: 'tm-welcome-page',
-  imports: [ReactiveFormsModule, WelcomePanel],
+  imports: [WelcomePanel],
   templateUrl: './welcome.page.html',
   styleUrl: './welcome.page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WelcomePage {
-  private readonly contributorService = inject(ContributorService);
+  private readonly authenticationService = inject(AuthenticationService);
   private readonly router = inject(Router);
-  private readonly destroyRef = inject(DestroyRef);
   readonly isLoading = signal(false);
-  readonly success = signal<string | null>(null);
   readonly error = signal<string | null>(null);
-  private redirectTimerId: number | null = null;
+  readonly success = signal<string | null>(null);
 
   constructor() {
-    this.destroyRef.onDestroy(() => {
-      if (this.redirectTimerId !== null) {
-        window.clearTimeout(this.redirectTimerId);
-      }
-    });
     effect(() => {
-      if (this.contributorService.isLoggedIn()) {
+      if (this.authenticationService.isAuthenticated()) {
         this.goToDashboard();
       }
     });
   }
 
-  async onSubmit(data: RegisterFormData) {
+  async signInWithGoogle(): Promise<void> {
+    this.startRequest();
+
+    try {
+      await this.authenticationService.signInWithOAuth('google');
+    } catch {
+      this.error.set('No se pudo iniciar sesión con Google. Por favor, inténtalo de nuevo.');
+      this.isLoading.set(false);
+    }
+  }
+
+  async signInWithPassword(credentials: AuthCredentials): Promise<void> {
+    this.startRequest();
+
+    try {
+      await this.authenticationService.signInWithPassword(credentials.email, credentials.password);
+    } catch {
+      this.error.set('El correo o la contraseña no son correctos.');
+      this.isLoading.set(false);
+    }
+  }
+
+  async signUpWithPassword(credentials: AuthCredentials): Promise<void> {
+    this.startRequest();
+
+    try {
+      const requiresEmailConfirmation = await this.authenticationService.signUpWithPassword(
+        credentials.email,
+        credentials.password,
+      );
+
+      if (requiresEmailConfirmation) {
+        this.success.set('Revisa tu correo y confirma tu cuenta para terminar el registro.');
+        this.isLoading.set(false);
+      }
+    } catch {
+      this.error.set('No se pudo crear la cuenta. Verifica tus datos e inténtalo de nuevo.');
+      this.isLoading.set(false);
+    }
+  }
+
+  clearMessages(): void {
     this.error.set(null);
     this.success.set(null);
+  }
+
+  private startRequest(): void {
+    this.clearMessages();
     this.isLoading.set(true);
-    const [_result, error] = await tryCatch(this.contributorService.access(data));
-    this.error.set(
-      error ? 'Ocurrió un error al registrarte. Por favor, inténtalo de nuevo.' : null,
-    );
-    this.isLoading.set(false);
-
-    if (error) {
-      console.log(error);
-      return;
-    }
-
-    this.success.set('Registro exitoso. Te redirigiremos al dashboard en 3 segundos.');
-
-    if (this.redirectTimerId !== null) {
-      window.clearTimeout(this.redirectTimerId);
-    }
-
-    this.redirectTimerId = window.setTimeout(() => {
-      this.goToDashboard();
-    }, 3000);
   }
 
   private goToDashboard() {

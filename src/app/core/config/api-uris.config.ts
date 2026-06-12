@@ -5,28 +5,20 @@ const BASE_URL =
 
 const API = {
   BASE_URL,
-  CONTRIBUTORS: {
-    REGISTER: `${BASE_URL}/contributors/register`,
-    LOGIN: `${BASE_URL}/contributors/login`,
-    PROFILE: (id: string) => `${BASE_URL}/contributors/profile/${id}`,
-  },
   PHRASE_SETS: {
     PAGINATED: `${BASE_URL}/phrase-sets`,
   },
   TRANSLATION_ENTRIES: {
-    NEXT_PHRASE_IN_SET: (contributorId: string, phraseSetId: string) =>
-      `${BASE_URL}/translation-entries/contributor/${contributorId}/phrase-set/${phraseSetId}/next`,
-    NEXT_PHRASE_SET: (contributorId: string) =>
-      `${BASE_URL}/translation-entries/contributor/${contributorId}/next-set`,
+    NEXT_PHRASE_IN_SET: (phraseSetId: string) =>
+      `${BASE_URL}/translation-entries/phrase-set/${phraseSetId}/next`,
+    NEXT_PHRASE_SET: `${BASE_URL}/translation-entries/next-set`,
     SUBMIT: `${BASE_URL}/translation-entries`,
-    GET_BY_ID: (contributorId: string, entryId: string) =>
-      `${BASE_URL}/translation-entries/contributor/${contributorId}/set-entries/${entryId}`,
+    GET_BY_ID: (entryId: string) => `${BASE_URL}/translation-entries/phrase-set/${entryId}`,
   },
   SUMMARY: {
     FILTERED: `${BASE_URL}/summary`,
-    PHRASE_SET: (contributorId: string, phraseSetId: string) =>
-      `${BASE_URL}/summary/contributor/${contributorId}/phrase-set/${phraseSetId}`,
-    STATS: (contributorId: string) => `${BASE_URL}/summary/contributor/${contributorId}/stats`,
+    PHRASE_SET: (phraseSetId: string) => `${BASE_URL}/summary/phrase-set/${phraseSetId}`,
+    STATS: `${BASE_URL}/summary/stats`,
   },
 };
 

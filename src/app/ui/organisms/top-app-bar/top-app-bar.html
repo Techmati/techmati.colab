@@ -1,7 +1,9 @@
 <header class="top-app-bar bg-card px-5 py-4 flex justify-between">
   @if (subtitle()) {
     <div class="flex flex-col gap-1">
-      <p class="font-display text-primary text-2xl font-bold leading-8 tracking-tight">{{ title() }}</p>
+      <p class="font-display text-primary text-2xl font-bold leading-8 tracking-tight">
+        {{ title() }}
+      </p>
       <p class="text-text-secondary text-sm leading-5">{{ subtitle() }}</p>
     </div>
   } @else {
@@ -9,8 +11,14 @@
       <span class="text-primary">Tech</span><span class="text-brand-green-600">mati</span>
     </h1>
   }
-  <button z-button zType="outline" (click)="logout()">
-    <span class="lucide--log-out"></span>
+  <button
+    z-button
+    zType="outline"
+    aria-label="Cerrar sesión"
+    [zLoading]="isSigningOut()"
+    [zDisabled]="isSigningOut()"
+    (click)="logout()"
+  >
+    <span class="lucide--log-out" aria-hidden="true"></span>
   </button>
-
 </header>

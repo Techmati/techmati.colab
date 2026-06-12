@@ -9,8 +9,10 @@ guidance, use the installed Angular MCP and align its results with the workspace
 - Angular 21 standalone application, currently running without `zone.js` or
   `provideZoneChangeDetection`.
 - TypeScript 5.9 with strict compiler and template checks.
+- Supabase Auth through `@supabase/supabase-js` for OAuth, email/password sessions, and JWT access
+  tokens.
 - RxJS 7.8 for service-level asynchronous APIs and Angular `rxResource` for server-backed UI state.
-- Angular Signal Forms for the active registration and translation workflows.
+- Angular Signal Forms for the active translation workflow.
 - Tailwind CSS 4 through PostCSS, with design tokens and theme mappings in `src/styles.css`.
 - Zard UI components checked into `src/app/shared`, configured through `components.json`.
 - Boneyard for generated loading skeletons under `src/bones`.
@@ -54,6 +56,8 @@ The local API base used outside production is
 Project-wide non-visual application code:
 
 - `config`: centralized configuration such as the API URI registry.
+- `guard`: functional route guards.
+- `interceptor`: functional HTTP interceptors.
 - `service/<domain>`: root-scoped domain services and HTTP operations.
 - `types`: API request, response, and domain types.
 - `utils`: framework-independent or browser-API wrappers such as `AudioRecorder` and `tryCatch`.
@@ -128,18 +132,29 @@ here and render static images through the established optimized-image path.
   `noPropertyAccessFromIndexSignature` compiler option.
 - Keep `HttpClient` calls in domain services. UI components should not construct URLs or call
   `HttpClient` directly.
+- The authentication interceptor adds the current Supabase JWT as a bearer token to requests whose
+  URL starts with `API.BASE_URL`.
 - Services return typed, cold observables. Map transport envelopes to the domain shape when it
   simplifies consumers.
-- Contributor-specific requests obtain the contributor ID through `ContributorService`, then use
-  RxJS `map` and `switchMap` to perform the dependent request.
+- Contributor-specific requests obtain the authenticated Supabase user ID through
+  `AuthenticationService.getUserId()`, then use RxJS `from` and `switchMap` to perform the dependent
+  request.
 
-### Session and profile state
+### Authentication state
 
-- `ContributorService` owns the contributor session.
-- The session ID is persisted under the `localStorage` key `sessionId` and mirrored in a signal.
-- The contributor profile is the one intentionally cached server entity. Reuse
-  `ContributorService.getProfile()` rather than fetching the profile independently.
-- Logout clears persisted and in-memory session state before navigation.
+- `AuthenticationService` is the only application service that calls `supabaseClient.auth`.
+- The Supabase client is created in `src/app/core/config/supabase-client.config.ts`. Replace the URL
+  and anon-key placeholders there when configuring an environment.
+- Supabase owns session persistence, refresh, OAuth callback detection, and token storage. Do not
+  create application-managed auth keys in `localStorage`.
+- Consume the service's read-only `session`, `user`, `initialized`, `isAuthenticated`, and
+  `displayName` signals instead of caching duplicate auth state.
+- Use `signInWithOAuth`, `signInWithPassword`, `signUpWithPassword`, `signOut`, `getUserId`, and
+  `getAccessToken` through `AuthenticationService`; do not import the Supabase client into feature
+  code.
+- Protected routes use `authenticationGuard`.
+- The welcome page supports Google OAuth plus email/password login and registration. Keep OAuth
+  service methods provider-generic.
 
 ### Reads
 
@@ -226,9 +241,12 @@ here and render static images through the established optimized-image path.
 
 - Tests use Vitest globals through the Angular test builder.
 - Place focused `*.spec.ts` files beside the code they cover.
-- Run `pnpm build` after application changes and `pnpm test` when behavior is covered by tests.
-- The current suite is sparse and the root app spec is legacy scaffolding; do not treat it as an
-  example of sufficient coverage.
+- The current test suite is not a reliable completion gate. Do not rely on passing tests as the
+  final verification signal.
+- Run `pnpm build` after application changes. A successful production build is the required final
+  validation until the suite is made reliable.
+- Tests may still be added or run for focused development feedback, but they do not replace the
+  production build check.
 
 ## Existing Artifacts That Are Not Conventions
 
