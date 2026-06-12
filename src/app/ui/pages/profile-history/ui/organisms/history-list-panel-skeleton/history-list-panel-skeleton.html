@@ -1,0 +1,23 @@
+<div class="space-y-3" role="status" aria-label="Cargando historial de contribuciones">
+  <div aria-hidden="true" class="space-y-3">
+    @for (item of [1, 2, 3]; track item) {
+      <article
+        class="space-y-3 rounded-xl border border-border-subtle bg-surface-card p-4 shadow-sm"
+      >
+        <div class="flex items-start justify-between gap-4">
+          <z-skeleton class="h-6 w-1/2" />
+          <z-skeleton class="h-5 w-28" />
+        </div>
+        <div class="flex gap-2">
+          <z-skeleton class="h-6 w-24" />
+          <z-skeleton class="h-5 w-28" />
+        </div>
+        <z-skeleton class="h-5 w-20" />
+        <div class="flex justify-end">
+          <z-skeleton class="h-8 w-24" />
+        </div>
+      </article>
+    }
+  </div>
+  <span class="sr-only">Cargando historial de contribuciones</span>
+</div>

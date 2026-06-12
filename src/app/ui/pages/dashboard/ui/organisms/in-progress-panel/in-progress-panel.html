@@ -1,14 +1,18 @@
+@if (inProgressRes.isLoading()) {
+  <tm-in-progress-panel-skeleton />
+} @else {
   <article class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
     <header class="mb-4 flex items-center text-xl text-brand-green-600 justify-center gap-2">
-      <span class="ri--progress-5-line " aria-hidden="true"></span>
+      <span class="ri--progress-5-line" aria-hidden="true"></span>
       <h2 class="font-display font-semibold leading-9 text-brand-green-600">En progreso</h2>
     </header>
 
     <div class="space-y-3">
       @for (task of inProgress(); track task) {
         <tm-in-progress-card [task]="task" />
-      }@empty {
+      } @empty {
         <p class="text-center text-sm text-text-secondary">No tienes tareas en progreso.</p>
       }
     </div>
   </article>
+}

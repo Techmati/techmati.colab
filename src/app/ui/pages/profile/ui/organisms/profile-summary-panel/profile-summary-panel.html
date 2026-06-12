@@ -1,25 +1,29 @@
-<article class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
-  <header class="mb-3 flex items-center justify-between">
-    <h2 class="text-text-secondary text-base font-semibold leading-6">Traducciones</h2>
-    <div class="flex items-center gap-2">
-      <span class="badge bg-secondary text-primary"
-        ><span class="lucide--languages size-4" aria-hidden="true"></span
-      ></span>
-      <span class="badge bg-accent text-brand-green-600"
-        ><span class="lucide--mic size-4" aria-hidden="true"></span
-      ></span>
-    </div>
-  </header>
+@if (stats.isLoading()) {
+  <tm-profile-summary-panel-skeleton />
+} @else {
+  <article class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
+    <header class="mb-3 flex items-center justify-between">
+      <h2 class="text-text-secondary text-base font-semibold leading-6">Traducciones</h2>
+      <div class="flex items-center gap-2">
+        <span class="badge bg-secondary text-primary"
+          ><span class="lucide--languages size-4" aria-hidden="true"></span
+        ></span>
+        <span class="badge bg-accent text-brand-green-600"
+          ><span class="lucide--mic size-4" aria-hidden="true"></span
+        ></span>
+      </div>
+    </header>
 
-  <p class="font-display text-text-primary text-3xl font-bold leading-tight">
-    {{ stats.value()?.allTimeCount }}
-  </p>
-  <p class="mt-1 flex items-center gap-1 text-sm font-medium text-brand-green-600">
-    <span class="lucide--trending-up" aria-hidden="true"></span>
-    +{{ stats.value()?.thisWeekCount }} esta semana
-  </p>
-  <p class="mt-1 flex items-center gap-1 text-sm font-medium text-brand-purple-600">
-    <span class="lucide--trending-up" aria-hidden="true"></span>
-    +{{ stats.value()?.todayCount }} hoy
-  </p>
-</article>
+    <p class="font-display text-text-primary text-3xl font-bold leading-tight">
+      {{ stats.value()?.allTimeCount }}
+    </p>
+    <p class="mt-1 flex items-center gap-1 text-sm font-medium text-brand-green-600">
+      <span class="lucide--trending-up" aria-hidden="true"></span>
+      +{{ stats.value()?.thisWeekCount }} esta semana
+    </p>
+    <p class="mt-1 flex items-center gap-1 text-sm font-medium text-brand-purple-600">
+      <span class="lucide--trending-up" aria-hidden="true"></span>
+      +{{ stats.value()?.todayCount }} hoy
+    </p>
+  </article>
+}

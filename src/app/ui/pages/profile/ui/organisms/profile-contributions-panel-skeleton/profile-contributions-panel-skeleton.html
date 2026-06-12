@@ -1,0 +1,36 @@
+<article
+  class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm"
+  role="status"
+  aria-label="Cargando contribuciones hechas"
+>
+  <div aria-hidden="true">
+    <header class="mb-4 space-y-3">
+      <div class="flex justify-center">
+        <z-skeleton class="h-7 w-56" />
+      </div>
+      <div class="flex justify-end">
+        <z-skeleton class="h-5 w-20" />
+      </div>
+    </header>
+
+    <div class="space-y-3">
+      @for (item of [1, 2]; track item) {
+        <section class="space-y-3 rounded-xl border border-border-subtle bg-surface-card p-4">
+          <div class="flex items-start justify-between gap-4">
+            <z-skeleton class="h-6 w-1/2" />
+            <z-skeleton class="h-5 w-28" />
+          </div>
+          <div class="flex gap-2">
+            <z-skeleton class="h-6 w-24" />
+            <z-skeleton class="h-5 w-28" />
+          </div>
+          <z-skeleton class="h-5 w-20" />
+          <div class="flex justify-end">
+            <z-skeleton class="h-8 w-24" />
+          </div>
+        </section>
+      }
+    </div>
+  </div>
+  <span class="sr-only">Cargando contribuciones hechas</span>
+</article>

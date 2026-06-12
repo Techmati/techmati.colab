@@ -1,4 +1,6 @@
-<boneyard-skeleton [loading]="isLoading()" name="batch-progress-panel">
+@if (summary.isLoading()) {
+  <tm-batch-progress-panel-skeleton />
+} @else {
   <section class="space-y-2">
     @let value = summary.value();
     <div
@@ -14,4 +16,4 @@
       ></div>
     </div>
   </section>
-</boneyard-skeleton>
+}

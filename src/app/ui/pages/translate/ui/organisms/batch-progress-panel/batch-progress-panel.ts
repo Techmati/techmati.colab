@@ -10,11 +10,11 @@ import {
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { SkeletonComponent } from 'boneyard-js/angular';
+import { BatchProgressPanelSkeleton } from '../batch-progress-panel-skeleton/batch-progress-panel-skeleton';
 
 @Component({
   selector: 'tm-batch-progress-panel',
-  imports: [SkeletonComponent],
+  imports: [BatchProgressPanelSkeleton],
   templateUrl: './batch-progress-panel.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -26,8 +26,6 @@ export class BatchProgressPanel {
 
   private readonly router = inject(Router);
 
-  private initialLoad = false;
-
   readonly summary = rxResource({
     params: computed(() => ({ phraseSetId: this.phraseSetId(), tick: this.nextPhraseTick() })),
     stream: ({ params: { phraseSetId } }) => this.summaryService.getPhraseSumary(phraseSetId),
@@ -38,14 +36,7 @@ export class BatchProgressPanel {
     computation: (source, previous) => source || previous?.value || 0,
   });
 
-  readonly isLoading = computed(() => this.summary.isLoading() && !this.initialLoad);
-
   constructor() {
-    effect(() => {
-      if (!this.summary.isLoading()) {
-        this.initialLoad = true;
-      }
-    });
     effect(() => {
       if (this.summary.value()?.progressPercentage === 100) {
         this.router.navigate(['/translate', this.phraseSetId(), 'end'], {

@@ -1,25 +1,17 @@
 import { SummaryService } from '@/core/service/summary/summary.service';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  effect,
-  inject,
-  output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { InProgressCard } from '../../molecules/in-progress-card/in-progress-card';
+import { InProgressPanelSkeleton } from '../in-progress-panel-skeleton/in-progress-panel-skeleton';
 
 @Component({
   selector: 'tm-in-progress-panel',
-  imports: [InProgressCard],
+  imports: [InProgressCard, InProgressPanelSkeleton],
   templateUrl: './in-progress-panel.html',
   styleUrl: './in-progress-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InProgressPanel {
-  readonly loading = output<boolean>();
-
   private readonly summaryService = inject(SummaryService);
 
   readonly inProgressRes = rxResource({
@@ -29,10 +21,4 @@ export class InProgressPanel {
   });
 
   readonly inProgress = computed(() => this.inProgressRes.value()?.summaries || []);
-
-  constructor() {
-    effect(() => {
-      this.loading.emit(this.inProgressRes.isLoading());
-    });
-  }
 }

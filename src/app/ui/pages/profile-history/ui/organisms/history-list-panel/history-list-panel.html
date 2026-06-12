@@ -1,5 +1,9 @@
-<div class="space-y-3">
-  @for (set of sets().summaries; track set.phraseSet.id){
-    <tm-contribution-card [card]="set" />
-  }
-</div>
+@if (completedSets.isLoading()) {
+  <tm-history-list-panel-skeleton />
+} @else {
+  <div class="space-y-3">
+    @for (set of sets().summaries; track set.phraseSet.id) {
+      <tm-contribution-card [card]="set" />
+    }
+  </div>
+}
