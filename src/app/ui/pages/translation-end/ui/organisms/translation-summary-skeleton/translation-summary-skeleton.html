@@ -1,0 +1,23 @@
+<article
+  class="w-full rounded-xl border border-border-subtle bg-card p-6 text-left shadow-sm"
+  role="status"
+  aria-label="Cargando resumen de la sesión"
+>
+  <div aria-hidden="true">
+    <header class="mb-4 flex items-center justify-between gap-3">
+      <z-skeleton class="h-4 w-36" />
+      <z-skeleton class="h-6 w-24 rounded-full" />
+    </header>
+
+    <div class="grid grid-cols-2 gap-4">
+      @for (item of [1, 2]; track item) {
+        <div class="space-y-3 rounded-lg bg-muted p-4">
+          <z-skeleton class="mx-auto size-5 rounded-full" />
+          <z-skeleton class="mx-auto h-8 w-14" />
+          <z-skeleton class="mx-auto h-4 w-24" />
+        </div>
+      }
+    </div>
+  </div>
+  <span class="sr-only">Cargando resumen de la sesión</span>
+</article>

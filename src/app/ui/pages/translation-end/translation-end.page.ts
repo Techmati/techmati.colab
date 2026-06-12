@@ -5,10 +5,12 @@ import { SummaryService } from '@/core/service/summary/summary.service';
 import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { NextSetActionSkeleton } from './ui/organisms/next-set-action-skeleton/next-set-action-skeleton';
+import { TranslationSummarySkeleton } from './ui/organisms/translation-summary-skeleton/translation-summary-skeleton';
 
 @Component({
   selector: 'tm-translation-end-page',
-  imports: [RouterLink, ZardButtonComponent],
+  imports: [RouterLink, ZardButtonComponent, NextSetActionSkeleton, TranslationSummarySkeleton],
   templateUrl: './translation-end.page.html',
   styleUrl: './translation-end.page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

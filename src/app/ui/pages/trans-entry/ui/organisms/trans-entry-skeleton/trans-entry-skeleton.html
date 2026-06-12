@@ -1,0 +1,24 @@
+<div class="flex flex-col gap-4" role="status" aria-label="Cargando traducciones">
+  @for (item of [1, 2]; track item) {
+    <article
+      class="flex flex-col rounded-xl border border-border-soft bg-surface-card p-4 shadow-sm"
+      aria-hidden="true"
+    >
+      <z-skeleton class="mb-3 h-4 w-24" />
+      <div class="grid grid-cols-2 gap-4">
+        <div class="space-y-3">
+          <z-skeleton class="h-3 w-20" />
+          <z-skeleton class="h-6 w-full" />
+          <z-skeleton class="h-6 w-4/5" />
+        </div>
+        <div class="space-y-3 border-l border-border-soft pl-4">
+          <z-skeleton class="h-3 w-24" />
+          <z-skeleton class="h-7 w-full" />
+          <z-skeleton class="h-7 w-3/4" />
+        </div>
+      </div>
+      <z-skeleton class="mt-4 h-14 w-full rounded-full" />
+    </article>
+  }
+  <span class="sr-only">Cargando traducciones</span>
+</div>

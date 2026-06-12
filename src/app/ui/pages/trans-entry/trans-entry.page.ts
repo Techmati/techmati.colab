@@ -5,10 +5,11 @@ import { TranslationEntryService } from '@/core/service/translation-entry/transl
 import { ZardDividerComponent } from '@/shared/components/divider';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { WavesAudioPlayer } from '../../molecules/waves-audio-player/waves-audio-player';
+import { TransEntrySkeleton } from './ui/organisms/trans-entry-skeleton/trans-entry-skeleton';
 
 @Component({
   selector: 'tm-trans-entry-page',
-  imports: [WavesAudioPlayer, ZardDividerComponent],
+  imports: [WavesAudioPlayer, ZardDividerComponent, TransEntrySkeleton],
   templateUrl: './trans-entry.page.html',
   styleUrl: './trans-entry.page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

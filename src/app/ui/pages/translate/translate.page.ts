@@ -21,6 +21,7 @@ import { PronunciationRecorder } from './ui/organisms/pronunciation-recorder/pro
 import { SourceTextPanel } from './ui/organisms/source-text-panel/source-text-panel';
 import { TaskTopBar } from './ui/organisms/task-top-bar/task-top-bar';
 import { TranslationTextarea } from './ui/organisms/translation-textarea/translation-textarea';
+import { TranslationTaskSkeleton } from './ui/organisms/translation-task-skeleton/translation-task-skeleton';
 
 @Component({
   selector: 'tm-translate-page',
@@ -32,6 +33,7 @@ import { TranslationTextarea } from './ui/organisms/translation-textarea/transla
     TranslationTextarea,
     PronunciationRecorder,
     BottomActionBar,
+    TranslationTaskSkeleton,
   ],
   templateUrl: './translate.page.html',
   styleUrl: './translate.page.css',
