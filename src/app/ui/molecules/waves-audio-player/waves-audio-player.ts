@@ -10,6 +10,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { AuthenticationService } from '@/core/service/authentication/authentication.service';
 import WaveSurfer from 'wavesurfer.js';
 
 @Component({
@@ -25,9 +26,11 @@ export class WavesAudioPlayer implements AfterViewInit {
 
   private readonly waveformContainer = viewChild.required<ElementRef<HTMLDivElement>>('waveform');
   private readonly destroyRef = inject(DestroyRef);
+  private readonly authenticationService = inject(AuthenticationService);
 
   private waveSurfer: WaveSurfer | null = null;
   private previousAudioUrl: string | null = null;
+  private sourceLoadVersion = 0;
 
   protected readonly playing = signal(false);
   protected readonly currentTimeSeconds = signal(0);
@@ -36,17 +39,18 @@ export class WavesAudioPlayer implements AfterViewInit {
   constructor() {
     effect(() => {
       this.audioUrl();
-      this.syncSource();
+      void this.syncSource();
     });
 
     this.destroyRef.onDestroy(() => {
+      this.sourceLoadVersion++;
       this.teardownWaveSurfer();
     });
   }
 
   ngAfterViewInit(): void {
     this.setupWaveSurfer();
-    this.syncSource();
+    void this.syncSource();
   }
 
   protected togglePlayback(): void {
@@ -106,16 +110,55 @@ export class WavesAudioPlayer implements AfterViewInit {
     });
   }
 
-  private syncSource(): void {
+  private async syncSource(): Promise<void> {
     const nextAudioUrl = this.audioUrl();
     if (!this.waveSurfer || !nextAudioUrl || nextAudioUrl === this.previousAudioUrl) {
+      return;
+    }
+
+    const sourceLoadVersion = ++this.sourceLoadVersion;
+    const accessToken = this.isRemoteUrl(nextAudioUrl)
+      ? await this.authenticationService.getAccessToken()
+      : null;
+
+    if (
+      !this.waveSurfer ||
+      sourceLoadVersion !== this.sourceLoadVersion ||
+      nextAudioUrl !== this.audioUrl()
+    ) {
       return;
     }
 
     this.previousAudioUrl = nextAudioUrl;
     this.currentTimeSeconds.set(0);
     this.durationSeconds.set(0);
-    this.waveSurfer.load(nextAudioUrl);
+    this.waveSurfer.setOptions({
+      fetchParams: accessToken
+        ? {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        : {},
+    });
+
+    try {
+      await this.waveSurfer.load(nextAudioUrl);
+    } catch (error) {
+      if (sourceLoadVersion === this.sourceLoadVersion) {
+        this.previousAudioUrl = null;
+        console.error('Failed to load audio source.', error);
+      }
+    }
+  }
+
+  private isRemoteUrl(audioUrl: string): boolean {
+    try {
+      const protocol = new URL(audioUrl, window.location.origin).protocol;
+      return protocol === 'http:' || protocol === 'https:';
+    } catch {
+      return false;
+    }
   }
 
   private teardownWaveSurfer(): void {
