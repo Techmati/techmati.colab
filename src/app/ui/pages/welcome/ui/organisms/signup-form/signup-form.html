@@ -1,0 +1,98 @@
+<form class="space-y-4" (submit)="submit($event)" novalidate>
+  <div class="space-y-2">
+    <label for="signup-full-name" class="text-sm font-medium text-text-secondary">
+      Nombre completo
+    </label>
+    <input
+      id="signup-full-name"
+      z-input
+      type="text"
+      autocomplete="name"
+      placeholder="Tu nombre completo"
+      [formField]="form.fullName"
+      [zStatus]="form.fullName().touched() && form.fullName().invalid() ? 'error' : undefined"
+    />
+    @if (form.fullName().touched() && form.fullName().invalid()) {
+      <div class="text-sm text-destructive" role="alert">
+        @for (validationError of form.fullName().errors(); track validationError.kind) {
+          <p>{{ validationError.message }}</p>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="space-y-2">
+    <label for="signup-username" class="text-sm font-medium text-text-secondary">
+      Nombre de usuario
+    </label>
+    <input
+      id="signup-username"
+      z-input
+      type="text"
+      autocomplete="username"
+      placeholder="nombre_de_usuario"
+      [formField]="form.username"
+      [zStatus]="form.username().touched() && form.username().invalid() ? 'error' : undefined"
+    />
+    @if (form.username().touched() && form.username().invalid()) {
+      <div class="text-sm text-destructive" role="alert">
+        @for (validationError of form.username().errors(); track validationError.kind) {
+          <p>{{ validationError.message }}</p>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="space-y-2">
+    <label for="signup-email" class="text-sm font-medium text-text-secondary">Correo</label>
+    <input
+      id="signup-email"
+      z-input
+      type="email"
+      autocomplete="email"
+      placeholder="correo@ejemplo.com"
+      [formField]="form.email"
+      [zStatus]="form.email().touched() && form.email().invalid() ? 'error' : undefined"
+    />
+    @if (form.email().touched() && form.email().invalid()) {
+      <div class="text-sm text-destructive" role="alert">
+        @for (validationError of form.email().errors(); track validationError.kind) {
+          <p>{{ validationError.message }}</p>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="space-y-2">
+    <label for="signup-password" class="text-sm font-medium text-text-secondary">Contraseña</label>
+    <input
+      id="signup-password"
+      z-input
+      type="password"
+      autocomplete="new-password"
+      placeholder="Mínimo 6 caracteres"
+      [formField]="form.password"
+      [zStatus]="form.password().touched() && form.password().invalid() ? 'error' : undefined"
+    />
+    @if (form.password().touched() && form.password().invalid()) {
+      <div class="text-sm text-destructive" role="alert">
+        @for (validationError of form.password().errors(); track validationError.kind) {
+          <p>{{ validationError.message }}</p>
+        }
+      </div>
+    }
+  </div>
+
+  <button
+    z-button
+    zType="default"
+    zSize="lg"
+    zFull
+    type="submit"
+    class="font-semibold"
+    [zLoading]="isLoading()"
+    [zDisabled]="isLoading()"
+  >
+    Crear cuenta
+  </button>
+</form>

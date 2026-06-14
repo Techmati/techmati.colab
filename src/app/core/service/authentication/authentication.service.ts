@@ -63,7 +63,12 @@ export class AuthenticationService {
     }
   }
 
-  async signUpWithPassword(email: string, password: string): Promise<boolean> {
+  async signUpWithPassword(
+    email: string,
+    password: string,
+    fullName: string,
+    username: string,
+  ): Promise<boolean> {
     this.errorState.set(null);
 
     const { data, error } = await supabaseClient.auth.signUp({
@@ -71,6 +76,10 @@ export class AuthenticationService {
       password,
       options: {
         emailRedirectTo: window.location.origin,
+        data: {
+          full_name: fullName,
+          username,
+        },
       },
     });
 

@@ -1,0 +1,54 @@
+<form class="space-y-4" (submit)="submit($event)" novalidate>
+  <div class="space-y-2">
+    <label for="login-email" class="text-sm font-medium text-text-secondary">Correo</label>
+    <input
+      id="login-email"
+      z-input
+      type="email"
+      autocomplete="email"
+      placeholder="correo@ejemplo.com"
+      [formField]="form.email"
+      [zStatus]="form.email().touched() && form.email().invalid() ? 'error' : undefined"
+    />
+    @if (form.email().touched() && form.email().invalid()) {
+      <div class="text-sm text-destructive" role="alert">
+        @for (validationError of form.email().errors(); track validationError.kind) {
+          <p>{{ validationError.message }}</p>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="space-y-2">
+    <label for="login-password" class="text-sm font-medium text-text-secondary">Contraseña</label>
+    <input
+      id="login-password"
+      z-input
+      type="password"
+      autocomplete="current-password"
+      placeholder="Mínimo 6 caracteres"
+      [formField]="form.password"
+      [zStatus]="form.password().touched() && form.password().invalid() ? 'error' : undefined"
+    />
+    @if (form.password().touched() && form.password().invalid()) {
+      <div class="text-sm text-destructive" role="alert">
+        @for (validationError of form.password().errors(); track validationError.kind) {
+          <p>{{ validationError.message }}</p>
+        }
+      </div>
+    }
+  </div>
+
+  <button
+    z-button
+    zType="default"
+    zSize="lg"
+    zFull
+    type="submit"
+    class="font-semibold"
+    [zLoading]="isLoading()"
+    [zDisabled]="isLoading()"
+  >
+    Iniciar sesión
+  </button>
+</form>

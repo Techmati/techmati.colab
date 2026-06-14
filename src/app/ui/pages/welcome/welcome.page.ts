@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@ang
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '@/core/service/authentication/authentication.service';
-import { AuthCredentials, WelcomePanel } from './ui/organisms/welcome-panel/welcome-panel';
+import { WelcomePanel } from './ui/organisms/welcome-panel/welcome-panel';
+import { AuthCredentials, SignUpCredentials } from './welcome-auth.type';
 
 @Component({
   selector: 'tm-welcome-page',
@@ -48,13 +49,15 @@ export class WelcomePage {
     }
   }
 
-  async signUpWithPassword(credentials: AuthCredentials): Promise<void> {
+  async signUpWithPassword(credentials: SignUpCredentials): Promise<void> {
     this.startRequest();
 
     try {
       const requiresEmailConfirmation = await this.authenticationService.signUpWithPassword(
         credentials.email,
         credentials.password,
+        credentials.fullName,
+        credentials.username,
       );
 
       if (requiresEmailConfirmation) {
