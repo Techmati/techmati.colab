@@ -2,6 +2,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 
 import { ZardButtonComponent } from '@/shared/components/button';
+import { type SegmentedOption, ZardSegmentedComponent } from '@/shared/components/segmented';
 
 import { AuthCredentials, SignUpCredentials } from '../../../welcome-auth.type';
 import { LoginForm } from '../login-form/login-form';
@@ -11,7 +12,7 @@ type AuthMode = 'sign-in' | 'sign-up';
 
 @Component({
   selector: 'tm-welcome-panel',
-  imports: [NgOptimizedImage, ZardButtonComponent, LoginForm, SignupForm],
+  imports: [NgOptimizedImage, ZardButtonComponent, ZardSegmentedComponent, LoginForm, SignupForm],
   templateUrl: './welcome-panel.html',
   styleUrl: './welcome-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,10 +31,18 @@ export class WelcomePanel {
   protected readonly formError = signal<string | null>(null);
   protected readonly isSignIn = computed(() => this.mode() === 'sign-in');
   protected readonly displayedError = computed(() => this.formError() ?? this.error());
+  protected readonly authOptions: SegmentedOption[] = [
+    { value: 'sign-in', label: 'Iniciar sesión' },
+    { value: 'sign-up', label: 'Crear cuenta' },
+  ];
 
   protected readonly logoUrl = '/res/brand.jpg';
 
-  protected selectMode(mode: AuthMode): void {
+  protected selectMode(mode: string): void {
+    if (mode !== 'sign-in' && mode !== 'sign-up') {
+      return;
+    }
+
     if (this.mode() === mode) {
       return;
     }

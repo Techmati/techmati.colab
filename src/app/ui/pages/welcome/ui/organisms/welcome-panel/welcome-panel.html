@@ -12,36 +12,20 @@
   </header>
 
   <div class="mt-8">
-    <div
-      class="grid grid-cols-2 rounded-lg bg-muted p-1"
-      role="group"
-      aria-label="Selecciona una opción de autenticación"
-    >
-      <button
-        type="button"
-        class="rounded-md px-3 py-2 text-sm font-semibold text-text-secondary"
-        [class.bg-card]="isSignIn()"
-        [class.text-primary]="isSignIn()"
-        [class.shadow-sm]="isSignIn()"
-        [attr.aria-pressed]="isSignIn()"
-        (click)="selectMode('sign-in')"
-      >
-        Iniciar sesión
-      </button>
-      <button
-        type="button"
-        class="rounded-md px-3 py-2 text-sm font-semibold text-text-secondary"
-        [class.bg-card]="!isSignIn()"
-        [class.text-primary]="!isSignIn()"
-        [class.shadow-sm]="!isSignIn()"
-        [attr.aria-pressed]="!isSignIn()"
-        (click)="selectMode('sign-up')"
-      >
-        Crear cuenta
-      </button>
-    </div>
+    <z-segmented
+      class="w-full"
+      zAriaLabel="Selecciona una opción de autenticación"
+      zDefaultValue="sign-in"
+      [zOptions]="authOptions"
+      (zChange)="selectMode($event)"
+    />
 
-    <div class="mt-5">
+    <div
+      class="mt-5"
+      role="tabpanel"
+      [id]="isSignIn() ? 'sign-in-panel' : 'sign-up-panel'"
+      [attr.aria-labelledby]="isSignIn() ? 'sign-in-tab' : 'sign-up-tab'"
+    >
       @if (isSignIn()) {
         <tm-login-form
           [isLoading]="isLoading()"
