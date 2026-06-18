@@ -45,3 +45,4 @@ Thumbs.db
 
 boneyard.setup.js
 .nvim.lua
+.docs/*
