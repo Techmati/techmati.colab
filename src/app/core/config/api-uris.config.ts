@@ -20,6 +20,17 @@ const API = {
     PHRASE_SET: (phraseSetId: string) => `${BASE_URL}/summary/phrase-set/${phraseSetId}`,
     STATS: `${BASE_URL}/summary/stats`,
   },
+  ADMIN: {
+    STATS: {
+      SUMMARY: `${BASE_URL}/admin/stats/summary/today`,
+      CONTRIBUTIONS: {
+        LATEST: `${BASE_URL}/admin/stats/contributions/latest`,
+      },
+      USERS: {
+        LATEST: `${BASE_URL}/admin/stats/users/latest`,
+      },
+    },
+  },
 };
 
 export { API };
