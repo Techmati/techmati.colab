@@ -1,17 +1,16 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import type {
+  AdminQuickAction,
+  AdminUserPreview,
+  RecentContribution,
+} from './admin-dashboard.types';
 import { AdminBottomNav } from './ui/organisms/admin-bottom-nav/admin-bottom-nav';
 import { AdminDashboardTopBar } from './ui/organisms/admin-dashboard-top-bar/admin-dashboard-top-bar';
 import { AdminMetricsPanel } from './ui/organisms/admin-metrics-panel/admin-metrics-panel';
 import { AdminQuickActionsPanel } from './ui/organisms/admin-quick-actions-panel/admin-quick-actions-panel';
 import { NewUsersPanel } from './ui/organisms/new-users-panel/new-users-panel';
 import { RecentContributionsPanel } from './ui/organisms/recent-contributions-panel/recent-contributions-panel';
-import type {
-  AdminMetric,
-  AdminQuickAction,
-  AdminUserPreview,
-  RecentContribution,
-} from './admin-dashboard.types';
 
 @Component({
   selector: 'tm-admin-dashboard-page',
@@ -28,21 +27,6 @@ import type {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminDashboardPage {
-  protected readonly metrics: readonly AdminMetric[] = [
-    {
-      label: 'Contribuciones hoy',
-      value: '1,284',
-      icon: 'ri--file-list-3-line',
-      tone: 'purple',
-    },
-    {
-      label: 'Nuevos usuarios',
-      value: '42',
-      icon: 'ri--user-add-line',
-      tone: 'green',
-    },
-  ];
-
   protected readonly quickActions: readonly AdminQuickAction[] = [
     {
       label: 'Gestionar Frases',

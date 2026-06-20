@@ -1,12 +1,5 @@
 export type AdminDashboardTone = 'purple' | 'green';
 
-export interface AdminMetric {
-  readonly label: string;
-  readonly value: string;
-  readonly icon: string;
-  readonly tone: AdminDashboardTone;
-}
-
 export interface AdminQuickAction {
   readonly label: string;
   readonly icon: string;
