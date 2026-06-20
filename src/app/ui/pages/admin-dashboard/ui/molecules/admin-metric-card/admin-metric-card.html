@@ -1,0 +1,18 @@
+<article
+  class="flex min-h-28 items-center gap-4 rounded-2xl border border-l-4 border-border-subtle bg-card p-5 shadow-sm"
+  [ngClass]="accentClass()"
+>
+  <div
+    class="flex size-12 shrink-0 items-center justify-center rounded-2xl"
+    [ngClass]="iconClass()"
+  >
+    <span class="text-2xl" [ngClass]="metric().icon" aria-hidden="true"></span>
+  </div>
+
+  <div class="min-w-0">
+    <p class="text-sm font-medium leading-5 text-text-secondary">{{ metric().label }}</p>
+    <p class="font-display text-3xl font-bold leading-tight text-text-primary">
+      {{ metric().value }}
+    </p>
+  </div>
+</article>

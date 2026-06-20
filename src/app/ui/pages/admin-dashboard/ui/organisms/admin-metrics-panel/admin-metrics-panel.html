@@ -1,0 +1,5 @@
+<section aria-label="Métricas de administración" class="grid gap-3 sm:grid-cols-2">
+  @for (metric of metrics(); track metric.label) {
+    <tm-admin-metric-card [metric]="metric" />
+  }
+</section>

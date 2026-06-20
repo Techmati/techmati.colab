@@ -1,0 +1,19 @@
+<main class="admin-dashboard-page min-h-screen bg-background pb-28">
+  <tm-admin-dashboard-top-bar />
+
+  <section class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-5">
+    <header class="space-y-1">
+      <p class="text-sm font-medium text-brand-green-600">Resumen operativo</p>
+      <h1 class="font-display text-3xl font-bold leading-tight text-primary">
+        Panel de Administrador
+      </h1>
+    </header>
+
+    <tm-admin-metrics-panel [metrics]="metrics" />
+    <tm-admin-quick-actions-panel [actions]="quickActions" />
+    <tm-recent-contributions-panel [contributions]="recentContributions" />
+    <tm-new-users-panel [users]="newUsers" />
+  </section>
+
+  <tm-admin-bottom-nav />
+</main>

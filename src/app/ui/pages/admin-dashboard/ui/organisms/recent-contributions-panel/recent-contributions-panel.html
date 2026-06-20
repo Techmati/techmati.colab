@@ -1,0 +1,23 @@
+<section
+  class="rounded-2xl border border-border-subtle bg-card p-5 shadow-sm"
+  aria-labelledby="recent-contributions-title"
+>
+  <header class="mb-4 flex items-center gap-2">
+    <span class="ri--time-line text-xl text-primary" aria-hidden="true"></span>
+    <h2
+      id="recent-contributions-title"
+      class="font-display text-xl font-semibold leading-7 text-primary"
+    >
+      Últimas Contribuciones
+    </h2>
+  </header>
+
+  <div class="space-y-3">
+    @for (
+      contribution of contributions();
+      track contribution.contributorName + contribution.submittedAt
+    ) {
+      <tm-recent-contribution-card [contribution]="contribution" />
+    }
+  </div>
+</section>
