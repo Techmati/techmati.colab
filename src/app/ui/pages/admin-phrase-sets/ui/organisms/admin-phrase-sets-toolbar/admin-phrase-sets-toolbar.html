@@ -19,16 +19,17 @@
 
   <label class="relative block">
     <span class="sr-only">Buscar frases</span>
-    <input
-      z-input
-      type="search"
-      placeholder="Buscar..."
-      class="h-9 rounded-lg bg-card pr-10 text-sm shadow-sm"
-      aria-label="Buscar frases"
-    />
-    <span
-      class="ri--search-line pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-lg text-text-secondary"
-      aria-hidden="true"
-    ></span>
+    <z-input-group [zAddonBefore]="searchIcon">
+      <input
+        z-input
+        type="search"
+        placeholder="Buscar..."
+        class="h-9 rounded-lg bg-card pr-10 text-sm shadow-sm"
+        aria-label="Buscar frases"
+      />
+    </z-input-group>
   </label>
+  <ng-template #searchIcon>
+    <span class="ri--search-line text-lg text-muted-foreground" aria-hidden="true"></span>
+  </ng-template>
 </section>
