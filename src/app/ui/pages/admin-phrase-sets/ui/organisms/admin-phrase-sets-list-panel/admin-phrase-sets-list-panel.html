@@ -1,0 +1,21 @@
+<section class="space-y-4 pt-2" aria-labelledby="found-phrase-sets-title">
+  <header class="flex items-center justify-between gap-3">
+    <h2
+      id="found-phrase-sets-title"
+      class="font-display text-xl font-semibold leading-7 text-primary"
+    >
+      Frases encontradas
+    </h2>
+    <p class="shrink-0 text-xs font-medium leading-4 text-text-secondary">
+      {{ totalResults() }} resultados
+    </p>
+  </header>
+
+  <div class="space-y-4">
+    @for (phraseSet of phraseSets(); track phraseSet.id) {
+      <tm-admin-phrase-set-card [phraseSet]="phraseSet" />
+    }
+  </div>
+
+  <tm-admin-phrase-sets-pagination />
+</section>

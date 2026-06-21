@@ -1,0 +1,26 @@
+<nav
+  class="flex items-center justify-between gap-1 rounded-xl border border-border-subtle bg-card p-2 shadow-sm"
+  aria-label="Paginación de frases"
+>
+  <button z-button zType="ghost" type="button" class="h-9 gap-1 px-2 text-sm text-text-primary">
+    <span class="lucide--chevron-left text-base" aria-hidden="true"></span>
+    Previous
+  </button>
+
+  <div class="flex items-center gap-1">
+    <button z-button zType="ghost" zSize="icon" type="button" aria-label="Ir a página 1">1</button>
+    <button z-button zType="outline" zSize="icon" type="button" aria-current="page">2</button>
+    <button z-button zType="ghost" zSize="icon" type="button" aria-label="Ir a página 3">3</button>
+    <span
+      class="flex size-9 items-center justify-center text-sm text-text-primary"
+      aria-hidden="true"
+    >
+      ...
+    </span>
+  </div>
+
+  <button z-button zType="ghost" type="button" class="h-9 gap-1 px-2 text-sm text-text-primary">
+    Next
+    <span class="lucide--chevron-right text-base" aria-hidden="true"></span>
+  </button>
+</nav>

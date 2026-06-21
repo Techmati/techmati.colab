@@ -1,0 +1,28 @@
+<article
+  class="flex min-h-28 items-center justify-between gap-3 rounded-xl border border-border-subtle bg-card p-4 shadow-sm"
+>
+  <div class="min-w-0 flex-1 space-y-2">
+    <div class="flex items-center gap-2">
+      <h3 class="font-display text-xl font-semibold leading-7 text-primary">
+        {{ phraseSet().title }}
+      </h3>
+      <span [class]="badgeClass()">
+        {{ badgeLabel() }}
+      </span>
+    </div>
+
+    <p class="flex flex-wrap items-center gap-1 text-xs font-medium leading-4 text-text-secondary">
+      <span>{{ phraseSet().phraseCount }} frases</span>
+      <span class="text-border-subtle" aria-hidden="true">•</span>
+      <span>{{ phraseSet().updatedLabel }}</span>
+    </p>
+  </div>
+
+  <button
+    type="button"
+    class="flex size-9 shrink-0 items-center justify-center rounded-lg text-border hover:bg-surface-soft hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    [attr.aria-label]="'Abrir set de frases ' + phraseSet().title"
+  >
+    <span class="lucide--chevron-right text-xl" aria-hidden="true"></span>
+  </button>
+</article>

@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { authenticationGuard } from './core/guard/authentication.guard';
-import { AdminDashboardPage } from './ui/pages/admin-dashboard/admin-dashboard.page';
 import { DashboardPage } from './ui/pages/dashboard/dashboard.page';
 import { ProfileHistoryPage } from './ui/pages/profile-history/profile-history.page';
 import { ProfilePage } from './ui/pages/profile/profile.page';
@@ -21,7 +20,18 @@ export const routes: Routes = [
   },
   {
     path: 'admin/dashboard',
-    component: AdminDashboardPage,
+    loadComponent: () =>
+      import('./ui/pages/admin-dashboard/admin-dashboard.page').then(
+        (module) => module.AdminDashboardPage,
+      ),
+    canActivate: [authenticationGuard],
+  },
+  {
+    path: 'admin/phrase-sets',
+    loadComponent: () =>
+      import('./ui/pages/admin-phrase-sets/admin-phrase-sets.page').then(
+        (module) => module.AdminPhraseSetsPage,
+      ),
     canActivate: [authenticationGuard],
   },
   {

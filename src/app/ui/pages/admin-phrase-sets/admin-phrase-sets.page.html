@@ -1,0 +1,10 @@
+<main class="admin-phrase-sets-page min-h-screen bg-background pb-24">
+  <tm-admin-phrase-sets-top-bar />
+
+  <section class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-5 py-5">
+    <tm-admin-phrase-sets-toolbar />
+    <tm-admin-phrase-sets-list-panel [phraseSets]="phraseSets" [totalResults]="totalResults" />
+  </section>
+
+  <tm-admin-phrase-sets-bottom-nav />
+</main>
