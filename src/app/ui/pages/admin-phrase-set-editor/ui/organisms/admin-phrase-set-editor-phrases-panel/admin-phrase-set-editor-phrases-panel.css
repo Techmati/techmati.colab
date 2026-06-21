@@ -1,3 +1,16 @@
 :host {
   display: block;
 }
+
+:host ::ng-deep .admin-phrase-editor-card--ghost {
+  opacity: 0.45;
+}
+
+:host ::ng-deep .admin-phrase-editor-card--chosen {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+:host ::ng-deep .admin-phrase-editor-card--dragging {
+  box-shadow: 0 18px 45px rgb(15 23 42 / 0.18);
+}
