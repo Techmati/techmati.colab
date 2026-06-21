@@ -40,6 +40,7 @@
     "@iconify/tailwind4": "^1.2.3",
     "@ngx-env/builder": "^21.0.1",
     "@tailwindcss/postcss": "^4.1.12",
+    "@types/sortablejs": "^1.15.9",
     "jsdom": "^28.0.0",
     "postcss": "^8.5.3",
     "prettier": "^3.8.1",

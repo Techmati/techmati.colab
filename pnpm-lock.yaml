@@ -90,6 +90,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.1.12
         version: 4.3.0
+      '@types/sortablejs':
+        specifier: ^1.15.9
+        version: 1.15.9
       jsdom:
         specifier: ^28.0.0
         version: 28.1.0
@@ -1587,6 +1590,9 @@ packages:
 
   '@types/node@25.9.1':
     resolution: {integrity: sha512-xfrlY7UD5rMJk3ZVJP8BNzS28J36YJg+xp+LPXV1TdWxr8uMH5A860QNxYDGQe/ylDSgjxE52Q9VnO7p75tJxg==}
+
+  '@types/sortablejs@1.15.9':
+    resolution: {integrity: sha512-7HP+rZGE2p886PKV9c9OJzLBI6BBJu1O7lJGYnPyG3fS4/duUCcngkNCjsLwIMV+WMqANe3tt4irrXHSIe68OQ==}
 
   '@vitejs/plugin-basic-ssl@2.1.4':
     resolution: {integrity: sha512-HXciTXN/sDBYWgeAD4V4s0DN0g72x5mlxQhHxtYu3Tt8BLa6MzcJZUyDVFCdtjNs3bfENVHVzOsmooTVuNgAAw==}
@@ -4762,6 +4768,8 @@ snapshots:
     dependencies:
       undici-types: 7.24.6
     optional: true
+
+  '@types/sortablejs@1.15.9': {}
 
   '@vitejs/plugin-basic-ssl@2.1.4(vite@7.3.2(@types/node@25.9.1)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.48.0))':
     dependencies:
