@@ -44,12 +44,11 @@
           <span class="ri--global-line text-base" aria-hidden="true"></span>
           Idioma
         </span>
-        <div
-          class="flex h-9 items-center justify-between rounded-lg border border-input bg-card px-3 text-sm text-muted-foreground shadow-sm"
-        >
-          <span>Nahuatl a Español</span>
-          <span class="lucide--chevron-down text-base" aria-hidden="true"></span>
-        </div>
+        <z-select class="w-full" zPlaceholder="Selecciona un idioma" [zValue]="phraseSet.language">
+          @for (language of languageOptions; track language.value) {
+            <z-select-item [zValue]="language.value">{{ language.label }}</z-select-item>
+          }
+        </z-select>
       </label>
 
       <section class="space-y-2">
