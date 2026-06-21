@@ -1,4 +1,5 @@
 import { API } from '@/core/config/api-uris.config';
+import { PhraseSet } from '@/core/types/phrase-set.type';
 import { Pagination } from '@/core/types/utils.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
@@ -17,7 +18,7 @@ export class AdminPhraseSetService {
       queryKey: ['phrase-set', searchParam, page, size],
       queryFn: () =>
         lastValueFrom(
-          this.client.get<{ data: unknown[]; total: number }>(this.searchApi, {
+          this.client.get<{ phraseSets: PhraseSet[]; total: number }>(this.searchApi, {
             params: {
               search: searchParam,
               page: page.toString(),

@@ -1,17 +1,40 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 
+import { ZardSkeletonComponent } from '@/shared/components/skeleton';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
+import { injectQuery } from '@tanstack/angular-query-experimental';
+import { map } from 'rxjs';
+import { AdminPhraseSetService } from '../../../core/service/admin-phrase-set/admin-phrase-set.service';
 import { AdminPhraseSetCard } from '../../molecules/admin-phrase-set-card/admin-phrase-set-card';
 import { AdminPhraseSetsPagination } from '../../molecules/admin-phrase-sets-pagination/admin-phrase-sets-pagination';
-import type { AdminPhraseSetPreview } from '../../../admin-phrase-sets.types';
 
 @Component({
   selector: 'tm-admin-phrase-sets-list-panel',
-  imports: [AdminPhraseSetCard, AdminPhraseSetsPagination],
+  imports: [AdminPhraseSetCard, AdminPhraseSetsPagination, ZardSkeletonComponent],
   templateUrl: './admin-phrase-sets-list-panel.html',
   styleUrl: './admin-phrase-sets-list-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminPhraseSetsListPanel {
-  readonly phraseSets = input.required<readonly AdminPhraseSetPreview[]>();
-  readonly totalResults = input.required<number>();
+  private readonly adminPhraseSetService = inject(AdminPhraseSetService);
+  readonly page = signal(1);
+  readonly size = 10;
+
+  readonly searchResults = injectQuery(() =>
+    this.adminPhraseSetService.search(this.searchParam() || '', {
+      page: this.page(),
+      size: this.size,
+    }),
+  );
+  private readonly route = inject(ActivatedRoute);
+
+  private readonly searchParam = toSignal(
+    this.route.queryParamMap.pipe(map((params) => params.get('search') || '')),
+  );
+
+  constructor() {
+    effect(() => console.log('searchParam', this.searchParam()));
+    effect(() => console.log('searchResults', this.searchResults.data()));
+  }
 }

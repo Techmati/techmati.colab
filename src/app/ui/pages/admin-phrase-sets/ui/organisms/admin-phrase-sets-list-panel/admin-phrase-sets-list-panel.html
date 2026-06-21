@@ -1,3 +1,4 @@
+@let isLoading = searchResults.isPending() || searchResults.isFetching();
 <section class="space-y-4 pt-2" aria-labelledby="found-phrase-sets-title">
   <header class="flex items-center justify-between gap-3">
     <h2
@@ -7,13 +8,25 @@
       Frases encontradas
     </h2>
     <p class="shrink-0 text-xs font-medium leading-4 text-text-secondary">
-      {{ totalResults() }} resultados
+      @if(isLoading) {
+        <span class="animate-pulse">
+          Cargando
+        </span>
+      }@else{
+        {{searchResults.data()?.total }} resultados.
+      }
     </p>
   </header>
-
   <div class="space-y-4">
-    @for (phraseSet of phraseSets(); track phraseSet.id) {
-      <tm-admin-phrase-set-card [phraseSet]="phraseSet" />
+    @if(isLoading) {
+      <z-skeleton class="h-28 w-full"></z-skeleton>
+      <z-skeleton class="h-28 w-full"></z-skeleton>
+      <z-skeleton class="h-28 w-full"></z-skeleton>
+      <z-skeleton class="h-28 w-full"></z-skeleton>
+    }@else{
+      @for (phraseSet of searchResults.data()?.phraseSets; track phraseSet.id) {
+        <tm-admin-phrase-set-card [phraseSet]="phraseSet" />
+      }
     }
   </div>
 
