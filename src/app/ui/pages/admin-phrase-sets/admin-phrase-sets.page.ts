@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import type { AdminPhraseSetPreview } from './admin-phrase-sets.types';
 import { AdminPhraseSetsBottomNav } from './ui/organisms/admin-phrase-sets-bottom-nav/admin-phrase-sets-bottom-nav';
@@ -19,6 +19,7 @@ import { AdminPhraseSetsTopBar } from './ui/organisms/admin-phrase-sets-top-bar/
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminPhraseSetsPage {
+  readonly searchParam = input.required<string>();
   protected readonly phraseSets: readonly AdminPhraseSetPreview[] = [
     {
       id: 'vocabulario-medico-basico',

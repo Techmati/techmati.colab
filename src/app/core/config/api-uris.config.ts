@@ -30,6 +30,9 @@ const API = {
         LATEST: `${BASE_URL}/admin/stats/users/latest`,
       },
     },
+    PHRASE_SET: {
+      SEARCH: `${BASE_URL}/admin/phrase-sets`,
+    },
   },
 };
 
