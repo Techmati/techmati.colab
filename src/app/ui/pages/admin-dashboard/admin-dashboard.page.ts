@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import type {
   AdminQuickAction,
-  AdminUserPreview,
-  RecentContribution,
+  AdminUserPreview
 } from './admin-dashboard.types';
 import { AdminBottomNav } from './ui/organisms/admin-bottom-nav/admin-bottom-nav';
 import { AdminDashboardTopBar } from './ui/organisms/admin-dashboard-top-bar/admin-dashboard-top-bar';
@@ -45,33 +44,6 @@ export class AdminDashboardPage {
       icon: 'ri--checkbox-circle-line',
       tone: 'green',
       variant: 'solid',
-    },
-  ];
-
-  protected readonly recentContributions: readonly RecentContribution[] = [
-    {
-      contributorName: 'Juan Carlos M.',
-      initials: 'JC',
-      phraseSet: 'Frases medicas',
-      completedPhrases: 5,
-      totalPhrases: 24,
-      submittedAt: 'Hoy, 14:20',
-    },
-    {
-      contributorName: 'Elena Rodríguez',
-      initials: 'ER',
-      phraseSet: 'Sintomas comunes',
-      completedPhrases: 12,
-      totalPhrases: 12,
-      submittedAt: 'Hoy, 13:45',
-    },
-    {
-      contributorName: 'Miguel Sosa',
-      initials: 'MS',
-      phraseSet: 'Emergencias cardiacas',
-      completedPhrases: 12,
-      totalPhrases: 40,
-      submittedAt: 'Hoy, 11:10',
     },
   ];
 
