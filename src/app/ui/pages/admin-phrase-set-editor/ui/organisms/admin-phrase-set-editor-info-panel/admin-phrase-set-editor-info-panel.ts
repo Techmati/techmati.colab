@@ -6,7 +6,7 @@ import { ZardInputDirective } from '@/shared/components/input';
 import { ZardSelectImports } from '@/shared/components/select';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { ZardSwitchComponent } from '@/shared/components/switch';
-import { FormsModule } from '@angular/forms';
+import { form, FormField, required } from '@angular/forms/signals';
 
 @Component({
   selector: 'tm-admin-phrase-set-editor-info-panel',
@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
     ...ZardSelectImports,
     ZardSkeletonComponent,
     ZardSwitchComponent,
-    FormsModule,
+    FormField,
   ],
   templateUrl: './admin-phrase-set-editor-info-panel.html',
   styleUrl: './admin-phrase-set-editor-info-panel.css',
@@ -23,7 +23,13 @@ import { FormsModule } from '@angular/forms';
 })
 export class AdminPhraseSetEditorInfoPanel {
   readonly phraseSetCache = input.required<PhraseSet | null>();
-  readonly phraseSet = signal<PhraseSet | null>(null);
+  readonly isLoading = input.required<boolean>();
+  readonly phraseSet = signal<PhraseSet>(EMPTY_PHRASE_SET);
+
+  readonly phraseSetForm = form(this.phraseSet, (path) => {
+    required(path.title, { message: 'No se puede subir un set de frases sin titulo.' });
+    required(path.description, { message: 'No se puede subir un set de frases sin descripción.' });
+  });
 
   protected readonly languageOptions = [
     { label: 'Nahuatl a Español', value: 'nahuatl_to_spanish' },
@@ -37,10 +43,22 @@ export class AdminPhraseSetEditorInfoPanel {
   constructor() {
     effect(() => {
       const cache = this.phraseSetCache();
-      if (!this.phraseSet() && cache) {
+      if (cache && !this.phraseSetForm().dirty()) {
         const phraseSetClone = clone(cache);
         this.phraseSet.set(phraseSetClone);
       }
     });
   }
 }
+
+const EMPTY_PHRASE_SET: PhraseSet = {
+  id: '',
+  title: 'Frases de Emergencia Médica',
+  description:
+    'Set de frases comunes utilizadas en situaciones de atención médica de primer contacto.',
+  language: 'nahuatl_to_spanish',
+  published: true,
+  createdAt: '2026-06-18T10:00:00.000Z',
+  publishedAt: '2026-06-19T12:00:00.000Z',
+  phraseCount: 3,
+};

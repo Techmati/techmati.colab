@@ -1,10 +1,11 @@
+@let form = phraseSetForm;
 <article class="rounded-xl border border-border-subtle bg-card p-6 shadow-sm">
   <header class="mb-4 flex items-center justify-center gap-2">
     <span class="ri--pencil-line text-[22px] text-primary" aria-hidden="true"></span>
     <h2 class="font-display text-xl font-semibold leading-7 text-primary">Informacion del set</h2>
   </header>
 
-  @if (phraseSet(); as phraseSet) {
+  @if (!isLoading() && phraseSet(); as phraseSet) {
     <div class="space-y-4">
       <section class="space-y-1">
         <p class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
@@ -23,9 +24,21 @@
           z-input
           zSize="lg"
           class="h-auto rounded-lg bg-card p-2 font-display text-3xl font-bold leading-10 tracking-tight text-foreground shadow-sm"
-          [(ngModel)]="phraseSet.title"
+          [formField]="phraseSetForm.title"
         />
       </label>
+      <!-- TODO: split these similar error advices into a separate reusable component -->
+      @if (form.title().touched() && form.title().invalid()) {
+        <div
+          class="rounded-xl border border-red-500 bg-red-50 px-4 py-3 text-sm text-red-700"
+          role="alert"
+        >
+          <strong class="font-bold">¡Atención!</strong>
+          @for (error of form.title().errors(); track error.kind) {
+            <span class="block sm:inline"> {{ error.message }} </span>
+          }
+        </div>
+      }
 
       <label class="block space-y-1">
         <span class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
@@ -35,16 +48,28 @@
         <textarea
           z-input
           class="min-h-20 resize-none rounded-lg bg-card text-base leading-6 shadow-sm"
-          [(ngModel)]="phraseSet.description"
+          [formField]="phraseSetForm.description"
         ></textarea>
       </label>
+
+      @if (form.description().touched() && form.description().invalid()) {
+        <div
+          class="rounded-xl border border-red-500 bg-red-50 px-4 py-3 text-sm text-red-700"
+          role="alert"
+        >
+          <strong class="font-bold">¡Atención!</strong>
+          @for (error of form.description().errors(); track error.kind) {
+            <span class="block sm:inline"> {{ error.message }} </span>
+          }
+        </div>
+      }
 
       <label class="block space-y-1">
         <span class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
           <span class="ri--global-line text-base" aria-hidden="true"></span>
           Idioma
         </span>
-        <z-select class="w-full" zPlaceholder="Selecciona un idioma" [(zValue)]="phraseSet.language" >
+        <z-select class="w-full" zPlaceholder="Selecciona un idioma" [formField]="phraseSetForm.language">
           @for (language of languageOptions; track language.value) {
             <z-select-item [zValue]="language.value">{{ language.label }}</z-select-item>
           }
@@ -60,7 +85,7 @@
           <z-switch
             zId="phrase-set-visibility"
             class="data-[state=checked]:bg-brand-green-600"
-            [(zChecked)]="phraseSet.published"
+            [formField]="phraseSetForm.published"
           >
             {{ phraseSet.published ? 'Publicado' : 'Borrador' }}
           </z-switch>

@@ -2,7 +2,10 @@
   <tm-admin-phrase-set-editor-top-bar />
 
   <section class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-5 py-6">
-    <tm-admin-phrase-set-editor-info-panel [phraseSetCache]="phraseSet()" />
+    <tm-admin-phrase-set-editor-info-panel
+      [phraseSetCache]="phraseSet()"
+      [isLoading]="phraseSetQuery.isPending()"
+    />
     <tm-admin-phrase-set-editor-phrases-panel [phrases]="phrases()" />
   </section>
 
