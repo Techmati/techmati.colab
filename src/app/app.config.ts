@@ -6,7 +6,8 @@ import { provideZard } from '@/shared/core/provider/providezard';
 import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import localeEsMx from '@angular/common/locales/es-MX';
-import { routes } from './app.routes';
+import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental';
+import { routes } from './app.routes';;
 
 registerLocaleData(localeEsMx);
 export const appConfig: ApplicationConfig = {
@@ -19,5 +20,6 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding(),
     ),
     provideZard(),
+    provideTanStackQuery(new QueryClient()),
   ],
 };

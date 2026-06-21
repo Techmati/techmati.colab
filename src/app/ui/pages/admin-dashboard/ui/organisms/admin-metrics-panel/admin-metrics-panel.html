@@ -10,9 +10,13 @@
 
     <div class="min-w-0">
       <p class="text-sm font-medium leading-5 text-text-secondary">Contribuciones hoy</p>
-      <p class="font-display text-3xl font-bold leading-tight text-text-primary">
-        metric().value
-      </p>
+      @if (todayStats.isPending()) {
+        <z-skeleton class="w-full h-9.5"></z-skeleton>
+      } @else {
+        <p class="font-display text-3xl font-bold leading-tight text-text-primary">
+          {{ todayStats.data()?.contributions }}
+        </p>
+      }
     </div>
   </article>
   <article
@@ -26,9 +30,13 @@
 
     <div class="min-w-0">
       <p class="text-sm font-medium leading-5 text-text-secondary">Nuevos usuarios</p>
-      <p class="font-display text-3xl font-bold leading-tight text-text-primary">
-        metric().value
-      </p>
+      @if (todayStats.isPending()) {
+        <z-skeleton class="w-full h-9.5"></z-skeleton>
+      } @else {
+        <p class="font-display text-3xl font-bold leading-tight text-text-primary">
+          {{ todayStats.data()?.newUsers }}
+        </p>
+      }
     </div>
   </article>
 </section>
