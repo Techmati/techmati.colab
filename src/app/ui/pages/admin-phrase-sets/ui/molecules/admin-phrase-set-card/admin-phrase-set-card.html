@@ -1,28 +1,78 @@
-<article
-  class="flex min-h-28 items-center justify-between gap-3 rounded-xl border border-border-subtle bg-card p-4 shadow-sm"
->
-  <div class="min-w-0 flex-1 space-y-2">
-    <div class="flex items-center gap-2">
-      <h3 class="font-display text-xl font-semibold leading-7 text-primary">
-        {{ phraseSet().title }}
-      </h3>
-      <span [class]="badgeClass()">
-        {{ badgeLabel() }}
-      </span>
+<article [class]="cardClass()">
+  <div class="flex items-center justify-between gap-3">
+    <div class="min-w-0 flex-1 space-y-2">
+      <div class="flex items-center gap-2">
+        <h3 class="font-display text-xl font-semibold leading-7 text-primary">
+          {{ phraseSet().title }}
+        </h3>
+        <span [class]="badgeClass()">
+          {{ badgeLabel() }}
+        </span>
+      </div>
+
+      <p
+        class="flex flex-wrap items-center gap-1 text-xs font-medium leading-4 text-text-secondary"
+      >
+        <span>{{ phraseSet().phraseCount }} frases</span>
+        <span class="text-border-subtle" aria-hidden="true">•</span>
+        <span>{{ phraseSet().createdAt }}</span>
+      </p>
     </div>
 
-    <p class="flex flex-wrap items-center gap-1 text-xs font-medium leading-4 text-text-secondary">
-      <span>{{ phraseSet().phraseCount }} frases</span>
-      <span class="text-border-subtle" aria-hidden="true">•</span>
-      <span>{{ phraseSet().createdAt }}</span>
-    </p>
+    <button
+      type="button"
+      class="flex size-9 shrink-0 items-center justify-center rounded-lg hover:bg-surface-soft hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      [attr.aria-label]="
+        (isExpanded() ? 'Contraer set de frases ' : 'Expandir set de frases ') + phraseSet().title
+      "
+      [attr.aria-expanded]="isExpanded()"
+      (click)="toggleExpanded()"
+    >
+      <span [class]="chevronClass()" aria-hidden="true"></span>
+    </button>
   </div>
 
-  <button
-    type="button"
-    class="flex size-9 shrink-0 items-center justify-center rounded-lg text-border hover:bg-surface-soft hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-    [attr.aria-label]="'Abrir set de frases ' + phraseSet().title"
+  <div
+    [class]="detailsClass()"
+    [attr.aria-hidden]="!isExpanded()"
+    [attr.inert]="isExpanded() ? null : ''"
   >
-    <span class="lucide--chevron-right text-xl" aria-hidden="true"></span>
-  </button>
+    <div class="overflow-hidden">
+      <section class="mt-3 rounded-lg bg-brand-purple-50 p-4" aria-label="Vista previa de frases">
+        <h4 class="mb-2 text-xs font-bold uppercase tracking-wider text-primary">Frases:</h4>
+
+        <ul class="space-y-2">
+          @for (phrase of previewPhrases(); track phrase) {
+            <li
+              class="rounded-md border border-brand-purple-100 bg-card px-3 py-2 text-base leading-6 text-text-primary"
+            >
+              {{ phrase }}
+            </li>
+          }
+        </ul>
+      </section>
+
+      <div class="mt-3 flex justify-end gap-2">
+        <button
+          z-button
+          zType="default"
+          type="button"
+          class="h-8 rounded-lg bg-brand-purple-500 px-3 text-sm font-semibold text-white hover:bg-brand-purple-600 hover:text-white"
+        >
+          <span class="ri--pencil-line text-base" aria-hidden="true"></span>
+          Editar
+        </button>
+
+        <button
+          z-button
+          zType="default"
+          type="button"
+          class="h-8 rounded-lg bg-destructive px-3 text-sm font-semibold text-white hover:bg-destructive/90 hover:text-white"
+        >
+          <span class="ri--delete-bin-line text-base" aria-hidden="true"></span>
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
 </article>
