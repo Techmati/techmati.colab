@@ -32,6 +32,7 @@ const API = {
     },
     PHRASE_SET: {
       SEARCH: `${BASE_URL}/admin/phrase-sets`,
+      BY_ID: (phraseSetId: string) => `${BASE_URL}/admin/phrase-sets/${phraseSetId}`,
       PHRASES: (phraseSetId: string) => `${BASE_URL}/admin/phrase-sets/${phraseSetId}/phrases`,
     },
   },

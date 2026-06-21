@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, signal } f
 import { PhraseSet } from '@/core/types/phrase-set.type';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
+import { RouterLink } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { AdminPhraseSetService } from '../../../core/service/admin-phrase-set/admin-phrase-set.service';
 
@@ -10,7 +11,7 @@ import { AdminPhraseSetService } from '../../../core/service/admin-phrase-set/ad
 
 @Component({
   selector: 'tm-admin-phrase-set-card',
-  imports: [ZardButtonComponent, ZardSkeletonComponent],
+  imports: [ZardButtonComponent, ZardSkeletonComponent, RouterLink],
   templateUrl: './admin-phrase-set-card.html',
   styleUrl: './admin-phrase-set-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

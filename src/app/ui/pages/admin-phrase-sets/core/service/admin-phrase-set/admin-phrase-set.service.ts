@@ -43,4 +43,14 @@ export class AdminPhraseSetService {
         ),
     });
   }
+
+  findById(phraseSetId: string) {
+    return queryOptions({
+      queryKey: ['phrase-set', phraseSetId],
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<{ phraseSet: PhraseSet }>(API.ADMIN.PHRASE_SET.BY_ID(phraseSetId)),
+        ),
+    });
+  }
 }

@@ -4,69 +4,101 @@
     <h2 class="font-display text-xl font-semibold leading-7 text-primary">Informacion del set</h2>
   </header>
 
-  <div class="space-y-4">
-    <section class="space-y-1">
-      <p class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
-        <span class="lucide--key-round text-base" aria-hidden="true"></span>
-        ID
-      </p>
-      <p class="break-all text-xs font-medium leading-4 text-foreground">{{ phraseSet().id }}</p>
-    </section>
+  @if (phraseSet(); as phraseSet) {
+    <div class="space-y-4">
+      <section class="space-y-1">
+        <p class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
+          <span class="lucide--key-round text-base" aria-hidden="true"></span>
+          ID
+        </p>
+        <p class="break-all text-xs font-medium leading-4 text-foreground">{{ phraseSet.id }}</p>
+      </section>
 
-    <label class="block space-y-1">
-      <span class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
-        <span class="ri--heading text-base" aria-hidden="true"></span>
-        Titulo
-      </span>
-      <input
-        z-input
-        zSize="lg"
-        class="h-auto rounded-lg bg-card p-2 font-display text-3xl font-bold leading-10 tracking-tight text-foreground shadow-sm"
-        [value]="phraseSet().title"
-      />
-    </label>
+      <label class="block space-y-1">
+        <span class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
+          <span class="ri--heading text-base" aria-hidden="true"></span>
+          Titulo
+        </span>
+        <input
+          z-input
+          zSize="lg"
+          class="h-auto rounded-lg bg-card p-2 font-display text-3xl font-bold leading-10 tracking-tight text-foreground shadow-sm"
+          [value]="phraseSet.title"
+        />
+      </label>
 
-    <label class="block space-y-1">
-      <span class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
-        <span class="ri--file-text-line text-base" aria-hidden="true"></span>
-        Descripción
-      </span>
-      <textarea
-        z-input
-        class="min-h-20 resize-none rounded-lg bg-card text-base leading-6 shadow-sm"
-        [value]="phraseSet().description"
-      ></textarea>
-    </label>
+      <label class="block space-y-1">
+        <span class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
+          <span class="ri--file-text-line text-base" aria-hidden="true"></span>
+          Descripción
+        </span>
+        <textarea
+          z-input
+          class="min-h-20 resize-none rounded-lg bg-card text-base leading-6 shadow-sm"
+          [value]="phraseSet.description"
+        ></textarea>
+      </label>
 
-    <label class="block space-y-1">
-      <span class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
-        <span class="ri--global-line text-base" aria-hidden="true"></span>
-        Idioma
-      </span>
-      <div
-        class="flex h-9 items-center justify-between rounded-lg border border-input bg-card px-3 text-sm text-muted-foreground shadow-sm"
-      >
-        <span>Nahuatl a Español</span>
-        <span class="lucide--chevron-down text-base" aria-hidden="true"></span>
-      </div>
-    </label>
-
-    <section class="space-y-2">
-      <p class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
-        <span class="lucide--eye text-base" aria-hidden="true"></span>
-        Visibilidad
-      </p>
-      <div class="flex items-center gap-2">
-        <button
-          type="button"
-          class="flex h-6 w-12 items-center justify-end rounded-full bg-brand-green-600 px-1"
-          aria-pressed="true"
-          aria-label="Publicado"
+      <label class="block space-y-1">
+        <span class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
+          <span class="ri--global-line text-base" aria-hidden="true"></span>
+          Idioma
+        </span>
+        <div
+          class="flex h-9 items-center justify-between rounded-lg border border-input bg-card px-3 text-sm text-muted-foreground shadow-sm"
         >
-          <span class="size-4 rounded-full bg-card shadow-sm" aria-hidden="true"></span>
-        </button>
-        <span class="text-base leading-6 text-text-primary">Publicado</span>
-      </div>
-    </section>
-  </div>
+          <span>Nahuatl a Español</span>
+          <span class="lucide--chevron-down text-base" aria-hidden="true"></span>
+        </div>
+      </label>
+
+      <section class="space-y-2">
+        <p class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
+          <span class="lucide--eye text-base" aria-hidden="true"></span>
+          Visibilidad
+        </p>
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            class="flex h-6 w-12 items-center justify-end rounded-full bg-brand-green-600 px-1"
+            aria-pressed="true"
+            aria-label="Publicado"
+          >
+            <span class="size-4 rounded-full bg-card shadow-sm" aria-hidden="true"></span>
+          </button>
+          <span class="text-base leading-6 text-text-primary">Publicado</span>
+        </div>
+      </section>
+    </div>
+  } @else {
+    <div class="space-y-4" aria-label="Cargando informacion del set">
+      <section class="space-y-1">
+        <z-skeleton class="h-4 w-16" />
+        <z-skeleton class="h-4 w-full max-w-64" />
+      </section>
+
+      <section class="space-y-1">
+        <z-skeleton class="h-4 w-20" />
+        <z-skeleton class="h-28 w-full rounded-lg" />
+      </section>
+
+      <section class="space-y-1">
+        <z-skeleton class="h-4 w-28" />
+        <z-skeleton class="h-20 w-full rounded-lg" />
+      </section>
+
+      <section class="space-y-1">
+        <z-skeleton class="h-4 w-20" />
+        <z-skeleton class="h-9 w-full rounded-lg" />
+      </section>
+
+      <section class="space-y-2">
+        <z-skeleton class="h-4 w-24" />
+        <div class="flex items-center gap-2">
+          <z-skeleton class="h-6 w-12 rounded-full" />
+          <z-skeleton class="h-6 w-24" />
+        </div>
+      </section>
+    </div>
+  }
 </article>
