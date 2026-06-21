@@ -23,7 +23,7 @@
           z-input
           zSize="lg"
           class="h-auto rounded-lg bg-card p-2 font-display text-3xl font-bold leading-10 tracking-tight text-foreground shadow-sm"
-          [value]="phraseSet.title"
+          [(ngModel)]="phraseSet.title"
         />
       </label>
 
@@ -35,7 +35,7 @@
         <textarea
           z-input
           class="min-h-20 resize-none rounded-lg bg-card text-base leading-6 shadow-sm"
-          [value]="phraseSet.description"
+          [(ngModel)]="phraseSet.description"
         ></textarea>
       </label>
 
@@ -44,7 +44,7 @@
           <span class="ri--global-line text-base" aria-hidden="true"></span>
           Idioma
         </span>
-        <z-select class="w-full" zPlaceholder="Selecciona un idioma" [zValue]="phraseSet.language">
+        <z-select class="w-full" zPlaceholder="Selecciona un idioma" [(zValue)]="phraseSet.language" >
           @for (language of languageOptions; track language.value) {
             <z-select-item [zValue]="language.value">{{ language.label }}</z-select-item>
           }
@@ -57,17 +57,16 @@
           Visibilidad
         </p>
         <div class="flex items-center gap-2">
-          <button
-            type="button"
-            class="flex h-6 w-12 items-center justify-end rounded-full bg-brand-green-600 px-1"
-            aria-pressed="true"
-            aria-label="Publicado"
+          <z-switch
+            zId="phrase-set-visibility"
+            class="data-[state=checked]:bg-brand-green-600"
+            [(zChecked)]="phraseSet.published"
           >
-            <span class="size-4 rounded-full bg-card shadow-sm" aria-hidden="true"></span>
-          </button>
-          <span class="text-base leading-6 text-text-primary">Publicado</span>
+            {{ phraseSet.published ? 'Publicado' : 'Borrador' }}
+          </z-switch>
         </div>
       </section>
+      <button (click)="print()">print</button>
     </div>
   } @else {
     <div class="space-y-4" aria-label="Cargando informacion del set">
