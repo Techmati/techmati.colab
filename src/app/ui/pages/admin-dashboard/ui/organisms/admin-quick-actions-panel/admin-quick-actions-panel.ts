@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
+import { AdminQuickAction } from '../../../types/admin-dashboard.types';
 import { AdminActionCard } from '../../molecules/admin-action-card/admin-action-card';
-import type { AdminQuickAction } from '../../../admin-dashboard.types';
 
 @Component({
   selector: 'tm-admin-quick-actions-panel',

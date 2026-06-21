@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 import { ZardButtonComponent } from '@/shared/components/button';
-
-import type { AdminQuickAction } from '../../../admin-dashboard.types';
+import { AdminQuickAction } from '../../../types/admin-dashboard.types';
 
 @Component({
   selector: 'tm-admin-action-card',

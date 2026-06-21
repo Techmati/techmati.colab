@@ -1,9 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import type {
-  AdminQuickAction,
-  AdminUserPreview
-} from './admin-dashboard.types';
+import { AdminQuickAction } from './types/admin-dashboard.types';
 import { AdminBottomNav } from './ui/organisms/admin-bottom-nav/admin-bottom-nav';
 import { AdminDashboardTopBar } from './ui/organisms/admin-dashboard-top-bar/admin-dashboard-top-bar';
 import { AdminMetricsPanel } from './ui/organisms/admin-metrics-panel/admin-metrics-panel';
@@ -44,27 +41,6 @@ export class AdminDashboardPage {
       icon: 'ri--checkbox-circle-line',
       tone: 'green',
       variant: 'solid',
-    },
-  ];
-
-  protected readonly newUsers: readonly AdminUserPreview[] = [
-    {
-      fullName: 'Ana López',
-      initials: 'AL',
-      username: '@alopez_traductora',
-      email: 'ana.lopez@tlacuilo.org',
-    },
-    {
-      fullName: 'Roberto V.',
-      initials: 'RV',
-      username: '@roberto_v_revisor',
-      email: 'roberto.v@tlacuilo.org',
-    },
-    {
-      fullName: 'Lucía Méndez',
-      initials: 'LM',
-      username: '@lmendez_experta',
-      email: 'lucia.m@tlacuilo.org',
     },
   ];
 }
