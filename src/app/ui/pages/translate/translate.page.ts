@@ -15,6 +15,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { form, FormField, minLength, required } from '@angular/forms/signals';
 
 import { tryCatch } from '@/core/utils/try.util';
+import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
 import { BatchProgressPanel } from './ui/organisms/batch-progress-panel/batch-progress-panel';
 import { BottomActionBar } from './ui/organisms/bottom-action-bar/bottom-action-bar';
 import { PronunciationRecorder } from './ui/organisms/pronunciation-recorder/pronunciation-recorder';
@@ -34,6 +35,7 @@ import { TranslationTaskSkeleton } from './ui/organisms/translation-task-skeleto
     PronunciationRecorder,
     BottomActionBar,
     TranslationTaskSkeleton,
+    FieldErrorAdvice,
   ],
   templateUrl: './translate.page.html',
   styleUrl: './translate.page.css',

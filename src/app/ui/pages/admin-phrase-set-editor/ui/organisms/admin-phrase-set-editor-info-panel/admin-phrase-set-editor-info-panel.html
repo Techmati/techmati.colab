@@ -27,18 +27,7 @@
           [formField]="phraseSetForm.title"
         />
       </label>
-      <!-- TODO: split these similar error advices into a separate reusable component -->
-      @if (form.title().touched() && form.title().invalid()) {
-        <div
-          class="rounded-xl border border-red-500 bg-red-50 px-4 py-3 text-sm text-red-700"
-          role="alert"
-        >
-          <strong class="font-bold">¡Atención!</strong>
-          @for (error of form.title().errors(); track error.kind) {
-            <span class="block sm:inline"> {{ error.message }} </span>
-          }
-        </div>
-      }
+      <tm-field-error-advice [field]="form.title" />
 
       <label class="block space-y-1">
         <span class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
@@ -52,17 +41,7 @@
         ></textarea>
       </label>
 
-      @if (form.description().touched() && form.description().invalid()) {
-        <div
-          class="rounded-xl border border-red-500 bg-red-50 px-4 py-3 text-sm text-red-700"
-          role="alert"
-        >
-          <strong class="font-bold">¡Atención!</strong>
-          @for (error of form.description().errors(); track error.kind) {
-            <span class="block sm:inline"> {{ error.message }} </span>
-          }
-        </div>
-      }
+      <tm-field-error-advice [field]="form.description" />
 
       <label class="block space-y-1">
         <span class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">

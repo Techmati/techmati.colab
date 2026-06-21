@@ -1,0 +1,12 @@
+@let fieldState = field()();
+
+@if (fieldState.touched() && fieldState.invalid()) {
+  <div class="rounded-xl border border-red-500 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+    <strong class="font-bold">¡Atención!</strong>
+    @for (error of fieldState.errors(); track error.kind) {
+      @if (error.message) {
+        <span class="block sm:inline"> {{ error.message }} </span>
+      }
+    }
+  </div>
+}

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, effect, input, signal } from '@angu
 
 import type { PhraseSet } from '@/core/types/phrase-set.type';
 import { clone } from '@/core/utils/clone.util';
+import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
 import { ZardInputDirective } from '@/shared/components/input';
 import { ZardSelectImports } from '@/shared/components/select';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
@@ -16,6 +17,7 @@ import { form, FormField, required } from '@angular/forms/signals';
     ZardSkeletonComponent,
     ZardSwitchComponent,
     FormField,
+    FieldErrorAdvice,
   ],
   templateUrl: './admin-phrase-set-editor-info-panel.html',
   styleUrl: './admin-phrase-set-editor-info-panel.css',

@@ -13,30 +13,10 @@
         [disabled]="isLoading()"
         [formField]="form.translation"
       />
-      @if (form.translation().touched() && form.translation().invalid()) {
-        <div
-          class="rounded-xl border border-red-500 bg-red-50 px-4 py-3 text-sm text-red-700"
-          role="alert"
-        >
-          <strong class="font-bold">¡Atención!</strong>
-          @for (error of form.translation().errors(); track error.kind) {
-            <span class="block sm:inline"> {{ error.message }} </span>
-          }
-        </div>
-      }
+      <tm-field-error-advice [field]="form.translation" />
 
       <tm-pronunciation-recorder [formField]="form.pronunciation" [disabled]="isLoading()" />
-      @if (form.pronunciation().touched() && form.pronunciation().invalid()) {
-        <div
-          class="rounded-xl border border-red-500 bg-red-50 px-4 py-3 text-sm text-red-700"
-          role="alert"
-        >
-          <strong class="font-bold">¡Atención!</strong>
-          @for (error of form.pronunciation().errors(); track error.kind) {
-            <span class="block sm:inline"> {{ error.message }} </span>
-          }
-        </div>
-      }
+      <tm-field-error-advice [field]="form.pronunciation" />
     }
   </section>
 
