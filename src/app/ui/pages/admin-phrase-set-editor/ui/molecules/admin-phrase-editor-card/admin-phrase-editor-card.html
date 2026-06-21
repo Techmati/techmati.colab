@@ -1,0 +1,34 @@
+<article
+  class="flex items-center gap-2 rounded-lg border border-border-subtle bg-card p-2 shadow-sm"
+>
+  <button
+    type="button"
+    class="flex shrink-0 items-center justify-center text-muted-foreground"
+    [attr.aria-label]="'Reordenar frase ' + phrase().position"
+  >
+    <span class="ri--draggable text-lg" aria-hidden="true"></span>
+  </button>
+
+  <div class="min-w-0 flex-1 space-y-1">
+    <p
+      class="flex items-center gap-1 text-sm font-semibold leading-5 tracking-wide text-brand-green-600"
+    >
+      <span class="ri--number-1 text-sm" aria-hidden="true"></span>
+      # {{ phrase().position }}
+    </p>
+
+    <textarea
+      z-input
+      class="min-h-14 resize-none rounded-lg bg-card text-base leading-6 shadow-sm"
+      [value]="phrase().sourceText"
+    ></textarea>
+  </div>
+
+  <button
+    type="button"
+    class="flex size-9 shrink-0 items-center justify-center rounded-full text-text-secondary hover:bg-surface-soft hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    [attr.aria-label]="'Eliminar frase ' + phrase().position"
+  >
+    <span class="lucide--trash-2 text-lg" aria-hidden="true"></span>
+  </button>
+</article>
