@@ -7,6 +7,7 @@ import { LatestContributionsResponseDto } from '../../dto/latest-contributions-r
 import { LatestUsersResponseDto } from '../../dto/latest-users-response.dto';
 import { StatsResponseDto } from '../../dto/stats.response.dto';
 
+//TODO: add pagination to the queries to retrieve the only 3 first as the component needs them
 @Injectable({
   providedIn: 'root',
 })

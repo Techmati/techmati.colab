@@ -14,15 +14,17 @@
 
   <div class="space-y-3">
     @if(latestContributions.isPending()) {
-        <z-skeleton class="w-full h-20 rounded-lg" />
-        <z-skeleton class="w-full h-20 rounded-lg" />
-        <z-skeleton class="w-full h-20 rounded-lg" />
+        <z-skeleton class="w-full h-14 rounded-lg" />
+        <z-skeleton class="w-full h-14 rounded-lg" />
+        <z-skeleton class="w-full h-14 rounded-lg" />
     } @else {
     @for (
       contribution of contributions(); track contribution.phraseSetId + contribution.contributorId
     ) {
       <tm-recent-contribution-card [contribution]="contribution" />
-    }
+    }@empty {
+        <!-- TODO: add empty advice -->
+      }
     }
   </div>
 </section>

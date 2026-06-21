@@ -9,9 +9,14 @@
     </h2>
   </header>
 
+  @if(usersQuery.isPending() || usersQuery.isFetching()) {
+    <z-skeleton class="w-full h-21.5"></z-skeleton>
+  }
   <div class="space-y-3">
-    @for (user of users(); track user.email) {
+    @for (user of users();  track user.username) {
       <tm-admin-user-card [user]="user" />
+    }@empty{
+      <!-- TODO: add empty advice -->
     }
   </div>
 

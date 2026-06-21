@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-import type { AdminUserPreview } from '../../../admin-dashboard.types';
+import { Profile } from '@/core/dto/Profile.dto';
 
 @Component({
   selector: 'tm-admin-user-card',
@@ -10,5 +10,21 @@ import type { AdminUserPreview } from '../../../admin-dashboard.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminUserCard {
-  readonly user = input.required<AdminUserPreview>();
+  readonly user = input.required<Profile>();
+
+  readonly initials = computed(() => {
+    const [firstName, lastName] = this.user().fullName.split(' ');
+    return `${firstName[0]}${lastName[0]}`;
+  });
+
+  readonly role = computed(
+    () =>
+      ({
+        root: 'Super Administrador',
+        admin: 'Administrador',
+        user: 'Usuario',
+        moderator: 'Moderador',
+        analyst: 'Analista',
+      })[this.user().role],
+  );
 }

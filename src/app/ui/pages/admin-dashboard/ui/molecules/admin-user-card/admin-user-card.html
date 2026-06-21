@@ -4,7 +4,7 @@
   <div
     class="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-green-100 text-sm font-bold text-brand-green-600"
   >
-    {{ user().initials }}
+    {{ initials() }}
   </div>
 
   <div class="min-w-0">
@@ -12,6 +12,6 @@
       {{ user().fullName }}
     </h3>
     <p class="truncate text-xs leading-4 text-primary">{{ user().username }}</p>
-    <p class="truncate text-xs leading-4 text-text-secondary">{{ user().email }}</p>
+    <p class="truncate text-xs leading-4 text-text-secondary">{{ role() }}</p>
   </div>
 </article>
