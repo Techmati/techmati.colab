@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 
+import { ZardPaginationComponent } from '@/shared/components/pagination';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
@@ -7,11 +8,10 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 import { map } from 'rxjs';
 import { AdminPhraseSetService } from '../../../core/service/admin-phrase-set/admin-phrase-set.service';
 import { AdminPhraseSetCard } from '../../molecules/admin-phrase-set-card/admin-phrase-set-card';
-import { AdminPhraseSetsPagination } from '../../molecules/admin-phrase-sets-pagination/admin-phrase-sets-pagination';
 
 @Component({
   selector: 'tm-admin-phrase-sets-list-panel',
-  imports: [AdminPhraseSetCard, AdminPhraseSetsPagination, ZardSkeletonComponent],
+  imports: [AdminPhraseSetCard, ZardSkeletonComponent, ZardPaginationComponent],
   templateUrl: './admin-phrase-sets-list-panel.html',
   styleUrl: './admin-phrase-sets-list-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,8 +33,5 @@ export class AdminPhraseSetsListPanel {
     this.route.queryParamMap.pipe(map((params) => params.get('search') || '')),
   );
 
-  constructor() {
-    effect(() => console.log('searchParam', this.searchParam()));
-    effect(() => console.log('searchResults', this.searchResults.data()));
-  }
+  readonly pages = computed(() => Math.ceil((this.searchResults.data()?.total || 0) / this.size));
 }

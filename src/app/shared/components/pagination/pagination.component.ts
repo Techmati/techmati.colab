@@ -11,8 +11,6 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideChevronLeft, lucideChevronRight, lucideEllipsis } from '@ng-icons/lucide';
 import type { ClassValue } from 'clsx';
 
 import {
@@ -31,9 +29,7 @@ import { mergeClasses } from '@/shared/utils/merge-classes';
 
 @Component({
   selector: 'ul[z-pagination-content]',
-  template: `
-    <ng-content />
-  `,
+  template: ` <ng-content /> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
@@ -45,14 +41,14 @@ import { mergeClasses } from '@/shared/utils/merge-classes';
 export class ZardPaginationContentComponent {
   readonly class = input<ClassValue>('');
 
-  protected readonly classes = computed(() => mergeClasses(paginationContentVariants(), this.class()));
+  protected readonly classes = computed(() =>
+    mergeClasses(paginationContentVariants(), this.class()),
+  );
 }
 
 @Component({
   selector: 'li[z-pagination-item]',
-  template: `
-    <ng-content />
-  `,
+  template: ` <ng-content /> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
@@ -60,7 +56,7 @@ export class ZardPaginationContentComponent {
   },
   exportAs: 'zPaginationItem',
 })
-export class ZardPaginationItemComponent {}
+export class ZardPaginationItemComponent { }
 // Structural wrapper component for pagination items (<li>). No inputs required.
 
 @Component({
@@ -90,12 +86,14 @@ export class ZardPaginationButtonComponent {
   readonly zDisabled = input(false, { transform: booleanAttribute });
   readonly zSize = input<ZardButtonSizeVariants>('default');
 
-  protected readonly zType = computed<ZardButtonTypeVariants>(() => (this.zActive() ? 'outline' : 'ghost'));
+  protected readonly zType = computed<ZardButtonTypeVariants>(() =>
+    this.zActive() ? 'outline' : 'ghost',
+  );
 }
 
 @Component({
   selector: 'z-pagination-previous',
-  imports: [ZardPaginationButtonComponent, NgIcon],
+  imports: [ZardPaginationButtonComponent],
   template: `
     <button
       type="button"
@@ -106,13 +104,13 @@ export class ZardPaginationButtonComponent {
       [zDisabled]="zDisabled()"
     >
       <span class="sr-only">To previous page</span>
-      <ng-icon name="lucideChevronLeft" aria-hidden="true" />
+      <span class="lucide--chevron-left"></span>
       <span class="hidden sm:block" aria-hidden="true">Previous</span>
     </button>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  viewProviders: [provideIcons({ lucideChevronLeft })],
+  viewProviders: [],
   exportAs: 'zPaginationPrevious',
 })
 export class ZardPaginationPreviousComponent {
@@ -120,12 +118,14 @@ export class ZardPaginationPreviousComponent {
   readonly zDisabled = input(false, { transform: booleanAttribute });
   readonly zSize = input<ZardButtonSizeVariants>('default');
 
-  protected readonly classes = computed(() => mergeClasses(paginationPreviousVariants(), this.class()));
+  protected readonly classes = computed(() =>
+    mergeClasses(paginationPreviousVariants(), this.class()),
+  );
 }
 
 @Component({
   selector: 'z-pagination-next',
-  imports: [ZardPaginationButtonComponent, NgIcon],
+  imports: [ZardPaginationButtonComponent],
   template: `
     <button
       type="button"
@@ -137,12 +137,12 @@ export class ZardPaginationPreviousComponent {
     >
       <span class="sr-only">To next page</span>
       <span class="hidden sm:block" aria-hidden="true">Next</span>
-      <ng-icon name="lucideChevronRight" aria-hidden="true" />
+      <span class="lucide--chevron-right" aria-hidden="true"></span>
     </button>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  viewProviders: [provideIcons({ lucideChevronRight })],
+  viewProviders: [],
   exportAs: 'zPaginationNext',
 })
 export class ZardPaginationNextComponent {
@@ -155,13 +155,11 @@ export class ZardPaginationNextComponent {
 
 @Component({
   selector: 'z-pagination-ellipsis',
-  imports: [NgIcon],
-  template: `
-    <ng-icon name="lucideEllipsis" aria-hidden="true" />
-  `,
+  imports: [],
+  template: ` <span class="lucide--ellipsis" aria-hidden="true"></span> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  viewProviders: [provideIcons({ lucideEllipsis })],
+  viewProviders: [],
   host: {
     '[class]': 'classes()',
     'aria-hidden': 'true',
@@ -171,7 +169,9 @@ export class ZardPaginationNextComponent {
 export class ZardPaginationEllipsisComponent {
   readonly class = input<ClassValue>('');
 
-  protected readonly classes = computed(() => mergeClasses(paginationEllipsisVariants(), this.class()));
+  protected readonly classes = computed(() =>
+    mergeClasses(paginationEllipsisVariants(), this.class()),
+  );
 }
 
 @Component({
@@ -211,7 +211,9 @@ export class ZardPaginationEllipsisComponent {
               [zSize]="zSize()"
               (click)="goToPage(page)"
             >
-              <span class="sr-only">{{ pages().length === page ? 'To last page, page' : 'To page' }}</span>
+              <span class="sr-only">{{
+                pages().length === page ? 'To last page, page' : 'To page'
+              }}</span>
               {{ page }}
             </button>
           </li>
@@ -252,7 +254,9 @@ export class ZardPaginationComponent {
   readonly Math = Math;
 
   protected readonly classes = computed(() => mergeClasses(paginationVariants(), this.class()));
-  readonly pages = computed<number[]>(() => Array.from({ length: Math.max(0, this.zTotal()) }, (_, i) => i + 1));
+  readonly pages = computed<number[]>(() =>
+    Array.from({ length: Math.max(0, this.zTotal()) }, (_, i) => i + 1),
+  );
 
   goToPage(page: number): void {
     if (!this.zDisabled() && page !== this.zPageIndex()) {
