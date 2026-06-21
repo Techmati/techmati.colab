@@ -1,5 +1,6 @@
 import { API } from '@/core/config/api-uris.config';
 import { PhraseSet } from '@/core/types/phrase-set.type';
+import { Phrase } from '@/core/types/phrase.type';
 import { Pagination } from '@/core/types/utils.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
@@ -15,7 +16,7 @@ export class AdminPhraseSetService {
 
   search(searchParam: string, { page, size }: Pagination) {
     return queryOptions({
-      queryKey: ['phrase-set', searchParam, page, size],
+      queryKey: ['phrase-set', searchParam, { page, size }],
       queryFn: () =>
         lastValueFrom(
           this.client.get<{ phraseSets: PhraseSet[]; total: number }>(this.searchApi, {
@@ -27,6 +28,19 @@ export class AdminPhraseSetService {
           }),
         ),
       placeholderData: keepPreviousData,
+    });
+  }
+
+  findPhrases(phraseSetId: string, { page, size }: Pagination) {
+    return queryOptions({
+      queryKey: ['phrase-set', phraseSetId, 'phrases', { page, size }],
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<{ phrases: Phrase[]; total: number }>(
+            API.ADMIN.PHRASE_SET.PHRASES(phraseSetId),
+            { params: { page: page.toString(), size: size.toString() } },
+          ),
+        ),
     });
   }
 }

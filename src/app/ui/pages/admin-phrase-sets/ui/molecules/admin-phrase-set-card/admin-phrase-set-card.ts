@@ -1,13 +1,16 @@
-import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 
 import { PhraseSet } from '@/core/types/phrase-set.type';
 import { ZardButtonComponent } from '@/shared/components/button';
+import { ZardSkeletonComponent } from '@/shared/components/skeleton';
+import { injectQuery } from '@tanstack/angular-query-experimental';
+import { AdminPhraseSetService } from '../../../core/service/admin-phrase-set/admin-phrase-set.service';
 
 // TODO: change budget sizes in angular.json
 
 @Component({
   selector: 'tm-admin-phrase-set-card',
-  imports: [ZardButtonComponent],
+  imports: [ZardButtonComponent, ZardSkeletonComponent],
   templateUrl: './admin-phrase-set-card.html',
   styleUrl: './admin-phrase-set-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,17 +19,13 @@ export class AdminPhraseSetCard {
   readonly phraseSet = input.required<PhraseSet>();
   protected readonly isExpanded = signal(false);
 
-  private readonly previewPhrasesBySet: Record<string, readonly string[]> = {
-    'vocabulario-medico-basico': ['Me duele la cabeza', 'Tengo fiebre', 'Respiración difícil'],
-    'sintomas-comunes': ['Tengo dolor de garganta', 'Me siento mareado', 'No puedo dormir'],
-    'partes-del-cuerpo': ['Cabeza', 'Pecho', 'Brazo derecho'],
-    'emergencias-cardiacas': [
-      'Me duele el pecho',
-      'Mi corazón late rápido',
-      'Necesito ayuda urgente',
-    ],
-    'protocolo-covid-19': ['Tengo tos seca', 'Perdí el olfato', 'Me falta el aire'],
-  };
+  private readonly adminPhraseSetService = inject(AdminPhraseSetService);
+
+  readonly phrases = injectQuery(() =>
+    this.adminPhraseSetService.findPhrases(this.phraseSet().id, { page: 1, size: 3 }),
+  );
+
+  readonly previewPhrases = computed(() => this.phrases.data()?.phrases || []);
 
   protected readonly badgeLabel = computed(() =>
     this.phraseSet().published ? 'PUBLICADO' : 'BORRADOR',
@@ -60,15 +59,6 @@ export class AdminPhraseSetCard {
         ? 'grid-rows-[1fr] scale-y-100 opacity-100'
         : 'grid-rows-[0fr] scale-y-95 opacity-0',
     ].join(' '),
-  );
-
-  protected readonly previewPhrases = computed(
-    () =>
-      this.previewPhrasesBySet[this.phraseSet().id] ?? [
-        'Me duele la cabeza',
-        'Tengo fiebre',
-        'Respiración difícil',
-      ],
   );
 
   protected toggleExpanded(): void {
