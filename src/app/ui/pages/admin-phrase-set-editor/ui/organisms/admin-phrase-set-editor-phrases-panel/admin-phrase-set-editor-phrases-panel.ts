@@ -7,7 +7,6 @@ import {
   ElementRef,
   inject,
   input,
-  linkedSignal,
   signal,
   viewChild,
 } from '@angular/core';
@@ -29,13 +28,8 @@ export class AdminPhraseSetEditorPhrasesPanel {
   private readonly destroyRef = inject(DestroyRef);
   private readonly phrasesList = viewChild.required<ElementRef<HTMLElement>>('phrasesList');
 
-  readonly phrases = input.required<readonly Phrase[]>();
-  readonly phrasesDrafts = signal<readonly Phrase[]>([]);
-
-  protected readonly orderedPhrases = linkedSignal<readonly Phrase[], Phrase[]>({
-    source: this.phrases,
-    computation: (phrases) => this.orderInputPhrases(phrases),
-  });
+  readonly cachedPhrases = input.required<readonly Phrase[]>();
+  readonly phrasesDrafts = signal<Phrase[]>([]);
 
   constructor() {
     afterNextRender(() => {
@@ -52,9 +46,10 @@ export class AdminPhraseSetEditorPhrasesPanel {
     });
 
     effect(() => {
-      console.log('Phrases updated, resetting drafts if empty');
-      if (this.phrasesDrafts().length === 0 && this.phrases.length > 0) {
-        this.phrasesDrafts.set(this.phrases().map((phrase) => clone(phrase)));
+      const cachedPhrases = this.cachedPhrases();
+
+      if (this.phrasesDrafts().length === 0 && cachedPhrases.length > 0) {
+        this.phrasesDrafts.set(this.orderCachedPhrases(cachedPhrases));
       }
     });
   }
@@ -64,12 +59,12 @@ export class AdminPhraseSetEditorPhrasesPanel {
       return;
     }
 
-    this.orderedPhrases.update((phrases) => {
-      const next = [...phrases];
+    this.phrasesDrafts.update((drafts) => {
+      const next = [...drafts];
       const [movedPhrase] = next.splice(oldIndex, 1);
 
       if (!movedPhrase) {
-        return phrases;
+        return drafts;
       }
 
       next.splice(newIndex, 0, movedPhrase);
@@ -78,8 +73,10 @@ export class AdminPhraseSetEditorPhrasesPanel {
     });
   }
 
-  private orderInputPhrases(phrases: readonly Phrase[]): Phrase[] {
-    return this.withVisualPositions([...phrases].sort((a, b) => a.position - b.position));
+  private orderCachedPhrases(phrases: readonly Phrase[]): Phrase[] {
+    return this.withVisualPositions(
+      phrases.map((phrase) => clone(phrase)).sort((a, b) => a.position - b.position),
+    );
   }
 
   private withVisualPositions(phrases: readonly Phrase[]): Phrase[] {

@@ -6,7 +6,7 @@
       [phraseSetCache]="phraseSet()"
       [isLoading]="phraseSetQuery.isPending()"
     />
-    <tm-admin-phrase-set-editor-phrases-panel [phrases]="phrases()" />
+    <tm-admin-phrase-set-editor-phrases-panel [cachedPhrases]="phrases()" />
   </section>
 
   <tm-admin-phrase-set-editor-actions />

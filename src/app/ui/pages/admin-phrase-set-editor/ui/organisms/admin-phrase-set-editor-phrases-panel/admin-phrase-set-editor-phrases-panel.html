@@ -6,12 +6,12 @@
     </div>
 
     <span class="rounded-full bg-state-info-soft px-2 py-1 text-xs font-medium text-text-secondary">
-      {{ orderedPhrases().length }} frases
+      {{ phrasesDrafts().length }} frases
     </span>
   </header>
 
   <div #phrasesList class="space-y-3">
-    @for (phrase of orderedPhrases(); track phrase.id) {
+    @for (phrase of phrasesDrafts(); track phrase.id) {
       <tm-admin-phrase-editor-card [phrase]="phrase" />
     }
   </div>
