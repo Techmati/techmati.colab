@@ -1,34 +1,36 @@
 <article
-  class="flex items-center gap-2 rounded-lg border border-border-subtle bg-card p-2 shadow-sm"
+  class="flex flex-col items-center gap-2 rounded-lg border border-border-subtle bg-card p-2 shadow-sm"
 >
-  <button
-    type="button"
-    class="admin-phrase-editor-card__drag-handle flex shrink-0 cursor-grab touch-none items-center justify-center text-muted-foreground active:cursor-grabbing"
-    [attr.aria-label]="'Reordenar frase ' + phrase().position"
-  >
-    <span class="ri--draggable text-lg" aria-hidden="true"></span>
-  </button>
-
-  <div class="min-w-0 flex-1 space-y-1">
-    <p
-      class="flex items-center gap-1 text-sm font-semibold leading-5 tracking-wide text-brand-green-600"
+  <div class="flex items-center gap-2 w-full">
+    <button
+      type="button"
+      class="admin-phrase-editor-card__drag-handle flex shrink-0 cursor-grab touch-none items-center justify-center text-muted-foreground active:cursor-grabbing"
+      [attr.aria-label]="'Reordenar frase ' + phrase().position"
     >
-      <span class="ri--number-1 text-sm" aria-hidden="true"></span>
-      # {{ phrase().position }}
-    </p>
+      <span class="ri--draggable text-lg" aria-hidden="true"></span>
+    </button>
 
-    <textarea
-      z-input
-      class="min-h-14 resize-none rounded-lg bg-card text-base leading-6 shadow-sm"
-      [value]="phrase().sourceText"
-    ></textarea>
+    <div class="min-w-0 flex-1 space-y-1">
+      <p
+        class="flex items-center gap-1 text-sm font-semibold leading-5 tracking-wide text-brand-green-600"
+      >
+        # {{ phrase().position }}
+      </p>
+
+      <textarea
+        z-input
+        class="min-h-14 resize-none rounded-lg bg-card text-base leading-6 shadow-sm"
+        [formField]="phraseForm.sourceText"
+      ></textarea>
+    </div>
+
+    <button
+      type="button"
+      class="flex size-9 shrink-0 items-center justify-center rounded-full text-text-secondary hover:bg-surface-soft hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      [attr.aria-label]="'Eliminar frase ' + phrase().position"
+    >
+      <span class="lucide--trash-2 text-lg" aria-hidden="true"></span>
+    </button>
   </div>
-
-  <button
-    type="button"
-    class="flex size-9 shrink-0 items-center justify-center rounded-full text-text-secondary hover:bg-surface-soft hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-    [attr.aria-label]="'Eliminar frase ' + phrase().position"
-  >
-    <span class="lucide--trash-2 text-lg" aria-hidden="true"></span>
-  </button>
+  <tm-field-error-advice [field]="phraseForm.sourceText"></tm-field-error-advice>
 </article>

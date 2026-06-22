@@ -17,6 +17,8 @@ import type { Phrase } from '@/core/types/phrase.type';
 import { clone } from '@/core/utils/clone.util';
 import { AdminPhraseEditorCard } from '../../molecules/admin-phrase-editor-card/admin-phrase-editor-card';
 
+type NewPhrase = Omit<Phrase, 'id' | 'createdAt' | 'updatedAt'>;
+
 @Component({
   selector: 'tm-admin-phrase-set-editor-phrases-panel',
   imports: [AdminPhraseEditorCard],
@@ -29,6 +31,7 @@ export class AdminPhraseSetEditorPhrasesPanel {
   private readonly phrasesList = viewChild.required<ElementRef<HTMLElement>>('phrasesList');
 
   readonly cachedPhrases = input.required<readonly Phrase[]>();
+  readonly phraseSetId = input.required<string>();
   readonly phrasesDrafts = signal<Phrase[]>([]);
 
   constructor() {
@@ -81,5 +84,15 @@ export class AdminPhraseSetEditorPhrasesPanel {
 
   private withVisualPositions(phrases: readonly Phrase[]): Phrase[] {
     return phrases.map((phrase, index) => ({ ...phrase, position: index + 1 }));
+  }
+
+  private buildEmptyPhrase(): NewPhrase {
+    return {
+      phraseSetId: this.phraseSetId(),
+      sourceText: '',
+      language: 'spanish_to_nahuatl',
+      context: '',
+      position: this.phrasesDrafts().length + 1,
+    };
   }
 }
