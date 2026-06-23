@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 
+import { ZardAlertDialogService } from '@/shared/components/alert-dialog';
 import { ZardButtonComponent } from '@/shared/components/button';
 
 @Component({
@@ -10,10 +11,23 @@ import { ZardButtonComponent } from '@/shared/components/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminPhraseSetEditorActions {
+  private readonly alertDialog = inject(ZardAlertDialogService);
+
   readonly save = output<void>();
   readonly saveLoading = input.required<boolean>();
   readonly discard = output<void>();
-  readonly discardLoading = input.required<boolean>();
-  readonly delete = output<void>();
-  readonly deleteLoading = input.required<boolean>();
+
+  protected confirmDiscard(): void {
+    this.alertDialog.confirm({
+      zTitle: '¿Descartar cambios?',
+      zDescription:
+        'Si sales ahora, se perderán los cambios que todavía no has guardado. Puedes quedarte y seguir editando si lo prefieres.',
+      zCancelText: 'Seguir editando',
+      zOkText: 'Sí, descartar',
+      zOkDestructive: true,
+      zOnOk: () => {
+        this.discard.emit();
+      },
+    });
+  }
 }

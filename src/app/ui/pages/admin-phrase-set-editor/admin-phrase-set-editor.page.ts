@@ -6,6 +6,7 @@ import {
   input,
   signal,
 } from '@angular/core';
+import { Location } from '@angular/common';
 
 import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
 import { AdminPhraseSetService } from '../../../core/service/admin-phrase-set/admin-phrase-set.service';
@@ -37,6 +38,7 @@ import { AdminPhraseSetEditorTopBar } from './ui/organisms/admin-phrase-set-edit
 export class AdminPhraseSetEditorPage {
   readonly phraseSetId = input.required<string>();
   private readonly adminPhraseSetService = inject(AdminPhraseSetService);
+  private readonly location = inject(Location);
 
   readonly isCreating = computed(() => this.phraseSetId() === 'new');
 
@@ -78,6 +80,10 @@ export class AdminPhraseSetEditorPage {
     }
 
     this.phraseSetUpdateMutation.mutate();
+  }
+
+  protected discard(): void {
+    this.location.back();
   }
 
   private buildUpdatePayload(): PhraseSetUpdatePayload {
