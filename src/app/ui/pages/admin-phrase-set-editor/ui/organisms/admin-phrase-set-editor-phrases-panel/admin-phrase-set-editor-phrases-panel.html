@@ -12,12 +12,19 @@
   </header>
 
   <div #phrasesList class="space-y-3">
-    @for (phrase of phrasesDrafts(); track phrase.draftId) {
-      <tm-admin-phrase-editor-card
-        [phrase]="phrase"
-        (phraseChange)="updatePhraseDraft(phrase.draftId, $event)"
-        (delete)="deletePhraseDraft(phrase.draftId)"
-      />
+    @if(isPending()) {
+      <z-skeleton class="w-full h-29"></z-skeleton>
+      <z-skeleton class="w-full h-29"></z-skeleton>
+      <z-skeleton class="w-full h-29"></z-skeleton>
+      <z-skeleton class="w-full h-29"></z-skeleton>
+    }@else {
+      @for (phrase of phrasesDrafts(); track phrase.draftId) {
+        <tm-admin-phrase-editor-card
+          [phrase]="phrase"
+          (phraseChange)="updatePhraseDraft(phrase.draftId, $event)"
+          (delete)="deletePhraseDraft(phrase.draftId)"
+        />
+      }
     }
   </div>
 
