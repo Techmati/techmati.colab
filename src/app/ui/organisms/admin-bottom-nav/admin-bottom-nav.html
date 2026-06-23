@@ -6,15 +6,31 @@
     <a
       class="flex flex-col items-center justify-center gap-1 px-2 text-xs font-medium text-text-secondary transition-colors hover:bg-surface-soft hover:text-primary"
       routerLink="/admin/dashboard"
+      [routerLinkActive]="[
+        'border-t-2',
+        'border-primary',
+        'bg-brand-purple-50/60',
+        '!font-bold',
+        '!text-primary'
+      ]"
+      [routerLinkActiveOptions]="{ exact: true }"
+      ariaCurrentWhenActive="page"
     >
       <span class="ri--dashboard-line text-xl" aria-hidden="true"></span>
       Inicio
     </a>
 
     <a
-      class="flex flex-col items-center justify-center gap-1 border-t-2 border-primary bg-brand-purple-50/60 px-2 text-xs font-bold text-primary"
+      class="flex flex-col items-center justify-center gap-1 px-2 text-xs font-medium text-text-secondary transition-colors hover:bg-surface-soft hover:text-primary"
       routerLink="/admin/phrase-sets"
-      aria-current="page"
+      [routerLinkActive]="[
+        'border-t-2',
+        'border-primary',
+        'bg-brand-purple-50/60',
+        '!font-bold',
+        '!text-primary'
+      ]"
+      ariaCurrentWhenActive="page"
     >
       <span class="ri--file-text-line text-xl" aria-hidden="true"></span>
       Frases

@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { AdminBottomNav } from '@/ui/organisms/admin-bottom-nav/admin-bottom-nav';
 import { TopAppBar } from '@/ui/organisms/top-app-bar/top-app-bar';
 import { AdminQuickAction } from './core/types/admin-dashboard.types';
-import { AdminBottomNav } from './ui/organisms/admin-bottom-nav/admin-bottom-nav';
 import { AdminMetricsPanel } from './ui/organisms/admin-metrics-panel/admin-metrics-panel';
 import { AdminQuickActionsPanel } from './ui/organisms/admin-quick-actions-panel/admin-quick-actions-panel';
 import { NewUsersPanel } from './ui/organisms/new-users-panel/new-users-panel';
