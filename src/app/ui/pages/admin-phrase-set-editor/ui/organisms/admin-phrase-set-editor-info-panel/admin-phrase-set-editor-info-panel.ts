@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, effect, input, signal } from '@angu
 
 import type { PhraseSet } from '@/core/types/phrase-set.type';
 import { clone } from '@/core/utils/clone.util';
-import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
 import { ZardInputDirective } from '@/shared/components/input';
 import { ZardSelectImports } from '@/shared/components/select';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { ZardSwitchComponent } from '@/shared/components/switch';
+import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
 import { form, FormField, required } from '@angular/forms/signals';
 
 @Component({
@@ -26,9 +26,9 @@ import { form, FormField, required } from '@angular/forms/signals';
 export class AdminPhraseSetEditorInfoPanel {
   readonly phraseSetCache = input.required<PhraseSet | null>();
   readonly isLoading = input.required<boolean>();
-  readonly phraseSet = signal<PhraseSet>(EMPTY_PHRASE_SET);
+  readonly phraseSetDraft = signal<PhraseSet>(EMPTY_PHRASE_SET);
 
-  readonly phraseSetForm = form(this.phraseSet, (path) => {
+  readonly phraseSetForm = form(this.phraseSetDraft, (path) => {
     required(path.title, { message: 'No se puede subir un set de frases sin titulo.' });
     required(path.description, { message: 'No se puede subir un set de frases sin descripción.' });
   });
@@ -39,7 +39,7 @@ export class AdminPhraseSetEditorInfoPanel {
   ] as const;
 
   protected print() {
-    console.log(this.phraseSet());
+    console.log(this.phraseSetDraft());
   }
 
   constructor() {
@@ -47,7 +47,7 @@ export class AdminPhraseSetEditorInfoPanel {
       const cache = this.phraseSetCache();
       if (cache && !this.phraseSetForm().dirty()) {
         const phraseSetClone = clone(cache);
-        this.phraseSet.set(phraseSetClone);
+        this.phraseSetDraft.set(phraseSetClone);
       }
     });
   }
