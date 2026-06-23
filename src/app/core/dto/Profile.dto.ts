@@ -6,6 +6,8 @@ export interface Profile {
   id: string;
   fullName: string;
   username: string;
+  email: string | null;
+  bannedUntil: string | null;
   role: TechmatiRole;
   createdAt: string;
 }
