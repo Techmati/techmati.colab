@@ -1,3 +1,4 @@
+<button class="fixed top-10 left-10" (click)="test()">print</button>
 <main class="min-h-screen bg-background pb-20">
   <tm-admin-phrase-set-editor-top-bar />
 
@@ -23,4 +24,5 @@
     [saveLoading]="saveLoading()"
     [saveDisabled]="phrasesPanel.invalid() || infoPanel.invalid()"
   />
+  <z-toaster></z-toaster>
 </main>
