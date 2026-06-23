@@ -1,0 +1,59 @@
+<main class="min-h-screen bg-background pb-28">
+  <tm-top-app-bar />
+
+  <section class="mx-auto flex w-full max-w-3xl flex-col gap-5 px-5 py-5">
+    <header class="space-y-3">
+      <h1 class="font-display text-3xl font-bold leading-9 text-primary">Usuarios</h1>
+
+      <z-input-group [zAddonBefore]="searchIcon" class="bg-card shadow-sm">
+        <input
+          z-input
+          type="search"
+          class="h-9 rounded-lg bg-card pr-10 text-sm shadow-sm"
+          placeholder="Buscar..."
+          aria-label="Buscar usuarios"
+          [(ngModel)]="search"
+        />
+        <ng-template #searchIcon>
+          <span class="lucide--search"></span>
+        </ng-template>
+      </z-input-group>
+    </header>
+
+    <tm-admin-users-filter-panel
+      [selectedRole]="selectedRole()"
+      [selectedStatus]="selectedStatus()"
+      (roleChange)="selectedRole.set($event)"
+      (statusChange)="selectedStatus.set($event)"
+    />
+
+    <section class="space-y-3" aria-labelledby="admin-users-results-heading">
+      <div class="flex items-center justify-between gap-3">
+        <h2
+          id="admin-users-results-heading"
+          class="font-display text-xl font-semibold leading-7 text-primary"
+        >
+          Usuarios Encontrados
+        </h2>
+        <p class="text-xs leading-4 text-text-secondary">124 resultados</p>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        @for (user of filteredUsers(); track user.id) {
+          <tm-admin-user-card [user]="user" />
+        }
+      </div>
+    </section>
+
+    <section class="rounded-xl border border-border-subtle bg-card p-2 shadow-sm">
+      <z-pagination
+        zAriaLabel="Paginación de usuarios"
+        [zTotal]="3"
+        [(zPageIndex)]="page"
+        class="w-full justify-center"
+      />
+    </section>
+  </section>
+
+  <tm-admin-bottom-nav />
+</main>

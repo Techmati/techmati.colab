@@ -1,0 +1,47 @@
+<section class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm" aria-label="Filtros">
+  <div class="space-y-4">
+    <div class="space-y-2">
+      <div class="flex items-center gap-1 text-xs font-medium uppercase tracking-[0.05em] text-text-secondary">
+        <span class="lucide--square-user text-base" aria-hidden="true"></span>
+        Rol
+      </div>
+
+      <div class="flex gap-2 overflow-x-auto">
+        @for (option of roleOptions; track option.value) {
+          <button
+            z-button
+            zSize="xs"
+            type="button"
+            class="h-5.5 rounded-full px-2.5"
+            [zType]="selectedRole() === option.value ? 'default' : 'outline'"
+            (click)="roleChange.emit(option.value)"
+          >
+            {{ option.label }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="space-y-2">
+      <div class="flex items-center gap-1 text-xs font-medium uppercase tracking-wider text-text-secondary">
+        <span class="lucide--info text-base" aria-hidden="true"></span>
+        Estado
+      </div>
+
+      <div class="flex gap-2 overflow-x-auto">
+        @for (option of statusOptions; track option.value) {
+          <button
+            z-button
+            zSize="xs"
+            type="button"
+            class="h-[22px] rounded-full px-2.5"
+            [zType]="selectedStatus() === option.value ? 'secondary' : 'outline'"
+            (click)="statusChange.emit(option.value)"
+          >
+            {{ option.label }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</section>

@@ -35,6 +35,14 @@ export const routes: Routes = [
     canActivate: [authenticationGuard],
   },
   {
+    path: 'admin/users',
+    loadComponent: () =>
+      import('./ui/pages/admin-users/admin-users.page').then(
+        (module) => module.AdminUsersPage,
+      ),
+    canActivate: [authenticationGuard],
+  },
+  {
     path: 'admin/phrase-sets/:phraseSetId',
     loadComponent: () =>
       import('./ui/pages/admin-phrase-set-editor/admin-phrase-set-editor.page').then(

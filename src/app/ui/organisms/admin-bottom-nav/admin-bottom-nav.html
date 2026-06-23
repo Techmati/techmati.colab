@@ -44,12 +44,21 @@
       Traducciones
     </button>
 
-    <button
+    <a
       class="flex flex-col items-center justify-center gap-1 px-2 text-xs font-medium text-text-secondary transition-colors hover:bg-surface-soft hover:text-primary"
-      type="button"
+      routerLink="/admin/users"
+      [routerLinkActive]="[
+        'border-t-2',
+        'border-primary',
+        'bg-brand-purple-50/60',
+        '!font-bold',
+        '!text-primary'
+      ]"
+      [routerLinkActiveOptions]="{ exact: true }"
+      ariaCurrentWhenActive="page"
     >
-      <span class="ri--user-settings-line text-xl" aria-hidden="true"></span>
+      <span class="ri--admin-line text-xl" aria-hidden="true"></span>
       Usuarios
-    </button>
+    </a>
   </div>
 </nav>
