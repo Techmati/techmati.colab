@@ -2,14 +2,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
   input,
-  signal,
+  signal
 } from '@angular/core';
 
 import { PhraseSet } from '@/core/types/phrase-set.type';
-import { injectQuery } from '@tanstack/angular-query-experimental';
+import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
 import { AdminPhraseSetService } from '../../../core/service/admin-phrase-set/admin-phrase-set.service';
 import { EMPTY_PHRASE_SET } from './core/defaults/empty-phrase-set.default';
 import { PhraseDraft } from './core/types/phrase-derivations.type';
@@ -44,16 +43,21 @@ export class AdminPhraseSetEditorPage {
     this.adminPhraseSetService.findPhrases(this.phraseSetId(), { page: 1, size: 100 }),
   );
 
+  readonly phraseSetUpdateMutation = injectMutation(() =>
+    this.adminPhraseSetService.update(this.phraseSetId(), {
+      ...this.phraseSetDraft(),
+      phrases: this.phrasesDrafts(),
+    }),
+  );
+
+  readonly saveLoading = computed(() => this.phraseSetUpdateMutation.isPending());
+
   readonly phraseSetDraft = signal<PhraseSet>(EMPTY_PHRASE_SET);
   readonly phrasesDrafts = signal<PhraseDraft[]>([]);
 
-  protected print() {
-    console.log('phraseSetDraft', this.phraseSetDraft());
-    console.log('phrasesDrafts', this.phrasesDrafts());
-  }
-  constructor() {
-    effect(() => {
-      console.log('phraseSet', this.phraseSet());
-    });
+  protected save() {
+    if (this.phraseSetId() !== 'new') {
+      this.phraseSetUpdateMutation.mutate();
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
 import { ZardButtonComponent } from '@/shared/components/button';
 
@@ -9,4 +9,11 @@ import { ZardButtonComponent } from '@/shared/components/button';
   styleUrl: './admin-phrase-set-editor-actions.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminPhraseSetEditorActions {}
+export class AdminPhraseSetEditorActions {
+  readonly save = output<void>();
+  readonly saveLoading = input.required<boolean>();
+  readonly discard = output<void>();
+  readonly discardLoading = input.required<boolean>();
+  readonly delete = output<void>();
+  readonly deleteLoading = input.required<boolean>();
+}

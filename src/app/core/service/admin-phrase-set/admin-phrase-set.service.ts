@@ -2,9 +2,15 @@ import { API } from '@/core/config/api-uris.config';
 import { PhraseSet } from '@/core/types/phrase-set.type';
 import { Phrase } from '@/core/types/phrase.type';
 import { Pagination } from '@/core/types/utils.type';
+import { PhraseSetUpdatePayload } from '@/ui/pages/admin-phrase-set-editor/core/types/phrase-set-derivations.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { keepPreviousData, queryOptions } from '@tanstack/angular-query-experimental';
+import {
+  keepPreviousData,
+  mutationOptions,
+  QueryClient,
+  queryOptions,
+} from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable({
@@ -12,6 +18,8 @@ import { lastValueFrom } from 'rxjs';
 })
 export class AdminPhraseSetService {
   private readonly client = inject(HttpClient);
+  private readonly queryClient = inject(QueryClient);
+
   private readonly searchApi = API.ADMIN.PHRASE_SET.SEARCH;
 
   search(searchParam: string, { page, size }: Pagination) {
@@ -51,6 +59,17 @@ export class AdminPhraseSetService {
         lastValueFrom(
           this.client.get<{ phraseSet: PhraseSet }>(API.ADMIN.PHRASE_SET.BY_ID(phraseSetId)),
         ),
+    });
+  }
+
+  update(phraseSetId: string, phraseSet: PhraseSetUpdatePayload) {
+    return mutationOptions({
+      mutationKey: ['phrase-set', phraseSetId, 'update'],
+      mutationFn: () =>
+        lastValueFrom(this.client.put(API.ADMIN.PHRASE_SET.BY_ID(phraseSetId), phraseSet)),
+      onSuccess: async () => {
+        await this.queryClient.invalidateQueries({ queryKey: ['phrase-set', phraseSetId] });
+      },
     });
   }
 }
