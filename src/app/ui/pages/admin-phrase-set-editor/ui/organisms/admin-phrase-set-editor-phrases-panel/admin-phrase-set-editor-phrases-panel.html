@@ -24,6 +24,13 @@
           (phraseChange)="updatePhraseDraft(phrase.draftId, $event)"
           (delete)="deletePhraseDraft(phrase.draftId)"
         />
+      }@empty {
+        <z-empty
+          zTitle="No hay frases"
+          zDescription="Agrega frases a este set para que los usuarios puedan verlas y usarlas."
+          zIcon="ri--file-list-3-line"
+        >
+        </z-empty>
       }
     }
   </div>

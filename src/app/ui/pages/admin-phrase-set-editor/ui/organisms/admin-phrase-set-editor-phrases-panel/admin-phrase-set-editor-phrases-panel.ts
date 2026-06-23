@@ -57,7 +57,7 @@ export class AdminPhraseSetEditorPhrasesPanel {
     effect(() => {
       const cachedPhrases = this.cachedPhrases();
 
-      if (this.phrasesDrafts().length === 0 && cachedPhrases.length > 0) {
+      if (!this.isPending()) {
         this.phrasesDrafts.set(this.orderCachedPhrases(cachedPhrases));
       }
     });
