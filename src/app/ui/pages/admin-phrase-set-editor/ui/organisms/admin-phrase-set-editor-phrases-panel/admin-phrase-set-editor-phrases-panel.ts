@@ -72,10 +72,6 @@ export class AdminPhraseSetEditorPhrasesPanel {
     });
   }
 
-  protected print() {
-    console.log(this.phrasesDrafts().map(({ sourceText, position }) => [sourceText, position]));
-  }
-
   protected deletePhraseDraft(draftId: string): void {
     this.phrasesDrafts.update((drafts) => {
       const next = drafts.filter((draft) => draft.draftId !== draftId);

@@ -80,15 +80,6 @@ export class AdminPhraseSetEditorPage {
     class:
       'border border-border-subtle bg-card flex gap-2 p-3 items-center justify-center rounded-sm',
   };
-  protected test() {
-    toast.success('Test toast', {
-      description: 'This is a test toast message to demonstrate the toast functionality.',
-      position: 'bottom-right',
-      unstyled: true,
-      class:
-        'border border-border-subtle bg-card flex gap-2 p-3 items-center justify-center rounded-sm',
-    });
-  }
 
   protected save() {
     if (this.isCreating()) {

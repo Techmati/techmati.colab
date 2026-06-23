@@ -42,10 +42,6 @@ export class AdminPhraseSetEditorInfoPanel {
     { label: 'Español a Nahuatl', value: 'spanish_to_nahuatl' },
   ] as const;
 
-  protected print() {
-    console.log(this.phraseSetDraft());
-  }
-
   constructor() {
     effect(() => {
       const cache = this.phraseSetCache();
