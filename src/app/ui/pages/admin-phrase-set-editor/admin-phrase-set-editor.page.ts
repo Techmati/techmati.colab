@@ -1,7 +1,18 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 
+import { PhraseSet } from '@/core/types/phrase-set.type';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { AdminPhraseSetService } from '../../../core/service/admin-phrase-set/admin-phrase-set.service';
+import { EMPTY_PHRASE_SET } from './core/defaults/empty-phrase-set.default';
+import { PhraseDraft } from './core/types/phrase-derivations.type';
 import { AdminPhraseSetEditorActions } from './ui/organisms/admin-phrase-set-editor-actions/admin-phrase-set-editor-actions';
 import { AdminPhraseSetEditorInfoPanel } from './ui/organisms/admin-phrase-set-editor-info-panel/admin-phrase-set-editor-info-panel';
 import { AdminPhraseSetEditorPhrasesPanel } from './ui/organisms/admin-phrase-set-editor-phrases-panel/admin-phrase-set-editor-phrases-panel';
@@ -23,17 +34,23 @@ export class AdminPhraseSetEditorPage {
   readonly phraseSetId = input.required<string>();
   private readonly adminPhraseSetService = inject(AdminPhraseSetService);
 
+  readonly phraseSet = computed(() => this.phraseSetQuery.data()?.phraseSet ?? null);
   readonly phraseSetQuery = injectQuery(() =>
     this.adminPhraseSetService.findById(this.phraseSetId()),
   );
 
-  readonly phraseSet = computed(() => this.phraseSetQuery.data()?.phraseSet ?? null);
-
+  readonly phrases = computed(() => this.phraseSetPhrasesQuery.data()?.phrases ?? []);
   readonly phraseSetPhrasesQuery = injectQuery(() =>
     this.adminPhraseSetService.findPhrases(this.phraseSetId(), { page: 1, size: 100 }),
   );
 
-  readonly phrases = computed(() => this.phraseSetPhrasesQuery.data()?.phrases ?? []);
+  readonly phraseSetDraft = signal<PhraseSet>(EMPTY_PHRASE_SET);
+  readonly phrasesDrafts = signal<PhraseDraft[]>([]);
+
+  protected print() {
+    console.log('phraseSetDraft', this.phraseSetDraft());
+    console.log('phrasesDrafts', this.phrasesDrafts());
+  }
   constructor() {
     effect(() => {
       console.log('phraseSet', this.phraseSet());

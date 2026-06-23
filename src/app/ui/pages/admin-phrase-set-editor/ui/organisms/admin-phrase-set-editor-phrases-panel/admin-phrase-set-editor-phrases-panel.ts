@@ -7,8 +7,8 @@ import {
   ElementRef,
   inject,
   input,
-  signal,
-  viewChild,
+  model,
+  viewChild
 } from '@angular/core';
 import Sortable from 'sortablejs';
 
@@ -37,7 +37,7 @@ export class AdminPhraseSetEditorPhrasesPanel {
 
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly phrasesDrafts = signal<PhraseDraft[]>([]);
+  readonly phrasesDrafts = model<PhraseDraft[]>([]);
   private newPhraseDraftCount = 0;
 
   constructor() {

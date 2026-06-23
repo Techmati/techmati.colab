@@ -1,3 +1,4 @@
+<button (click)="print()" class="fixed top-10 left-10">print</button>
 <main class="min-h-screen bg-background pb-44">
   <tm-admin-phrase-set-editor-top-bar />
 
@@ -5,11 +6,13 @@
     <tm-admin-phrase-set-editor-info-panel
       [phraseSetCache]="phraseSet()"
       [isLoading]="phraseSetQuery.isPending()"
+      [(phraseSetDraft)]="phraseSetDraft"
     />
     <tm-admin-phrase-set-editor-phrases-panel
       [phraseSetId]="phraseSetId()"
       [cachedPhrases]="phrases()"
       [isPending]="phraseSetPhrasesQuery.isPending()"
+      [(phrasesDrafts)]="phrasesDrafts"
     />
   </section>
 
