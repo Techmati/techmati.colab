@@ -1,12 +1,8 @@
-import { PhraseSet } from '@/core/types/phrase-set.type';
+import { NewPhraseSetDraft } from '../types/phrase-set-derivations.type';
 
-export const EMPTY_PHRASE_SET: PhraseSet = {
-  id: '',
+export const EMPTY_PHRASE_SET: NewPhraseSetDraft = {
   title: '',
   description: '',
   language: 'nahuatl_to_spanish',
   published: true,
-  createdAt: '',
-  publishedAt: '',
-  phraseCount: 0,
 };

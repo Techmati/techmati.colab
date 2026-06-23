@@ -7,13 +7,15 @@
 
   @if (!isLoading() && phraseSetDraft(); as phraseSet) {
     <div class="space-y-4">
-      <section class="space-y-1">
-        <p class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
-          <span class="lucide--key-round text-base" aria-hidden="true"></span>
-          ID
-        </p>
-        <p class="break-all text-xs font-medium leading-4 text-foreground">{{ phraseSet.id }}</p>
-      </section>
+      @if ('id' in phraseSet) {
+        <section class="space-y-1">
+          <p class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
+            <span class="lucide--key-round text-base" aria-hidden="true"></span>
+            ID
+          </p>
+          <p class="break-all text-xs font-medium leading-4 text-foreground">{{ phraseSet.id }}</p>
+        </section>
+      }
 
       <label class="block space-y-1">
         <span class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">

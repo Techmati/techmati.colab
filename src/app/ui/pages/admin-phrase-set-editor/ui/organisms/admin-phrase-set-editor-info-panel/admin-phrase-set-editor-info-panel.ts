@@ -9,6 +9,7 @@ import { ZardSwitchComponent } from '@/shared/components/switch';
 import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
 import { form, FormField, required } from '@angular/forms/signals';
 import { EMPTY_PHRASE_SET } from '../../../core/defaults/empty-phrase-set.default';
+import { PhraseSetDraft } from '../../../core/types/phrase-set-derivations.type';
 
 @Component({
   selector: 'tm-admin-phrase-set-editor-info-panel',
@@ -27,7 +28,7 @@ import { EMPTY_PHRASE_SET } from '../../../core/defaults/empty-phrase-set.defaul
 export class AdminPhraseSetEditorInfoPanel {
   readonly phraseSetCache = input.required<PhraseSet | null>();
   readonly isLoading = input.required<boolean>();
-  readonly phraseSetDraft = model<PhraseSet>(EMPTY_PHRASE_SET);
+  readonly phraseSetDraft = model<PhraseSetDraft>(EMPTY_PHRASE_SET);
 
   readonly phraseSetForm = form(this.phraseSetDraft, (path) => {
     required(path.title, { message: 'No se puede subir un set de frases sin titulo.' });

@@ -4,11 +4,17 @@ import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardInputDirective } from '@/shared/components/input';
 import { ZardInputGroupComponent } from '@/shared/components/input-group';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'tm-admin-phrase-sets-toolbar',
-  imports: [ZardButtonComponent, ZardInputDirective, ZardInputGroupComponent, FormsModule],
+  imports: [
+    ZardButtonComponent,
+    ZardInputDirective,
+    ZardInputGroupComponent,
+    FormsModule,
+    RouterLink,
+  ],
   templateUrl: './admin-phrase-sets-toolbar.html',
   styleUrl: './admin-phrase-sets-toolbar.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

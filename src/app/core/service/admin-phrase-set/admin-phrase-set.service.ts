@@ -2,7 +2,10 @@ import { API } from '@/core/config/api-uris.config';
 import { PhraseSet } from '@/core/types/phrase-set.type';
 import { Phrase } from '@/core/types/phrase.type';
 import { Pagination } from '@/core/types/utils.type';
-import { PhraseSetUpdatePayload } from '@/ui/pages/admin-phrase-set-editor/core/types/phrase-set-derivations.type';
+import {
+  PhraseSetCreatePayload,
+  PhraseSetUpdatePayload,
+} from '@/ui/pages/admin-phrase-set-editor/core/types/phrase-set-derivations.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import {
@@ -69,6 +72,16 @@ export class AdminPhraseSetService {
         lastValueFrom(this.client.put(API.ADMIN.PHRASE_SET.BY_ID(phraseSetId), phraseSet)),
       onSuccess: async () => {
         await this.queryClient.invalidateQueries({ queryKey: ['phrase-set', phraseSetId] });
+      },
+    });
+  }
+
+  create(phraseSet: PhraseSetCreatePayload) {
+    return mutationOptions({
+      mutationKey: ['phrase-set', 'create'],
+      mutationFn: () => lastValueFrom(this.client.post(this.searchApi, phraseSet)),
+      onSuccess: async () => {
+        await this.queryClient.invalidateQueries({ queryKey: ['phrase-set'] });
       },
     });
   }

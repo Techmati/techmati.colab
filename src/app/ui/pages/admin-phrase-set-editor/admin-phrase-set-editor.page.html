@@ -4,13 +4,13 @@
   <section class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-5 py-6">
     <tm-admin-phrase-set-editor-info-panel
       [phraseSetCache]="phraseSet()"
-      [isLoading]="phraseSetQuery.isPending()"
+      [isLoading]="!isCreating() && phraseSetQuery.isPending()"
       [(phraseSetDraft)]="phraseSetDraft"
     />
     <tm-admin-phrase-set-editor-phrases-panel
       [phraseSetId]="phraseSetId()"
       [cachedPhrases]="phrases()"
-      [isPending]="phraseSetPhrasesQuery.isPending()"
+      [isPending]="!isCreating() && phraseSetPhrasesQuery.isPending()"
       [(phrasesDrafts)]="phrasesDrafts"
     />
   </section>
