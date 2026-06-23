@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-import { Profile } from '@/core/dto/Profile.dto';
+import { Profile } from '@/core/dto/profile.dto';
 
 @Component({
   selector: 'tm-admin-user-card',

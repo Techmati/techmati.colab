@@ -1,4 +1,4 @@
-import type { TechmatiRole } from '@/core/dto/Profile.dto';
+import type { TechmatiRole } from '@/core/dto/profile.dto';
 import { AuthenticationService } from '@/core/service/authentication/authentication.service';
 import { ProfileService } from '@/core/service/profile/profile.service';
 import { ZardButtonComponent } from '@/shared/components/button';

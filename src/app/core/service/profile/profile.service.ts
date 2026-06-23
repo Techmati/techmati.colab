@@ -1,5 +1,5 @@
 import { API } from '@/core/config/api-uris.config';
-import { Profile } from '@/core/dto/Profile.dto';
+import { Profile } from '@/core/dto/profile.dto';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { queryOptions } from '@tanstack/angular-query-experimental';
