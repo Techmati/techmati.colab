@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { AdminTopBar } from '../../organisms/admin-top-bar/admin-top-bar';
+import { TopAppBar } from '@/ui/organisms/top-app-bar/top-app-bar';
 import { AdminQuickAction } from './core/types/admin-dashboard.types';
 import { AdminBottomNav } from './ui/organisms/admin-bottom-nav/admin-bottom-nav';
 import { AdminMetricsPanel } from './ui/organisms/admin-metrics-panel/admin-metrics-panel';
@@ -11,7 +11,7 @@ import { RecentContributionsPanel } from './ui/organisms/recent-contributions-pa
 @Component({
   selector: 'tm-admin-dashboard-page',
   imports: [
-    AdminTopBar,
+    TopAppBar,
     AdminMetricsPanel,
     AdminQuickActionsPanel,
     RecentContributionsPanel,
