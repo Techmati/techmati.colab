@@ -15,13 +15,15 @@ import Sortable from 'sortablejs';
 import type { Phrase } from '@/core/types/phrase.type';
 
 import { clone } from '@/core/utils/clone.util';
+import { ZardButtonComponent } from '@/shared/components/button';
+import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { NewPhraseDraft, PhraseDraft } from '../../../core/types/phrase-derivations.type';
 import { AdminPhraseEditorCard } from '../../molecules/admin-phrase-editor-card/admin-phrase-editor-card';
 
 @Component({
   selector: 'tm-admin-phrase-set-editor-phrases-panel',
-  imports: [AdminPhraseEditorCard, ZardSkeletonComponent],
+  imports: [AdminPhraseEditorCard, ZardSkeletonComponent, ZardEmptyComponent, ZardButtonComponent],
   templateUrl: './admin-phrase-set-editor-phrases-panel.html',
   styleUrl: './admin-phrase-set-editor-phrases-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
