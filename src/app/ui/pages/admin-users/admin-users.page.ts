@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 
 import { type Profile } from '@/core/dto/profile.dto';
 import { ZardInputDirective } from '@/shared/components/input';
@@ -7,6 +15,7 @@ import { ZardPaginationComponent } from '@/shared/components/pagination';
 import { AdminBottomNav } from '@/ui/organisms/admin-bottom-nav/admin-bottom-nav';
 import { TopAppBar } from '@/ui/organisms/top-app-bar/top-app-bar';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AdminUserCard } from './ui/molecules/admin-user-card/admin-user-card';
 import {
   AdminUserRoleFilter,
@@ -31,10 +40,16 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminUsersPage {
+  protected readonly searchParam = input('', { alias: 'search' });
   protected readonly search = signal('');
+  protected readonly debouncedSearch = signal('');
   protected readonly selectedRole = signal<AdminUserRoleFilter>('all');
   protected readonly selectedStatus = signal<AdminUserStatusFilter>('all');
   protected readonly page = signal(2);
+  private readonly router = inject(Router);
+  private hasInitializedSearchNavigation = false;
+
+  private readonly DEBOUNCE_DELAY = 750;
 
   protected readonly users: readonly Profile[] = [
     {
@@ -76,7 +91,7 @@ export class AdminUsersPage {
   ];
 
   protected readonly filteredUsers = computed(() => {
-    const search = this.search().trim().toLowerCase();
+    const search = this.searchParam().trim().toLowerCase();
     const role = this.selectedRole();
     const status = this.selectedStatus();
 
@@ -95,4 +110,32 @@ export class AdminUsersPage {
       return matchesRole && matchesStatus && matchesSearch;
     });
   });
+
+  constructor() {
+    effect(() => {
+      this.search.set(this.searchParam() || '');
+    });
+
+    effect(() => {
+      const search = this.debouncedSearch();
+      if (!this.hasInitializedSearchNavigation) {
+        this.hasInitializedSearchNavigation = true;
+        return;
+      }
+
+      if (search === this.searchParam().trim()) {
+        return;
+      }
+
+      this.router.navigate([], { queryParams: { search } });
+    });
+
+    effect((onCleanup) => {
+      const search = this.search().trim();
+      const timeoutId = setTimeout(() => {
+        this.debouncedSearch.set(search);
+      }, this.DEBOUNCE_DELAY);
+      onCleanup(() => clearTimeout(timeoutId));
+    });
+  }
 }
