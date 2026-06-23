@@ -5,7 +5,7 @@ import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { RouterLink } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
-import { AdminPhraseSetService } from '../../../core/service/admin-phrase-set/admin-phrase-set.service';
+import { AdminPhraseSetService } from '../../../../../../core/service/admin-phrase-set/admin-phrase-set.service';
 
 // TODO: change budget sizes in angular.json
 

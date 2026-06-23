@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 
 import { injectQuery } from '@tanstack/angular-query-experimental';
-import { AdminPhraseSetService } from '../admin-phrase-sets/core/service/admin-phrase-set/admin-phrase-set.service';
+import { AdminPhraseSetService } from '../../../core/service/admin-phrase-set/admin-phrase-set.service';
 import { AdminPhraseSetEditorActions } from './ui/organisms/admin-phrase-set-editor-actions/admin-phrase-set-editor-actions';
 import { AdminPhraseSetEditorInfoPanel } from './ui/organisms/admin-phrase-set-editor-info-panel/admin-phrase-set-editor-info-panel';
 import { AdminPhraseSetEditorPhrasesPanel } from './ui/organisms/admin-phrase-set-editor-phrases-panel/admin-phrase-set-editor-phrases-panel';

@@ -6,7 +6,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { map } from 'rxjs';
-import { AdminPhraseSetService } from '../../../core/service/admin-phrase-set/admin-phrase-set.service';
+import { AdminPhraseSetService } from '../../../../../../core/service/admin-phrase-set/admin-phrase-set.service';
 import { AdminPhraseSetCard } from '../../molecules/admin-phrase-set-card/admin-phrase-set-card';
 
 @Component({
