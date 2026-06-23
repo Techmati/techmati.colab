@@ -5,6 +5,9 @@ const BASE_URL =
 
 const API = {
   BASE_URL,
+  PROFILE: {
+    GET: `${BASE_URL}/profile`,
+  },
   PHRASE_SETS: {
     PAGINATED: `${BASE_URL}/phrase-sets`,
   },
