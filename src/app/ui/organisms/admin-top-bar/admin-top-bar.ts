@@ -3,10 +3,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ZardButtonComponent } from '@/shared/components/button';
 
 @Component({
-  selector: 'tm-admin-dashboard-top-bar',
+  selector: 'tm-admin-top-bar',
   imports: [ZardButtonComponent],
-  templateUrl: './admin-dashboard-top-bar.html',
-  styleUrl: './admin-dashboard-top-bar.css',
+  templateUrl: './admin-top-bar.html',
+  styleUrl: './admin-top-bar.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminDashboardTopBar {}
+export class AdminTopBar { }
