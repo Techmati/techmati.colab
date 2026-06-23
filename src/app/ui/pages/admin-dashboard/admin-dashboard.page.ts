@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { AdminQuickAction } from './types/admin-dashboard.types';
+import { AdminQuickAction } from './core/types/admin-dashboard.types';
 import { AdminBottomNav } from './ui/organisms/admin-bottom-nav/admin-bottom-nav';
 import { AdminDashboardTopBar } from './ui/organisms/admin-dashboard-top-bar/admin-dashboard-top-bar';
 import { AdminMetricsPanel } from './ui/organisms/admin-metrics-panel/admin-metrics-panel';
