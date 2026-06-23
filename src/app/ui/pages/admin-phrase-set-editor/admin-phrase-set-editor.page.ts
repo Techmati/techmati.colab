@@ -51,14 +51,19 @@ export class AdminPhraseSetEditorPage {
   }));
 
   readonly phraseSetUpdateMutation = injectMutation(() =>
-    this.adminPhraseSetService.update(this.phraseSetId(), this.buildUpdatePayload(), () =>
-      this.onUpdateSuccess(this.buildUpdatePayload()),
+    this.adminPhraseSetService.update(
+      this.phraseSetId(),
+      this.buildUpdatePayload(),
+      () => this.onUpdateSuccess(this.buildUpdatePayload()),
+      () => this.onUpdateError(this.buildUpdatePayload()),
     ),
   );
 
   readonly phraseSetCreateMutation = injectMutation(() =>
-    this.adminPhraseSetService.create(this.buildCreatePayload(), () =>
-      this.onCreationSuccess(this.buildCreatePayload()),
+    this.adminPhraseSetService.create(
+      this.buildCreatePayload(),
+      () => this.onCreationSuccess(this.buildCreatePayload()),
+      () => this.onCreationError(this.buildCreatePayload()),
     ),
   );
 
@@ -144,6 +149,22 @@ export class AdminPhraseSetEditorPage {
       : 'El set de frases se ha creado correctamente, pero no está publicado. Los usuarios no podrán acceder a él hasta que lo publiques.';
     toast.success(`Set de frases "${phraseSet.title}" creado con éxito`, {
       description,
+      ...this.baseToastConfig,
+    });
+  }
+
+  private onUpdateError(phraseSet: PhraseSetUpdatePayload): void {
+    toast.error(`No se pudieron guardar los cambios de "${phraseSet.title}"`, {
+      description:
+        'Ocurrió un problema al actualizar el set de frases. Revisa tu conexión e intenta guardar de nuevo.',
+      ...this.baseToastConfig,
+    });
+  }
+
+  private onCreationError(phraseSet: PhraseSetCreatePayload): void {
+    toast.error(`No se pudo crear el set de frases "${phraseSet.title}"`, {
+      description:
+        'Ocurrió un problema al crear el set de frases. Revisa la información e intenta guardar de nuevo.',
       ...this.baseToastConfig,
     });
   }

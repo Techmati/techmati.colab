@@ -65,7 +65,12 @@ export class AdminPhraseSetService {
     });
   }
 
-  update(phraseSetId: string, phraseSet: PhraseSetUpdatePayload, onSuccessCallback?: () => void) {
+  update(
+    phraseSetId: string,
+    phraseSet: PhraseSetUpdatePayload,
+    onSuccessCallback?: () => void,
+    onErrorCallback?: () => void,
+  ) {
     return mutationOptions({
       mutationKey: ['phrase-set', phraseSetId, 'update'],
       mutationFn: () =>
@@ -74,16 +79,26 @@ export class AdminPhraseSetService {
         await this.queryClient.invalidateQueries({ queryKey: ['phrase-set', phraseSetId] });
         onSuccessCallback?.();
       },
+      onError: () => {
+        onErrorCallback?.();
+      },
     });
   }
 
-  create(phraseSet: PhraseSetCreatePayload, onSuccessCallback?: () => void) {
+  create(
+    phraseSet: PhraseSetCreatePayload,
+    onSuccessCallback?: () => void,
+    onErrorCallback?: () => void,
+  ) {
     return mutationOptions({
       mutationKey: ['phrase-set', 'create'],
       mutationFn: () => lastValueFrom(this.client.post(this.searchApi, phraseSet)),
       onSuccess: async () => {
         await this.queryClient.invalidateQueries({ queryKey: ['phrase-set'] });
         onSuccessCallback?.();
+      },
+      onError: () => {
+        onErrorCallback?.();
       },
     });
   }
