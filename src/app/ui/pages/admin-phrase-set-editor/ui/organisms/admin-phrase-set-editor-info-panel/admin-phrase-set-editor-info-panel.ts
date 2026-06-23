@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, input, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, input, model } from '@angular/core';
 
 import type { PhraseSet } from '@/core/types/phrase-set.type';
 import { clone } from '@/core/utils/clone.util';
@@ -30,10 +30,12 @@ export class AdminPhraseSetEditorInfoPanel {
   readonly isLoading = input.required<boolean>();
   readonly phraseSetDraft = model<PhraseSetDraft>(EMPTY_PHRASE_SET);
 
-  readonly phraseSetForm = form(this.phraseSetDraft, (path) => {
+  protected readonly phraseSetForm = form(this.phraseSetDraft, (path) => {
     required(path.title, { message: 'No se puede subir un set de frases sin titulo.' });
     required(path.description, { message: 'No se puede subir un set de frases sin descripción.' });
   });
+
+  readonly invalid = computed(() => this.phraseSetForm().invalid());
 
   protected readonly languageOptions = [
     { label: 'Nahuatl a Español', value: 'nahuatl_to_spanish' },

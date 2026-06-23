@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, model, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, model, output } from '@angular/core';
 
 import { ZardInputDirective } from '@/shared/components/input';
 import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
@@ -19,4 +19,5 @@ export class AdminPhraseEditorCard {
   readonly phraseForm = form(this.phrase, (schema) => {
     required(schema.sourceText, { message: 'El texto fuente no puede estar vacio' });
   });
+  readonly invalid = computed(() => this.phraseForm().invalid());
 }

@@ -14,6 +14,8 @@ export class AdminPhraseSetEditorActions {
   private readonly alertDialog = inject(ZardAlertDialogService);
 
   readonly save = output<void>();
+  readonly saveDisabled = input.required<boolean>();
+
   readonly saveLoading = input.required<boolean>();
   readonly discard = output<void>();
 

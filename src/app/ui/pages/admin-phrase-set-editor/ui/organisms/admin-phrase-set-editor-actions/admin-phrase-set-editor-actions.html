@@ -11,6 +11,7 @@
       class="h-fit w-fit p-2.5 px-4 shrink rounded-lg bg-brand-green-600 text-sm font-medium text-white hover:bg-brand-green-500 hover:text-white "
       (click)="save.emit()"
       [zLoading]="saveLoading()"
+      [zDisabled]="saveDisabled()"
     >
       @if (!saveLoading()) {
         <span class="lucide--save text-base" aria-hidden="true"></span>

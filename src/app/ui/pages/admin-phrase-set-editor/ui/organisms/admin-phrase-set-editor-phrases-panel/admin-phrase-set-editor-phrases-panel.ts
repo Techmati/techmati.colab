@@ -2,13 +2,15 @@ import {
   afterNextRender,
   ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   effect,
   ElementRef,
   inject,
   input,
   model,
-  viewChild
+  viewChild,
+  viewChildren,
 } from '@angular/core';
 import Sortable from 'sortablejs';
 
@@ -34,10 +36,17 @@ export class AdminPhraseSetEditorPhrasesPanel {
   readonly isPending = input.required<boolean>();
 
   private readonly phrasesList = viewChild.required<ElementRef<HTMLElement>>('phrasesList');
+  private readonly phraseEditorCards = viewChildren(AdminPhraseEditorCard);
 
   private readonly destroyRef = inject(DestroyRef);
 
   readonly phrasesDrafts = model<PhraseDraft[]>([]);
+  readonly invalid = computed(
+    () =>
+      this.phraseEditorCards().length === 0 ||
+      this.phraseEditorCards().some((card) => card.invalid()),
+  );
+
   private newPhraseDraftCount = 0;
 
   constructor() {

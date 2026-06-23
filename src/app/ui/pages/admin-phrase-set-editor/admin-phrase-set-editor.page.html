@@ -1,13 +1,15 @@
-<main class="min-h-screen bg-background pb-44">
+<main class="min-h-screen bg-background pb-20">
   <tm-admin-phrase-set-editor-top-bar />
 
   <section class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-5 py-6">
     <tm-admin-phrase-set-editor-info-panel
+      #infoPanel
       [phraseSetCache]="phraseSet()"
       [isLoading]="!isCreating() && phraseSetQuery.isPending()"
       [(phraseSetDraft)]="phraseSetDraft"
     />
     <tm-admin-phrase-set-editor-phrases-panel
+      #phrasesPanel
       [phraseSetId]="phraseSetId()"
       [cachedPhrases]="phrases()"
       [isPending]="!isCreating() && phraseSetPhrasesQuery.isPending()"
@@ -19,5 +21,6 @@
     (save)="save()"
     (discard)="discard()"
     [saveLoading]="saveLoading()"
+    [saveDisabled]="phrasesPanel.invalid() || infoPanel.invalid()"
   />
 </main>
