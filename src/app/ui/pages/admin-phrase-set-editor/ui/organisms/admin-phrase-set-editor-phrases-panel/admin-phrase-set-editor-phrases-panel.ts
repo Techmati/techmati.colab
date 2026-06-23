@@ -57,6 +57,10 @@ export class AdminPhraseSetEditorPhrasesPanel {
     });
   }
 
+  protected print() {
+    console.log(this.phrasesDrafts().map(({ sourceText, position }) => [sourceText, position]));
+  }
+
   private reorderPhrases(oldIndex: number | undefined, newIndex: number | undefined): void {
     if (oldIndex === undefined || newIndex === undefined || oldIndex === newIndex) {
       return;
