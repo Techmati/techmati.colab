@@ -16,6 +16,7 @@
       <tm-admin-phrase-editor-card
         [phrase]="phrase"
         (phraseChange)="updatePhraseDraft(phrase.draftId, $event)"
+        (delete)="deletePhraseDraft(phrase.draftId)"
       />
     }
   </div>
