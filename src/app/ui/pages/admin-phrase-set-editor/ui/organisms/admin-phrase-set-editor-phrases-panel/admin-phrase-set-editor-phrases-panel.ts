@@ -15,9 +15,8 @@ import Sortable from 'sortablejs';
 import type { Phrase } from '@/core/types/phrase.type';
 
 import { clone } from '@/core/utils/clone.util';
+import { NewPhraseDraft, PhraseDraft } from '../../../core/types/phrase-derivations.type';
 import { AdminPhraseEditorCard } from '../../molecules/admin-phrase-editor-card/admin-phrase-editor-card';
-
-type NewPhrase = Omit<Phrase, 'id' | 'createdAt' | 'updatedAt'>;
 
 @Component({
   selector: 'tm-admin-phrase-set-editor-phrases-panel',
@@ -29,10 +28,11 @@ type NewPhrase = Omit<Phrase, 'id' | 'createdAt' | 'updatedAt'>;
 export class AdminPhraseSetEditorPhrasesPanel {
   private readonly destroyRef = inject(DestroyRef);
   private readonly phrasesList = viewChild.required<ElementRef<HTMLElement>>('phrasesList');
+  private newPhraseDraftCount = 0;
 
   readonly cachedPhrases = input.required<readonly Phrase[]>();
   readonly phraseSetId = input.required<string>();
-  readonly phrasesDrafts = signal<Phrase[]>([]);
+  readonly phrasesDrafts = signal<PhraseDraft[]>([]);
 
   constructor() {
     afterNextRender(() => {
@@ -61,6 +61,20 @@ export class AdminPhraseSetEditorPhrasesPanel {
     console.log(this.phrasesDrafts().map(({ sourceText, position }) => [sourceText, position]));
   }
 
+  protected addNewPhrase() {
+    this.phrasesDrafts.update((drafts) =>
+      this.withVisualPositions([...drafts, this.buildEmptyPhrase()]),
+    );
+  }
+
+  protected updatePhraseDraft(draftId: string, phrase: PhraseDraft): void {
+    this.phrasesDrafts.update((drafts) =>
+      this.withVisualPositions(
+        drafts.map((draft) => (draft.draftId === draftId ? { ...phrase, draftId } : draft)),
+      ),
+    );
+  }
+
   private reorderPhrases(oldIndex: number | undefined, newIndex: number | undefined): void {
     if (oldIndex === undefined || newIndex === undefined || oldIndex === newIndex) {
       return;
@@ -80,18 +94,21 @@ export class AdminPhraseSetEditorPhrasesPanel {
     });
   }
 
-  private orderCachedPhrases(phrases: readonly Phrase[]): Phrase[] {
+  private orderCachedPhrases(phrases: readonly Phrase[]): PhraseDraft[] {
     return this.withVisualPositions(
-      phrases.map((phrase) => clone(phrase)).sort((a, b) => a.position - b.position),
+      phrases
+        .map((phrase) => ({ ...clone(phrase), draftId: `cached-phrase-${phrase.id}` }))
+        .sort((a, b) => a.position - b.position),
     );
   }
 
-  private withVisualPositions(phrases: readonly Phrase[]): Phrase[] {
+  private withVisualPositions(phrases: readonly PhraseDraft[]): PhraseDraft[] {
     return phrases.map((phrase, index) => ({ ...phrase, position: index + 1 }));
   }
 
-  private buildEmptyPhrase(): NewPhrase {
+  private buildEmptyPhrase(): NewPhraseDraft {
     return {
+      draftId: `new-phrase-${this.newPhraseDraftCount++}`,
       phraseSetId: this.phraseSetId(),
       sourceText: '',
       language: 'spanish_to_nahuatl',

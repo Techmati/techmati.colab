@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, model, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, model } from '@angular/core';
 
-import type { Phrase } from '@/core/types/phrase.type';
 import { ZardInputDirective } from '@/shared/components/input';
 import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
 import { form, FormField, required } from '@angular/forms/signals';
+import { PhraseDraft } from '../../../core/types/phrase-derivations.type';
 
 @Component({
   selector: 'tm-admin-phrase-editor-card',
@@ -13,8 +13,7 @@ import { form, FormField, required } from '@angular/forms/signals';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminPhraseEditorCard {
-  readonly phraseChange = output<Phrase>();
-  readonly phrase = model.required<Phrase>();
+  readonly phrase = model.required<PhraseDraft>();
 
   readonly phraseForm = form(this.phrase, (schema) => {
     required(schema.sourceText, { message: 'El texto fuente no puede estar vacio' });

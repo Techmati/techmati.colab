@@ -1,4 +1,4 @@
-<button (click)="print()">print</button>
+<button (click)="print()" class="fixed top-10 left-10">print</button>
 <article class="rounded-xl border border-border-subtle bg-card p-6 shadow-sm">
   <header class="mb-4 flex items-center justify-between gap-3">
     <div class="flex items-center gap-2">
@@ -12,14 +12,18 @@
   </header>
 
   <div #phrasesList class="space-y-3">
-    @for (phrase of phrasesDrafts(); track phrase.id) {
-      <tm-admin-phrase-editor-card [(phrase)]="phrasesDrafts()[$index]" />
+    @for (phrase of phrasesDrafts(); track phrase.draftId) {
+      <tm-admin-phrase-editor-card
+        [phrase]="phrase"
+        (phraseChange)="updatePhraseDraft(phrase.draftId, $event)"
+      />
     }
   </div>
 
   <button
     type="button"
     class="mt-4 flex w-full items-center justify-center gap-1 rounded-lg border-2 border-dashed border-primary bg-brand-purple-50/50 px-2 py-5 text-sm font-semibold tracking-wide text-primary"
+    (click)="addNewPhrase()"
   >
     <span class="ri--add-line text-base" aria-hidden="true"></span>
     Añadir nueva frase
