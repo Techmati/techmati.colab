@@ -56,7 +56,6 @@ export class AdminUsersPage {
   protected readonly selectedStatus = signal<AdminUserStatusFilter>('all');
   protected readonly page = signal(2);
   private readonly router = inject(Router);
-  private hasInitializedSearchNavigation = false;
 
   private readonly DEBOUNCE_DELAY = 750;
 
@@ -114,15 +113,6 @@ export class AdminUsersPage {
 
     effect(() => {
       const search = this.debouncedSearch();
-      if (!this.hasInitializedSearchNavigation) {
-        this.hasInitializedSearchNavigation = true;
-        return;
-      }
-
-      if (search === this.searchParam().trim()) {
-        return;
-      }
-
       this.router.navigate([], {
         queryParams: { search },
         queryParamsHandling: 'merge',
