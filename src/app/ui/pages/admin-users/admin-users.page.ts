@@ -50,11 +50,12 @@ export class AdminUsersPage {
   protected readonly searchParam = input('', { alias: 'search' });
   protected readonly roleParam = input('', { alias: 'role' });
   protected readonly statusParam = input('', { alias: 'status' });
+  protected readonly pageParam = input('', { alias: 'page' });
   protected readonly search = signal('');
   protected readonly debouncedSearch = signal('');
   protected readonly selectedRole = signal<AdminUserRoleFilter>('all');
   protected readonly selectedStatus = signal<AdminUserStatusFilter>('all');
-  protected readonly page = signal(2);
+  protected readonly page = signal(1);
   private readonly router = inject(Router);
 
   private readonly DEBOUNCE_DELAY = 750;
@@ -112,6 +113,10 @@ export class AdminUsersPage {
     });
 
     effect(() => {
+      this.page.set(this.normalizePage(this.pageParam()));
+    });
+
+    effect(() => {
       const search = this.debouncedSearch();
       this.router.navigate([], {
         queryParams: { search },
@@ -144,6 +149,14 @@ export class AdminUsersPage {
     });
   }
 
+  protected selectPage(page: number): void {
+    this.page.set(page);
+    this.router.navigate([], {
+      queryParams: { page },
+      queryParamsHandling: 'merge',
+    });
+  }
+
   private normalizeRoleFilter(value: string): AdminUserRoleFilter {
     return (ROLE_FILTER_VALUES as readonly string[]).includes(value)
       ? (value as AdminUserRoleFilter)
@@ -154,5 +167,10 @@ export class AdminUsersPage {
     return (STATUS_FILTER_VALUES as readonly string[]).includes(value)
       ? (value as AdminUserStatusFilter)
       : 'all';
+  }
+
+  private normalizePage(value: string): number {
+    const page = Number(value);
+    return Number.isInteger(page) && page > 0 ? page : 1;
   }
 }
