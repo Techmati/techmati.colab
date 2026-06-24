@@ -23,8 +23,8 @@
     <tm-admin-users-filter-panel
       [selectedRole]="selectedRole()"
       [selectedStatus]="selectedStatus()"
-      (roleChange)="selectedRole.set($event)"
-      (statusChange)="selectedStatus.set($event)"
+      (roleChange)="selectRole($event)"
+      (statusChange)="selectStatus($event)"
     />
 
     <section class="space-y-3" aria-labelledby="admin-users-results-heading">

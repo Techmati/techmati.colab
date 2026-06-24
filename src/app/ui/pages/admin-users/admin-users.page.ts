@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  input,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 
 import { type Profile } from '@/core/dto/profile.dto';
 import { ZardInputDirective } from '@/shared/components/input';
@@ -21,12 +14,6 @@ import {
   AdminUsersFilterPanel,
   AdminUserStatusFilter,
 } from './ui/organisms/admin-users-filter-panel/admin-users-filter-panel';
-
-interface AdminUsersQueryParams {
-  readonly search: string;
-  readonly role: AdminUserRoleFilter;
-  readonly status: AdminUserStatusFilter;
-}
 
 const ROLE_FILTER_VALUES = [
   'all',
@@ -64,16 +51,12 @@ export class AdminUsersPage {
   protected readonly roleParam = input('', { alias: 'role' });
   protected readonly statusParam = input('', { alias: 'status' });
   protected readonly search = signal('');
-  protected readonly debouncedQueryParams = signal<AdminUsersQueryParams>({
-    search: '',
-    role: 'all',
-    status: 'all',
-  });
+  protected readonly debouncedSearch = signal('');
   protected readonly selectedRole = signal<AdminUserRoleFilter>('all');
   protected readonly selectedStatus = signal<AdminUserStatusFilter>('all');
   protected readonly page = signal(2);
   private readonly router = inject(Router);
-  private hasInitializedQueryParamNavigation = false;
+  private hasInitializedSearchNavigation = false;
 
   private readonly DEBOUNCE_DELAY = 750;
 
@@ -130,31 +113,44 @@ export class AdminUsersPage {
     });
 
     effect(() => {
-      const queryParams = this.debouncedQueryParams();
-      if (!this.hasInitializedQueryParamNavigation) {
-        this.hasInitializedQueryParamNavigation = true;
+      const search = this.debouncedSearch();
+      if (!this.hasInitializedSearchNavigation) {
+        this.hasInitializedSearchNavigation = true;
         return;
       }
 
-      if (
-        queryParams.search === this.searchParam().trim() &&
-        queryParams.role === this.normalizeRoleFilter(this.roleParam()) &&
-        queryParams.status === this.normalizeStatusFilter(this.statusParam())
-      ) {
+      if (search === this.searchParam().trim()) {
         return;
       }
 
-      this.router.navigate([], { queryParams });
+      this.router.navigate([], {
+        queryParams: { search },
+        queryParamsHandling: 'merge',
+      });
     });
 
     effect((onCleanup) => {
       const search = this.search().trim();
-      const role = this.selectedRole();
-      const status = this.selectedStatus();
       const timeoutId = setTimeout(() => {
-        this.debouncedQueryParams.set({ search, role, status });
+        this.debouncedSearch.set(search);
       }, this.DEBOUNCE_DELAY);
       onCleanup(() => clearTimeout(timeoutId));
+    });
+  }
+
+  protected selectRole(role: AdminUserRoleFilter): void {
+    this.selectedRole.set(role);
+    this.router.navigate([], {
+      queryParams: { role },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  protected selectStatus(status: AdminUserStatusFilter): void {
+    this.selectedStatus.set(status);
+    this.router.navigate([], {
+      queryParams: { status },
+      queryParamsHandling: 'merge',
     });
   }
 
