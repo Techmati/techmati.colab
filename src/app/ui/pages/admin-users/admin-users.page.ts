@@ -1,19 +1,30 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 
-import { type Profile } from '@/core/dto/profile.dto';
 import { ZardInputDirective } from '@/shared/components/input';
 import { ZardInputGroupComponent } from '@/shared/components/input-group';
 import { ZardPaginationComponent } from '@/shared/components/pagination';
+import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { AdminBottomNav } from '@/ui/organisms/admin-bottom-nav/admin-bottom-nav';
 import { TopAppBar } from '@/ui/organisms/top-app-bar/top-app-bar';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AdminUserCard } from './ui/molecules/admin-user-card/admin-user-card';
+import { injectQuery } from '@tanstack/angular-query-experimental';
 import {
   AdminUserRoleFilter,
-  AdminUsersFilterPanel,
   AdminUserStatusFilter,
-} from './ui/organisms/admin-users-filter-panel/admin-users-filter-panel';
+  AdminUsersQuery,
+} from './core/dto/admin-users-query.dto';
+import { AdminUsersService } from './core/service/admin-users.service';
+import { AdminUserCard } from './ui/molecules/admin-user-card/admin-user-card';
+import { AdminUsersFilterPanel } from './ui/organisms/admin-users-filter-panel/admin-users-filter-panel';
 
 const ROLE_FILTER_VALUES = [
   'all',
@@ -41,6 +52,7 @@ const STATUS_FILTER_VALUES = [
     ZardInputDirective,
     ZardInputGroupComponent,
     ZardPaginationComponent,
+    ZardSkeletonComponent,
   ],
   templateUrl: './admin-users.page.html',
   styleUrl: './admin-users.page.css',
@@ -51,53 +63,34 @@ export class AdminUsersPage {
   protected readonly roleParam = input('', { alias: 'role' });
   protected readonly statusParam = input('', { alias: 'status' });
   protected readonly pageParam = input('', { alias: 'page' });
+
   protected readonly search = signal('');
   protected readonly debouncedSearch = signal('');
   protected readonly selectedRole = signal<AdminUserRoleFilter>('all');
   protected readonly selectedStatus = signal<AdminUserStatusFilter>('all');
   protected readonly page = signal(1);
+
   private readonly router = inject(Router);
+  private readonly adminUsersService = inject(AdminUsersService);
 
   private readonly DEBOUNCE_DELAY = 750;
+  private readonly PAGE_SIZE = 10;
 
-  protected readonly users: readonly Profile[] = [
-    {
-      id: 'usr-ana-lopez',
-      fullName: 'Ana López',
-      username: 'alopez_traductora',
-      email: 'ana.lopez@tlacuilo.org',
-      bannedUntil: null,
-      role: 'admin',
-      createdAt: '2026-06-02T10:00:00.000Z',
-    },
-    {
-      id: 'usr-carlos-xochitiotzin',
-      fullName: 'Carlos Xochitiotzin',
-      username: 'cxochi_admin',
-      email: 'carlos.x@tlacuilo.org',
-      bannedUntil: null,
-      role: 'moderator',
-      createdAt: '2026-06-04T12:30:00.000Z',
-    },
-    {
-      id: 'usr-maria-ruiz',
-      fullName: 'María Ruiz',
-      username: 'mruiz_revisora',
-      email: 'maria.ruiz@tlacuilo.org',
-      bannedUntil: null,
-      role: 'analyst',
-      createdAt: '2026-06-08T09:45:00.000Z',
-    },
-    {
-      id: 'usr-juan-martinez',
-      fullName: 'Juan Martínez',
-      username: 'jmartinez_dev',
-      email: 'juan.m@tlacuilo.org',
-      bannedUntil: '2026-07-01T00:00:00.000Z',
-      role: 'user',
-      createdAt: '2026-06-12T16:15:00.000Z',
-    },
-  ];
+  protected readonly usersQuery = computed<AdminUsersQuery>(() => ({
+    search: (this.searchParam() || '').trim(),
+    role: this.normalizeRoleFilter(this.roleParam()),
+    status: this.normalizeStatusFilter(this.statusParam()),
+    page: this.normalizePage(this.pageParam()),
+    size: this.PAGE_SIZE,
+  }));
+
+  protected readonly searchResults = injectQuery(() =>
+    this.adminUsersService.search(this.usersQuery()),
+  );
+
+  protected readonly pages = computed(() =>
+    Math.ceil((this.searchResults.data()?.total || 0) / this.PAGE_SIZE),
+  );
 
   constructor() {
     effect(() => {

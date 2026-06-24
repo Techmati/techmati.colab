@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
-import { type Profile } from '@/core/dto/profile.dto';
 import { ZardButtonComponent } from '@/shared/components/button';
-
-export type AdminUserRoleFilter = Profile['role'] | 'all';
-export type AdminUserStatusFilter = 'all' | 'active' | 'banned';
+import {
+  AdminUserRoleFilter,
+  AdminUserStatusFilter,
+} from '../../../core/dto/admin-users-query.dto';
 
 interface FilterOption<TValue extends string> {
   readonly label: string;
