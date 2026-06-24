@@ -103,9 +103,9 @@ export class ZardPaginationButtonComponent {
       [zSize]="zSize()"
       [zDisabled]="zDisabled()"
     >
-      <span class="sr-only">To previous page</span>
+      <span class="sr-only">Pagina anterior</span>
       <span class="lucide--chevron-left"></span>
-      <span class="hidden sm:block" aria-hidden="true">Previous</span>
+      <span class="hidden sm:block" aria-hidden="true">Anterior</span>
     </button>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -135,8 +135,8 @@ export class ZardPaginationPreviousComponent {
       [zDisabled]="zDisabled()"
       [zSize]="zSize()"
     >
-      <span class="sr-only">To next page</span>
-      <span class="hidden sm:block" aria-hidden="true">Next</span>
+      <span class="sr-only">Siguiente pagina</span>
+      <span class="hidden sm:block" aria-hidden="true">Siguiente</span>
       <span class="lucide--chevron-right" aria-hidden="true"></span>
     </button>
   `,
