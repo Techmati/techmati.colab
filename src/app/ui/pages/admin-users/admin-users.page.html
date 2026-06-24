@@ -39,7 +39,7 @@
       </div>
 
       <div class="flex flex-col gap-3">
-        @for (user of filteredUsers(); track user.id) {
+        @for (user of users; track user.id) {
           <tm-admin-user-card [user]="user" />
         }
       </div>

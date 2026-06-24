@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   effect,
   inject,
   input,
@@ -23,6 +22,27 @@ import {
   AdminUserStatusFilter,
 } from './ui/organisms/admin-users-filter-panel/admin-users-filter-panel';
 
+interface AdminUsersQueryParams {
+  readonly search: string;
+  readonly role: AdminUserRoleFilter;
+  readonly status: AdminUserStatusFilter;
+}
+
+const ROLE_FILTER_VALUES = [
+  'all',
+  'root',
+  'admin',
+  'moderator',
+  'analyst',
+  'user',
+] as const satisfies readonly AdminUserRoleFilter[];
+
+const STATUS_FILTER_VALUES = [
+  'all',
+  'active',
+  'banned',
+] as const satisfies readonly AdminUserStatusFilter[];
+
 @Component({
   selector: 'tm-admin-users-page',
   imports: [
@@ -41,13 +61,19 @@ import {
 })
 export class AdminUsersPage {
   protected readonly searchParam = input('', { alias: 'search' });
+  protected readonly roleParam = input('', { alias: 'role' });
+  protected readonly statusParam = input('', { alias: 'status' });
   protected readonly search = signal('');
-  protected readonly debouncedSearch = signal('');
+  protected readonly debouncedQueryParams = signal<AdminUsersQueryParams>({
+    search: '',
+    role: 'all',
+    status: 'all',
+  });
   protected readonly selectedRole = signal<AdminUserRoleFilter>('all');
   protected readonly selectedStatus = signal<AdminUserStatusFilter>('all');
   protected readonly page = signal(2);
   private readonly router = inject(Router);
-  private hasInitializedSearchNavigation = false;
+  private hasInitializedQueryParamNavigation = false;
 
   private readonly DEBOUNCE_DELAY = 750;
 
@@ -90,52 +116,57 @@ export class AdminUsersPage {
     },
   ];
 
-  protected readonly filteredUsers = computed(() => {
-    const search = this.searchParam().trim().toLowerCase();
-    const role = this.selectedRole();
-    const status = this.selectedStatus();
-
-    return this.users.filter((user) => {
-      const matchesRole = role === 'all' || user.role === role;
-      const matchesStatus =
-        status === 'all' ||
-        (status === 'active' && user.bannedUntil === null) ||
-        (status === 'banned' && user.bannedUntil !== null);
-      const matchesSearch =
-        search.length === 0 ||
-        user.fullName.toLowerCase().includes(search) ||
-        user.username.toLowerCase().includes(search) ||
-        (user.email?.toLowerCase().includes(search) ?? false);
-
-      return matchesRole && matchesStatus && matchesSearch;
-    });
-  });
-
   constructor() {
     effect(() => {
       this.search.set(this.searchParam() || '');
     });
 
     effect(() => {
-      const search = this.debouncedSearch();
-      if (!this.hasInitializedSearchNavigation) {
-        this.hasInitializedSearchNavigation = true;
+      this.selectedRole.set(this.normalizeRoleFilter(this.roleParam()));
+    });
+
+    effect(() => {
+      this.selectedStatus.set(this.normalizeStatusFilter(this.statusParam()));
+    });
+
+    effect(() => {
+      const queryParams = this.debouncedQueryParams();
+      if (!this.hasInitializedQueryParamNavigation) {
+        this.hasInitializedQueryParamNavigation = true;
         return;
       }
 
-      if (search === this.searchParam().trim()) {
+      if (
+        queryParams.search === this.searchParam().trim() &&
+        queryParams.role === this.normalizeRoleFilter(this.roleParam()) &&
+        queryParams.status === this.normalizeStatusFilter(this.statusParam())
+      ) {
         return;
       }
 
-      this.router.navigate([], { queryParams: { search } });
+      this.router.navigate([], { queryParams });
     });
 
     effect((onCleanup) => {
       const search = this.search().trim();
+      const role = this.selectedRole();
+      const status = this.selectedStatus();
       const timeoutId = setTimeout(() => {
-        this.debouncedSearch.set(search);
+        this.debouncedQueryParams.set({ search, role, status });
       }, this.DEBOUNCE_DELAY);
       onCleanup(() => clearTimeout(timeoutId));
     });
+  }
+
+  private normalizeRoleFilter(value: string): AdminUserRoleFilter {
+    return (ROLE_FILTER_VALUES as readonly string[]).includes(value)
+      ? (value as AdminUserRoleFilter)
+      : 'all';
+  }
+
+  private normalizeStatusFilter(value: string): AdminUserStatusFilter {
+    return (STATUS_FILTER_VALUES as readonly string[]).includes(value)
+      ? (value as AdminUserStatusFilter)
+      : 'all';
   }
 }
