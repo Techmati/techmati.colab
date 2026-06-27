@@ -1,0 +1,32 @@
+<article class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
+  <header class="mb-4 flex items-center justify-center gap-2">
+    <span class="lucide--user-round text-xl text-primary" aria-hidden="true"></span>
+    <h2 class="font-display text-xl font-semibold leading-7 text-primary">Atributos del Perfil</h2>
+  </header>
+
+  <div class="space-y-4">
+    <tm-admin-user-detail-field
+      label="Nombre Completo"
+      [value]="user().fullName"
+      icon="lucide--user-round"
+    />
+
+    <tm-admin-user-detail-field
+      label="Nombre de Usuario"
+      [value]="user().username"
+      icon="lucide--at-sign"
+    />
+
+    <tm-admin-user-detail-field
+      label="Rol del Sistema"
+      [value]="roleLabels[user().role]"
+      icon="lucide--id-card"
+    />
+
+    <tm-admin-user-detail-field
+      label="Fecha de Registro"
+      [value]="(user().createdAt | date: 'd \'de\' MMMM, y') ?? ''"
+      icon="lucide--calendar"
+    />
+  </div>
+</article>

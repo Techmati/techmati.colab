@@ -33,6 +33,7 @@
     zSize="icon"
     type="button"
     class="text-text-secondary hover:text-primary"
+    [routerLink]="['/admin', 'users', user().id]"
     [attr.aria-label]="'Ver perfil de ' + user().fullName"
   >
     <span class="lucide--chevron-right text-xl" aria-hidden="true"></span>

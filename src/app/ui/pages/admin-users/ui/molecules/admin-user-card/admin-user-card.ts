@@ -4,10 +4,11 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { type Profile, type TechmatiRole } from '@/core/dto/profile.dto';
 import { ZardBadgeComponent } from '@/shared/components/badge';
 import { ZardButtonComponent } from '@/shared/components/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'tm-admin-user-card',
-  imports: [DatePipe, ZardBadgeComponent, ZardButtonComponent],
+  imports: [DatePipe, RouterLink, ZardBadgeComponent, ZardButtonComponent],
   templateUrl: './admin-user-card.html',
   styleUrl: './admin-user-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

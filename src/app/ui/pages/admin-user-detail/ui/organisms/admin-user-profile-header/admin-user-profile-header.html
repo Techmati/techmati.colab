@@ -1,0 +1,15 @@
+<header class="flex items-center gap-4 pb-2">
+  <div
+    class="flex size-[50px] shrink-0 items-center justify-center rounded-full bg-[#6ffbbe] text-base font-bold text-[#002113]"
+    aria-hidden="true"
+  >
+    {{ initials() }}
+  </div>
+
+  <div class="min-w-0">
+    <h2 class="truncate font-display text-2xl font-semibold leading-8 text-text-primary">
+      {{ user().fullName }}
+    </h2>
+    <p class="truncate text-base leading-6 text-text-secondary">@{{ user().username }}</p>
+  </div>
+</header>
