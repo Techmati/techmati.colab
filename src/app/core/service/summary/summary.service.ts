@@ -41,16 +41,13 @@ export class SummaryService {
       queryKey: ['users', userId, 'summaries', filter, { page, size }],
       queryFn: () =>
         lastValueFrom(
-          this.client.get<{ summaries: FullSummary[]; total: number }>(
-            this.adminSummariesApi(userId),
-            {
-              params: {
-                filter,
-                page: page.toString(),
-                size: size.toString(),
-              },
+          this.client.get<{ data: FullSummary[]; total: number }>(this.adminSummariesApi(userId), {
+            params: {
+              filter,
+              page: page.toString(),
+              size: size.toString(),
             },
-          ),
+          }),
         ),
       placeholderData: keepPreviousData,
     });

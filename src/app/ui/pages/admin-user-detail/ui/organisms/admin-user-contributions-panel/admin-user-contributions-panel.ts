@@ -1,14 +1,19 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
+import { FullSummary } from '@/core/types/summary.type';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
-import { FullSummary } from '@/core/types/summary.type';
 import { AdminUserContributionCard } from '../../molecules/admin-user-contribution-card/admin-user-contribution-card';
 
 @Component({
   selector: 'tm-admin-user-contributions-panel',
-  imports: [AdminUserContributionCard, ZardButtonComponent, ZardEmptyComponent, ZardSkeletonComponent],
+  imports: [
+    AdminUserContributionCard,
+    ZardButtonComponent,
+    ZardEmptyComponent,
+    ZardSkeletonComponent,
+  ],
   templateUrl: './admin-user-contributions-panel.html',
   styleUrl: './admin-user-contributions-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

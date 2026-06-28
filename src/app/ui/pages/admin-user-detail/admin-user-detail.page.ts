@@ -61,7 +61,7 @@ export class AdminUserDetailPage {
     ),
   );
 
-  protected readonly summaries = computed(() => this.summariesQuery.data()?.summaries ?? []);
+  protected readonly summaries = computed(() => this.summariesQuery.data()?.data ?? []);
   protected readonly summariesTotal = computed(() => this.summariesQuery.data()?.total ?? 0);
 
   protected readonly assignRoleMutation = injectMutation(() =>
