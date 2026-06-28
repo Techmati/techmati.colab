@@ -19,7 +19,7 @@
         <z-skeleton class="w-full h-14 rounded-lg" />
     } @else {
     @for (
-      contribution of contributions(); track contribution.phraseSetId + contribution.contributorId
+      contribution of contributions(); track contribution.phraseSetId + contribution.userId
     ) {
       <tm-recent-contribution-card [contribution]="contribution" />
     }@empty {

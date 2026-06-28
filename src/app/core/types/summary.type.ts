@@ -1,7 +1,9 @@
 import { PhraseSet } from './phrase-set.type';
+import { Phrase } from './phrase.type';
+import { TranslationEntry } from './translation-entry.type';
 
 export interface Summary {
-  contributorId: string;
+  userId: string;
   phraseSetId: string;
   contributedEntriesCount: number;
   progressPercentage: number;
@@ -13,6 +15,16 @@ export interface Summary {
 export type PhraseSetSummary = Summary & { phraseSet: PhraseSet };
 export type EmptySummary = Omit<PhraseSetSummary, 'lastUpdate'> & {
   lastUpdate: null;
+};
+
+export type UserPhraseSetContributionSummary = Summary & {
+  phraseSet: PhraseSet & {
+    phrases: Array<
+      Phrase & {
+        translationEntries: TranslationEntry[];
+      }
+    >;
+  };
 };
 
 export type SummaryFilter = 'all' | 'in_progress' | 'completed';
