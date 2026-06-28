@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, linkedSignal } from '@angul
 import { RouterLink } from '@angular/router';
 
 import { SummaryService } from '@/core/service/summary/summary.service';
-import { FullSummary } from '@/core/types/summary.type';
+import { PhraseSetSummary } from '@/core/types/summary.type';
 import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ContributionCard } from '@/ui/molecules/contribution-card/contribution-card';
 import { rxResource } from '@angular/core/rxjs-interop';
@@ -24,8 +24,8 @@ export class ProfileContributionsPanel {
   });
 
   protected readonly sets = linkedSignal<
-    { summaries: FullSummary[]; total: number } | undefined,
-    { summaries: FullSummary[]; total: number }
+    { summaries: PhraseSetSummary[]; total: number } | undefined,
+    { summaries: PhraseSetSummary[]; total: number }
   >({
     source: () => this.completedSets.value(),
     computation: (source, previous) => source || previous?.value || { summaries: [], total: 0 },

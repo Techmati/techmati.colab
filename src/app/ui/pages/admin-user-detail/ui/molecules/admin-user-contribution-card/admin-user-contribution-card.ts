@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import { TimeAgoPipe } from '@/core/pipes/time-ago.pipe';
-import { FullSummary } from '@/core/types/summary.type';
+import { PhraseSetSummary } from '@/core/types/summary.type';
 
 @Component({
   selector: 'tm-admin-user-contribution-card',
@@ -11,5 +11,5 @@ import { FullSummary } from '@/core/types/summary.type';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminUserContributionCard {
-  readonly contribution = input.required<FullSummary>();
+  readonly contribution = input.required<PhraseSetSummary>();
 }

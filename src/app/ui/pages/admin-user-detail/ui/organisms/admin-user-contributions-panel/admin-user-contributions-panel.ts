@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { FullSummary } from '@/core/types/summary.type';
+import { PhraseSetSummary } from '@/core/types/summary.type';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
@@ -19,7 +19,7 @@ import { AdminUserContributionCard } from '../../molecules/admin-user-contributi
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminUserContributionsPanel {
-  readonly contributions = input.required<readonly FullSummary[]>();
+  readonly contributions = input.required<readonly PhraseSetSummary[]>();
   readonly isLoading = input.required<boolean>();
   readonly total = input.required<number>();
 }

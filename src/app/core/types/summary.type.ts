@@ -10,8 +10,8 @@ export interface Summary {
   completed: boolean;
 }
 
-export type FullSummary = Summary & { phraseSet: PhraseSet };
-export type EmptySummary = Omit<FullSummary, 'lastUpdate'> & {
+export type PhraseSetSummary = Summary & { phraseSet: PhraseSet };
+export type EmptySummary = Omit<PhraseSetSummary, 'lastUpdate'> & {
   lastUpdate: null;
 };
 

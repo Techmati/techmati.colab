@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, linkedSignal } from '@angular/core';
 
 import { SummaryService } from '@/core/service/summary/summary.service';
-import { FullSummary } from '@/core/types/summary.type';
+import { PhraseSetSummary } from '@/core/types/summary.type';
 import { ContributionCard } from '@/ui/molecules/contribution-card/contribution-card';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { HistoryListPanelSkeleton } from '../history-list-panel-skeleton/history-list-panel-skeleton';
@@ -23,8 +23,8 @@ export class HistoryListPanel {
   });
 
   protected readonly sets = linkedSignal<
-    { summaries: FullSummary[]; total: number } | undefined,
-    { summaries: FullSummary[]; total: number }
+    { summaries: PhraseSetSummary[]; total: number } | undefined,
+    { summaries: PhraseSetSummary[]; total: number }
   >({
     source: () => this.completedSets.value(),
     computation: (source, previous) => source || previous?.value || { summaries: [], total: 0 },

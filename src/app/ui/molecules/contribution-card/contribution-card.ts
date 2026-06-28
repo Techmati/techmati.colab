@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 
 import { TimeAgoPipe } from '@/core/pipes/time-ago.pipe';
-import { FullSummary } from '@/core/types/summary.type';
+import { PhraseSetSummary } from '@/core/types/summary.type';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContributionCard {
-  readonly card = input.required<FullSummary>();
+  readonly card = input.required<PhraseSetSummary>();
 
   private readonly router = inject(Router);
 
