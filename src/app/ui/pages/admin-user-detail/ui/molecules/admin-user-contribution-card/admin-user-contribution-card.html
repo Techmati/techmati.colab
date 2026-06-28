@@ -3,12 +3,12 @@
 >
   <div class="min-w-0 space-y-1">
     <h3 class="truncate text-sm font-semibold leading-5 tracking-[0.01em] text-text-primary">
-      {{ contribution().title }}
+      {{ contribution().phraseSet.title }}
     </h3>
     <p class="truncate text-xs font-medium leading-4 text-text-secondary">
-      {{ contribution().relativeTime }}
+      {{ contribution().lastUpdate | timeAgo }}
       <span class="px-1 text-[#c8c4d7]" aria-hidden="true">•</span>
-      {{ contribution().amount }}
+      {{ contribution().phraseSet.phraseCount }} frases
     </p>
   </div>
 

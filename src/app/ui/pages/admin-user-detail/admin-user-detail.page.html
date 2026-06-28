@@ -2,12 +2,40 @@
   <tm-admin-user-detail-top-bar />
 
   <section class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-5 py-5">
-    <tm-admin-user-profile-header [user]="user" />
+    @if (user(); as profile) {
+      <tm-admin-user-profile-header [user]="profile" />
 
-    <tm-admin-user-attributes-panel [user]="user" />
+      <tm-admin-user-attributes-panel [user]="profile" />
 
-    <tm-admin-user-contributions-panel [contributions]="contributions" />
+      <tm-admin-user-contributions-panel
+        [contributions]="summaries()"
+        [isLoading]="summariesQuery.isPending() || summariesQuery.isFetching()"
+        [total]="summariesTotal()"
+      />
 
-    <tm-admin-user-risk-panel [(role)]="selectedRole" />
+      <tm-admin-user-risk-panel
+        [role]="selectedRole()"
+        [isBanned]="profile.bannedUntil !== null"
+        [isAssigningRole]="assignRoleMutation.isPending()"
+        [isUpdatingBanState]="isUpdatingBanState()"
+        (roleChange)="assignRole($event)"
+        (ban)="ban()"
+        (unban)="unban()"
+      />
+    } @else {
+      <section class="flex items-center gap-4 pb-2" aria-label="Cargando perfil">
+        <z-skeleton class="size-12.5 rounded-full" />
+        <div class="min-w-0 flex-1 space-y-2">
+          <z-skeleton class="h-8 w-56 max-w-full" />
+          <z-skeleton class="h-6 w-36" />
+        </div>
+      </section>
+
+      <z-skeleton class="h-56 w-full rounded-xl" />
+      <z-skeleton class="h-72 w-full rounded-xl" />
+      <z-skeleton class="h-80 w-full rounded-xl" />
+    }
   </section>
+
+  <z-toaster></z-toaster>
 </main>

@@ -39,8 +39,13 @@ const API = {
       PHRASES: (phraseSetId: string) => `${BASE_URL}/admin/phrase-sets/${phraseSetId}/phrases`,
     },
     USERS: {
+      BY_ID: (userId: string) => `${BASE_URL}/admin/users/${userId}`,
       SEARCH: `${BASE_URL}/admin/users`,
+      BAN: (userId: string) => `${BASE_URL}/admin/users/${userId}/ban`,
+      UNBAN: (userId: string) => `${BASE_URL}/admin/users/${userId}/unban`,
+      ASSIGN_ROLE: (userId: string) => `${BASE_URL}/admin/users/${userId}/role`,
     },
+    SUMMARIES: (userId: string) => `${BASE_URL}/admin/summaries/users/${userId}`,
   },
 };
 

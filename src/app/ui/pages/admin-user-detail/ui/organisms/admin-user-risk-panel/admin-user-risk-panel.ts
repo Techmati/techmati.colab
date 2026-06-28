@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
 
 import { TECHMATI_ROLES, type TechmatiRole } from '@/core/dto/profile.dto';
 import { ZardButtonComponent } from '@/shared/components/button';
@@ -18,6 +18,11 @@ interface RoleOption {
 })
 export class AdminUserRiskPanel {
   readonly role = model<TechmatiRole>('user');
+  readonly isBanned = input.required<boolean>();
+  readonly isAssigningRole = input(false);
+  readonly isUpdatingBanState = input(false);
+  readonly ban = output<void>();
+  readonly unban = output<void>();
 
   protected readonly roleOptions: readonly RoleOption[] = [
     { label: 'Super Administrador', value: 'root' },
@@ -33,5 +38,14 @@ export class AdminUserRiskPanel {
     }
 
     this.role.set(value as TechmatiRole);
+  }
+
+  protected toggleBanState(): void {
+    if (this.isBanned()) {
+      this.unban.emit();
+      return;
+    }
+
+    this.ban.emit();
   }
 }

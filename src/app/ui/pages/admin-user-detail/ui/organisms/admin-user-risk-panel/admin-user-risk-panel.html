@@ -17,6 +17,7 @@
     <z-select
       class="w-full"
       zPlaceholder="Selecciona un rol"
+      [zDisabled]="isAssigningRole()"
       [zValue]="role()"
       (zSelectionChange)="onRoleSelectionChange($event)"
     >
@@ -44,10 +45,13 @@
       z-button
       zType="default"
       type="button"
+      [zLoading]="isUpdatingBanState()"
+      [zDisabled]="isUpdatingBanState()"
       class="h-12 min-w-32 bg-[#ba1a1a] px-6 text-sm font-semibold leading-5 text-white hover:bg-[#9f1717] hover:text-white"
+      (click)="toggleBanState()"
     >
       <span class="lucide--ban text-xl" aria-hidden="true"></span>
-      <span class="leading-5">Banear<br />Usuario</span>
+      <span class="leading-5">{{ isBanned() ? 'Desbanear' : 'Banear' }}<br />Usuario</span>
     </button>
   </section>
 </article>

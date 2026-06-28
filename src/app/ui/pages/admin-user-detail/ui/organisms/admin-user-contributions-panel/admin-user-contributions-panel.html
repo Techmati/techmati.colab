@@ -5,12 +5,25 @@
   </header>
 
   <div class="space-y-2">
-    @for (contribution of contributions(); track contribution.id) {
-      <tm-admin-user-contribution-card [contribution]="contribution" />
+    @if (isLoading()) {
+      <z-skeleton class="h-20 w-full rounded-lg" />
+      <z-skeleton class="h-20 w-full rounded-lg" />
+      <z-skeleton class="h-20 w-full rounded-lg" />
+    } @else {
+      @for (contribution of contributions(); track contribution.phraseSet.id) {
+        <tm-admin-user-contribution-card [contribution]="contribution" />
+      } @empty {
+        <z-empty
+          zTitle="Sin contribuciones recientes"
+          zDescription="Este usuario aún no cuenta con contribuciones registradas."
+          zIcon="lucide--history"
+        />
+      }
     }
   </div>
 
-  <div class="pt-4">
+  @if (total() > contributions().length) {
+    <div class="pt-4">
     <button
       z-button
       zType="ghost"
@@ -21,5 +34,6 @@
       Ver todas las contribuciones
       <span class="lucide--arrow-right text-base" aria-hidden="true"></span>
     </button>
-  </div>
+    </div>
+  }
 </article>
