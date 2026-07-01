@@ -26,6 +26,7 @@ const API = {
   ADMIN: {
     STATS: {
       SUMMARY: `${BASE_URL}/admin/stats/summary/today`,
+      USER: (userId: string) => `${BASE_URL}/admin/stats/user/${userId}`,
       CONTRIBUTIONS: {
         LATEST: `${BASE_URL}/admin/stats/contributions/latest`,
       },

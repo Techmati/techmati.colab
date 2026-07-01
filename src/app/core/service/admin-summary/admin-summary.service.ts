@@ -1,8 +1,6 @@
 import { API } from '@/core/config/api-uris.config';
-import {
-  SummaryFilter,
-  UserPhraseSetContributionSummary,
-} from '@/core/types/summary.type';
+import { UserContributionStats } from '@/core/types/contributor-stats.type';
+import { SummaryFilter, UserPhraseSetContributionSummary } from '@/core/types/summary.type';
 import { Pagination } from '@/core/types/utils.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
@@ -21,16 +19,11 @@ interface AdminUserSummariesOptions extends Pagination {
 export class AdminSummaryService {
   private readonly client = inject(HttpClient);
   private readonly userSummariesApi = API.ADMIN.SUMMARIES;
+  private readonly userStatsApi = API.ADMIN.STATS.USER;
 
   getUserSummaries(
     userId: string,
-    {
-      page,
-      size,
-      filter,
-      includeEntries = false,
-      entriesLimit = 0,
-    }: AdminUserSummariesOptions,
+    { page, size, filter, includeEntries = false, entriesLimit = 0 }: AdminUserSummariesOptions,
   ) {
     return queryOptions({
       queryKey: [
@@ -55,6 +48,14 @@ export class AdminSummaryService {
           ),
         ),
       placeholderData: keepPreviousData,
+    });
+  }
+
+  getUserContributionStats(userId: string) {
+    return queryOptions({
+      queryKey: ['admin-summaries', 'users', userId, 'stats'],
+      queryFn: () =>
+        lastValueFrom(this.client.get<UserContributionStats>(this.userStatsApi(userId))),
     });
   }
 }
