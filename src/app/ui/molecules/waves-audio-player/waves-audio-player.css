@@ -21,3 +21,24 @@
   min-height: 24px;
   width: 100%;
 }
+
+.audio-player--card {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  gap: 0.5rem;
+  padding: 0;
+}
+
+.audio-player--card .play-btn {
+  height: 2.25rem;
+  width: 2.25rem;
+}
+
+.audio-player--card .waveform-shell {
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+}

@@ -8,6 +8,7 @@
       <tm-admin-user-attributes-panel [user]="profile" />
 
       <tm-admin-user-contributions-panel
+        [userId]="userId()"
         [contributions]="summaries()"
         [isLoading]="summariesQuery.isPending() || summariesQuery.isFetching()"
         [total]="summariesTotal()"

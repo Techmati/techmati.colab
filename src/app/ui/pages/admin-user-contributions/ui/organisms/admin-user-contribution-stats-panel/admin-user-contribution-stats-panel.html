@@ -1,0 +1,47 @@
+<article class="rounded-2xl border border-border-subtle bg-card p-5 shadow-sm shadow-primary/10">
+  @if (isLoading()) {
+    <div class="flex flex-col items-center gap-3">
+      <z-skeleton class="size-16 rounded-full" />
+      <div class="flex w-full flex-col items-center gap-2">
+        <z-skeleton class="h-6 w-44" />
+        <z-skeleton class="h-4 w-28" />
+      </div>
+      <div class="grid w-full grid-cols-2 gap-3 pt-2">
+        <z-skeleton class="h-24 rounded-xl" />
+        <z-skeleton class="h-24 rounded-xl" />
+      </div>
+    </div>
+  } @else {
+    <div class="flex flex-col items-center gap-3">
+      <div
+        class="flex size-16 items-center justify-center rounded-full bg-primary text-xl font-bold text-primary-foreground"
+        aria-hidden="true"
+      >
+        {{ initials() }}
+      </div>
+
+      <div class="min-w-0 text-center max-w-full">
+        <h2 class="font-display text-2xl font-semibold leading-8 text-text-primary wrap-break-word">
+          {{ user()?.fullName || 'Usuario' }}
+        </h2>
+        <p class="truncate text-sm leading-5 text-text-secondary">@{{ user()?.username || 'usuario' }}</p>
+      </div>
+
+      <div class="grid w-full grid-cols-2 gap-3 pt-2">
+        <section class="rounded-xl bg-primary/10 px-3 py-4 text-center">
+          <strong class="block font-display text-3xl font-bold leading-9 text-primary">
+            {{ stats()?.translatedPhrasesCount ?? 0 }}
+          </strong>
+          <span class="text-xs font-medium leading-4 text-text-secondary">Frases traducidas</span>
+        </section>
+
+        <section class="rounded-xl bg-brand-green-100 px-3 py-4 text-center">
+          <strong class="block font-display text-3xl font-bold leading-9 text-brand-green-600">
+            {{ stats()?.completedPhraseSetsCount ?? 0 }}
+          </strong>
+          <span class="text-xs font-medium leading-4 text-text-secondary">Sets completados</span>
+        </section>
+      </div>
+    </div>
+  }
+</article>

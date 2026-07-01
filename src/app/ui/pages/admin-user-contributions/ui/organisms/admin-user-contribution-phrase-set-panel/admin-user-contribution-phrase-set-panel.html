@@ -1,0 +1,32 @@
+<article class="rounded-2xl border border-border-subtle bg-card p-4 shadow-sm">
+  <header class="mb-4 flex items-center justify-center gap-2 text-center">
+    <span class="lucide--history text-xl text-primary" aria-hidden="true"></span>
+    <h2 class="font-display text-xl font-semibold leading-7 text-primary">
+      {{ contribution().phraseSet.title }}
+    </h2>
+  </header>
+
+  <div class="space-y-3">
+    @for (phrase of contribution().phraseSet.phrases; track phrase.id) {
+      <tm-admin-user-contribution-phrase-card [phrase]="phrase" />
+    } @empty {
+      <p class="rounded-xl border border-dashed border-border-subtle px-4 py-6 text-center text-sm text-text-secondary">
+        No hay frases recientes para mostrar en este set.
+      </p>
+    }
+  </div>
+
+  <div class="mt-4 flex justify-end">
+    <button
+      z-button
+      zType="outline"
+      zSize="sm"
+      type="button"
+      [routerLink]="['/admin', 'phrase-sets', contribution().phraseSet.id]"
+      class="rounded-full border-primary/30 text-primary"
+    >
+      Ver todo
+      <span class="lucide--external-link text-sm" aria-hidden="true"></span>
+    </button>
+  </div>
+</article>

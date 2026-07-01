@@ -43,6 +43,14 @@ export const routes: Routes = [
     canActivate: [authenticationGuard],
   },
   {
+    path: 'admin/users/:userId/contributions',
+    loadComponent: () =>
+      import('./ui/pages/admin-user-contributions/admin-user-contributions.page').then(
+        (module) => module.AdminUserContributionsPage,
+      ),
+    canActivate: [authenticationGuard],
+  },
+  {
     path: 'admin/users/:userId',
     loadComponent: () =>
       import('./ui/pages/admin-user-detail/admin-user-detail.page').then(

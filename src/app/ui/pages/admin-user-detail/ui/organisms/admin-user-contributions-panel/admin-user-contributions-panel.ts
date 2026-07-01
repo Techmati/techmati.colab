@@ -4,6 +4,7 @@ import { UserPhraseSetContributionSummary } from '@/core/types/summary.type';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
+import { RouterLink } from '@angular/router';
 import { AdminUserContributionCard } from '../../molecules/admin-user-contribution-card/admin-user-contribution-card';
 
 @Component({
@@ -13,12 +14,14 @@ import { AdminUserContributionCard } from '../../molecules/admin-user-contributi
     ZardButtonComponent,
     ZardEmptyComponent,
     ZardSkeletonComponent,
+    RouterLink,
   ],
   templateUrl: './admin-user-contributions-panel.html',
   styleUrl: './admin-user-contributions-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminUserContributionsPanel {
+  readonly userId = input.required<string>();
   readonly contributions = input.required<readonly UserPhraseSetContributionSummary[]>();
   readonly isLoading = input.required<boolean>();
   readonly total = input.required<number>();

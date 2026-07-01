@@ -1,4 +1,7 @@
-<div class="audio-player rounded-full border border-border-subtle bg-card px-4 py-2 shadow-sm">
+<div
+  class="audio-player rounded-full border border-border-subtle bg-card px-4 py-2 shadow-sm"
+  [class.audio-player--card]="variant() === 'card'"
+>
   <button
     type="button"
     class="play-btn"
@@ -11,9 +14,15 @@
     ></span>
   </button>
 
-  <div class="mx-3 flex-1 overflow-hidden">
+  <div class="waveform-shell mx-3 flex-1 overflow-hidden">
     <div #waveform class="waveform"></div>
   </div>
 
-  <span class="text-text-secondary text-sm leading-4">{{ elapsedLabel }} / {{ durationLabel }}</span>
+  <span class="text-sm leading-4 text-text-secondary">
+    @if (variant() === 'card') {
+      {{ durationLabel }}
+    } @else {
+      {{ elapsedLabel }} / {{ durationLabel }}
+    }
+  </span>
 </div>

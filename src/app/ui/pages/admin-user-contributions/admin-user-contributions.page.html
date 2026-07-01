@@ -1,0 +1,55 @@
+<main class="min-h-screen bg-background pb-8">
+  <tm-admin-user-contributions-top-bar [userName]="user()?.fullName ?? null" />
+
+  <section class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-5 py-5">
+    <tm-admin-user-contribution-stats-panel
+      [user]="user()"
+      [stats]="stats()"
+      [isLoading]="isStatsLoading()"
+    />
+
+    <section class="space-y-4" aria-labelledby="recent-contributions-heading">
+      <div class="flex items-center justify-between gap-3">
+        <h2
+          id="recent-contributions-heading"
+          class="font-display text-xl font-semibold leading-7 text-primary"
+        >
+          Contribuciones recientes
+        </h2>
+        @if(isSummariesLoading()) {
+          <p class="text-sm font-medium leading-5 text-text-secondary animate-pulse">Cargando...</p>
+        } @else {
+          <p class="text-sm font-medium leading-5 text-text-secondary">{{ summariesTotal() }} en total</p>
+        }
+      </div>
+
+      @if (isSummariesLoading()) {
+        <z-skeleton class="h-80 w-full rounded-2xl" />
+        <z-skeleton class="h-80 w-full rounded-2xl" />
+      } @else {
+        @for (summary of summaries(); track summary.phraseSet.id) {
+          <tm-admin-user-contribution-phrase-set-panel [contribution]="summary" />
+        } @empty {
+          <z-empty
+            zTitle="Sin contribuciones"
+            zDescription="Este usuario aún no cuenta con contribuciones registradas."
+            zIcon="lucide--history"
+          />
+        }
+      }
+    </section>
+
+    @if (pages() > 1) {
+      <section
+        class="rounded-2xl border border-border-subtle bg-card p-3 shadow-sm"
+        aria-label="Paginación de contribuciones"
+      >
+        <z-pagination
+          [zTotal]="pages()"
+          [zPageIndex]="page()"
+          (zPageIndexChange)="selectPage($event)"
+        />
+      </section>
+    }
+  </section>
+</main>

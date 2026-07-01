@@ -13,6 +13,8 @@ import {
 import { AuthenticationService } from '@/core/service/authentication/authentication.service';
 import WaveSurfer from 'wavesurfer.js';
 
+type WavesAudioPlayerVariant = 'default' | 'card';
+
 @Component({
   selector: 'tm-waves-audio-player',
   imports: [],
@@ -23,6 +25,7 @@ import WaveSurfer from 'wavesurfer.js';
 export class WavesAudioPlayer implements AfterViewInit {
   readonly audioUrl = input.required<string>();
   readonly initialDurationSeconds = input<number>(0);
+  readonly variant = input<WavesAudioPlayerVariant>('default');
 
   private readonly waveformContainer = viewChild.required<ElementRef<HTMLDivElement>>('waveform');
   private readonly destroyRef = inject(DestroyRef);

@@ -1,0 +1,60 @@
+<article class="rounded-xl border border-border-subtle bg-card px-4 py-3 shadow-sm">
+  <div class="space-y-2">
+    <div>
+      <p class="text-[10px] font-bold uppercase leading-4 tracking-[0.18em] text-primary">Español</p>
+      <p class="text-base font-semibold leading-6 text-text-primary">{{ phrase().sourceText }}</p>
+    </div>
+
+    <div class="h-px bg-border-subtle" aria-hidden="true"></div>
+
+    <div class="flex items-center justify-between gap-4">
+      @if (entry(); as translationEntry) {
+        <div class="min-w-0">
+          <p
+            class="text-[10px] font-bold uppercase leading-4 tracking-[0.18em] text-brand-green-600"
+          >
+            Náhuatl
+          </p>
+          <p class="truncate text-base font-semibold leading-6 text-text-primary">
+            {{ translationEntry.translation || 'Sin traducción registrada' }}
+          </p>
+        </div>
+
+        @if (translationEntry.audioUrl; as audioUrl) {
+          <tm-waves-audio-player class="shrink-0" variant="card" [audioUrl]="audioUrl" />
+        } @else {
+          <span
+            class="inline-flex shrink-0 items-center gap-2 text-sm leading-5 text-text-secondary"
+            aria-label="Sin audio registrado"
+          >
+            <span class="inline-flex size-9 items-center justify-center rounded-full bg-muted">
+              <span class="lucide--volume-x text-base text-text-secondary" aria-hidden="true"></span>
+            </span>
+            00:00
+          </span>
+        }
+      } @else {
+        <div class="min-w-0">
+          <p
+            class="text-[10px] font-bold uppercase leading-4 tracking-[0.18em] text-brand-green-600"
+          >
+            Náhuatl
+          </p>
+          <p class="truncate text-base font-semibold leading-6 text-text-primary">
+            Sin traducción registrada
+          </p>
+        </div>
+
+        <span
+          class="inline-flex shrink-0 items-center gap-2 text-sm leading-5 text-text-secondary"
+          aria-label="Sin audio registrado"
+        >
+          <span class="inline-flex size-9 items-center justify-center rounded-full bg-muted">
+            <span class="lucide--volume-x text-base text-text-secondary" aria-hidden="true"></span>
+          </span>
+          00:00
+        </span>
+      }
+    </div>
+  </div>
+</article>
