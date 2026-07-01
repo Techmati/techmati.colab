@@ -1,4 +1,4 @@
-import { SummaryService } from '@/core/service/summary/summary.service';
+import { AdminSummaryService } from '@/core/service/admin-summary/admin-summary.service';
 import { type SummaryFilter } from '@/core/types/summary.type';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { ZardToastComponent } from '@/shared/components/toast';
@@ -40,7 +40,7 @@ import { AdminUserRiskPanel } from './ui/organisms/admin-user-risk-panel/admin-u
 export class AdminUserDetailPage {
   readonly userId = input.required<string>();
   private readonly adminUserDetailService = inject(AdminUserDetailService);
-  private readonly summaryService = inject(SummaryService);
+  private readonly adminSummaryService = inject(AdminSummaryService);
 
   private readonly SUMMARY_FILTER: SummaryFilter = 'all';
   private readonly SUMMARY_PAGE_SIZE = 3;
@@ -54,11 +54,13 @@ export class AdminUserDetailPage {
   protected readonly user = computed(() => this.userQuery.data() ?? null);
 
   protected readonly summariesQuery = injectQuery(() =>
-    this.summaryService.getAdminUserSummaries(
-      this.userId(),
-      { page: 1, size: this.SUMMARY_PAGE_SIZE },
-      this.SUMMARY_FILTER,
-    ),
+    this.adminSummaryService.getUserSummaries(this.userId(), {
+      page: 1,
+      size: this.SUMMARY_PAGE_SIZE,
+      filter: this.SUMMARY_FILTER,
+      includeEntries: false,
+      entriesLimit: 0,
+    }),
   );
 
   protected readonly summaries = computed(() => this.summariesQuery.data()?.data ?? []);

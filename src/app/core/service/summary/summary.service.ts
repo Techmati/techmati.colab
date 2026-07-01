@@ -4,8 +4,6 @@ import { PhraseSetSummary, SummaryFilter } from '@/core/types/summary.type';
 import { Pagination } from '@/core/types/utils.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { keepPreviousData, queryOptions } from '@tanstack/angular-query-experimental';
-import { lastValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +14,6 @@ export class SummaryService {
   private phraseSummaryApi = API.SUMMARY.PHRASE_SET;
   private filteredSummaryApi = API.SUMMARY.FILTERED;
   private statsApi = API.SUMMARY.STATS;
-  private adminSummariesApi = API.ADMIN.SUMMARIES;
 
   getPhraseSumary(phraseId: string) {
     return this.client.get<PhraseSetSummary | null>(this.phraseSummaryApi(phraseId));
@@ -37,25 +34,5 @@ export class SummaryService {
 
   getStats() {
     return this.client.get<ContributorStats>(this.statsApi);
-  }
-
-  getAdminUserSummaries(userId: string, { page, size }: Pagination, filter: SummaryFilter) {
-    return queryOptions({
-      queryKey: ['users', userId, 'summaries', filter, { page, size }],
-      queryFn: () =>
-        lastValueFrom(
-          this.client.get<{ data: PhraseSetSummary[]; total: number }>(
-            this.adminSummariesApi(userId),
-            {
-              params: {
-                filter,
-                page: page.toString(),
-                size: size.toString(),
-              },
-            },
-          ),
-        ),
-      placeholderData: keepPreviousData,
-    });
   }
 }
