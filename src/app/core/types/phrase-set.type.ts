@@ -8,3 +8,11 @@ export interface PhraseSet {
   publishedAt: string | null;
   phraseCount: number;
 }
+export interface PhraseSetWithStats extends PhraseSet {
+  stats: PhraseSetStats;
+}
+
+export interface PhraseSetStats {
+  phraseSetId: string;
+  contributorsCount: number;
+}

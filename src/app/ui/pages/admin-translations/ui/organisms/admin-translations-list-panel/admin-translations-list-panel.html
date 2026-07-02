@@ -1,0 +1,51 @@
+@let isLoading = searchResults.isPending() || searchResults.isFetching();
+
+<section class="space-y-4" aria-labelledby="admin-translations-results-heading">
+  <header class="flex items-center justify-between gap-3">
+    <h2
+      id="admin-translations-results-heading"
+      class="font-display text-xl font-semibold leading-7 text-primary"
+    >
+      Conjuntos
+    </h2>
+
+    <p class="shrink-0 text-xs font-medium leading-4 text-text-secondary">
+      @if (isLoading) {
+        <span class="animate-pulse">Cargando</span>
+      } @else {
+        {{ total() }} resultados
+      }
+    </p>
+  </header>
+
+  <div class="space-y-4">
+    @if (isLoading) {
+      <z-skeleton class="h-40 w-full rounded-xl" />
+      <z-skeleton class="h-40 w-full rounded-xl" />
+      <z-skeleton class="h-40 w-full rounded-xl" />
+    } @else {
+      @for (phraseSet of phraseSets(); track phraseSet.id) {
+        <tm-admin-translation-phrase-set-card [phraseSet]="phraseSet" />
+      } @empty {
+        <z-empty
+          zTitle="Sin conjuntos"
+          zDescription="No hay conjuntos de frases que coincidan con estos filtros."
+          zIcon="ri--translate-2"
+        />
+      }
+    }
+  </div>
+
+  @if (pages() > 1) {
+    <section
+      class="inline-flex max-w-full rounded-xl border border-border-subtle bg-card p-2 shadow-sm"
+      aria-label="Paginación de conjuntos"
+    >
+      <z-pagination
+        [zTotal]="pages()"
+        [zPageIndex]="query().page"
+        (zPageIndexChange)="selectPage($event)"
+      />
+    </section>
+  }
+</section>

@@ -1,0 +1,79 @@
+<section
+  class="rounded-xl border border-[#d3e4fe] bg-card p-4 shadow-sm"
+  aria-label="Búsqueda y filtros de traducciones"
+>
+  <div class="space-y-4">
+    <label class="block">
+      <span class="sr-only">Buscar conjunto de frases</span>
+      <z-input-group [zAddonAfter]="searchIcon" class="bg-card shadow-sm">
+        <input
+          z-input
+          type="search"
+          placeholder="Buscar conjunto de frases..."
+          class="h-9 rounded-lg bg-card text-sm shadow-sm"
+          [(ngModel)]="search"
+        />
+      </z-input-group>
+    </label>
+
+    <div class="space-y-2">
+      <z-select
+        class="w-full"
+        zPlaceholder="Ordenar por"
+        [zValue]="sortOption()"
+        (zSelectionChange)="selectSort($event)"
+      >
+        @for (option of sortOptions; track option.value) {
+          <z-select-item [zValue]="option.value">{{ option.label }}</z-select-item>
+        }
+      </z-select>
+
+      <label class="block">
+        <span class="sr-only">Mínimo de usuarios contribuyendo</span>
+        <z-input-group
+          [zAddonBefore]="contributorsIcon"
+          [zAddonAfter]="contributorsSuffix"
+          class="bg-card shadow-sm"
+        >
+          <input
+            z-input
+            type="number"
+            inputmode="numeric"
+            min="1"
+            placeholder="Más de"
+            class="h-9 rounded-lg bg-card text-sm shadow-sm"
+            [ngModel]="minContributors()"
+            (ngModelChange)="updateMinContributors($event)"
+          />
+        </z-input-group>
+      </label>
+    </div>
+
+    <div class="flex justify-end">
+      <button
+        z-button
+        zType="outline"
+        zSize="sm"
+        type="button"
+        class="rounded-lg bg-card text-sm font-semibold"
+        (click)="clearFilters()"
+      >
+        <span class="lucide--x text-base" aria-hidden="true"></span>
+        Borrar filtros
+      </button>
+    </div>
+  </div>
+
+  <ng-template #searchIcon>
+    <span class="ri--search-line text-base text-text-secondary" aria-hidden="true"></span>
+  </ng-template>
+
+  <ng-template #contributorsIcon>
+    <span class="ri--group-line text-base text-text-secondary" aria-hidden="true"></span>
+    <span>Más de</span>
+  </ng-template>
+
+  <ng-template #contributorsSuffix>
+    <span class="text-sm text-text-secondary">contribuciones.</span>
+  </ng-template>
+</section>

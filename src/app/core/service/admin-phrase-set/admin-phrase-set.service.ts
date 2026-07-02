@@ -16,6 +16,22 @@ import {
 } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 
+export type AdminPhraseSetSortBy = 'createdAt' | 'title' | 'phraseCount' | 'contributorsCount';
+export type AdminPhraseSetSortDirection = 'asc' | 'desc';
+
+export interface AdminPhraseSetSearchQuery extends Pagination {
+  readonly search?: string;
+  readonly includeStats?: boolean;
+  readonly minContributors?: number | null;
+  readonly sortBy?: AdminPhraseSetSortBy;
+  readonly sortDirection?: AdminPhraseSetSortDirection;
+}
+
+export interface AdminPhraseSetSearchResponse<TPhraseSet extends PhraseSet = PhraseSet> {
+  readonly phraseSets: TPhraseSet[];
+  readonly total: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -25,17 +41,13 @@ export class AdminPhraseSetService {
 
   private readonly searchApi = API.ADMIN.PHRASE_SET.SEARCH;
 
-  search(searchParam: string, { page, size }: Pagination) {
+  search<TPhraseSet extends PhraseSet = PhraseSet>(query: AdminPhraseSetSearchQuery) {
     return queryOptions({
-      queryKey: ['phrase-set', searchParam, { page, size }],
+      queryKey: ['phrase-set', 'search', query],
       queryFn: () =>
         lastValueFrom(
-          this.client.get<{ phraseSets: PhraseSet[]; total: number }>(this.searchApi, {
-            params: {
-              search: searchParam,
-              page: page.toString(),
-              size: size.toString(),
-            },
+          this.client.get<AdminPhraseSetSearchResponse<TPhraseSet>>(this.searchApi, {
+            params: this.buildSearchParams(query),
           }),
         ),
       placeholderData: keepPreviousData,
@@ -101,5 +113,43 @@ export class AdminPhraseSetService {
         onErrorCallback?.();
       },
     });
+  }
+
+  private buildSearchParams({
+    search,
+    includeStats,
+    minContributors,
+    sortBy,
+    sortDirection,
+    page,
+    size,
+  }: AdminPhraseSetSearchQuery): Record<string, string> {
+    const params: Record<string, string> = {
+      page: page.toString(),
+      size: size.toString(),
+    };
+
+    const trimmedSearch = search?.trim();
+    if (trimmedSearch) {
+      params['search'] = trimmedSearch;
+    }
+
+    if (includeStats !== undefined) {
+      params['includeStats'] = includeStats.toString();
+    }
+
+    if (minContributors !== null && minContributors !== undefined) {
+      params['minContributors'] = minContributors.toString();
+    }
+
+    if (sortBy) {
+      params['sortBy'] = sortBy;
+    }
+
+    if (sortDirection) {
+      params['sortDirection'] = sortDirection;
+    }
+
+    return params;
   }
 }

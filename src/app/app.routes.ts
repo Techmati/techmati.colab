@@ -35,6 +35,14 @@ export const routes: Routes = [
     canActivate: [authenticationGuard],
   },
   {
+    path: 'admin/translations',
+    loadComponent: () =>
+      import('./ui/pages/admin-translations/admin-translations.page').then(
+        (module) => module.AdminTranslationsPage,
+      ),
+    canActivate: [authenticationGuard],
+  },
+  {
     path: 'admin/users',
     loadComponent: () =>
       import('./ui/pages/admin-users/admin-users.page').then(

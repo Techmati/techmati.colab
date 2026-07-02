@@ -1,0 +1,18 @@
+<main class="min-h-screen bg-background pb-24">
+  <tm-top-app-bar />
+
+  <section class="mx-auto flex w-full max-w-3xl flex-col gap-4 px-5 py-5">
+    <h1 class="font-display text-3xl font-semibold leading-tight text-primary">Traducciones</h1>
+
+    <tm-admin-translations-filter-panel
+      [searchParam]="searchParam()"
+      [minContributorsParam]="minContributorsParam()"
+      [sortByParam]="sortByParam()"
+      [sortDirectionParam]="sortDirectionParam()"
+    />
+
+    <tm-admin-translations-list-panel [query]="query()" />
+  </section>
+
+  <tm-admin-bottom-nav />
+</main>

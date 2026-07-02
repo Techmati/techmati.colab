@@ -36,13 +36,22 @@
       Frases
     </a>
 
-    <button
+    <a
       class="flex flex-col items-center justify-center gap-1 px-2 text-xs font-medium text-text-secondary transition-colors hover:bg-surface-soft hover:text-primary"
-      type="button"
+      routerLink="/admin/translations"
+      [routerLinkActive]="[
+        'border-t-2',
+        'border-primary',
+        'bg-brand-purple-50/60',
+        '!font-bold',
+        '!text-primary'
+      ]"
+      [routerLinkActiveOptions]="{ exact: true }"
+      ariaCurrentWhenActive="page"
     >
       <span class="ri--translate-2 text-xl" aria-hidden="true"></span>
       Traducciones
-    </button>
+    </a>
 
     <a
       class="flex flex-col items-center justify-center gap-1 px-2 text-xs font-medium text-text-secondary transition-colors hover:bg-surface-soft hover:text-primary"
