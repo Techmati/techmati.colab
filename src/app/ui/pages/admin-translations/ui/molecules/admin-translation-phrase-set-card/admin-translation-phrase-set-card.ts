@@ -13,6 +13,6 @@ export class AdminTranslationPhraseSetCard {
   readonly phraseSet = input.required<PhraseSetWithStats>();
 
   protected readonly contributorsCount = computed(
-    () => this.phraseSet().stats[0]?.contributorsCount ?? 0,
+    () => this.phraseSet().stats.contributorsCount ?? 0,
   );
 }

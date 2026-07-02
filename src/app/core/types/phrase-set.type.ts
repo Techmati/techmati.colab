@@ -9,7 +9,7 @@ export interface PhraseSet {
   phraseCount: number;
 }
 export interface PhraseSetWithStats extends PhraseSet {
-  stats: PhraseSetStats[];
+  stats: PhraseSetStats;
 }
 
 export interface PhraseSetStats {
