@@ -1,6 +1,10 @@
 import { API } from '@/core/config/api-uris.config';
 import { UserContributionStats } from '@/core/types/contributor-stats.type';
-import { SummaryFilter, UserPhraseSetContributionSummary } from '@/core/types/summary.type';
+import {
+  PhraseSetContributorSummary,
+  SummaryFilter,
+  UserPhraseSetContributionSummary,
+} from '@/core/types/summary.type';
 import { Pagination } from '@/core/types/utils.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
@@ -13,12 +17,20 @@ interface AdminUserSummariesOptions extends Pagination {
   readonly entriesLimit?: number;
 }
 
+interface AdminPhraseSetSummariesOptions extends Pagination {
+  readonly search?: string;
+  readonly filter: SummaryFilter;
+  readonly includeContributor?: boolean;
+  readonly includePhraseSet?: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class AdminSummaryService {
   private readonly client = inject(HttpClient);
-  private readonly userSummariesApi = API.ADMIN.SUMMARIES;
+  private readonly userSummariesApi = API.ADMIN.SUMMARIES.USER;
+  private readonly phraseSetSummariesApi = API.ADMIN.SUMMARIES.PHRASE_SET;
   private readonly userStatsApi = API.ADMIN.STATS.USER;
 
   getUserSummaries(
@@ -43,6 +55,44 @@ export class AdminSummaryService {
                 page: page.toString(),
                 size: size.toString(),
                 filter,
+              },
+            },
+          ),
+        ),
+      placeholderData: keepPreviousData,
+    });
+  }
+
+  getPhraseSetSummaries(
+    phraseSetId: string,
+    {
+      page,
+      size,
+      search = '',
+      filter,
+      includeContributor = false,
+      includePhraseSet = false,
+    }: AdminPhraseSetSummariesOptions,
+  ) {
+    return queryOptions({
+      queryKey: [
+        'admin-summaries',
+        'phrase-sets',
+        phraseSetId,
+        { page, size, search, filter, includeContributor, includePhraseSet },
+      ],
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<{ data: PhraseSetContributorSummary[]; total: number }>(
+            this.phraseSetSummariesApi(phraseSetId),
+            {
+              params: {
+                ...(search.trim() ? { search: search.trim() } : {}),
+                filter,
+                includeContributor: includeContributor.toString(),
+                includePhraseSet: includePhraseSet.toString(),
+                page: page.toString(),
+                size: size.toString(),
               },
             },
           ),

@@ -1,0 +1,21 @@
+<section
+  class="rounded-xl border border-[#d3e4fe] bg-card p-4 shadow-sm"
+  aria-label="Buscar colaboradores"
+>
+  <label class="block">
+    <span class="sr-only">Buscar colaborador</span>
+    <z-input-group [zAddonAfter]="searchIcon" class="bg-card shadow-sm">
+      <input
+        z-input
+        type="search"
+        placeholder="Buscar colaborador..."
+        class="h-9 rounded-lg bg-card text-sm shadow-sm"
+        [(ngModel)]="search"
+      />
+    </z-input-group>
+  </label>
+
+  <ng-template #searchIcon>
+    <span class="ri--search-line text-base text-text-secondary" aria-hidden="true"></span>
+  </ng-template>
+</section>

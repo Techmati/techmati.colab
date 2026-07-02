@@ -1,0 +1,25 @@
+<main class="min-h-screen bg-background pb-8">
+  <tm-admin-translation-detail-top-bar />
+
+  <section class="mx-auto flex w-full max-w-3xl flex-col gap-4 px-5 py-5">
+    <header class="space-y-1">
+      <h1 class="font-display text-3xl font-semibold leading-tight text-primary">
+        {{ phraseSet()?.title || 'Conjunto de frases' }}
+      </h1>
+      <p class="max-w-prose text-base leading-6 text-text-secondary">
+        {{ phraseSet()?.description || 'Gestión de colaboradores y progreso de traducción.' }}
+      </p>
+    </header>
+
+    <tm-admin-translation-contributors-filter-panel [searchParam]="searchParam()" />
+
+    <tm-admin-translation-contributors-list-panel
+      [summaries]="summaries()"
+      [total]="total()"
+      [page]="page()"
+      [pages]="pages()"
+      [isLoading]="isLoading()"
+      (pageChange)="selectPage($event)"
+    />
+  </section>
+</main>

@@ -46,7 +46,10 @@ const API = {
       UNBAN: (userId: string) => `${BASE_URL}/admin/users/${userId}/unban`,
       ASSIGN_ROLE: (userId: string) => `${BASE_URL}/admin/users/${userId}/role`,
     },
-    SUMMARIES: (userId: string) => `${BASE_URL}/admin/summaries/users/${userId}`,
+    SUMMARIES: {
+      USER: (userId: string) => `${BASE_URL}/admin/summaries/users/${userId}`,
+      PHRASE_SET: (phraseSetId: string) => `${BASE_URL}/admin/summaries/phrase-sets/${phraseSetId}`,
+    },
   },
 };
 

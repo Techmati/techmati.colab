@@ -1,3 +1,4 @@
+import { Profile } from '../dto/profile.dto';
 import { PhraseSet } from './phrase-set.type';
 import { Phrase } from './phrase.type';
 import { TranslationEntry } from './translation-entry.type';
@@ -25,6 +26,11 @@ export type UserPhraseSetContributionSummary = Summary & {
       }
     >;
   };
+};
+
+export type PhraseSetContributorSummary = Summary & {
+  contributor: Profile | null;
+  phraseSet: PhraseSet | null;
 };
 
 export type SummaryFilter = 'all' | 'in_progress' | 'completed';

@@ -1,0 +1,49 @@
+<section class="space-y-4" aria-labelledby="admin-translation-contributors-heading">
+  <header class="flex items-center justify-between gap-3">
+    <h2
+      id="admin-translation-contributors-heading"
+      class="font-display text-xl font-semibold leading-7 text-primary"
+    >
+      Contribuyentes
+    </h2>
+
+    <p class="shrink-0 text-xs font-medium leading-4 text-text-secondary">
+      @if (isLoading()) {
+        <span class="animate-pulse">Cargando</span>
+      } @else {
+        {{ total() }} resultados
+      }
+    </p>
+  </header>
+
+  <div class="space-y-4">
+    @if (isLoading()) {
+      <z-skeleton class="h-48 w-full rounded-xl" />
+      <z-skeleton class="h-48 w-full rounded-xl" />
+      <z-skeleton class="h-48 w-full rounded-xl" />
+    } @else {
+      @for (summary of summaries(); track summary.userId) {
+        <tm-admin-translation-contributor-card [summary]="summary" />
+      } @empty {
+        <z-empty
+          zTitle="Sin contribuyentes"
+          zDescription="No hay colaboradores que coincidan con la búsqueda actual."
+          zIcon="ri--group-line"
+        />
+      }
+    }
+  </div>
+
+  @if (pages() > 1) {
+    <section
+      class="inline-flex max-w-full rounded-xl border border-border-subtle bg-card p-2 shadow-sm"
+      aria-label="Paginación de contribuyentes"
+    >
+      <z-pagination
+        [zTotal]="pages()"
+        [zPageIndex]="page()"
+        (zPageIndexChange)="pageChange.emit($event)"
+      />
+    </section>
+  }
+</section>
