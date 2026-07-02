@@ -33,4 +33,13 @@ export type PhraseSetContributorSummary = Summary & {
   phraseSet: PhraseSet | null;
 };
 
+export type UserPhraseSetTranslationEntry = TranslationEntry & {
+  phrase: Phrase;
+};
+
+export interface UserPhraseSetTranslationDetail {
+  summary: PhraseSetContributorSummary;
+  entries: UserPhraseSetTranslationEntry[];
+}
+
 export type SummaryFilter = 'all' | 'in_progress' | 'completed';

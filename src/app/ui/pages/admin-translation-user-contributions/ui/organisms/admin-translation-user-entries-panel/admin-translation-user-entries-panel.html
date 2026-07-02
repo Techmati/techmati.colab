@@ -1,0 +1,17 @@
+<section class="space-y-4" aria-label="Traducciones del colaborador">
+  @if (isLoading()) {
+    <z-skeleton class="h-52 w-full rounded-xl" />
+    <z-skeleton class="h-52 w-full rounded-xl" />
+    <z-skeleton class="h-52 w-full rounded-xl" />
+  } @else {
+    @for (entry of entries(); track entry.id) {
+      <tm-admin-translation-user-entry-card [entry]="entry" />
+    } @empty {
+      <z-empty
+        zTitle="Sin traducciones"
+        zDescription="Este colaborador aún no tiene traducciones registradas en este conjunto."
+        zIcon="ri--translate-2"
+      />
+    }
+  }
+</section>

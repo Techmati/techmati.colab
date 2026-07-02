@@ -1,0 +1,30 @@
+<article class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
+  <div class="space-y-4">
+    <section class="space-y-1">
+      <p class="text-xs font-medium uppercase leading-4 tracking-[0.05em] text-primary">Español</p>
+      <p class="text-lg leading-7 text-text-primary">{{ entry().phrase.sourceText }}</p>
+    </section>
+
+    <section class="space-y-1">
+      <p class="text-xs font-medium uppercase leading-4 tracking-[0.05em] text-brand-green-600">
+        Náhuatl
+      </p>
+      <p class="text-lg leading-7 text-text-primary">{{ entry().translation }}</p>
+    </section>
+
+    @if (entry().audioUrl; as audioUrl) {
+      <tm-waves-audio-player variant="panel" [audioUrl]="audioUrl" />
+    } @else {
+      <div
+        class="flex items-center gap-4 rounded-lg border border-border-subtle bg-[#f8f9ff] p-2.5 text-sm text-text-secondary"
+        aria-label="Sin audio registrado"
+      >
+        <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-muted">
+          <span class="lucide--volume-x text-base" aria-hidden="true"></span>
+        </span>
+        <span class="flex-1">Sin audio registrado</span>
+        <span class="text-xs">00:00</span>
+      </div>
+    }
+  </div>
+</article>

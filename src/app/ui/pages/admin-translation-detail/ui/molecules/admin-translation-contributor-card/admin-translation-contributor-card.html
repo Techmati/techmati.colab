@@ -49,8 +49,8 @@
       @if (contributor(); as user) {
         <a
           class="inline-flex size-7 items-center justify-center rounded-full text-primary transition hover:bg-brand-purple-50"
-          [routerLink]="['/admin', 'users', user.id]"
-          aria-label="Ver perfil del contribuyente"
+          [routerLink]="['/admin', 'translations', summary().phraseSetId, 'users', user.id]"
+          aria-label="Ver traducciones del contribuyente"
         >
           <span class="lucide--chevron-right text-lg" aria-hidden="true"></span>
         </a>

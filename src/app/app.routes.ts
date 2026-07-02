@@ -51,6 +51,14 @@ export const routes: Routes = [
     canActivate: [authenticationGuard],
   },
   {
+    path: 'admin/translations/:translationId/users/:userId',
+    loadComponent: () =>
+      import(
+        './ui/pages/admin-translation-user-contributions/admin-translation-user-contributions.page'
+      ).then((module) => module.AdminTranslationUserContributionsPage),
+    canActivate: [authenticationGuard],
+  },
+  {
     path: 'admin/users',
     loadComponent: () =>
       import('./ui/pages/admin-users/admin-users.page').then(

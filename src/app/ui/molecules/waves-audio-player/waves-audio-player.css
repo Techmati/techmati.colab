@@ -42,3 +42,19 @@
   position: absolute;
   width: 1px;
 }
+
+.audio-player--panel {
+  background: #f8f9ff;
+  border-radius: 0.5rem;
+  box-shadow: none;
+  gap: 1rem;
+  padding: 0.5625rem;
+}
+
+.audio-player--panel .waveform-shell {
+  margin: 0;
+}
+
+.audio-player--panel .waveform {
+  min-height: 32px;
+}

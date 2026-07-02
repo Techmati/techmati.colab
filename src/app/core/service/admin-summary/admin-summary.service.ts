@@ -4,6 +4,7 @@ import {
   PhraseSetContributorSummary,
   SummaryFilter,
   UserPhraseSetContributionSummary,
+  UserPhraseSetTranslationDetail,
 } from '@/core/types/summary.type';
 import { Pagination } from '@/core/types/utils.type';
 import { HttpClient } from '@angular/common/http';
@@ -31,6 +32,7 @@ export class AdminSummaryService {
   private readonly client = inject(HttpClient);
   private readonly userSummariesApi = API.ADMIN.SUMMARIES.USER;
   private readonly phraseSetSummariesApi = API.ADMIN.SUMMARIES.PHRASE_SET;
+  private readonly phraseSetUserTranslationsApi = API.ADMIN.SUMMARIES.PHRASE_SET_USER_TRANSLATIONS;
   private readonly userStatsApi = API.ADMIN.STATS.USER;
 
   getUserSummaries(
@@ -91,6 +93,33 @@ export class AdminSummaryService {
                 filter,
                 includeContributor: includeContributor.toString(),
                 includePhraseSet: includePhraseSet.toString(),
+                page: page.toString(),
+                size: size.toString(),
+              },
+            },
+          ),
+        ),
+      placeholderData: keepPreviousData,
+    });
+  }
+
+  getPhraseSetUserTranslations(phraseSetId: string, userId: string, { page, size }: Pagination) {
+    return queryOptions({
+      queryKey: [
+        'admin-summaries',
+        'phrase-sets',
+        phraseSetId,
+        'users',
+        userId,
+        'translations',
+        { page, size },
+      ],
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<{ data: UserPhraseSetTranslationDetail; total: number }>(
+            this.phraseSetUserTranslationsApi(phraseSetId, userId),
+            {
+              params: {
                 page: page.toString(),
                 size: size.toString(),
               },

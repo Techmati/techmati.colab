@@ -49,6 +49,8 @@ const API = {
     SUMMARIES: {
       USER: (userId: string) => `${BASE_URL}/admin/summaries/users/${userId}`,
       PHRASE_SET: (phraseSetId: string) => `${BASE_URL}/admin/summaries/phrase-sets/${phraseSetId}`,
+      PHRASE_SET_USER_TRANSLATIONS: (phraseSetId: string, userId: string) =>
+        `${BASE_URL}/admin/summaries/phrase-sets/${phraseSetId}/users/${userId}/translations`,
     },
   },
 };

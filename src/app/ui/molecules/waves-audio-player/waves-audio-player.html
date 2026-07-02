@@ -1,6 +1,7 @@
 <div
   class="audio-player rounded-full border border-border-subtle bg-card px-4 py-2 shadow-sm"
   [class.audio-player--card]="variant() === 'card'"
+  [class.audio-player--panel]="variant() === 'panel'"
 >
   <button
     type="button"
@@ -20,6 +21,8 @@
 
   <span class="text-sm leading-4 text-text-secondary">
     @if (variant() === 'card') {
+      {{ durationLabel }}
+    } @else if (variant() === 'panel') {
       {{ durationLabel }}
     } @else {
       {{ elapsedLabel }} / {{ durationLabel }}

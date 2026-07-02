@@ -13,7 +13,7 @@ import {
 import { AuthenticationService } from '@/core/service/authentication/authentication.service';
 import WaveSurfer from 'wavesurfer.js';
 
-type WavesAudioPlayerVariant = 'default' | 'card';
+type WavesAudioPlayerVariant = 'default' | 'card' | 'panel';
 
 @Component({
   selector: 'tm-waves-audio-player',

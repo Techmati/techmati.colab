@@ -1,0 +1,31 @@
+<main class="min-h-screen bg-background pb-8">
+  <tm-admin-translation-user-contributions-top-bar
+    [phraseSetTitle]="summary()?.phraseSet?.title ?? null"
+    [userName]="summary()?.contributor?.fullName ?? null"
+  />
+
+  <section class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-5 py-6">
+    <tm-admin-translation-user-summary-panel
+      [summary]="summary()"
+      [isLoading]="isLoading()"
+    />
+
+    <tm-admin-translation-user-entries-panel
+      [entries]="entries()"
+      [isLoading]="isLoading()"
+    />
+
+    @if (pages() > 1) {
+      <section
+        class="rounded-xl border border-border-subtle bg-card p-2 shadow-sm"
+        aria-label="Paginación de traducciones"
+      >
+        <z-pagination
+          [zTotal]="pages()"
+          [zPageIndex]="page()"
+          (zPageIndexChange)="selectPage($event)"
+        />
+      </section>
+    }
+  </section>
+</main>
