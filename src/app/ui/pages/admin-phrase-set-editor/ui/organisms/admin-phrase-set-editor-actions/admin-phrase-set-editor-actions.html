@@ -32,6 +32,22 @@
       <span class="lucide--x text-base" aria-hidden="true"></span>
       Descartar
     </button>
-
+    <button
+      z-button
+      zType="default"
+      zFull
+      type="button"
+      class="h-fit w-fit p-2.5 px-4 shrink rounded-lg bg-destructive text-sm font-medium text-white hover:bg-destructive/80 hover:text-white "
+      (click)="delete.emit()"
+      [zLoading]="deleteLoading()"
+      [zDisabled]="deleteDisabled()"
+    >
+      @if (!deleteLoading()) {
+        <span class="lucide--trash text-base" aria-hidden="true"></span>
+        Eliminar
+      } @else {
+        Eliminando...
+      }
+    </button>
   </div>
 </aside>

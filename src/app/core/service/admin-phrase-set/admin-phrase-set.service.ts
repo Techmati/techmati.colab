@@ -1,6 +1,6 @@
 import { API } from '@/core/config/api-uris.config';
-import { Phrase } from '@/core/types/phrase.type';
 import { PhraseSet } from '@/core/types/phrase-set.type';
+import { Phrase } from '@/core/types/phrase.type';
 import { Pagination } from '@/core/types/utils.type';
 import {
   PhraseSetCreatePayload,
@@ -8,8 +8,12 @@ import {
 } from '@/ui/pages/admin-phrase-set-editor/core/types/phrase-set-derivations.type';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { keepPreviousData, queryOptions } from '@tanstack/angular-query-experimental';
-import { Observable, lastValueFrom } from 'rxjs';
+import {
+  keepPreviousData,
+  mutationOptions,
+  queryOptions,
+} from '@tanstack/angular-query-experimental';
+import { lastValueFrom, Observable } from 'rxjs';
 
 export type AdminPhraseSetSortBy = 'createdAt' | 'title' | 'phraseCount' | 'contributorsCount';
 export type AdminPhraseSetSortDirection = 'asc' | 'desc';
@@ -43,10 +47,9 @@ export class AdminPhraseSetService {
   search<TPhraseSet extends PhraseSet = PhraseSet>(
     query: AdminPhraseSetSearchQuery,
   ): Observable<AdminPhraseSetSearchResponse<TPhraseSet>> {
-    return this.client.get<AdminPhraseSetSearchResponse<TPhraseSet>>(
-      this.searchApi,
-      { params: this.buildSearchParams(query) },
-    );
+    return this.client.get<AdminPhraseSetSearchResponse<TPhraseSet>>(this.searchApi, {
+      params: this.buildSearchParams(query),
+    });
   }
 
   searchQuery<TPhraseSet extends PhraseSet = PhraseSet>(query: AdminPhraseSetSearchQuery) {
@@ -58,9 +61,7 @@ export class AdminPhraseSetService {
   }
 
   findPhrases(phraseSetId: string, { page, size }: Pagination): Observable<PaginatedPhrases> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
+    const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return this.client.get<PaginatedPhrases>(API.ADMIN.PHRASE_SET.PHRASES(phraseSetId), { params });
   }
 
@@ -103,6 +104,13 @@ export class AdminPhraseSetService {
     };
   }
 
+  delete(phraseSetId: string) {
+    return mutationOptions({
+      mutationFn: () =>
+        lastValueFrom(this.client.delete<void>(API.ADMIN.PHRASE_SET.BY_ID(phraseSetId))),
+    });
+  }
+
   private buildSearchParams({
     search,
     includeStats,
@@ -112,9 +120,7 @@ export class AdminPhraseSetService {
     page,
     size,
   }: AdminPhraseSetSearchQuery): HttpParams {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
+    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
 
     const trimmedSearch = search?.trim();
     if (trimmedSearch) {

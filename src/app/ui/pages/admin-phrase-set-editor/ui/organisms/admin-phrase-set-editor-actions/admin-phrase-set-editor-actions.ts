@@ -15,8 +15,12 @@ export class AdminPhraseSetEditorActions {
 
   readonly save = output<void>();
   readonly saveDisabled = input.required<boolean>();
-
   readonly saveLoading = input.required<boolean>();
+
+  readonly delete = output<void>();
+  readonly deleteDisabled = input.required<boolean>();
+  readonly deleteLoading = input.required<boolean>();
+
   readonly discard = output<void>();
 
   protected confirmDiscard(): void {

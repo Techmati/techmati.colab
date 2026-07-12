@@ -81,7 +81,9 @@ export class TranslatePage {
 
   readonly phrasesMap = computed(() => {
     const phrases = new Map<string, Phrase>();
+
     if (this.phraseSetRes.isPending()) return phrases;
+
     const phraseSet = this.phraseSetRes.data()!;
     phraseSet.phrases.forEach((p) => phrases.set(p.id, p));
     return phrases;
