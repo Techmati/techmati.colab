@@ -1,17 +1,21 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 
 import { PhraseSet } from '@/core/types/phrase-set.type';
+import { baseToastConfig } from '@/core/view/base-toast.config';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
+import { ZardToastComponent } from '@/shared/components/toast';
+import { Location } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { injectQuery } from '@tanstack/angular-query-experimental';
+import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
+import { toast } from 'ngx-sonner';
 import { AdminPhraseSetService } from '../../../../../../core/service/admin-phrase-set/admin-phrase-set.service';
 
 // TODO: change budget sizes in angular.json
 
 @Component({
   selector: 'tm-admin-phrase-set-card',
-  imports: [ZardButtonComponent, ZardSkeletonComponent, RouterLink],
+  imports: [ZardButtonComponent, ZardSkeletonComponent, RouterLink, ZardToastComponent],
   templateUrl: './admin-phrase-set-card.html',
   styleUrl: './admin-phrase-set-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,11 +26,19 @@ export class AdminPhraseSetCard {
 
   private readonly adminPhraseSetService = inject(AdminPhraseSetService);
 
+  private readonly location = inject(Location);
+
   readonly phrases = injectQuery(() =>
     this.adminPhraseSetService.findPhrasesQuery(this.phraseSet().id, { page: 1, size: 3 }),
   );
 
   readonly previewPhrases = computed(() => this.phrases.data()?.data || []);
+
+  readonly deleteMutation = injectMutation(() => ({
+    ...this.adminPhraseSetService.delete(this.phraseSet().id),
+    onSuccess: () => this.onDeleteSuccess(),
+    onError: () => this.onDeleteError(),
+  }));
 
   protected readonly badgeLabel = computed(() =>
     this.phraseSet().published ? 'PUBLICADO' : 'BORRADOR',
@@ -64,5 +76,26 @@ export class AdminPhraseSetCard {
 
   protected toggleExpanded(): void {
     this.isExpanded.update((isExpanded) => !isExpanded);
+  }
+
+  readonly deleteLoading = computed(() => this.deleteMutation.isPending());
+
+  protected delete(): void {
+    this.deleteMutation.mutate();
+  }
+  private onDeleteSuccess(): void {
+    toast.success('Set de frases eliminado con éxito', {
+      description: 'El set de frases ha sido eliminado correctamente.',
+      ...baseToastConfig,
+    });
+    this.adminPhraseSetService.invalidateSearch();
+    this.location.back();
+  }
+  private onDeleteError(): void {
+    toast.error('No se pudo eliminar el set de frases', {
+      description:
+        'Ocurrió un problema al eliminar el set de frases. Revisa tu conexión e intenta eliminar de nuevo.',
+      ...baseToastConfig,
+    });
   }
 }

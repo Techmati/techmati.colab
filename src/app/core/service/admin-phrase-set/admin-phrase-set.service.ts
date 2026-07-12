@@ -11,6 +11,7 @@ import { inject, Injectable } from '@angular/core';
 import {
   keepPreviousData,
   mutationOptions,
+  QueryClient,
   queryOptions,
 } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, Observable } from 'rxjs';
@@ -41,6 +42,7 @@ export interface PaginatedPhrases {
 })
 export class AdminPhraseSetService {
   private readonly client = inject(HttpClient);
+  private readonly queryClient = inject(QueryClient);
 
   private readonly searchApi = API.ADMIN.PHRASE_SET.SEARCH;
 
@@ -109,6 +111,10 @@ export class AdminPhraseSetService {
       mutationFn: () =>
         lastValueFrom(this.client.delete<void>(API.ADMIN.PHRASE_SET.BY_ID(phraseSetId))),
     });
+  }
+
+  invalidateSearch() {
+    this.queryClient.invalidateQueries({ queryKey: ['admin', 'phrase-set-search'] });
   }
 
   private buildSearchParams({
