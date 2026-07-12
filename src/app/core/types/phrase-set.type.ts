@@ -1,3 +1,5 @@
+import { Phrase } from './phrase.type';
+
 export interface PhraseSet {
   id: string;
   title: string;
@@ -10,6 +12,9 @@ export interface PhraseSet {
   stats?: PhraseSetStats | null;
 }
 
+export interface PhraseSetWithPhrasesDto extends PhraseSet {
+  phrases: Phrase[];
+}
 export interface PhraseSetWithStats extends PhraseSet {
   stats: PhraseSetStats;
 }

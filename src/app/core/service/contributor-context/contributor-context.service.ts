@@ -21,7 +21,9 @@ export class ContributorContextService {
   readonly contributorsList = injectQuery(() => this.contributorService.list());
 
   readonly activeLoading = computed(() => this.contributorsList.isPending());
+
   readonly active = computed(() => {
+    if (this.contributorsList.isPending()) return null;
     const list = this.contributorsList.data();
     if (!list || list.length === 0)
       throw new Error('No contributors found for this user. Not even an automatic one.');
@@ -30,7 +32,7 @@ export class ContributorContextService {
     if (!cached) cached = list[0];
     return cached;
   });
-  readonly activeId = computed(() => this.active().id);
+  readonly activeId = computed(() => this.active()?.id);
 
   readonly hasMultiple = computed(() => this.contributors().length > 1);
 

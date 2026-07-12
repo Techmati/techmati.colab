@@ -63,5 +63,9 @@ export class BatchProgressPanel {
         this.router.navigate(['/translate', this.phraseSetId(), 'end']);
       }
     });
+    effect(() => {
+      console.log(this.summary.value());
+      console.log(this.progressPercentage());
+    });
   }
 }

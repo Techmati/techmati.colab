@@ -15,6 +15,7 @@ import {
 import { form, FormField, minLength, required } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 
+import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { tryCatch } from '@/core/utils/try.util';
 import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
 import { injectQuery } from '@tanstack/angular-query-experimental';
@@ -46,6 +47,8 @@ import { TranslationTextarea } from './ui/organisms/translation-textarea/transla
 export class TranslatePage {
   private readonly destroyRef = inject(DestroyRef);
   private readonly translationService = inject(TranslationService);
+  private readonly phraseSetService = inject(PhraseSetsService);
+
   private readonly contributorContext = inject(ContributorContextService);
 
   readonly phraseSetId = input.required<string>();
@@ -72,39 +75,31 @@ export class TranslatePage {
     required(schema.pronunciation, { message: 'Añade una pronunciación grabada.' });
   });
 
-  // readonly phraseRes = rxResource({
-  //   params: computed(() => ({
-  //     contributorId: this.translationId() ?? '',
-  //     translationId: this.contributorContext.activeId() ?? '',
-  //     tick: this.nextPhraseTick(),
-  //   })),
-  //   stream: ({ params }) => {
-  //     if (!params.contributorId || !params.translationId) {
-  //       return this.translationService.getNextPendingObservable('', '');
-  //     }
-  //     return this.translationService.getNextPendingObservable(
-  //       params.contributorId,
-  //       params.translationId,
-  //     );
-  //   },
-  // });
+  readonly phraseSetRes = injectQuery(() =>
+    this.phraseSetService.getPhraseSetById(this.phraseSetId()),
+  );
+
+  readonly phrasesMap = computed(() => {
+    const phrases = new Map<string, Phrase>();
+    if (this.phraseSetRes.isPending()) return phrases;
+    const phraseSet = this.phraseSetRes.data()!;
+    phraseSet.phrases.forEach((p) => phrases.set(p.id, p));
+    return phrases;
+  });
 
   readonly phraseRes = injectQuery(() => {
-    const contributorId = this.contributorContext.activeId();
-    const translationId = this.translationId();
-    return this.translationService.getNextPending(contributorId, translationId ?? '');
+    const contributorId = this.contributorContext.activeId()!;
+    const translationId = this.translationId()!;
+    return {
+      ...this.translationService.getNextPending(contributorId, translationId ?? ''),
+      enabled: !!contributorId && !!translationId,
+    };
   });
 
   readonly phrase = computed<Phrase | null>(() => {
     const phraseId = this.phraseRes.data()?.phraseId;
     if (!phraseId) return null;
-    return {
-      id: phraseId,
-      phraseSetId: this.phraseSetId(),
-      sourceText: '',
-      position: 0,
-      createdAt: '',
-    };
+    return this.phrasesMap().get(phraseId) ?? null;
   });
 
   constructor() {
@@ -117,6 +112,12 @@ export class TranslatePage {
 
     effect(() => {
       void this.initTranslation();
+    });
+    effect(() => {
+      console.log(this.phrase());
+    });
+    effect(() => {
+      console.log(this.phraseSetRes.data());
     });
   }
 

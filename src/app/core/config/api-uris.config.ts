@@ -9,6 +9,7 @@ const API = {
     GET: `${BASE_URL}/profile`,
   },
   PHRASE_SETS: {
+    BY_ID: (id: string) => `${BASE_URL}/phrase-sets/${id}`,
     PAGINATED: `${BASE_URL}/phrase-sets`,
     NEXT_PENDING: `${BASE_URL}/phrase-sets/next-pending`,
   },
@@ -19,10 +20,8 @@ const API = {
       LIST: (cId: string) => `${BASE_URL}/contributors/${cId}/translations`,
       STATS: (cId: string) => `${BASE_URL}/contributors/${cId}/translations/stats`,
       CREATE: (cId: string) => `${BASE_URL}/contributors/${cId}/translations`,
-      DETAIL: (cId: string, tId: string) =>
-        `${BASE_URL}/contributors/${cId}/translations/${tId}`,
-      DELETE: (cId: string, tId: string) =>
-        `${BASE_URL}/contributors/${cId}/translations/${tId}`,
+      DETAIL: (cId: string, tId: string) => `${BASE_URL}/contributors/${cId}/translations/${tId}`,
+      DELETE: (cId: string, tId: string) => `${BASE_URL}/contributors/${cId}/translations/${tId}`,
       NEXT_PENDING: (cId: string, tId: string) =>
         `${BASE_URL}/contributors/${cId}/translations/${tId}/next-pending`,
       SUBMIT_ENTRY: (cId: string, tId: string) =>
