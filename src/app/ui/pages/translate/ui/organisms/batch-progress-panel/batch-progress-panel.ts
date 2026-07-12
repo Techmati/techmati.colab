@@ -38,7 +38,7 @@ export class BatchProgressPanel {
     stream: ({ params }) =>
       defer(() => from(this.contributorContext.getActiveContributorIdAsync())).pipe(
         switchMap((contributorId) =>
-          this.translationService.listByContributor(contributorId, {
+          this.translationService.listByContributorObservable(contributorId, {
             filter: 'all',
             page: 1,
             size: 50,

@@ -2,7 +2,8 @@ import { API } from '@/core/config/api-uris.config';
 import { Contributor } from '@/core/types/contributor.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { queryOptions } from '@tanstack/angular-query-experimental';
+import { lastValueFrom, map, Observable } from 'rxjs';
 
 export interface CreateContributorPayload {
   fullName: string;
@@ -20,10 +21,22 @@ export interface UpdateContributorPayload {
 export class ContributorService {
   private readonly client = inject(HttpClient);
 
-  list(): Observable<Contributor[]> {
-    return this.client.get<{ data: Contributor[] }>(API.CONTRIBUTORS.LIST).pipe(
-      map((response) => response.data),
-    );
+  listObservable(): Observable<Contributor[]> {
+    return this.client
+      .get<{ data: Contributor[] }>(API.CONTRIBUTORS.LIST)
+      .pipe(map((response) => response.data));
+  }
+
+  list() {
+    return queryOptions({
+      queryKey: ['contributors'],
+      queryFn: () =>
+        lastValueFrom(
+          this.client
+            .get<{ data: Contributor[] }>(API.CONTRIBUTORS.LIST)
+            .pipe(map((response) => response.data)),
+        ),
+    });
   }
 
   findById(id: string): Observable<Contributor> {

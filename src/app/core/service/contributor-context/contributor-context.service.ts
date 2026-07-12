@@ -2,6 +2,7 @@ import { TechmatiRole } from '@/core/dto/profile.dto';
 import { ContributorService } from '@/core/service/contributor/contributor.service';
 import { Contributor } from '@/core/types/contributor.type';
 import { computed, inject, Injectable, signal } from '@angular/core';
+import { injectQuery } from '@tanstack/angular-query-experimental';
 import { firstValueFrom } from 'rxjs';
 
 const LAST_CONTRIBUTOR_KEY = 'lastContributorId';
@@ -17,6 +18,19 @@ export class ContributorContextService {
   readonly contributors = signal<Contributor[]>([]);
   readonly activeContributor = signal<Contributor | null>(null);
   readonly initialized = signal(false);
+  readonly contributorsList = injectQuery(() => this.contributorService.list());
+
+  readonly activeLoading = computed(() => this.contributorsList.isPending());
+  readonly active = computed(() => {
+    const list = this.contributorsList.data();
+    if (!list || list.length === 0)
+      throw new Error('No contributors found for this user. Not even an automatic one.');
+    const lastId = sessionStorage.getItem(LAST_CONTRIBUTOR_KEY);
+    let cached = list.find((c) => c.id === lastId);
+    if (!cached) cached = list[0];
+    return cached;
+  });
+  readonly activeId = computed(() => this.active().id);
 
   readonly hasMultiple = computed(() => this.contributors().length > 1);
 
@@ -26,7 +40,7 @@ export class ContributorContextService {
 
   async ensureActiveAsync(): Promise<void> {
     if (this.initialized()) return;
-    const list = await firstValueFrom(this.contributorService.list());
+    const list = await firstValueFrom(this.contributorService.listObservable());
     this.contributors.set(list);
     const lastId = sessionStorage.getItem(LAST_CONTRIBUTOR_KEY);
     const cached = lastId ? list.find((c) => c.id === lastId) : null;

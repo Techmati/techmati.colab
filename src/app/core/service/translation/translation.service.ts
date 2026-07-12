@@ -1,10 +1,14 @@
 import { API } from '@/core/config/api-uris.config';
 import { ContributorTranslationStats } from '@/core/types/contributor-stats.type';
+import {
+  TranslationEntry,
+  TranslationEntrySubmitPayload,
+} from '@/core/types/translation-entry.type';
 import { Translation, TranslationFilter } from '@/core/types/translation.type';
-import { TranslationEntry, TranslationEntrySubmitPayload } from '@/core/types/translation-entry.type';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { queryOptions } from '@tanstack/angular-query-experimental';
+import { lastValueFrom, Observable } from 'rxjs';
 
 export interface ListByContributorOptions {
   filter?: TranslationFilter;
@@ -24,7 +28,7 @@ export interface PaginatedTranslations {
 export class TranslationService {
   private readonly client = inject(HttpClient);
 
-  listByContributor(
+  listByContributorObservable(
     contributorId: string,
     options: ListByContributorOptions = {},
   ): Observable<PaginatedTranslations> {
@@ -68,13 +72,25 @@ export class TranslationService {
     );
   }
 
-  getNextPending(
+  getNextPendingObservable(
     contributorId: string,
     translationId: string,
   ): Observable<{ phraseId: string | null; state: 'in-progress' | 'finished' }> {
     return this.client.get<{ phraseId: string | null; state: 'in-progress' | 'finished' }>(
       API.CONTRIBUTORS.TRANSLATIONS.NEXT_PENDING(contributorId, translationId),
     );
+  }
+
+  getNextPending(contributorId: string, translationId: string) {
+    return queryOptions({
+      queryKey: ['next-pending', contributorId, translationId],
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<{ phraseId: string | null; state: 'in-progress' | 'finished' }>(
+            API.CONTRIBUTORS.TRANSLATIONS.NEXT_PENDING(contributorId, translationId),
+          ),
+        ),
+    });
   }
 
   submitEntry(

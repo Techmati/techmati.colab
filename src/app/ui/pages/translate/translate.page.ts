@@ -1,5 +1,4 @@
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
-import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { TranslationService } from '@/core/service/translation/translation.service';
 import { Phrase } from '@/core/types/phrase.type';
 import { type RecordedAudioFile } from '@/core/utils/audio-recorder.util';
@@ -13,12 +12,12 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
 import { form, FormField, minLength, required } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 
 import { tryCatch } from '@/core/utils/try.util';
 import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
+import { injectQuery } from '@tanstack/angular-query-experimental';
 import { BatchProgressPanel } from './ui/organisms/batch-progress-panel/batch-progress-panel';
 import { BottomActionBar } from './ui/organisms/bottom-action-bar/bottom-action-bar';
 import { PronunciationRecorder } from './ui/organisms/pronunciation-recorder/pronunciation-recorder';
@@ -47,7 +46,6 @@ import { TranslationTextarea } from './ui/organisms/translation-textarea/transla
 export class TranslatePage {
   private readonly destroyRef = inject(DestroyRef);
   private readonly translationService = inject(TranslationService);
-  private readonly phraseSetsService = inject(PhraseSetsService);
   private readonly contributorContext = inject(ContributorContextService);
 
   readonly phraseSetId = input.required<string>();
@@ -74,22 +72,31 @@ export class TranslatePage {
     required(schema.pronunciation, { message: 'Añade una pronunciación grabada.' });
   });
 
-  readonly phraseRes = rxResource({
-    params: computed(() => ({
-      contributorId: this.translationId() ?? '',
-      translationId: this.translationId() ?? '',
-      tick: this.nextPhraseTick(),
-    })),
-    stream: ({ params }) => {
-      if (!params.contributorId || !params.translationId) {
-        return this.translationService.getNextPending('', '');
-      }
-      return this.translationService.getNextPending(params.contributorId, params.translationId);
-    },
+  // readonly phraseRes = rxResource({
+  //   params: computed(() => ({
+  //     contributorId: this.translationId() ?? '',
+  //     translationId: this.contributorContext.activeId() ?? '',
+  //     tick: this.nextPhraseTick(),
+  //   })),
+  //   stream: ({ params }) => {
+  //     if (!params.contributorId || !params.translationId) {
+  //       return this.translationService.getNextPendingObservable('', '');
+  //     }
+  //     return this.translationService.getNextPendingObservable(
+  //       params.contributorId,
+  //       params.translationId,
+  //     );
+  //   },
+  // });
+
+  readonly phraseRes = injectQuery(() => {
+    const contributorId = this.contributorContext.activeId();
+    const translationId = this.translationId();
+    return this.translationService.getNextPending(contributorId, translationId ?? '');
   });
 
   readonly phrase = computed<Phrase | null>(() => {
-    const phraseId = this.phraseRes.value()?.phraseId;
+    const phraseId = this.phraseRes.data()?.phraseId;
     if (!phraseId) return null;
     return {
       id: phraseId,
@@ -119,7 +126,7 @@ export class TranslatePage {
     if (!contributorId || !phraseSetId) return;
 
     const existing = await firstValueFrom(
-      this.translationService.listByContributor(contributorId, {
+      this.translationService.listByContributorObservable(contributorId, {
         filter: 'in_progress',
         page: 1,
         size: 1,

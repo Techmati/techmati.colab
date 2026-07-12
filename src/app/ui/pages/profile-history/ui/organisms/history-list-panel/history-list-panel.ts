@@ -25,7 +25,7 @@ export class HistoryListPanel {
     stream: () =>
       defer(() => from(this.contributorContext.getActiveContributorIdAsync())).pipe(
         switchMap((cId) =>
-          this.translationService.listByContributor(cId, {
+          this.translationService.listByContributorObservable(cId, {
             filter: 'completed',
             page: 1,
             size: 10,
