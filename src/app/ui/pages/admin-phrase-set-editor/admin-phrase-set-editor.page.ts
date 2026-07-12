@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 
 import { PhraseSet } from '@/core/types/phrase-set.type';
+import { ZardAlertDialogService } from '@/shared/components/alert-dialog';
 import { ZardToastComponent } from '@/shared/components/toast';
 import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
 import { ExternalToast, toast } from 'ngx-sonner';
@@ -45,6 +46,8 @@ export class AdminPhraseSetEditorPage {
   readonly phraseSetId = linkedSignal(() => this.inputPhraseSetId());
 
   private readonly adminPhraseSetService = inject(AdminPhraseSetService);
+  private readonly alertDialog = inject(ZardAlertDialogService);
+
   private readonly location = inject(Location);
 
   readonly isCreating = computed(() => this.phraseSetId() === 'new' && !this.created());
@@ -149,6 +152,21 @@ export class AdminPhraseSetEditorPage {
       published,
     };
   }
+
+  protected confirmDelete(): void {
+    this.alertDialog.confirm({
+      zTitle: '¿Eliminar set de frases?',
+      zDescription:
+        'Si eliminas este set de frases, no podrás recuperarlo. Esta acción es irreversible. Las traducciones asociadas tambien se eliminarán. ¿Deseas continuar?',
+      zCancelText: 'Cancelar',
+      zOkText: 'Sí, eliminar',
+      zOkDestructive: true,
+      zOnOk: () => {
+        this.delete();
+      },
+    });
+  }
+
   private onUpdateSuccess(phraseSet: PhraseSet): void {
     const description = phraseSet.published
       ? 'Cambios guardados, el set se encuentre publicado y listo para hacer contribuciones'

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, signal } f
 
 import { PhraseSet } from '@/core/types/phrase-set.type';
 import { baseToastConfig } from '@/core/view/base-toast.config';
+import { ZardAlertDialogService } from '@/shared/components/alert-dialog';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { ZardToastComponent } from '@/shared/components/toast';
@@ -25,6 +26,7 @@ export class AdminPhraseSetCard {
   protected readonly isExpanded = signal(false);
 
   private readonly adminPhraseSetService = inject(AdminPhraseSetService);
+  private readonly alertDialog = inject(ZardAlertDialogService);
 
   private readonly location = inject(Location);
 
@@ -80,6 +82,20 @@ export class AdminPhraseSetCard {
 
   readonly deleteLoading = computed(() => this.deleteMutation.isPending());
 
+  protected confirmDelete(): void {
+    this.alertDialog.confirm({
+      zTitle: '¿Eliminar set de frases?',
+      zDescription:
+        'Si eliminas este set de frases, no podrás recuperarlo. Esta acción es irreversible. Las traducciones asociadas tambien se eliminarán. ¿Deseas continuar?',
+      zCancelText: 'Cancelar',
+      zOkText: 'Sí, eliminar',
+      zOkDestructive: true,
+      zOnOk: () => {
+        this.delete();
+      },
+    });
+  }
+
   protected delete(): void {
     this.deleteMutation.mutate();
   }
@@ -91,6 +107,7 @@ export class AdminPhraseSetCard {
     this.adminPhraseSetService.invalidateSearch();
     this.location.back();
   }
+
   private onDeleteError(): void {
     toast.error('No se pudo eliminar el set de frases', {
       description:

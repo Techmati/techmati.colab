@@ -20,11 +20,11 @@
   <tm-admin-phrase-set-editor-actions
     (save)="save()"
     (discard)="discard()"
-    (delete)="delete()"
+    (delete)="confirmDelete()"
     [saveLoading]="saveLoading()"
     [saveDisabled]="phrasesPanel.invalid() || infoPanel.invalid()"
     [deleteLoading]="deleteLoading()"
-    [deleteDisabled]="deleteLoading()"
+    [deleteDisabled]="deleteDisabled()"
   />
   <z-toaster></z-toaster>
 </main>
