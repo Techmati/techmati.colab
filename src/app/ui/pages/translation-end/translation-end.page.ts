@@ -2,13 +2,7 @@ import { ContributorContextService } from '@/core/service/contributor-context/co
 import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { TranslationService } from '@/core/service/translation/translation.service';
 import { ZardButtonComponent } from '@/shared/components/button';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { defer, from } from 'rxjs';
@@ -33,7 +27,7 @@ export class TranslationEndPage {
 
   readonly translationCountRes = rxResource({
     stream: () =>
-      defer(() => from(this.contributorContext.getActiveContributorId())).pipe(
+      defer(() => from(this.contributorContext.getActiveContributorIdAsync())).pipe(
         switchMap((cId) => this.translationService.getStats(cId)),
       ),
   });

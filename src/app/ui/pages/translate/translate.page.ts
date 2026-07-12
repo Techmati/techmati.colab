@@ -14,8 +14,8 @@ import {
   signal,
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { firstValueFrom } from 'rxjs';
 import { form, FormField, minLength, required } from '@angular/forms/signals';
+import { firstValueFrom } from 'rxjs';
 
 import { tryCatch } from '@/core/utils/try.util';
 import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
@@ -24,8 +24,8 @@ import { BottomActionBar } from './ui/organisms/bottom-action-bar/bottom-action-
 import { PronunciationRecorder } from './ui/organisms/pronunciation-recorder/pronunciation-recorder';
 import { SourceTextPanel } from './ui/organisms/source-text-panel/source-text-panel';
 import { TaskTopBar } from './ui/organisms/task-top-bar/task-top-bar';
-import { TranslationTextarea } from './ui/organisms/translation-textarea/translation-textarea';
 import { TranslationTaskSkeleton } from './ui/organisms/translation-task-skeleton/translation-task-skeleton';
+import { TranslationTextarea } from './ui/organisms/translation-textarea/translation-textarea';
 
 @Component({
   selector: 'tm-translate-page',
@@ -57,9 +57,7 @@ export class TranslatePage {
   protected readonly nextPhraseTick = signal(0);
   protected readonly translationId = signal<string | null>(null);
 
-  protected readonly isLoading = computed(
-    () => this.phraseRes.isLoading() || this.isUploading(),
-  );
+  protected readonly isLoading = computed(() => this.phraseRes.isLoading() || this.isUploading());
 
   protected readonly model = signal<{
     translation: string;
@@ -93,7 +91,13 @@ export class TranslatePage {
   readonly phrase = computed<Phrase | null>(() => {
     const phraseId = this.phraseRes.value()?.phraseId;
     if (!phraseId) return null;
-    return { id: phraseId, phraseSetId: this.phraseSetId(), sourceText: '', position: 0, createdAt: '' };
+    return {
+      id: phraseId,
+      phraseSetId: this.phraseSetId(),
+      sourceText: '',
+      position: 0,
+      createdAt: '',
+    };
   });
 
   constructor() {
@@ -110,7 +114,7 @@ export class TranslatePage {
   }
 
   private async initTranslation(): Promise<void> {
-    const contributorId = await this.contributorContext.getActiveContributorId();
+    const contributorId = await this.contributorContext.getActiveContributorIdAsync();
     const phraseSetId = this.phraseSetId();
     if (!contributorId || !phraseSetId) return;
 
@@ -122,9 +126,7 @@ export class TranslatePage {
       }),
     );
 
-    const match = existing.data.find(
-      (t) => t.phraseSetId === phraseSetId && t.inProgress,
-    );
+    const match = existing.data.find((t) => t.phraseSetId === phraseSetId && t.inProgress);
     if (match) {
       this.translationId.set(match.id);
       return;
@@ -149,7 +151,7 @@ export class TranslatePage {
     const phrase = this.phrase();
     const pronunciation = this.model().pronunciation?.file ?? null;
     const translation = this.model().translation;
-    const contributorId = await this.contributorContext.getActiveContributorId();
+    const contributorId = await this.contributorContext.getActiveContributorIdAsync();
     const translationId = this.translationId();
     if (!phrase || !pronunciation || !contributorId || !translationId) {
       return;

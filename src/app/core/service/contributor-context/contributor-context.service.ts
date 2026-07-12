@@ -39,7 +39,7 @@ export class ContributorContextService {
     sessionStorage.setItem(LAST_CONTRIBUTOR_KEY, c.id);
   }
 
-  async getActiveContributorId(): Promise<string> {
+  async getActiveContributorIdAsync(): Promise<string> {
     if (!this.initialized()) await this.ensureActiveAsync();
     const active = this.activeContributor();
     if (!active) {

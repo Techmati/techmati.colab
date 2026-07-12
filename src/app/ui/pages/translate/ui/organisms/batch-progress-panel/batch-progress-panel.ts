@@ -1,6 +1,5 @@
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { TranslationService } from '@/core/service/translation/translation.service';
-import { Translation } from '@/core/types/translation.type';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -37,7 +36,7 @@ export class BatchProgressPanel {
       tick: this.nextPhraseTick(),
     })),
     stream: ({ params }) =>
-      defer(() => from(this.contributorContext.getActiveContributorId())).pipe(
+      defer(() => from(this.contributorContext.getActiveContributorIdAsync())).pipe(
         switchMap((contributorId) =>
           this.translationService.listByContributor(contributorId, {
             filter: 'all',

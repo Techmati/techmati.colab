@@ -20,7 +20,7 @@ export class InProgressPanel {
 
   readonly inProgressRes = rxResource({
     stream: () =>
-      defer(() => from(this.contributorContext.getActiveContributorId())).pipe(
+      defer(() => from(this.contributorContext.getActiveContributorIdAsync())).pipe(
         switchMap((cId) =>
           this.translationService.listByContributor(cId, {
             filter: 'in_progress',

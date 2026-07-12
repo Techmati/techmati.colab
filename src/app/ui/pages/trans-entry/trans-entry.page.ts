@@ -2,8 +2,8 @@ import { ContributorContextService } from '@/core/service/contributor-context/co
 import { TranslationService } from '@/core/service/translation/translation.service';
 import { ZardDividerComponent } from '@/shared/components/divider';
 import { Location } from '@angular/common';
-import { rxResource } from '@angular/core/rxjs-interop';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { defer, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { WavesAudioPlayer } from '../../molecules/waves-audio-player/waves-audio-player';
@@ -27,7 +27,7 @@ export class TransEntryPage {
   protected readonly entryRes = rxResource({
     params: computed(() => ({ translationId: this.translationId() })),
     stream: ({ params: { translationId } }) =>
-      defer(() => from(this.contributorContext.getActiveContributorId())).pipe(
+      defer(() => from(this.contributorContext.getActiveContributorIdAsync())).pipe(
         switchMap((cId) => this.translationService.getDetail(cId, translationId)),
       ),
   });
