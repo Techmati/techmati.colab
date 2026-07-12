@@ -24,7 +24,7 @@ export class ContributorContextService {
     return role !== null && role !== undefined && COLLECTOR_ROLES.includes(role);
   }
 
-  async ensureActive(): Promise<void> {
+  async ensureActiveAsync(): Promise<void> {
     if (this.initialized()) return;
     const list = await firstValueFrom(this.contributorService.list());
     this.contributors.set(list);
@@ -40,7 +40,7 @@ export class ContributorContextService {
   }
 
   async getActiveContributorId(): Promise<string> {
-    if (!this.initialized()) await this.ensureActive();
+    if (!this.initialized()) await this.ensureActiveAsync();
     const active = this.activeContributor();
     if (!active) {
       throw new Error('No active contributor available');

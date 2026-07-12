@@ -7,7 +7,7 @@ export const contributorContextGuard: CanActivateFn = async () => {
   const router = inject(Router);
 
   try {
-    await contributorContextService.ensureActive();
+    await contributorContextService.ensureActiveAsync();
     return true;
   } catch {
     return router.createUrlTree(['/']);
