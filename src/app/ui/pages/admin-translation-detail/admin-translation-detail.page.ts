@@ -1,6 +1,7 @@
-import { AdminSummaryService } from '@/core/service/admin-summary/admin-summary.service';
-import { type PhraseSet } from '@/core/types/phrase-set.type';
-import { type SummaryFilter } from '@/core/types/summary.type';
+import { AdminPhraseSetService } from '@/core/service/admin-phrase-set/admin-phrase-set.service';
+import { AdminTranslationService } from '@/core/service/admin-translation/admin-translation.service';
+import { PhraseSet } from '@/core/types/phrase-set.type';
+import { AdminTranslationListItem } from '@/core/types/translation.type';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
@@ -20,37 +21,41 @@ import { AdminTranslationDetailTopBar } from './ui/organisms/admin-translation-d
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminTranslationDetailPage {
-  readonly translationId = input.required<string>();
+  readonly phraseSetId = input.required<string>();
   protected readonly searchParam = input('', { alias: 'search' });
   protected readonly pageParam = input('', { alias: 'page' });
 
-  private readonly adminSummaryService = inject(AdminSummaryService);
+  private readonly adminTranslationService = inject(AdminTranslationService);
+  private readonly adminPhraseSetService = inject(AdminPhraseSetService);
   private readonly router = inject(Router);
 
   private readonly PAGE_SIZE = 10;
-  private readonly SUMMARY_FILTER: SummaryFilter = 'all';
 
   protected readonly page = signal(1);
 
-  protected readonly summariesQuery = injectQuery(() =>
-    this.adminSummaryService.getPhraseSetSummaries(this.translationId(), {
-      search: this.searchParam(),
-      filter: this.SUMMARY_FILTER,
-      includeContributor: true,
-      includePhraseSet: true,
+  protected readonly phraseSetQuery = injectQuery(() =>
+    this.adminPhraseSetService.findByIdQuery(this.phraseSetId()),
+  );
+
+  protected readonly translationsQuery = injectQuery(() =>
+    this.adminTranslationService.searchListByPhraseSet(this.phraseSetId(), {
       page: this.page(),
       size: this.PAGE_SIZE,
+      search: this.searchParam() || undefined,
     }),
   );
 
-  protected readonly summaries = computed(() => this.summariesQuery.data()?.data ?? []);
-  protected readonly total = computed(() => this.summariesQuery.data()?.total ?? 0);
   protected readonly phraseSet = computed<PhraseSet | null>(
-    () => this.summaries().find((summary) => summary.phraseSet)?.phraseSet ?? null,
+    () => this.phraseSetQuery.data() ?? null,
   );
+
+  protected readonly translations = computed<AdminTranslationListItem[]>(
+    () => this.translationsQuery.data()?.data ?? [],
+  );
+  protected readonly total = computed(() => this.translationsQuery.data()?.total ?? 0);
   protected readonly pages = computed(() => Math.max(1, Math.ceil(this.total() / this.PAGE_SIZE)));
   protected readonly isLoading = computed(
-    () => this.summariesQuery.isPending() || this.summariesQuery.isFetching(),
+    () => this.translationsQuery.isPending() || this.translationsQuery.isFetching(),
   );
 
   constructor() {

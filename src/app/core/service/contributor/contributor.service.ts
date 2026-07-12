@@ -1,0 +1,44 @@
+import { API } from '@/core/config/api-uris.config';
+import { Contributor } from '@/core/types/contributor.type';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable, map } from 'rxjs';
+
+export interface CreateContributorPayload {
+  fullName: string;
+  variantIds: string[];
+}
+
+export interface UpdateContributorPayload {
+  fullName?: string;
+  variantIds?: string[];
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ContributorService {
+  private readonly client = inject(HttpClient);
+
+  list(): Observable<Contributor[]> {
+    return this.client.get<{ data: Contributor[] }>(API.CONTRIBUTORS.LIST).pipe(
+      map((response) => response.data),
+    );
+  }
+
+  findById(id: string): Observable<Contributor> {
+    return this.client.get<Contributor>(API.CONTRIBUTORS.BY_ID(id));
+  }
+
+  create(payload: CreateContributorPayload): Observable<Contributor> {
+    return this.client.post<Contributor>(API.CONTRIBUTORS.LIST, payload);
+  }
+
+  update(id: string, payload: UpdateContributorPayload): Observable<Contributor> {
+    return this.client.put<Contributor>(API.CONTRIBUTORS.BY_ID(id), payload);
+  }
+
+  delete(id: string): Observable<{ message: string }> {
+    return this.client.delete<{ message: string }>(API.CONTRIBUTORS.BY_ID(id));
+  }
+}

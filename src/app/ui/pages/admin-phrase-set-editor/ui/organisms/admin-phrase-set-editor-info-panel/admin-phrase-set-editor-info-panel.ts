@@ -32,7 +32,6 @@ export class AdminPhraseSetEditorInfoPanel {
 
   protected readonly phraseSetForm = form(this.phraseSetDraft, (path) => {
     required(path.title, { message: 'No se puede subir un set de frases sin titulo.' });
-    required(path.description, { message: 'No se puede subir un set de frases sin descripción.' });
   });
 
   readonly invalid = computed(() => this.phraseSetForm().invalid());
@@ -41,6 +40,11 @@ export class AdminPhraseSetEditorInfoPanel {
     { label: 'Nahuatl a Español', value: 'nahuatl_to_spanish' },
     { label: 'Español a Nahuatl', value: 'spanish_to_nahuatl' },
   ] as const;
+
+  protected onDescriptionInput(event: Event): void {
+    const value = (event.target as HTMLTextAreaElement).value;
+    this.phraseSetDraft.update((draft) => ({ ...draft, description: value }));
+  }
 
   constructor() {
     effect(() => {

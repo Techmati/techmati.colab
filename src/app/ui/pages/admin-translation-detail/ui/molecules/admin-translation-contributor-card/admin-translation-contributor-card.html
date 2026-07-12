@@ -13,9 +13,6 @@
           <h3 class="truncate text-sm font-semibold leading-5 tracking-[0.01em] text-text-primary">
             {{ contributor()?.fullName || 'Colaborador sin perfil' }}
           </h3>
-          <p class="truncate text-xs font-medium leading-4 text-text-tertiary">
-            @{{ contributor()?.username || 'sin_usuario' }}
-          </p>
         </div>
       </div>
     </header>
@@ -46,11 +43,11 @@
         {{ summary().lastUpdate | timeAgo }}
       </span>
 
-      @if (contributor(); as user) {
+      @if (contributor(); as c) {
         <a
           class="inline-flex size-7 items-center justify-center rounded-full text-primary transition hover:bg-brand-purple-50"
-          [routerLink]="['/admin', 'translations', summary().phraseSetId, 'users', user.id]"
-          aria-label="Ver traducciones del contribuyente"
+          [routerLink]="['/admin', 'translations', summary().id, 'contributors', c.id]"
+          aria-label="Ver entradas del contribuidor"
         >
           <span class="lucide--chevron-right text-lg" aria-hidden="true"></span>
         </a>

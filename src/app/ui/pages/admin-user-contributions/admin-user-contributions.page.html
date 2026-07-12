@@ -1,12 +1,8 @@
 <main class="min-h-screen bg-background pb-8">
-  <tm-admin-user-contributions-top-bar [userName]="user()?.fullName ?? null" />
+  <tm-admin-user-contributions-top-bar [userName]="null" />
 
   <section class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-5 py-5">
-    <tm-admin-user-contribution-stats-panel
-      [user]="user()"
-      [stats]="stats()"
-      [isLoading]="isStatsLoading()"
-    />
+    <tm-admin-user-contribution-stats-panel [stats]="stats()" [isLoading]="isStatsLoading()" />
 
     <section class="space-y-4" aria-labelledby="recent-contributions-heading">
       <div class="flex items-center justify-between gap-3">
@@ -16,23 +12,23 @@
         >
           Contribuciones recientes
         </h2>
-        @if(isSummariesLoading()) {
+        @if(isTranslationsLoading()) {
           <p class="text-sm font-medium leading-5 text-text-secondary animate-pulse">Cargando...</p>
         } @else {
-          <p class="text-sm font-medium leading-5 text-text-secondary">{{ summariesTotal() }} en total</p>
+          <p class="text-sm font-medium leading-5 text-text-secondary">{{ total() }} en total</p>
         }
       </div>
 
-      @if (isSummariesLoading()) {
+      @if (isTranslationsLoading()) {
         <z-skeleton class="h-80 w-full rounded-2xl" />
         <z-skeleton class="h-80 w-full rounded-2xl" />
       } @else {
-        @for (summary of summaries(); track summary.phraseSet.id) {
-          <tm-admin-user-contribution-phrase-set-panel [contribution]="summary" />
+        @for (translation of translations(); track translation.id) {
+          <tm-admin-user-contribution-phrase-set-panel [contribution]="translation" />
         } @empty {
           <z-empty
             zTitle="Sin contribuciones"
-            zDescription="Este usuario aún no cuenta con contribuciones registradas."
+            zDescription="Este contribuidor aún no cuenta con contribuciones registradas."
             zIcon="lucide--history"
           />
         }

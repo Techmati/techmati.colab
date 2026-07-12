@@ -1,6 +1,9 @@
-import { SummaryService } from '@/core/service/summary/summary.service';
+import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
+import { TranslationService } from '@/core/service/translation/translation.service';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { defer, from } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { InProgressCard } from '../../molecules/in-progress-card/in-progress-card';
 import { InProgressPanelSkeleton } from '../in-progress-panel-skeleton/in-progress-panel-skeleton';
 
@@ -12,13 +15,22 @@ import { InProgressPanelSkeleton } from '../in-progress-panel-skeleton/in-progre
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InProgressPanel {
-  private readonly summaryService = inject(SummaryService);
+  private readonly translationService = inject(TranslationService);
+  private readonly contributorContext = inject(ContributorContextService);
 
   readonly inProgressRes = rxResource({
-    params: computed(() => ({ page: 1, size: 3 })),
-    stream: ({ params: { page, size } }) =>
-      this.summaryService.getFiltered({ page, size }, 'in_progress'),
+    stream: () =>
+      defer(() => from(this.contributorContext.getActiveContributorId())).pipe(
+        switchMap((cId) =>
+          this.translationService.listByContributor(cId, {
+            filter: 'in_progress',
+            page: 1,
+            size: 3,
+            include_phrase_set: true,
+          }),
+        ),
+      ),
   });
 
-  readonly inProgress = computed(() => this.inProgressRes.value()?.summaries || []);
+  readonly inProgress = computed(() => this.inProgressRes.value()?.data || []);
 }

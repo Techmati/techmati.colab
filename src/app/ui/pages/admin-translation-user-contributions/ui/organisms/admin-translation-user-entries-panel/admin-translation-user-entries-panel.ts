@@ -1,4 +1,4 @@
-import { type UserPhraseSetTranslationEntry } from '@/core/types/summary.type';
+import { type TranslationEntry } from '@/core/types/translation-entry.type';
 import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
@@ -12,6 +12,6 @@ import { AdminTranslationUserEntryCard } from '../../molecules/admin-translation
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminTranslationUserEntriesPanel {
-  readonly entries = input.required<readonly UserPhraseSetTranslationEntry[]>();
+  readonly entries = input.required<readonly TranslationEntry[]>();
   readonly isLoading = input.required<boolean>();
 }

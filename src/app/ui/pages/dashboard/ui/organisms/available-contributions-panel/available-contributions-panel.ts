@@ -26,10 +26,10 @@ export class AvailableContributionsPanel {
   private readonly phraseSetService = inject(PhraseSetsService);
 
   readonly phraseSetsRes = rxResource({
-    stream: () => this.phraseSetService.getFiltered(1, 3, 'untouched'),
+    stream: () => this.phraseSetService.getFiltered({ page: 1, size: 3, filter: 'untouched' }),
   });
 
-  readonly phraseSets = computed(() => this.phraseSetsRes.value()?.phraseSets ?? []);
+  readonly phraseSets = computed(() => this.phraseSetsRes.value()?.data ?? []);
 
   date(string: string) {
     return new Date(string);

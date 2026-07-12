@@ -1,11 +1,12 @@
+import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
+import { TranslationService, PaginatedTranslations } from '@/core/service/translation/translation.service';
 import { ChangeDetectionStrategy, Component, inject, linkedSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-
-import { SummaryService } from '@/core/service/summary/summary.service';
-import { PhraseSetSummary } from '@/core/types/summary.type';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { defer, from } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ContributionCard } from '@/ui/molecules/contribution-card/contribution-card';
-import { rxResource } from '@angular/core/rxjs-interop';
 import { ProfileContributionsPanelSkeleton } from '../profile-contributions-panel-skeleton/profile-contributions-panel-skeleton';
 
 @Component({
@@ -16,18 +17,25 @@ import { ProfileContributionsPanelSkeleton } from '../profile-contributions-pane
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileContributionsPanel {
-  private readonly FILTER = 'completed';
-  private readonly summaryService = inject(SummaryService);
+  private readonly translationService = inject(TranslationService);
+  private readonly contributorContext = inject(ContributorContextService);
 
   readonly completedSets = rxResource({
-    stream: () => this.summaryService.getFiltered({ page: 1, size: 10 }, this.FILTER),
+    stream: () =>
+      defer(() => from(this.contributorContext.getActiveContributorId())).pipe(
+        switchMap((cId) =>
+          this.translationService.listByContributor(cId, {
+            filter: 'completed',
+            page: 1,
+            size: 10,
+            include_phrase_set: true,
+          }),
+        ),
+      ),
   });
 
-  protected readonly sets = linkedSignal<
-    { summaries: PhraseSetSummary[]; total: number } | undefined,
-    { summaries: PhraseSetSummary[]; total: number }
-  >({
-    source: () => this.completedSets.value(),
-    computation: (source, previous) => source || previous?.value || { summaries: [], total: 0 },
+  protected readonly sets = linkedSignal<PaginatedTranslations | null, PaginatedTranslations | null>({
+    source: () => (this.completedSets.value() as PaginatedTranslations | undefined) ?? null,
+    computation: (source, previous) => source ?? previous?.value ?? null,
   });
 }

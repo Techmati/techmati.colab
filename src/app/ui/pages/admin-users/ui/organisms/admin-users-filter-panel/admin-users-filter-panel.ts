@@ -29,6 +29,7 @@ export class AdminUsersFilterPanel {
     { label: 'Administrador', value: 'admin' },
     { label: 'Moderador', value: 'moderator' },
     { label: 'Analista', value: 'analyst' },
+    { label: 'Recolector', value: 'collector' },
     { label: 'Usuario', value: 'user' },
   ];
 

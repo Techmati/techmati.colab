@@ -18,13 +18,6 @@ export class SourceTextPanel {
     source: () => this.phrase()?.sourceText,
     computation: (source, previous) => source || previous?.value || '',
   });
-  protected readonly context = computed(() => this.phrase()?.context || '');
-  protected readonly sourceLanguage = computed(() => {
-    const language = this.phrase()?.language || 'spanish_to_nahuatl';
-    const map: { [key: string]: string } = {
-      nahuatl_to_spanish: 'náhuatl',
-      spanish_to_nahuatl: 'español',
-    };
-    return map[language];
-  });
+  protected readonly context = computed(() => '');
+  protected readonly sourceLanguage = computed(() => 'español');
 }

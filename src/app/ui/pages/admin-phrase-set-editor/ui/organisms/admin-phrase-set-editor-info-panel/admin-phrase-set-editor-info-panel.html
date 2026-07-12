@@ -41,11 +41,10 @@
           z-input
           class="min-h-20 resize-none rounded-lg bg-card text-base leading-6 shadow-sm"
           placeholder="Descripción..."
-          [formField]="phraseSetForm.description"
+          [value]="phraseSetDraft().description ?? ''"
+          (input)="onDescriptionInput($event)"
         ></textarea>
       </label>
-
-      <tm-field-error-advice [field]="form.description" />
 
       <label class="block space-y-1">
         <span class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">

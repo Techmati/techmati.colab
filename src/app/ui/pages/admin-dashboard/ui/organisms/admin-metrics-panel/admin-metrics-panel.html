@@ -14,7 +14,7 @@
         <z-skeleton class="w-full h-9.5"></z-skeleton>
       } @else {
         <p class="font-display text-3xl font-bold leading-tight text-text-primary">
-          {{ todayStats.data()?.contributions }}
+          {{ todayStats.data()?.todayContributions }}
         </p>
       }
     </div>
@@ -34,7 +34,7 @@
         <z-skeleton class="w-full h-9.5"></z-skeleton>
       } @else {
         <p class="font-display text-3xl font-bold leading-tight text-text-primary">
-          {{ todayStats.data()?.newUsers }}
+          {{ todayStats.data()?.todayNewUsers }}
         </p>
       }
     </div>

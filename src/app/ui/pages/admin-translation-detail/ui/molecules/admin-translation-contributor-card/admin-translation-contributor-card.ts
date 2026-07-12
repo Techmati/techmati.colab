@@ -1,6 +1,6 @@
 import { TimeAgoPipe } from '@/core/pipes/time-ago.pipe';
-import { type Profile } from '@/core/dto/profile.dto';
-import { type PhraseSetContributorSummary } from '@/core/types/summary.type';
+import { PhraseSet } from '@/core/types/phrase-set.type';
+import { AdminTranslationListItem } from '@/core/types/translation.type';
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
@@ -12,11 +12,11 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminTranslationContributorCard {
-  readonly summary = input.required<PhraseSetContributorSummary>();
+  readonly summary = input.required<AdminTranslationListItem>();
+  readonly phraseSet = input<PhraseSet | null>(null);
 
   protected readonly contributor = computed(() => this.summary().contributor);
-  protected readonly phraseSet = computed(() => this.summary().phraseSet);
-  protected readonly totalPhrases = computed(() => this.phraseSet()?.phraseCount ?? 0);
+  protected readonly totalPhrases = computed(() => this.summary().phraseCount);
   protected readonly progressWidth = computed(
     () => `${this.clampPercentage(this.summary().progressPercentage)}%`,
   );
@@ -31,16 +31,13 @@ export class AdminTranslationContributorCard {
       ? 'text-xs font-bold leading-4 text-brand-green-600'
       : 'text-xs font-bold leading-4 text-primary',
   );
-  protected readonly initials = computed(() => this.getInitials(this.contributor()));
-
-  private getInitials(contributor: Profile | null): string {
-    const fullName = contributor?.fullName ?? '';
+  protected readonly initials = computed(() => {
+    const fullName = this.contributor()?.fullName ?? '';
     const parts = fullName.split(' ').filter((part) => part.length > 0);
     const first = parts[0]?.[0] ?? '';
     const last = parts.length > 1 ? parts[parts.length - 1]?.[0] : '';
-
     return `${first}${last}`.toUpperCase() || '??';
-  }
+  });
 
   private clampPercentage(progressPercentage: number): number {
     return Math.min(100, Math.max(0, progressPercentage));

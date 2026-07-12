@@ -129,8 +129,6 @@ export class AdminPhraseSetEditorPhrasesPanel {
       draftId: `new-phrase-${this.newPhraseDraftCount++}`,
       phraseSetId: this.phraseSetId(),
       sourceText: '',
-      language: 'spanish_to_nahuatl',
-      context: '',
       position: this.phrasesDrafts().length + 1,
     };
   }

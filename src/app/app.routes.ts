@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authenticationGuard } from './core/guard/authentication.guard';
+import { contributorContextGuard } from './core/guard/contributor-context.guard';
 import { DashboardPage } from './ui/pages/dashboard/dashboard.page';
 import { ProfileHistoryPage } from './ui/pages/profile-history/profile-history.page';
 import { ProfilePage } from './ui/pages/profile/profile.page';
@@ -16,7 +17,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardPage,
-    canActivate: [authenticationGuard],
+    canActivate: [authenticationGuard, contributorContextGuard],
   },
   {
     path: 'admin/dashboard',
@@ -35,6 +36,22 @@ export const routes: Routes = [
     canActivate: [authenticationGuard],
   },
   {
+    path: 'admin/phrase-sets/:phraseSetId/translations',
+    loadComponent: () =>
+      import('./ui/pages/admin-translation-detail/admin-translation-detail.page').then(
+        (module) => module.AdminTranslationDetailPage,
+      ),
+    canActivate: [authenticationGuard],
+  },
+  {
+    path: 'admin/translations/:translationId/contributors/:contributorId',
+    loadComponent: () =>
+      import(
+        './ui/pages/admin-translation-user-contributions/admin-translation-user-contributions.page'
+      ).then((module) => module.AdminTranslationUserContributionsPage),
+    canActivate: [authenticationGuard],
+  },
+  {
     path: 'admin/translations',
     loadComponent: () =>
       import('./ui/pages/admin-translations/admin-translations.page').then(
@@ -43,19 +60,11 @@ export const routes: Routes = [
     canActivate: [authenticationGuard],
   },
   {
-    path: 'admin/translations/:translationId',
+    path: 'admin/contributors/:contributorId/contributions',
     loadComponent: () =>
-      import('./ui/pages/admin-translation-detail/admin-translation-detail.page').then(
-        (module) => module.AdminTranslationDetailPage,
+      import('./ui/pages/admin-user-contributions/admin-user-contributions.page').then(
+        (module) => module.AdminUserContributionsPage,
       ),
-    canActivate: [authenticationGuard],
-  },
-  {
-    path: 'admin/translations/:translationId/users/:userId',
-    loadComponent: () =>
-      import(
-        './ui/pages/admin-translation-user-contributions/admin-translation-user-contributions.page'
-      ).then((module) => module.AdminTranslationUserContributionsPage),
     canActivate: [authenticationGuard],
   },
   {
@@ -63,14 +72,6 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./ui/pages/admin-users/admin-users.page').then(
         (module) => module.AdminUsersPage,
-      ),
-    canActivate: [authenticationGuard],
-  },
-  {
-    path: 'admin/users/:userId/contributions',
-    loadComponent: () =>
-      import('./ui/pages/admin-user-contributions/admin-user-contributions.page').then(
-        (module) => module.AdminUserContributionsPage,
       ),
     canActivate: [authenticationGuard],
   },
@@ -93,26 +94,26 @@ export const routes: Routes = [
   {
     path: 'profile',
     component: ProfilePage,
-    canActivate: [authenticationGuard],
+    canActivate: [authenticationGuard, contributorContextGuard],
   },
   {
     path: 'profile/history',
     component: ProfileHistoryPage,
-    canActivate: [authenticationGuard],
+    canActivate: [authenticationGuard, contributorContextGuard],
   },
   {
     path: 'translate/:phraseSetId',
     component: TranslatePage,
-    canActivate: [authenticationGuard],
+    canActivate: [authenticationGuard, contributorContextGuard],
   },
   {
     path: 'translate/:phraseSetId/end',
     component: TranslationEndPage,
-    canActivate: [authenticationGuard],
+    canActivate: [authenticationGuard, contributorContextGuard],
   },
   {
-    path: 'set-entries/:id',
+    path: 'translation/:translationId',
     component: TransEntryPage,
-    canActivate: [authenticationGuard],
+    canActivate: [authenticationGuard, contributorContextGuard],
   },
 ];

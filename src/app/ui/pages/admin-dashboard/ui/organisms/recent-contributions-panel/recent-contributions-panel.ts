@@ -18,6 +18,6 @@ export class RecentContributionsPanel {
   readonly latestContributions = injectQuery(() => this.statsService.getLatestContributions());
 
   readonly contributions = computed(
-    () => this.latestContributions.data()?.latestContributions || [],
+    () => this.latestContributions.data()?.data || [],
   );
 }

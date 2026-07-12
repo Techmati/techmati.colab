@@ -1,10 +1,10 @@
 <article class="rounded-xl border border-border-subtle bg-surface-card p-4 shadow-sm">
   <div class="flex items-start justify-between gap-3">
     <h3 class="text-secondary-foreground text-base font-medium leading-8">
-      {{ card().phraseSet.title }}
+      {{ card().phraseSet?.title || ('Set #' + card().phraseSetId.slice(0, 8)) }}
     </h3>
     <p class="text-text-tertiary text-xs leading-5">
-      {{ card().phraseSet.publishedAt | date: "d 'de' MMMM yyyy" : '' : 'es-MX' }}
+      {{ card().attemptedAt | date: "d 'de' MMMM yyyy" : '' : 'es-MX' }}
     </p>
   </div>
 
@@ -19,7 +19,9 @@
     >
   </div>
 
-  <p class="text-text-tertiary mt-1 text-sm leading-5">{{ card().phraseSet.phraseCount }} frases</p>
+  <p class="text-text-tertiary mt-1 text-sm leading-5">
+    {{ card().contributedEntriesCount }} / {{ card().phraseCount }} frases
+  </p>
 
   <div class="mt-3 flex items-center justify-end gap-2">
     <button z-button zType="outline" zSize="sm" (click)="goToDetails()">

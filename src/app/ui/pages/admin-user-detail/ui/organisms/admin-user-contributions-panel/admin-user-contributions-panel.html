@@ -1,40 +1,10 @@
 <article class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
   <header class="mb-4 flex items-center justify-center gap-2">
     <span class="lucide--history text-xl text-primary" aria-hidden="true"></span>
-    <h2 class="font-display text-xl font-semibold leading-7 text-primary">Contribuciones recientes</h2>
+    <h2 class="font-display text-xl font-semibold leading-7 text-primary">Contribuciones</h2>
   </header>
 
-  <div class="space-y-2">
-    @if (isLoading()) {
-      <z-skeleton class="h-20 w-full rounded-lg" />
-      <z-skeleton class="h-20 w-full rounded-lg" />
-      <z-skeleton class="h-20 w-full rounded-lg" />
-    } @else {
-      @for (contribution of contributions(); track contribution.phraseSet.id) {
-        <tm-admin-user-contribution-card [contribution]="contribution" />
-      } @empty {
-        <z-empty
-          zTitle="Sin contribuciones recientes"
-          zDescription="Este usuario aún no cuenta con contribuciones registradas."
-          zIcon="lucide--history"
-        />
-      }
-    }
-  </div>
-
-  @if (total() > contributions().length) {
-    <div class="pt-4">
-    <button
-      z-button
-      zType="ghost"
-      zFull
-      type="button"
-      [routerLink]="['/admin', 'users', userId(), 'contributions']"
-      class="h-12 text-sm font-semibold tracking-[0.01em] text-primary hover:text-primary"
-    >
-      Ver todas las contribuciones
-      <span class="lucide--arrow-right text-base" aria-hidden="true"></span>
-    </button>
-    </div>
-  }
+  <p class="text-center text-sm leading-5 text-text-secondary">
+    Las contribuciones detalladas se mostrarán aquí en una próxima iteración.
+  </p>
 </article>

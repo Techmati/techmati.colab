@@ -28,6 +28,7 @@ export class TopAppBar {
     user: 'Usuario',
     moderator: 'Moderador',
     analyst: 'Analista',
+    collector: 'Recolector',
   };
 
   protected readonly roleLabel = computed(() => {

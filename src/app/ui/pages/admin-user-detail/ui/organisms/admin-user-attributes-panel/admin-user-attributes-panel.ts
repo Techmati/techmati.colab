@@ -19,6 +19,7 @@ export class AdminUserAttributesPanel {
     admin: 'Administrador',
     moderator: 'Moderador',
     analyst: 'Analista',
+    collector: 'Recolector',
     user: 'Usuario',
   };
 }

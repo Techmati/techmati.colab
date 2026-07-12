@@ -2,15 +2,15 @@ import { Phrase } from './phrase.type';
 
 export interface TranslationEntry {
   id: string;
+  translationId: string;
   phraseId: string;
-  contributorId: string;
   translation: string;
+  audioUrl: string | null;
   submittedAt: string;
-  audioUrl: string;
+  phrase?: Phrase;
 }
 
-export type TranslatedPhrase = TranslationEntry & { phrase: Phrase };
-export type TranslationEntrySubmitRequest = Omit<
-  TranslationEntry,
-  'id' | 'contributorId' | 'submittedAt' | 'audioUrl'
->;
+export interface TranslationEntrySubmitPayload {
+  phraseId: string;
+  translation: string;
+}

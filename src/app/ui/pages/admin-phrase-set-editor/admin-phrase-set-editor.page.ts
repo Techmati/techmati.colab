@@ -38,34 +38,31 @@ export class AdminPhraseSetEditorPage {
 
   readonly isCreating = computed(() => this.phraseSetId() === 'new');
 
-  readonly phraseSet = computed(() => this.phraseSetQuery.data()?.phraseSet ?? null);
   readonly phraseSetQuery = injectQuery(() => ({
-    ...this.adminPhraseSetService.findById(this.phraseSetId()),
+    ...this.adminPhraseSetService.findByIdQuery(this.phraseSetId()),
     enabled: !this.isCreating(),
   }));
 
-  readonly phrases = computed(() => this.phraseSetPhrasesQuery.data()?.phrases ?? []);
+  readonly phraseSet = computed(() => this.phraseSetQuery.data() ?? null);
+
   readonly phraseSetPhrasesQuery = injectQuery(() => ({
-    ...this.adminPhraseSetService.findPhrases(this.phraseSetId(), { page: 1, size: 100 }),
+    ...this.adminPhraseSetService.findPhrasesQuery(this.phraseSetId(), { page: 1, size: 100 }),
     enabled: !this.isCreating(),
   }));
 
-  readonly phraseSetUpdateMutation = injectMutation(() =>
-    this.adminPhraseSetService.update(
-      this.phraseSetId(),
-      this.buildUpdatePayload(),
-      () => this.onUpdateSuccess(this.buildUpdatePayload()),
-      () => this.onUpdateError(this.buildUpdatePayload()),
-    ),
-  );
+  readonly phrases = computed(() => this.phraseSetPhrasesQuery.data()?.data ?? []);
 
-  readonly phraseSetCreateMutation = injectMutation(() =>
-    this.adminPhraseSetService.create(
-      this.buildCreatePayload(),
-      () => this.onCreationSuccess(this.buildCreatePayload()),
-      () => this.onCreationError(this.buildCreatePayload()),
-    ),
-  );
+  readonly phraseSetUpdateMutation = injectMutation(() => ({
+    ...this.adminPhraseSetService.updateMutation(this.phraseSetId()),
+    onSuccess: () => this.onUpdateSuccess(this.buildUpdatePayload()),
+    onError: () => this.onUpdateError(this.buildUpdatePayload()),
+  }));
+
+  readonly phraseSetCreateMutation = injectMutation(() => ({
+    ...this.adminPhraseSetService.createMutation(),
+    onSuccess: () => this.onCreationSuccess(this.buildCreatePayload()),
+    onError: () => this.onCreationError(this.buildCreatePayload()),
+  }));
 
   readonly saveLoading = computed(
     () => this.phraseSetUpdateMutation.isPending() || this.phraseSetCreateMutation.isPending(),
@@ -83,11 +80,11 @@ export class AdminPhraseSetEditorPage {
 
   protected save() {
     if (this.isCreating()) {
-      this.phraseSetCreateMutation.mutate();
+      this.phraseSetCreateMutation.mutate(this.buildCreatePayload());
       return;
     }
 
-    this.phraseSetUpdateMutation.mutate();
+    this.phraseSetUpdateMutation.mutate(this.buildUpdatePayload());
   }
 
   protected discard(): void {

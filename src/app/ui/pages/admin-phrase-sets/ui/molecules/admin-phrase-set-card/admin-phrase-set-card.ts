@@ -23,10 +23,10 @@ export class AdminPhraseSetCard {
   private readonly adminPhraseSetService = inject(AdminPhraseSetService);
 
   readonly phrases = injectQuery(() =>
-    this.adminPhraseSetService.findPhrases(this.phraseSet().id, { page: 1, size: 3 }),
+    this.adminPhraseSetService.findPhrasesQuery(this.phraseSet().id, { page: 1, size: 3 }),
   );
 
-  readonly previewPhrases = computed(() => this.phrases.data()?.phrases || []);
+  readonly previewPhrases = computed(() => this.phrases.data()?.data || []);
 
   protected readonly badgeLabel = computed(() =>
     this.phraseSet().published ? 'PUBLICADO' : 'BORRADOR',

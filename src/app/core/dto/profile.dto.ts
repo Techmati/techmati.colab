@@ -1,4 +1,4 @@
-export const TECHMATI_ROLES = ['root', 'admin', 'moderator', 'analyst', 'user'] as const;
+export const TECHMATI_ROLES = ['root', 'admin', 'moderator', 'analyst', 'collector', 'user'] as const;
 
 export type TechmatiRole = (typeof TECHMATI_ROLES)[number];
 

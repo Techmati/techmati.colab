@@ -20,9 +20,9 @@
       <div class="rounded-xl border border-red-500 bg-red-50 p-4 text-sm text-red-700" role="alert">
         No se pudo cargar el resumen de la contribución.
       </div>
-    } @else if (cards().length) {
+    } @else if (entries().length) {
       <div class="flex flex-col gap-4">
-        @for (card of cards(); track card.phraseId; let index = $index) {
+        @for (card of entries(); track card.id; let index = $index) {
           <article
             class="rounded-xl border border-border-soft bg-surface-card p-4 shadow-sm flex flex-col"
           >
@@ -33,11 +33,10 @@
               <div class="flex justify-between">
                 <div class="shrink grow basis-0">
                   <p class="text-primary text-xs font-medium uppercase leading-4 tracking-wide">
-                    Frase en
-                    {{ card.phrase.language == 'nahuatl_to_spanish' ? 'nahuatl' : 'español' }}
+                    Frase original
                   </p>
                   <p class="text-text-primary mt-1 text-lg leading-7">
-                    {{ card.phrase.sourceText }}
+                    {{ card.phrase?.sourceText || '—' }}
                   </p>
                 </div>
                 <z-divider zOrientation="vertical" />
@@ -45,8 +44,7 @@
                   <p
                     class="text-brand-green-600 text-xs font-medium uppercase leading-4 tracking-wide"
                   >
-                    Traducción al
-                    {{ card.phrase.language == 'nahuatl_to_spanish' ? 'español' : 'náhuatl' }}
+                    Traducción
                   </p>
                   <p class="font-display text-text-primary mt-1 text-xl font-semibold leading-7">
                     {{ card.translation }}
@@ -54,7 +52,7 @@
                 </div>
               </div>
             </div>
-            <tm-waves-audio-player class="mt-4" [audioUrl]="card.audioUrl" />
+            <tm-waves-audio-player class="mt-4" [audioUrl]="card.audioUrl ?? ''" />
           </article>
         }
       </div>

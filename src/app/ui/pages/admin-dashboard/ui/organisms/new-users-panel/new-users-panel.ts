@@ -18,5 +18,5 @@ export class NewUsersPanel {
   private readonly statsService = inject(StatsService);
 
   readonly usersQuery = injectQuery(() => this.statsService.getLatestUsers());
-  readonly users = computed(() => this.usersQuery.data()?.latestUsers || []);
+  readonly users = computed(() => this.usersQuery.data()?.data || []);
 }

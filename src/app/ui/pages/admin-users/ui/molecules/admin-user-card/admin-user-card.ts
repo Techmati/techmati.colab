@@ -31,6 +31,7 @@ export class AdminUserCard {
     admin: 'Administrador',
     moderator: 'Moderador',
     analyst: 'Analista',
+    collector: 'Recolector',
     user: 'Usuario',
   };
 
@@ -39,6 +40,7 @@ export class AdminUserCard {
     admin: 'ri--admin-line',
     moderator: 'ri--shield-user-line',
     analyst: 'ri--file-search-line',
+    collector: 'ri--group-line',
     user: 'lucide--user-round',
   };
 
@@ -47,6 +49,7 @@ export class AdminUserCard {
     admin: 'bg-secondary text-secondary-foreground',
     moderator: 'bg-primary text-primary-foreground',
     analyst: 'bg-brand-green-500 text-white',
+    collector: 'bg-brand-purple-500 text-white',
     user: 'bg-card text-foreground border-border-subtle',
   };
 
@@ -58,6 +61,7 @@ export class AdminUserCard {
       admin: 'bg-[#d8e5e2] text-[#121e1c]',
       moderator: 'bg-brand-purple-100 text-[#160066]',
       analyst: 'bg-[#6ffbbe] text-[#002113]',
+      collector: 'bg-brand-purple-200 text-primary',
       user: 'bg-[#d8e5e2] text-[#121e1c]',
     }[role];
   });

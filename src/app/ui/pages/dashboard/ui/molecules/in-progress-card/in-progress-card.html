@@ -1,10 +1,12 @@
 <section class="rounded-lg bg-surface-success-soft p-4 flex flex-col gap-1">
-  <p class="text-brand-green-600 text-sm font-semibold leading-7">{{ task().phraseSet.title }}</p>
+  <p class="text-brand-green-600 text-sm font-semibold leading-7">
+    {{ task().phraseSet?.title || ('Set #' + task().phraseSetId.slice(0, 8)) }}
+  </p>
   <p class="text-text-secondary text-xs leading-4">
-    {{ task().phraseSet.phraseCount }} frases • {{ task().lastUpdate | timeAgo }}
+    {{ task().phraseCount }} frases • {{ task().lastUpdate | timeAgo }}
   </p>
   <div class="flex items-center justify-between text-xs leading-4 text-text-secondary">
-    <span>{{ task().contributedEntriesCount }}/{{ task().phraseSet.phraseCount }} completadas</span>
+    <span>{{ task().contributedEntriesCount }}/{{ task().phraseCount }} completadas</span>
     <span>{{ task().progressPercentage }}%</span>
   </div>
   <div class="h-1.5 rounded-full bg-border-subtle">

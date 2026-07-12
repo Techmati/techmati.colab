@@ -1,10 +1,6 @@
-export interface ContributorStats {
-  allTimeCount: number;
+export interface ContributorTranslationStats {
+  entriesCount: number;
+  completedAttempts: number;
   thisWeekCount: number;
   todayCount: number;
-}
-
-export interface UserContributionStats {
-  translatedPhrasesCount: number;
-  completedPhraseSetsCount: number;
 }

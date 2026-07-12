@@ -1,9 +1,11 @@
+import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
+import { TranslationService } from '@/core/service/translation/translation.service';
+import { ZardDividerComponent } from '@/shared/components/divider';
 import { Location } from '@angular/common';
 import { rxResource } from '@angular/core/rxjs-interop';
-
-import { TranslationEntryService } from '@/core/service/translation-entry/translation-entry.service';
-import { ZardDividerComponent } from '@/shared/components/divider';
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { defer, from } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { WavesAudioPlayer } from '../../molecules/waves-audio-player/waves-audio-player';
 import { TransEntrySkeleton } from './ui/organisms/trans-entry-skeleton/trans-entry-skeleton';
 
@@ -15,24 +17,24 @@ import { TransEntrySkeleton } from './ui/organisms/trans-entry-skeleton/trans-en
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransEntryPage {
-  readonly id = input.required<string>();
-  readonly title = input.required<string>();
+  readonly translationId = input.required<string>();
+  readonly title = input<string>('');
 
   private readonly location = inject(Location);
-  private readonly translationEntryService = inject(TranslationEntryService);
+  private readonly translationService = inject(TranslationService);
+  private readonly contributorContext = inject(ContributorContextService);
 
   protected readonly entryRes = rxResource({
-    params: computed(() => ({ id: this.id() })),
-    stream: ({ params }) => this.translationEntryService.findEntriesByPhraseSetId(params.id),
+    params: computed(() => ({ translationId: this.translationId() })),
+    stream: ({ params: { translationId } }) =>
+      defer(() => from(this.contributorContext.getActiveContributorId())).pipe(
+        switchMap((cId) => this.translationService.getDetail(cId, translationId)),
+      ),
   });
 
-  protected readonly cards = computed(() => this.entryRes.value()?.entries || []);
+  protected readonly entries = computed(() => this.entryRes.value()?.entries ?? []);
 
   protected goBack(): void {
     this.location.back();
-  }
-
-  constructor() {
-    effect(() => console.log(this.cards()));
   }
 }

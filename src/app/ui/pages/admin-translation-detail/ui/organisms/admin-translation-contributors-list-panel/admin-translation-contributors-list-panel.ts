@@ -1,4 +1,4 @@
-import { type PhraseSetContributorSummary } from '@/core/types/summary.type';
+import { AdminTranslationListItem } from '@/core/types/translation.type';
 import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ZardPaginationComponent } from '@/shared/components/pagination';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
@@ -18,7 +18,7 @@ import { AdminTranslationContributorCard } from '../../molecules/admin-translati
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminTranslationContributorsListPanel {
-  readonly summaries = input.required<readonly PhraseSetContributorSummary[]>();
+  readonly summaries = input.required<readonly AdminTranslationListItem[]>();
   readonly total = input.required<number>();
   readonly page = input.required<number>();
   readonly pages = input.required<number>();

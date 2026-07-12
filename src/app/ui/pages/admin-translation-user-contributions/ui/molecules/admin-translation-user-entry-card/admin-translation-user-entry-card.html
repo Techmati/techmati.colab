@@ -2,7 +2,7 @@
   <div class="space-y-4">
     <section class="space-y-1">
       <p class="text-xs font-medium uppercase leading-4 tracking-[0.05em] text-primary">Español</p>
-      <p class="text-lg leading-7 text-text-primary">{{ entry().phrase.sourceText }}</p>
+      <p class="text-lg leading-7 text-text-primary">{{ entry().phrase?.sourceText || '—' }}</p>
     </section>
 
     <section class="space-y-1">

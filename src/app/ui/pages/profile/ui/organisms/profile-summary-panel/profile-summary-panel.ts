@@ -1,6 +1,9 @@
-import { SummaryService } from '@/core/service/summary/summary.service';
+import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
+import { TranslationService } from '@/core/service/translation/translation.service';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { defer, from } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { ProfileSummaryPanelSkeleton } from '../profile-summary-panel-skeleton/profile-summary-panel-skeleton';
 
 @Component({
@@ -11,9 +14,13 @@ import { ProfileSummaryPanelSkeleton } from '../profile-summary-panel-skeleton/p
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileSummaryPanel {
-  private readonly summaryService = inject(SummaryService);
+  private readonly translationService = inject(TranslationService);
+  private readonly contributorContext = inject(ContributorContextService);
 
   readonly stats = rxResource({
-    stream: () => this.summaryService.getStats(),
+    stream: () =>
+      defer(() => from(this.contributorContext.getActiveContributorId())).pipe(
+        switchMap((cId) => this.translationService.getStats(cId)),
+      ),
   });
 }

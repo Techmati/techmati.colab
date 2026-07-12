@@ -1,13 +1,15 @@
 export interface PhraseSet {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   language: string;
   published: boolean;
   createdAt: string;
-  publishedAt: string | null;
+  publishedAt?: string;
   phraseCount: number;
+  stats?: PhraseSetStats | null;
 }
+
 export interface PhraseSetWithStats extends PhraseSet {
   stats: PhraseSetStats;
 }

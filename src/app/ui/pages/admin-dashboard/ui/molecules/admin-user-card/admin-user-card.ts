@@ -25,6 +25,7 @@ export class AdminUserCard {
         user: 'Usuario',
         moderator: 'Moderador',
         analyst: 'Analista',
+        collector: 'Recolector',
       })[this.user().role],
   );
 }

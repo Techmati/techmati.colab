@@ -1,5 +1,5 @@
 import { API } from '@/core/config/api-uris.config';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { queryOptions } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
@@ -7,38 +7,51 @@ import { LatestContributionsResponseDto } from '../../dto/latest-contributions-r
 import { LatestUsersResponseDto } from '../../dto/latest-users-response.dto';
 import { StatsResponseDto } from '../../dto/stats.response.dto';
 
-//TODO: add pagination to the queries to retrieve the only 3 first as the component needs them
 @Injectable({
   providedIn: 'root',
 })
 export class StatsService {
   private readonly client = inject(HttpClient);
 
-  private readonly todayStatsApi = API.ADMIN.STATS.SUMMARY;
-  private readonly latestContributionsApi = API.ADMIN.STATS.CONTRIBUTIONS.LATEST;
-  private readonly latestUsersApi = API.ADMIN.STATS.USERS.LATEST;
+  private readonly overviewApi = API.ADMIN.STATS.OVERVIEW;
+  private readonly latestContributionsApi = API.ADMIN.STATS.LATEST_CONTRIBUTIONS;
+  private readonly latestUsersApi = API.ADMIN.STATS.LATEST_USERS;
 
   getTodayStats() {
     return queryOptions({
       queryKey: ['stats', 'today'],
-      queryFn: () => lastValueFrom(this.client.get<StatsResponseDto>(this.todayStatsApi)),
+      queryFn: () => lastValueFrom(this.client.get<StatsResponseDto>(this.overviewApi)),
       staleTime: 0,
     });
   }
 
-  getLatestContributions() {
+  getLatestContributions(page = 1, size = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
     return queryOptions({
-      queryKey: ['stats', 'latest-contributions'],
+      queryKey: ['stats', 'latest-contributions', page, size],
       queryFn: () =>
-        lastValueFrom(this.client.get<LatestContributionsResponseDto>(this.latestContributionsApi)),
+        lastValueFrom(
+          this.client.get<LatestContributionsResponseDto>(
+            this.latestContributionsApi,
+            { params },
+          ),
+        ),
       staleTime: 0,
     });
   }
 
-  getLatestUsers() {
+  getLatestUsers(page = 1, size = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
     return queryOptions({
-      queryKey: ['stats', 'latest-users'],
-      queryFn: () => lastValueFrom(this.client.get<LatestUsersResponseDto>(this.latestUsersApi)),
+      queryKey: ['stats', 'latest-users', page, size],
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<LatestUsersResponseDto>(this.latestUsersApi, { params }),
+        ),
       staleTime: 0,
     });
   }

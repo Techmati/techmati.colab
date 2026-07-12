@@ -1,5 +1,6 @@
-import { AdminSummaryService } from '@/core/service/admin-summary/admin-summary.service';
-import { type SummaryFilter } from '@/core/types/summary.type';
+import { AdminStatsService } from '@/core/service/admin-stats/admin-stats.service';
+import { AdminTranslationService } from '@/core/service/admin-translation/admin-translation.service';
+import { TranslationFilter } from '@/core/types/translation.type';
 import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ZardPaginationComponent } from '@/shared/components/pagination';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
@@ -15,7 +16,6 @@ import {
 import { Router } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 
-import { AdminUserDetailService } from '../admin-user-detail/core/service/admin-user-detail.service';
 import { AdminUserContributionPhraseSetPanel } from './ui/organisms/admin-user-contribution-phrase-set-panel/admin-user-contribution-phrase-set-panel';
 import { AdminUserContributionStatsPanel } from './ui/organisms/admin-user-contribution-stats-panel/admin-user-contribution-stats-panel';
 import { AdminUserContributionsTopBar } from './ui/organisms/admin-user-contributions-top-bar/admin-user-contributions-top-bar';
@@ -35,49 +35,38 @@ import { AdminUserContributionsTopBar } from './ui/organisms/admin-user-contribu
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminUserContributionsPage {
-  readonly userId = input.required<string>();
+  readonly contributorId = input.required<string>();
   protected readonly pageParam = input('', { alias: 'page' });
 
-  private readonly adminUserDetailService = inject(AdminUserDetailService);
-  private readonly adminSummaryService = inject(AdminSummaryService);
+  private readonly adminTranslationService = inject(AdminTranslationService);
+  private readonly adminStatsService = inject(AdminStatsService);
   private readonly router = inject(Router);
 
-  private readonly SUMMARY_FILTER: SummaryFilter = 'all';
+  private readonly TRANSLATION_FILTER: TranslationFilter = 'all';
   private readonly PAGE_SIZE = 10;
-  private readonly ENTRIES_LIMIT = 3;
 
   protected readonly page = signal(1);
 
-  protected readonly userQuery = injectQuery(() =>
-    this.adminUserDetailService.findById(this.userId()),
-  );
-
   protected readonly statsQuery = injectQuery(() =>
-    this.adminSummaryService.getUserContributionStats(this.userId()),
+    this.adminStatsService.searchContributorTranslations(this.contributorId()),
   );
 
-  protected readonly summariesQuery = injectQuery(() =>
-    this.adminSummaryService.getUserSummaries(this.userId(), {
+  protected readonly translationsQuery = injectQuery(() =>
+    this.adminTranslationService.searchListByContributor(this.contributorId(), {
       page: this.page(),
       size: this.PAGE_SIZE,
-      filter: this.SUMMARY_FILTER,
-      includeEntries: true,
-      entriesLimit: this.ENTRIES_LIMIT,
+      filter: this.TRANSLATION_FILTER,
+      include_phrase_set: true,
     }),
   );
 
-  protected readonly user = computed(() => this.userQuery.data() ?? null);
   protected readonly stats = computed(() => this.statsQuery.data() ?? null);
-  protected readonly summaries = computed(() => this.summariesQuery.data()?.data ?? []);
-  protected readonly summariesTotal = computed(() => this.summariesQuery.data()?.total ?? 0);
-  protected readonly pages = computed(() =>
-    Math.max(1, Math.ceil(this.summariesTotal() / this.PAGE_SIZE)),
-  );
-  protected readonly isStatsLoading = computed(
-    () => this.userQuery.isPending() || this.statsQuery.isPending(),
-  );
-  protected readonly isSummariesLoading = computed(
-    () => this.summariesQuery.isPending() || this.summariesQuery.isFetching(),
+  protected readonly translations = computed(() => this.translationsQuery.data()?.data ?? []);
+  protected readonly total = computed(() => this.translationsQuery.data()?.total ?? 0);
+  protected readonly pages = computed(() => Math.max(1, Math.ceil(this.total() / this.PAGE_SIZE)));
+  protected readonly isStatsLoading = computed(() => this.statsQuery.isPending());
+  protected readonly isTranslationsLoading = computed(
+    () => this.translationsQuery.isPending() || this.translationsQuery.isFetching(),
   );
 
   constructor() {

@@ -1,4 +1,4 @@
-import { type UserPhraseSetTranslationEntry } from '@/core/types/summary.type';
+import { type TranslationEntry } from '@/core/types/translation-entry.type';
 import { WavesAudioPlayer } from '@/ui/molecules/waves-audio-player/waves-audio-player';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
@@ -10,5 +10,5 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminTranslationUserEntryCard {
-  readonly entry = input.required<UserPhraseSetTranslationEntry>();
+  readonly entry = input.required<TranslationEntry>();
 }

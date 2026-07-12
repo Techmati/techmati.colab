@@ -7,12 +7,7 @@
 
       <tm-admin-user-attributes-panel [user]="profile" />
 
-      <tm-admin-user-contributions-panel
-        [userId]="userId()"
-        [contributions]="summaries()"
-        [isLoading]="summariesQuery.isPending() || summariesQuery.isFetching()"
-        [total]="summariesTotal()"
-      />
+      <tm-admin-user-contributions-panel [isLoading]="false" />
 
       <tm-admin-user-risk-panel
         [role]="selectedRole()"

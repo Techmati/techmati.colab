@@ -1,5 +1,6 @@
 import { API } from '@/core/config/api-uris.config';
 import { Profile, TechmatiRole } from '@/core/dto/profile.dto';
+import { AutoContributor } from '@/core/types/admin-translation.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import {
@@ -23,6 +24,16 @@ export class AdminUserDetailService {
     });
   }
 
+  getAutoContributorId(userId: string) {
+    return queryOptions({
+      queryKey: ['users', userId, 'auto-contributor'],
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<AutoContributor>(API.ADMIN.USERS.AUTO_CONTRIBUTOR(userId)),
+        ),
+    });
+  }
+
   assignRole(
     userId: string,
     onSuccessCallback?: () => void,
@@ -31,7 +42,9 @@ export class AdminUserDetailService {
     return mutationOptions({
       mutationKey: ['users', userId, 'assign-role'],
       mutationFn: (role: TechmatiRole) =>
-        lastValueFrom(this.client.put<Profile>(API.ADMIN.USERS.ASSIGN_ROLE(userId), { role })),
+        lastValueFrom(
+          this.client.patch<Profile>(API.ADMIN.USERS.ASSIGN_ROLE(userId), { role }),
+        ),
       onSuccess: async () => {
         await this.invalidateUserQueries(userId);
         onSuccessCallback?.();

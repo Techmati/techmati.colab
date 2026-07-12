@@ -22,7 +22,7 @@
       <z-skeleton class="h-48 w-full rounded-xl" />
       <z-skeleton class="h-48 w-full rounded-xl" />
     } @else {
-      @for (summary of summaries(); track summary.userId) {
+      @for (summary of summaries(); track summary.id) {
         <tm-admin-translation-contributor-card [summary]="summary" />
       } @empty {
         <z-empty

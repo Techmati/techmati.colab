@@ -1,4 +1,4 @@
 export interface StatsResponseDto {
-  contributions: number;
-  newUsers: number;
+  todayContributions: number;
+  todayNewUsers: number;
 }

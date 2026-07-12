@@ -2,18 +2,18 @@
   <header class="mb-4 flex items-center justify-center gap-2 text-center">
     <span class="lucide--history text-xl text-primary" aria-hidden="true"></span>
     <h2 class="font-display text-xl font-semibold leading-7 text-primary">
-      {{ contribution().phraseSet.title }}
+      {{ contribution().phraseSet?.title || ('Set #' + contribution().phraseSetId.slice(0, 8)) }}
     </h2>
   </header>
 
-  <div class="space-y-3">
-    @for (phrase of contribution().phraseSet.phrases; track phrase.id) {
-      <tm-admin-user-contribution-phrase-card [phrase]="phrase" />
-    } @empty {
-      <p class="rounded-xl border border-dashed border-border-subtle px-4 py-6 text-center text-sm text-text-secondary">
-        No hay frases recientes para mostrar en este set.
-      </p>
-    }
+  <div class="space-y-2">
+    <p class="text-sm leading-5 text-text-secondary">
+      {{ contribution().contributedEntriesCount }} / {{ contribution().phraseCount }} frases
+    </p>
+    <p class="text-xs leading-4 text-text-tertiary">
+      {{ contribution().inProgress ? 'En progreso' : 'Completado' }} •
+      {{ contribution().attemptedAt | date: 'd MMM yyyy' : '' : 'es-MX' }}
+    </p>
   </div>
 
   <div class="mt-4 flex justify-end">
@@ -22,10 +22,10 @@
       zType="outline"
       zSize="sm"
       type="button"
-      [routerLink]="['/admin', 'phrase-sets', contribution().phraseSet.id]"
+      [routerLink]="['/admin', 'phrase-sets', contribution().phraseSetId, 'translations']"
       class="rounded-full border-primary/30 text-primary"
     >
-      Ver todo
+      Ver intentos
       <span class="lucide--external-link text-sm" aria-hidden="true"></span>
     </button>
   </div>

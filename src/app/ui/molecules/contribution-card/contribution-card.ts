@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 
 import { TimeAgoPipe } from '@/core/pipes/time-ago.pipe';
-import { PhraseSetSummary } from '@/core/types/summary.type';
+import { Translation } from '@/core/types/translation.type';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
@@ -14,13 +14,15 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContributionCard {
-  readonly card = input.required<PhraseSetSummary>();
+  readonly card = input.required<Translation>();
 
   private readonly router = inject(Router);
 
   protected goToDetails(): void {
-    this.router.navigate(['/set-entries', this.card().phraseSet.id], {
-      queryParams: { title: this.card().phraseSet.title },
+    const translation = this.card();
+    const title = translation.phraseSet?.title;
+    this.router.navigate(['/translation', translation.id], {
+      queryParams: title ? { title } : {},
     });
   }
 }

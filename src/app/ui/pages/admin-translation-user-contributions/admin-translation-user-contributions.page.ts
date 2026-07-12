@@ -1,6 +1,4 @@
-import { AdminSummaryService } from '@/core/service/admin-summary/admin-summary.service';
-import { type UserPhraseSetTranslationDetail } from '@/core/types/summary.type';
-import { ZardPaginationComponent } from '@/shared/components/pagination';
+import { AdminTranslationService } from '@/core/service/admin-translation/admin-translation.service';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -22,7 +20,6 @@ import { AdminTranslationUserSummaryPanel } from './ui/organisms/admin-translati
     AdminTranslationUserContributionsTopBar,
     AdminTranslationUserSummaryPanel,
     AdminTranslationUserEntriesPanel,
-    ZardPaginationComponent,
   ],
   templateUrl: './admin-translation-user-contributions.page.html',
   styleUrl: './admin-translation-user-contributions.page.css',
@@ -30,32 +27,27 @@ import { AdminTranslationUserSummaryPanel } from './ui/organisms/admin-translati
 })
 export class AdminTranslationUserContributionsPage {
   readonly translationId = input.required<string>();
-  readonly userId = input.required<string>();
+  readonly contributorId = input.required<string>();
   protected readonly pageParam = input('', { alias: 'page' });
 
-  private readonly adminSummaryService = inject(AdminSummaryService);
+  private readonly adminTranslationService = inject(AdminTranslationService);
   private readonly router = inject(Router);
 
   private readonly PAGE_SIZE = 10;
 
   protected readonly page = signal(1);
 
-  protected readonly translationsQuery = injectQuery(() =>
-    this.adminSummaryService.getPhraseSetUserTranslations(this.translationId(), this.userId(), {
-      page: this.page(),
-      size: this.PAGE_SIZE,
-    }),
+  protected readonly detailQuery = injectQuery(() =>
+    this.adminTranslationService.searchContributorTranslationDetail(
+      this.contributorId(),
+      this.translationId(),
+    ),
   );
 
-  protected readonly detail = computed<UserPhraseSetTranslationDetail | null>(
-    () => this.translationsQuery.data()?.data ?? null,
-  );
-  protected readonly summary = computed(() => this.detail()?.summary ?? null);
-  protected readonly entries = computed(() => this.detail()?.entries ?? []);
-  protected readonly total = computed(() => this.translationsQuery.data()?.total ?? 0);
-  protected readonly pages = computed(() => Math.max(1, Math.ceil(this.total() / this.PAGE_SIZE)));
+  protected readonly summary = computed(() => this.detailQuery.data()?.translation ?? null);
+  protected readonly entries = computed(() => this.detailQuery.data()?.entries ?? []);
   protected readonly isLoading = computed(
-    () => this.translationsQuery.isPending() || this.translationsQuery.isFetching(),
+    () => this.detailQuery.isPending() || this.detailQuery.isFetching(),
   );
 
   constructor() {

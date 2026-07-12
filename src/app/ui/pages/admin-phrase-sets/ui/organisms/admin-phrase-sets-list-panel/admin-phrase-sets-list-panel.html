@@ -24,7 +24,7 @@
       <z-skeleton class="h-28 w-full"></z-skeleton>
       <z-skeleton class="h-28 w-full"></z-skeleton>
     }@else{
-      @for (phraseSet of searchResults.data()?.phraseSets; track phraseSet.id) {
+      @for (phraseSet of searchResults.data()?.data; track phraseSet.id) {
         <tm-admin-phrase-set-card [phraseSet]="phraseSet" />
       }
     }

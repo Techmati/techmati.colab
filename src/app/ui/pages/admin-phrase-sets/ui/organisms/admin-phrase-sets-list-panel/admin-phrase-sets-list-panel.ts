@@ -22,7 +22,7 @@ export class AdminPhraseSetsListPanel {
   readonly size = 10;
 
   readonly searchResults = injectQuery(() =>
-    this.adminPhraseSetService.search({
+    this.adminPhraseSetService.searchQuery({
       search: this.searchParam() || '',
       page: this.page(),
       size: this.size,

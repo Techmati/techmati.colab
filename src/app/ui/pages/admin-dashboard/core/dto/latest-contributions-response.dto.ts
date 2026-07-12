@@ -1,10 +1,8 @@
-import { Profile } from '@/core/dto/profile.dto';
-import { PhraseSet } from '@/core/types/phrase-set.type';
-import { Summary } from '@/core/types/summary.type';
+import { LatestContributionDto } from '@/core/types/stats.type';
 
-export type RecentContributionDto = Summary & {
-  contributor: Profile;
-  phraseSet: PhraseSet;
+export type RecentContributionDto = LatestContributionDto;
+
+export type LatestContributionsResponseDto = {
+  data: RecentContributionDto[];
+  total: number;
 };
-
-export type LatestContributionsResponseDto = { latestContributions: RecentContributionDto[] };
