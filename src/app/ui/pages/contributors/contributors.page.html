@@ -30,12 +30,5 @@
     <span class="lucide--plus text-xl" aria-hidden="true"></span>
   </button>
 
-  <tm-contributors-add-edit-dialog
-    [(open)]="isDialogOpen"
-    [contributor]="selectedContributor()"
-    (saved)="onDialogSaved($event)"
-    (dismissed)="onDialogDismissed()"
-  />
-
   <tm-bottom-nav-bar active="contributors" />
 </main>

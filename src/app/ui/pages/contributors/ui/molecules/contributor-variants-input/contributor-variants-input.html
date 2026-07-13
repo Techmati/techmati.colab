@@ -18,17 +18,16 @@
   }
 
   @if (availableOptions().length > 0) {
-    <select
-      class="cursor-pointer appearance-none rounded-[10px] border border-border-subtle bg-card px-2 py-1 text-xs font-normal leading-4 text-text-secondary transition-colors hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
-      [disabled]="disabled()"
-      (change)="onSelectChange($event)"
-      [value]="selectedAddOption()"
-      aria-label="Añadir otra variante"
+    <z-select
+      zPlaceholder="Añadir otra variante"
+      class="max-w-44 text-xs font-normal leading-4"
+      [(zValue)]="pendingAdd"
+      (zValueChange)="onPendingAddChange()"
+      [class.opacity-50]="disabled()"
     >
-      <option value="" disabled selected>Añadir otra variante</option>
       @for (option of availableOptions(); track option) {
-        <option [value]="option">{{ option }}</option>
+        <z-select-item [zValue]="option">{{ option }}</z-select-item>
       }
-    </select>
+    </z-select>
   }
 </div>

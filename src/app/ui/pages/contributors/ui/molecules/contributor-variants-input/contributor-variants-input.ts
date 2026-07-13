@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, forwardRef, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, forwardRef, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+import { ZardSelectImports } from '@/shared/components/select';
 
 type OnChangeFn = (value: string[]) => void;
 type OnTouchedFn = () => void;
@@ -15,7 +17,7 @@ const ALL_REGIONS = [
 
 @Component({
   selector: 'tm-contributor-variants-input',
-  imports: [],
+  imports: [...ZardSelectImports],
   templateUrl: './contributor-variants-input.html',
   styleUrl: './contributor-variants-input.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,7 +32,7 @@ const ALL_REGIONS = [
 export class ContributorVariantsInput implements ControlValueAccessor {
   readonly disabled = signal(false);
   protected readonly value = signal<string[]>([]);
-  protected readonly selectedAddOption = signal('');
+  protected readonly pendingAdd = signal('');
 
   protected readonly availableOptions = computed(() =>
     ALL_REGIONS.filter((region) => !this.value().includes(region)),
@@ -62,15 +64,13 @@ export class ContributorVariantsInput implements ControlValueAccessor {
     this.onTouched();
   }
 
-  protected onSelectChange(event: Event): void {
-    const target = event.target as HTMLSelectElement | null;
-    const nextValue = target?.value;
+  protected onPendingAddChange(): void {
+    const nextValue = this.pendingAdd();
     if (!nextValue || this.value().includes(nextValue)) return;
     const next = [...this.value(), nextValue];
     this.value.set(next);
     this.onChange(next);
     this.onTouched();
-    this.selectedAddOption.set('');
-    if (target) target.value = '';
+    this.pendingAdd.set('');
   }
 }

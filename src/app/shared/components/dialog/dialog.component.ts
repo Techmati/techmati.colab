@@ -22,14 +22,11 @@ import {
   type ViewContainerRef,
 } from '@angular/core';
 
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideX } from '@ng-icons/lucide';
-
 import { mergeClasses, noopFn } from '@/shared/utils/merge-classes';
 
+import { ZardButtonComponent } from '@/shared/components/button/button.component';
 import type { ZardDialogRef } from './dialog-ref';
 import { dialogVariants } from './dialog.variants';
-import { ZardButtonComponent } from '@/shared/components/button/button.component';
 
 export type OnClickCallback<T> = (instance: T) => false | void | object;
 export class ZardDialogOptions<T, U> {
@@ -55,7 +52,7 @@ export class ZardDialogOptions<T, U> {
 
 @Component({
   selector: 'z-dialog',
-  imports: [OverlayModule, PortalModule, ZardButtonComponent, NgIcon],
+  imports: [OverlayModule, PortalModule, ZardButtonComponent],
   template: `
     @if (config.zClosable || config.zClosable === undefined) {
       <button
@@ -67,17 +64,21 @@ export class ZardDialogOptions<T, U> {
         class="absolute top-1 right-1"
         (click)="onCloseClick()"
       >
-        <ng-icon name="lucideX" class="size-4!" />
+        <span class="lucide--x text-lg"></span>
       </button>
     }
 
     @if (config.zTitle || config.zDescription) {
       <header class="flex flex-col space-y-1.5 text-center sm:text-left">
         @if (config.zTitle) {
-          <h4 data-testid="z-title" class="text-lg leading-none font-semibold tracking-tight">{{ config.zTitle }}</h4>
+          <h4 data-testid="z-title" class="text-lg leading-none font-semibold tracking-tight">
+            {{ config.zTitle }}
+          </h4>
 
           @if (config.zDescription) {
-            <p data-testid="z-description" class="text-muted-foreground text-sm">{{ config.zDescription }}</p>
+            <p data-testid="z-description" class="text-muted-foreground text-sm">
+              {{ config.zDescription }}
+            </p>
           }
         }
       </header>
@@ -94,9 +95,15 @@ export class ZardDialogOptions<T, U> {
     @if (!config.zHideFooter) {
       <footer class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-0 sm:space-x-2">
         @if (config.zCancelText !== null) {
-          <button type="button" data-testid="z-cancel-button" z-button zType="outline" (click)="onCloseClick()">
+          <button
+            type="button"
+            data-testid="z-cancel-button"
+            z-button
+            zType="outline"
+            (click)="onCloseClick()"
+          >
             @if (config.zCancelIcon) {
-              <ng-icon [svg]="config.zCancelIcon" class="size-4!" />
+              <span [class]="config.zCancelIcon" class="text-lg"></span>
             }
 
             {{ config.zCancelText ?? 'Cancel' }}
@@ -113,7 +120,7 @@ export class ZardDialogOptions<T, U> {
             (click)="onOkClick()"
           >
             @if (config.zOkIcon) {
-              <ng-icon [svg]="config.zOkIcon" class="size-4!" />
+              <span [class]="config.zOkIcon" class="text-lg"></span>
             }
 
             {{ config.zOkText ?? 'OK' }}
@@ -147,7 +154,6 @@ export class ZardDialogOptions<T, U> {
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  viewProviders: [provideIcons({ lucideX })],
   host: {
     '[class]': 'classes()',
     '[style.width]': 'config.zWidth ? config.zWidth : null',
@@ -160,7 +166,9 @@ export class ZardDialogComponent<T, U> extends BasePortalOutlet {
   private readonly host = inject(ElementRef<HTMLElement>);
   protected readonly config = inject(ZardDialogOptions<T, U>);
 
-  protected readonly classes = computed(() => mergeClasses(dialogVariants(), this.config.zCustomClasses));
+  protected readonly classes = computed(() =>
+    mergeClasses(dialogVariants(), this.config.zCustomClasses),
+  );
   dialogRef?: ZardDialogRef<T>;
 
   protected readonly isStringContent = typeof this.config.zContent === 'string';
