@@ -5,7 +5,7 @@
     <tm-contributors-header [count]="total()" />
 
     @if (activeContributor(); as active) {
-      <tm-active-contributor-card [contributor]="active"/>
+      <tm-active-contributor-card [contributor]="active" />
     }
 
     <div class="flex flex-col gap-4">
@@ -22,12 +22,20 @@
 
   <button
     type="button"
-    class="new-contributor-fab fixed bottom-20 right-5 z-10 flex size-14 items-center justify-center rounded-xl bg-brand-green-600 text-white shadow-[0_4px_6px_rgba(0,0,0,0.10),0_10px_15px_rgba(0,0,0,0.10)] transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    z-button
+    class="new-contributor-fab fixed bottom-20 right-5 z-10 flex size-14 items-center justify-center rounded-xl bg-brand-green-600 text-white shadow-xl transition-transform hover:scale-105 hover:bg-brand-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     aria-label="Nuevo contribuidor"
     (click)="onNewContributor()"
   >
     <span class="lucide--plus text-xl" aria-hidden="true"></span>
   </button>
+
+  <tm-contributors-add-edit-dialog
+    [(open)]="isDialogOpen"
+    [contributor]="selectedContributor()"
+    (saved)="onDialogSaved($event)"
+    (dismissed)="onDialogDismissed()"
+  />
 
   <tm-bottom-nav-bar active="contributors" />
 </main>

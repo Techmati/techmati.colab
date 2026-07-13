@@ -15,7 +15,7 @@ export class ActiveContributorCard {
   protected statusInfo = computed(() => statusLabels[this.status()]);
 }
 
-const statusLabels = {
-  auto: { label: 'Yo', icon: 'lucide-zap' },
-  managed: { label: 'Gesionado', icon: 'lucide--notebook-tabs' },
+const statusLabels: Record<string, { label: string; icon: string }> = {
+  auto: { label: 'Auto', icon: 'lucide--zap' },
+  managed: { label: 'Gestionado', icon: 'lucide--notebook-tabs' },
 };

@@ -1,0 +1,82 @@
+@if (open()) {
+  <div
+    class="dialog-backdrop fixed inset-0 z-50 flex items-center justify-center p-4"
+    (click)="onBackdropClick($event)"
+  >
+    <div
+      class="dialog-panel flex w-full max-w-sm flex-col gap-4 rounded-xl border border-border-subtle bg-card p-6"
+    >
+      <div class="flex items-start justify-between gap-4">
+        <div class="flex flex-col gap-2">
+          <h2 class="font-ui text-lg font-semibold leading-7 text-text-primary">
+            {{ isEdit() ? 'Editar colaborador' : 'Nuevo colaborador' }}
+          </h2>
+          <p class="font-ui text-sm font-normal leading-5 text-text-secondary">
+            {{ isEdit() ? 'Haz los cambios necesarios para este colaborador.' : 'Completa los datos para registrar un nuevo colaborador.' }}
+          </p>
+        </div>
+        <button
+          z-button
+          zSize="icon"
+          zType="ghost"
+          type="button"
+          class="shrink-0 text-text-secondary hover:text-primary"
+          aria-label="Cerrar"
+          (click)="onDismiss()"
+        >
+          <span class="lucide--x text-lg" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-3">
+          <label class="font-ui text-sm font-medium leading-5 text-text-primary" for="name-input">
+            Nombre
+          </label>
+          <input
+            id="name-input"
+            z-input
+            type="text"
+            class="rounded-lg border border-border-subtle bg-card px-3 py-2 font-ui text-base font-normal leading-6 text-text-primary placeholder:text-text-tertiary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            placeholder="Nombre del colaborador"
+            [formField]="form.name"
+          />
+          <tm-field-error-advice [field]="form.name" />
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <label class="font-ui text-sm font-medium leading-5 text-text-primary" for="variants-input">
+            Variantes
+          </label>
+          <tm-contributor-variants-input
+            id="variants-input"
+            [formField]="form.variants"
+          />
+          <tm-field-error-advice [field]="form.variants" />
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button
+          z-button
+          zType="outline"
+          type="button"
+          class="flex-1"
+          (click)="onDismiss()"
+        >
+          Cancelar
+        </button>
+        <button
+          z-button
+          zType="default"
+          type="button"
+          class="flex-[1.8]"
+          (click)="onSave()"
+        >
+          <span class="lucide--save text-base" aria-hidden="true"></span>
+          Guardar cambios
+        </button>
+      </div>
+    </div>
+  </div>
+}
