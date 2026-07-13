@@ -9,5 +9,5 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BottomNavBar {
-  readonly active = input<'dashboard' | 'profile'>('dashboard');
+  readonly active = input<'dashboard' | 'profile' | 'contributors'>('dashboard');
 }

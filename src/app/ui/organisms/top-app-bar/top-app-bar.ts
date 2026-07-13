@@ -1,6 +1,8 @@
 import type { TechmatiRole } from '@/core/dto/profile.dto';
 import { AuthenticationService } from '@/core/service/authentication/authentication.service';
+import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { ProfileService } from '@/core/service/profile/profile.service';
+import { ZardBadgeComponent } from '@/shared/components/badge';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
@@ -9,19 +11,26 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 
 @Component({
   selector: 'tm-top-app-bar',
-  imports: [ZardButtonComponent, ZardSkeletonComponent],
+  imports: [ZardBadgeComponent, ZardButtonComponent, ZardSkeletonComponent],
   templateUrl: './top-app-bar.html',
   styleUrl: './top-app-bar.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopAppBar {
   private readonly authenticationService = inject(AuthenticationService);
+  private readonly contributorContext = inject(ContributorContextService);
   private readonly profileService = inject(ProfileService);
   private readonly router = inject(Router);
 
   protected readonly isSigningOut = signal(false);
   protected readonly profileQuery = injectQuery(() => this.profileService.findCurrent());
   protected readonly profile = computed(() => this.profileQuery.data() ?? null);
+  protected readonly contributorLoading = computed(() => this.contributorContext.activeLoading());
+  protected readonly activeContributorFirstName = computed(() => {
+    const fullName = this.contributorContext.active()?.fullName.trim() ?? '';
+
+    return fullName.split(/\s+/)[0] ?? '';
+  });
   private readonly roleLabels: Record<TechmatiRole, string> = {
     root: 'Super Administrador',
     admin: 'Administrador',

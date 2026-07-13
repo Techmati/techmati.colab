@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authenticationGuard } from './core/guard/authentication.guard';
 import { contributorContextGuard } from './core/guard/contributor-context.guard';
+import { ContributorsPage } from './ui/pages/contributors/contributors.page';
 import { DashboardPage } from './ui/pages/dashboard/dashboard.page';
 import { ProfileHistoryPage } from './ui/pages/profile-history/profile-history.page';
 import { ProfilePage } from './ui/pages/profile/profile.page';
@@ -17,6 +18,11 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardPage,
+    canActivate: [authenticationGuard, contributorContextGuard],
+  },
+  {
+    path: 'contributors',
+    component: ContributorsPage,
     canActivate: [authenticationGuard, contributorContextGuard],
   },
   {
@@ -46,9 +52,9 @@ export const routes: Routes = [
   {
     path: 'admin/translations/:translationId/contributors/:contributorId',
     loadComponent: () =>
-      import(
-        './ui/pages/admin-translation-user-contributions/admin-translation-user-contributions.page'
-      ).then((module) => module.AdminTranslationUserContributionsPage),
+      import('./ui/pages/admin-translation-user-contributions/admin-translation-user-contributions.page').then(
+        (module) => module.AdminTranslationUserContributionsPage,
+      ),
     canActivate: [authenticationGuard],
   },
   {
@@ -70,9 +76,7 @@ export const routes: Routes = [
   {
     path: 'admin/users',
     loadComponent: () =>
-      import('./ui/pages/admin-users/admin-users.page').then(
-        (module) => module.AdminUsersPage,
-      ),
+      import('./ui/pages/admin-users/admin-users.page').then((module) => module.AdminUsersPage),
     canActivate: [authenticationGuard],
   },
   {

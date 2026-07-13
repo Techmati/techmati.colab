@@ -19,6 +19,18 @@
         </span>
       }
 
+      @if (contributorLoading()) {
+        <z-skeleton class="hidden h-7 w-16 rounded-full min-[380px]:block" />
+      } @else if (activeContributorFirstName()) {
+        <z-badge
+          zShape="pill"
+          class="hidden h-7 gap-1.5 border-brand-green-200 bg-brand-green-100 px-2.5 text-brand-green-600 shadow-sm min-[380px]:inline-flex"
+        >
+          <span class="lucide--user-round text-sm" aria-hidden="true"></span>
+          {{ activeContributorFirstName() }}
+        </z-badge>
+      }
+
       <button
         z-button
         zType="ghost"

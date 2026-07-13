@@ -2,7 +2,7 @@
   class="bottom-nav-bar bg-card fixed inset-x-0 bottom-0 z-10 h-16 border-t border-border-subtle"
   aria-label="Navegación principal"
 >
-  <ul class="mx-auto grid h-full max-w-sm grid-cols-2">
+  <ul class="mx-auto grid h-full max-w-sm grid-cols-3">
     <li>
       @let dashboardActive = active() === 'dashboard';
       <a
@@ -26,6 +26,20 @@
       >
         <span [class]="profileActive ? 'ri--user-fill' : 'ri--user-line'" aria-hidden="true"></span>
         Perfil
+      </a>
+    </li>
+    <li>
+      @let contributorsActive = active() === 'contributors';
+      <a
+        class="text-muted-foreground flex flex-col items-center justify-center gap-1 border-t-2 border-solid border-transparent p-2 text-base"
+        [class.item-active]="contributorsActive"
+        routerLink="/contributors"
+      >
+        <span
+          [class]="contributorsActive ? 'lucide--book-user' : 'lucide--book-user'"
+          aria-hidden="true"
+        ></span>
+        Colaboradores
       </a>
     </li>
   </ul>
