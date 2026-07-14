@@ -2,7 +2,7 @@ import { API } from '@/core/config/api-uris.config';
 import { Contributor } from '@/core/types/contributor.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { queryOptions } from '@tanstack/angular-query-experimental';
+import { mutationOptions, QueryClient, queryOptions } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, map, Observable } from 'rxjs';
 
 export interface CreateContributorPayload {
@@ -20,6 +20,7 @@ export interface UpdateContributorPayload {
 })
 export class ContributorService {
   private readonly client = inject(HttpClient);
+  private readonly queryClient = inject(QueryClient);
 
   listObservable(): Observable<Contributor[]> {
     return this.client
@@ -43,8 +44,11 @@ export class ContributorService {
     return this.client.get<Contributor>(API.CONTRIBUTORS.BY_ID(id));
   }
 
-  create(payload: CreateContributorPayload): Observable<Contributor> {
-    return this.client.post<Contributor>(API.CONTRIBUTORS.LIST, payload);
+  create() {
+    return mutationOptions({
+      mutationFn: (payload: CreateContributorPayload) =>
+        lastValueFrom(this.client.post<Contributor>(API.CONTRIBUTORS.LIST, payload)),
+    });
   }
 
   update(id: string, payload: UpdateContributorPayload): Observable<Contributor> {
@@ -53,5 +57,9 @@ export class ContributorService {
 
   delete(id: string): Observable<{ message: string }> {
     return this.client.delete<{ message: string }>(API.CONTRIBUTORS.BY_ID(id));
+  }
+
+  invalidateContributorsList() {
+    this.queryClient.invalidateQueries({ queryKey: ['contributors'] });
   }
 }

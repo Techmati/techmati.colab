@@ -2,7 +2,8 @@ import { API } from '@/core/config/api-uris.config';
 import { NahuatlVariant } from '@/core/types/nahuatl-variant.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { queryOptions } from '@tanstack/angular-query-experimental';
+import { lastValueFrom, map, Observable } from 'rxjs';
 
 export interface CreateNahuatlVariantPayload {
   code: string;
@@ -20,10 +21,16 @@ export interface UpdateNahuatlVariantPayload {
 export class NahuatlVariantService {
   private readonly client = inject(HttpClient);
 
-  list(): Observable<NahuatlVariant[]> {
-    return this.client.get<{ data: NahuatlVariant[] }>(API.NAHUATL_VARIANTS.LIST).pipe(
-      map((response) => response.data),
-    );
+  list() {
+    return queryOptions({
+      queryKey: ['nahuatl-variants'],
+      queryFn: () =>
+        lastValueFrom(
+          this.client
+            .get<{ data: NahuatlVariant[] }>(API.NAHUATL_VARIANTS.LIST)
+            .pipe(map((response) => response.data)),
+        ),
+    });
   }
 
   create(payload: CreateNahuatlVariantPayload): Observable<NahuatlVariant> {

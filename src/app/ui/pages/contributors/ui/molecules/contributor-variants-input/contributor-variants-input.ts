@@ -1,23 +1,25 @@
-import { ChangeDetectionStrategy, Component, computed, forwardRef, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  forwardRef,
+  inject,
+  signal,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { NahuatlVariantService } from '@/core/service/nahuatl-variant/nahuatl-variant.service';
+import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ZardSelectImports } from '@/shared/components/select';
+import { ZardSkeletonComponent } from '@/shared/components/skeleton';
+import { injectQuery } from '@tanstack/angular-query-experimental';
 
 type OnChangeFn = (value: string[]) => void;
 type OnTouchedFn = () => void;
 
-const ALL_REGIONS = [
-  'Huasteca',
-  'Sierra Norte',
-  'Sierra Sur',
-  'Náhuatl Central',
-  'Náhuatl Clásico',
-  'Teotl',
-];
-
 @Component({
   selector: 'tm-contributor-variants-input',
-  imports: [...ZardSelectImports],
+  imports: [...ZardSelectImports, ZardEmptyComponent, ZardSkeletonComponent],
   templateUrl: './contributor-variants-input.html',
   styleUrl: './contributor-variants-input.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,8 +36,14 @@ export class ContributorVariantsInput implements ControlValueAccessor {
   protected readonly value = signal<string[]>([]);
   protected readonly pendingAdd = signal('');
 
+  private readonly variantsService = inject(NahuatlVariantService);
+  protected readonly allVariants = injectQuery(() => this.variantsService.list());
+  protected readonly allVariantLabels = computed(
+    () => this.allVariants.data()?.map((v) => v.label) || [],
+  );
+
   protected readonly availableOptions = computed(() =>
-    ALL_REGIONS.filter((region) => !this.value().includes(region)),
+    this.allVariantLabels().filter((variant) => !this.value().includes(variant)),
   );
 
   private onChange: OnChangeFn = () => undefined;

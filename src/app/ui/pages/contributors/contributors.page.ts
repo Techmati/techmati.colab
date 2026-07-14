@@ -4,17 +4,21 @@ import { BottomNavBar } from '@/ui/organisms/bottom-nav-bar/bottom-nav-bar';
 import { TopAppBar } from '@/ui/organisms/top-app-bar/top-app-bar';
 
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
-import { ContributorService } from '@/core/service/contributor/contributor.service';
+import {
+  ContributorService,
+  CreateContributorPayload,
+} from '@/core/service/contributor/contributor.service';
+import { NahuatlVariantService } from '@/core/service/nahuatl-variant/nahuatl-variant.service';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardDialogService } from '@/shared/components/dialog';
-import { injectQuery } from '@tanstack/angular-query-experimental';
+import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
 import { ActiveContributorCard } from './ui/molecules/active-contributor-card/active-contributor-card';
 import { ContributorCard } from './ui/molecules/contributor-card/contributor-card';
-import { ContributorsHeader } from './ui/organisms/contributors-header/contributors-header';
 import {
   type ContributorFormModel,
   ContributorFormContent,
 } from './ui/molecules/contributor-form-content/contributor-form-content';
+import { ContributorsHeader } from './ui/organisms/contributors-header/contributors-header';
 
 @Component({
   selector: 'tm-contributors-page',
@@ -32,10 +36,21 @@ import {
 })
 export class ContributorsPage {
   private readonly contributorService = inject(ContributorService);
+  private readonly variantService = inject(NahuatlVariantService);
+
   private readonly contributorContext = inject(ContributorContextService);
   private readonly dialogService = inject(ZardDialogService);
 
   readonly contributorsList = injectQuery(() => this.contributorService.list());
+  readonly variants = injectQuery(() => this.variantService.list());
+
+  readonly createContributor = injectMutation(() => ({
+    ...this.contributorService.create(),
+    onSuccess: () => {
+      this.contributorService.invalidateContributorsList();
+    },
+  }));
+
   readonly activeContributor = computed(() => this.contributorContext.active());
 
   protected readonly inactiveContributors = computed(() =>
@@ -64,7 +79,10 @@ export class ContributorsPage {
     this.openDialog(true);
   }
 
-  private openDialog(isCreate: boolean, contributor?: import('@/core/types/contributor.type').Contributor): void {
+  private openDialog(
+    isCreate: boolean,
+    contributor?: import('@/core/types/contributor.type').Contributor,
+  ): void {
     this.dialogService.create<ContributorFormContent, ContributorFormModel>({
       zTitle: isCreate ? 'Nuevo colaborador' : 'Editar colaborador',
       zDescription: isCreate
@@ -85,6 +103,14 @@ export class ContributorsPage {
   }
 
   protected onDialogSaved(_payload: ContributorFormModel): void {
-    void _payload;
+    const payload: CreateContributorPayload = {
+      fullName: _payload.name,
+      variantIds:
+        this.variants
+          .data()
+          ?.map((v) => v.id)
+          .filter((id) => _payload.variants.includes(id)) || [],
+    };
+    this.createContributor.mutate(payload);
   }
 }

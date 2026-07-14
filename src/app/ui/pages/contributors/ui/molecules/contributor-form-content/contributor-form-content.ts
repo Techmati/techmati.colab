@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { form, FormField, maxLength, minLength, required } from '@angular/forms/signals';
 
-import { ZardInputDirective } from '@/shared/components/input';
 import { Z_MODAL_DATA } from '@/shared/components/dialog';
+import { ZardInputDirective } from '@/shared/components/input';
 import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
 
 import type { Contributor } from '@/core/types/contributor.type';
@@ -34,11 +34,10 @@ export class ContributorFormContent {
     minLength(schema.variants, 1, { message: 'Debe tener al menos una variante.' });
   });
 
-  getValue(): ContributorFormModel {
+  getValue() {
     return this.model();
   }
 
-  /** @internal Used by zOnOk callback */
   validateAndSave(): ContributorFormModel | false {
     this.form().markAsTouched();
 
