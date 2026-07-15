@@ -7,7 +7,7 @@ import {
 import { Translation, TranslationFilter } from '@/core/types/translation.type';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { queryOptions } from '@tanstack/angular-query-experimental';
+import { mutationOptions, queryOptions } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, Observable } from 'rxjs';
 
 export interface ListByContributorOptions {
@@ -20,6 +20,13 @@ export interface ListByContributorOptions {
 export interface PaginatedTranslations {
   data: Translation[];
   total: number;
+}
+
+export interface SubmitEntryPayload {
+  contributorId: string;
+  translationId: string;
+  payload: TranslationEntrySubmitPayload;
+  audio?: File;
 }
 
 @Injectable({
@@ -58,14 +65,29 @@ export class TranslationService {
     );
   }
 
-  create(
-    contributorId: string,
-    payload: { phraseSetId: string; dialectId: string | null },
-  ): Observable<Translation> {
-    return this.client.post<Translation>(
-      API.CONTRIBUTORS.TRANSLATIONS.CREATE(contributorId),
-      payload,
-    );
+  create(contributorId: string) {
+    return mutationOptions({
+      mutationKey: ['translation', 'create', contributorId],
+      mutationFn: (payload: { phraseSetId: string; dialectId: string | null }) =>
+        lastValueFrom(
+          this.client.post<Translation>(
+            API.CONTRIBUTORS.TRANSLATIONS.CREATE(contributorId),
+            payload,
+          ),
+        ),
+    });
+  }
+
+  findById(contributorId: string, translationId: string) {
+    return queryOptions({
+      queryKey: ['translation', contributorId, translationId],
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<Translation>(
+            API.CONTRIBUTORS.TRANSLATIONS.DETAIL(contributorId, translationId),
+          ),
+        ),
+    });
   }
 
   getDetail(contributorId: string, translationId: string): Observable<Translation> {
@@ -101,20 +123,21 @@ export class TranslationService {
     });
   }
 
-  submitEntry(
-    contributorId: string,
-    translationId: string,
-    payload: TranslationEntrySubmitPayload,
-    audio?: File,
-  ): Observable<TranslationEntry> {
-    const formData = new FormData();
-    formData.append('data', JSON.stringify(payload));
-    if (audio) {
-      formData.append('audio', audio);
-    }
-    return this.client.post<TranslationEntry>(
-      API.CONTRIBUTORS.TRANSLATIONS.SUBMIT_ENTRY(contributorId, translationId),
-      formData,
-    );
+  submitEntry() {
+    return mutationOptions({
+      mutationFn: ({ contributorId, translationId, payload, audio }: SubmitEntryPayload) => {
+        const formData = new FormData();
+        formData.append('data', JSON.stringify(payload));
+        if (audio) {
+          formData.append('audio', audio);
+        }
+        return lastValueFrom(
+          this.client.post<TranslationEntry>(
+            API.CONTRIBUTORS.TRANSLATIONS.SUBMIT_ENTRY(contributorId, translationId),
+            formData,
+          ),
+        );
+      },
+    });
   }
 }

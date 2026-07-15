@@ -2,12 +2,12 @@
   <tm-task-top-bar />
 
   <section class="mx-auto flex w-full max-w-sm flex-col gap-4 px-5 pb-5 pt-2">
-    <tm-batch-progress-panel [nextPhraseTick]="nextPhraseTick()" [phraseSetId]="phraseSetId()" />
+    <tm-batch-progress-panel [translation]="translationRes.data() ?? null"/>
 
-    @if (phraseRes.isLoading()) {
+    @if (nextPhraseRes.isLoading()) {
       <tm-translation-task-skeleton />
     } @else {
-      <tm-source-text-panel [phrase]="phrase()" [isLoading]="false" />
+      <tm-source-text-panel [phrase]="nextPhrase()" [isLoading]="false" />
       <tm-translation-textarea
         language="spanish_to_nahuatl"
         [disabled]="isLoading()"

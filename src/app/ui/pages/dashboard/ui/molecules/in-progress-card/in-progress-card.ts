@@ -16,6 +16,6 @@ export class InProgressCard {
   private readonly router = inject(Router);
 
   continue() {
-    this.router.navigate(['/translate', this.task().phraseSetId]);
+    this.router.navigate(['/translate', this.task().id]);
   }
 }

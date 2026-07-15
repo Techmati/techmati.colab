@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,23 +9,16 @@ import {
   signal,
 } from '@angular/core';
 import { form, FormField, minLength, required } from '@angular/forms/signals';
-import { firstValueFrom } from 'rxjs';
+import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
 
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { TranslationService } from '@/core/service/translation/translation.service';
 import { Phrase } from '@/core/types/phrase.type';
 import { type RecordedAudioFile } from '@/core/utils/audio-recorder.util';
-import { tryCatch } from '@/core/utils/try.util';
-import { ZardAlertDialogService } from '@/shared/components/alert-dialog';
 import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
-import { injectQuery } from '@tanstack/angular-query-experimental';
 import { BatchProgressPanel } from './ui/organisms/batch-progress-panel/batch-progress-panel';
 import { BottomActionBar } from './ui/organisms/bottom-action-bar/bottom-action-bar';
-import {
-  DialectSelectionContent,
-  type DialectSelectionData,
-} from './ui/organisms/dialect-selection-content/dialect-selection-content';
 import { PronunciationRecorder } from './ui/organisms/pronunciation-recorder/pronunciation-recorder';
 import { SourceTextPanel } from './ui/organisms/source-text-panel/source-text-panel';
 import { TaskTopBar } from './ui/organisms/task-top-bar/task-top-bar';
@@ -55,18 +47,10 @@ export class TranslatePage {
   private readonly translationService = inject(TranslationService);
   private readonly phraseSetService = inject(PhraseSetsService);
   private readonly contributorContext = inject(ContributorContextService);
-  private readonly dialogService = inject(ZardAlertDialogService);
-  private readonly location = inject(Location);
 
-  readonly phraseSetId = input.required<string>();
+  readonly translationId = input.required<string>();
 
   protected readonly isUploading = signal(false);
-  protected readonly nextPhraseTick = signal(0);
-  protected readonly translationId = signal<string | null>(null);
-  protected readonly dialogResolved = signal(false);
-  protected readonly dialogBusy = signal(false);
-
-  protected readonly isLoading = computed(() => this.phraseRes.isLoading() || this.isUploading());
 
   protected readonly model = signal<{
     translation: string;
@@ -75,6 +59,7 @@ export class TranslatePage {
     translation: '',
     pronunciation: null,
   });
+
   protected readonly form = form(this.model, (schema) => {
     required(schema.translation, { message: 'Añade una traducción escrita.' });
     minLength(schema.translation, 3, {
@@ -83,9 +68,22 @@ export class TranslatePage {
     required(schema.pronunciation, { message: 'Añade una pronunciación grabada.' });
   });
 
-  readonly phraseSetRes = injectQuery(() =>
-    this.phraseSetService.getPhraseSetById(this.phraseSetId()),
-  );
+  readonly translationRes = injectQuery(() => {
+    const contributorId = this.contributorContext.activeId()!;
+    const translationId = this.translationId();
+    return {
+      ...this.translationService.findById(contributorId, translationId),
+      enabled: !!contributorId && !!translationId,
+    };
+  });
+
+  readonly phraseSetRes = injectQuery(() => {
+    const translation = this.translationRes.data()!;
+    return {
+      ...this.phraseSetService.getPhraseSetById(translation.phraseSetId),
+      enabled: !!translation,
+    };
+  });
 
   readonly phrasesMap = computed(() => {
     const phrases = new Map<string, Phrase>();
@@ -97,20 +95,41 @@ export class TranslatePage {
     return phrases;
   });
 
-  readonly phraseRes = injectQuery(() => {
+  readonly nextPhraseRes = injectQuery(() => {
     const contributorId = this.contributorContext.activeId()!;
-    const translationId = this.translationId()!;
+    const translationId = this.translationId();
     return {
       ...this.translationService.getNextPending(contributorId, translationId ?? ''),
       enabled: !!contributorId && !!translationId,
     };
   });
 
-  readonly phrase = computed<Phrase | null>(() => {
-    const phraseId = this.phraseRes.data()?.phraseId;
+  readonly nextPhrase = computed<Phrase | null>(() => {
+    const phraseId = this.nextPhraseRes.data()?.phraseId;
     if (!phraseId) return null;
     return this.phrasesMap().get(phraseId) ?? null;
   });
+
+  protected readonly isLoading = computed(
+    () =>
+      this.translationRes.isPending() ||
+      this.phraseSetRes.isPending() ||
+      this.nextPhraseRes.isLoading() ||
+      this.isUploading(),
+  );
+
+  readonly submitTranslationMutation = injectMutation(() => ({
+    ...this.translationService.submitEntry(),
+    onSuccess: () => {
+      this.isUploading.set(false);
+      this.nextPhraseRes.refetch();
+      this.translationRes.refetch();
+      this.form().reset({ translation: '', pronunciation: null });
+    },
+    onError: (error) => {
+      console.error('Error submitting translation entry:', error);
+    },
+  }));
 
   constructor() {
     this.destroyRef.onDestroy(() => {
@@ -121,81 +140,9 @@ export class TranslatePage {
     });
 
     effect(() => {
-      void this.showDialectDialog();
+      console.log('Current phrase:', this.nextPhrase());
+      console.log('Current translation:', this.translationRes.data());
     });
-  }
-
-  private async showDialectDialog(): Promise<void> {
-    const contributorId = this.contributorContext.activeId();
-    const phraseSetId = this.phraseSetId();
-    if (!contributorId || !phraseSetId) return;
-
-    if (this.dialogResolved()) return;
-
-    // Check for existing in-progress translation
-    const existing = await firstValueFrom(
-      this.translationService.listByContributorObservable(contributorId, {
-        filter: 'in_progress',
-        page: 1,
-        size: 1,
-      }),
-    );
-
-    const match = existing.data.find((t) => t.phraseSetId === phraseSetId && t.inProgress);
-    const existingDialectId = match?.dialect?.id ?? null;
-
-    this.dialogService.create<DialectSelectionContent>({
-      zTitle: 'Iniciar traducción',
-      zContent: DialectSelectionContent,
-      zData: { phraseSetId },
-      zCancelText: 'Volver',
-      zOkText: match ? 'Continuar' : 'Iniciar',
-      zMaskClosable: false,
-      zWidth: '350px',
-      zOnOk: (instance) => {
-        if (this.dialogBusy()) return false;
-        this.dialogBusy.set(true);
-
-        if (match) {
-          // Resume existing translation
-          this.translationId.set(match.id);
-          this.dialogResolved.set(true);
-          return;
-        }
-
-        void this.handleNewTranslation(instance, contributorId, phraseSetId);
-        return false;
-      },
-      zOnCancel: () => {
-        this.location.back();
-      },
-    });
-  }
-
-  private async handleNewTranslation(
-    instance: DialectSelectionContent,
-    contributorId: string,
-    phraseSetId: string,
-  ): Promise<void> {
-    const dialectId = instance.getSelectedDialectId();
-
-    const [created, error] = await tryCatch(
-      firstValueFrom(
-        this.translationService.create(contributorId, {
-          phraseSetId,
-          dialectId,
-        }),
-      ),
-    );
-
-    this.dialogBusy.set(false);
-
-    if (error) {
-      return;
-    }
-
-    this.translationId.set(created!.id);
-    this.dialogResolved.set(true);
   }
 
   protected async goToNextPhrase() {
@@ -205,30 +152,21 @@ export class TranslatePage {
       return;
     }
 
-    const phrase = this.phrase();
-    const pronunciation = this.model().pronunciation?.file ?? null;
+    const phrase = this.nextPhrase();
+    const audio = this.model().pronunciation?.file ?? null;
     const translation = this.model().translation;
     const contributorId = await this.contributorContext.getActiveContributorIdAsync();
     const translationId = this.translationId();
-    if (!phrase || !pronunciation || !contributorId || !translationId) {
+    if (!phrase || !audio || !contributorId || !translationId) {
       return;
     }
 
     this.isUploading.set(true);
-    const [_result, error] = await tryCatch(
-      this.translationService.submitEntry(
-        contributorId,
-        translationId,
-        { phraseId: phrase.id, translation },
-        pronunciation,
-      ),
-    );
-    this.isUploading.set(false);
-    if (error) {
-      console.error('Error submitting translation entry:', error);
-    } else {
-      this.nextPhraseTick.update((tick) => tick + 1);
-      this.form().reset({ translation: '', pronunciation: null });
-    }
+    this.submitTranslationMutation.mutate({
+      contributorId,
+      translationId,
+      payload: { phraseId: phrase.id, translation },
+      audio,
+    });
   }
 }

@@ -105,7 +105,7 @@ export const routes: Routes = [
     canActivate: [authenticationGuard],
   },
   {
-    path: 'translate/:phraseSetId',
+    path: 'translate/:translationId',
     component: TranslatePage,
     canActivate: [authenticationGuard],
   },

@@ -32,7 +32,7 @@
               zType="default"
               zSize="sm"
               class="px-3"
-              [routerLink]="['/translate', set.id]"
+              (click)="selectedPhraseSetId.set(set.id)"
             >
               Ir
               <span class="lucide--chevron-right size-3"></span>
@@ -50,4 +50,10 @@
       }
     </div>
   </article>
+
+  <tm-dialect-selection-dialog
+    [phraseSetId]="selectedPhraseSetId()"
+    (translationCreated)="onTranslationCreated($event)"
+    (cancelled)="selectedPhraseSetId.set(null)"
+  />
 }

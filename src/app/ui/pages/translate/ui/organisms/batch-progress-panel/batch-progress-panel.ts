@@ -1,18 +1,13 @@
-import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
-import { TranslationService } from '@/core/service/translation/translation.service';
+import { Translation } from '@/core/types/translation.type';
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   effect,
   inject,
   input,
   linkedSignal,
 } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { defer, from, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { BatchProgressPanelSkeleton } from '../batch-progress-panel-skeleton/batch-progress-panel-skeleton';
 
 @Component({
@@ -23,49 +18,21 @@ import { BatchProgressPanelSkeleton } from '../batch-progress-panel-skeleton/bat
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BatchProgressPanel {
-  readonly phraseSetId = input.required<string>();
-  readonly nextPhraseTick = input.required<number>();
+  readonly translation = input.required<Translation | null>();
 
-  private readonly translationService = inject(TranslationService);
-  private readonly contributorContext = inject(ContributorContextService);
   private readonly router = inject(Router);
 
-  readonly summary = rxResource({
-    params: computed(() => ({
-      phraseSetId: this.phraseSetId(),
-      tick: this.nextPhraseTick(),
-    })),
-    stream: ({ params }) =>
-      defer(() => from(this.contributorContext.getActiveContributorIdAsync())).pipe(
-        switchMap((contributorId) =>
-          this.translationService.listByContributorObservable(contributorId, {
-            filter: 'all',
-            page: 1,
-            size: 50,
-          }),
-        ),
-        switchMap((list) => {
-          const found = list.data.find((t) => t.phraseSetId === params.phraseSetId) ?? null;
-          return of(found);
-        }),
-      ),
-  });
-
   readonly progressPercentage = linkedSignal<number | undefined, number>({
-    source: () => this.summary.value()?.progressPercentage || 0,
+    source: () => this.translation()?.progressPercentage || 0,
     computation: (source, previous) => source || previous?.value || 0,
   });
 
   constructor() {
     effect(() => {
-      const t = this.summary.value();
+      const t = this.translation();
       if (t && t.completed) {
-        this.router.navigate(['/translate', this.phraseSetId(), 'end']);
+        this.router.navigate(['/translate', t.id, 'end']);
       }
-    });
-    effect(() => {
-      console.log(this.summary.value());
-      console.log(this.progressPercentage());
     });
   }
 }
