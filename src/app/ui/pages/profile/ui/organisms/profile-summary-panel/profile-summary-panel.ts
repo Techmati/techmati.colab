@@ -20,7 +20,7 @@ export class ProfileSummaryPanel {
   readonly stats = rxResource({
     stream: () =>
       defer(() => from(this.contributorContext.getActiveContributorIdAsync())).pipe(
-        switchMap((cId) => this.translationService.getStats(cId)),
+        switchMap((cId) => this.translationService.getStatsObservable(cId)),
       ),
   });
 }
