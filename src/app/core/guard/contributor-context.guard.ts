@@ -8,7 +8,7 @@ export const contributorContextGuard: CanActivateFn = () => {
   const contributorContextService = inject(ContributorContextService);
   const router = inject(Router);
 
-  return toObservable(contributorContextService.activeContributor).pipe(
+  return toObservable(contributorContextService.active).pipe(
     tap((r) => console.log(r)),
     map((activeContributor) => (activeContributor !== null ? true : router.createUrlTree(['/']))),
 

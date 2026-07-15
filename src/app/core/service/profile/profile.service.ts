@@ -1,11 +1,11 @@
 import { API } from '@/core/config/api-uris.config';
-import { Profile } from '@/core/dto/profile.dto';
+import { Profile, TechmatiRole } from '@/core/dto/profile.dto';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { queryOptions } from '@tanstack/angular-query-experimental';
-import { lastValueFrom, map } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 
-type ProfileResponse = Profile | { profile: Profile };
+const COLLECTOR_ROLES: readonly TechmatiRole[] = ['collector', 'admin', 'root'];
 
 @Injectable({
   providedIn: 'root',
@@ -17,12 +17,10 @@ export class ProfileService {
   findCurrent() {
     return queryOptions({
       queryKey: ['profile', 'current'],
-      queryFn: () =>
-        lastValueFrom(
-          this.client
-            .get<ProfileResponse>(this.profileApi)
-            .pipe(map((response) => ('profile' in response ? response.profile : response))),
-        ),
+      queryFn: () => lastValueFrom(this.client.get<Profile>(this.profileApi)),
     });
+  }
+  canManageContributors(role: TechmatiRole | null | undefined): boolean {
+    return role !== null && role !== undefined && COLLECTOR_ROLES.includes(role);
   }
 }
