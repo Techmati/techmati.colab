@@ -44,6 +44,13 @@ export class TranslationService {
     );
   }
 
+  listByContributor(contributorId: string, options: ListByContributorOptions = {}) {
+    return queryOptions({
+      queryKey: ['translations', contributorId, options],
+      queryFn: () => lastValueFrom(this.listByContributorObservable(contributorId, options)),
+    });
+  }
+
   getStats(contributorId: string): Observable<ContributorTranslationStats> {
     return this.client.get<ContributorTranslationStats>(
       API.CONTRIBUTORS.TRANSLATIONS.STATS(contributorId),

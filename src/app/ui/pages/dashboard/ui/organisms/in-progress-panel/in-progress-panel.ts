@@ -1,9 +1,10 @@
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
-import { TranslationService } from '@/core/service/translation/translation.service';
+import {
+  ListByContributorOptions,
+  TranslationService,
+} from '@/core/service/translation/translation.service';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { defer, from } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { injectQuery } from '@tanstack/angular-query-experimental';
 import { InProgressCard } from '../../molecules/in-progress-card/in-progress-card';
 import { InProgressPanelSkeleton } from '../in-progress-panel-skeleton/in-progress-panel-skeleton';
 
@@ -18,19 +19,21 @@ export class InProgressPanel {
   private readonly translationService = inject(TranslationService);
   private readonly contributorContext = inject(ContributorContextService);
 
-  readonly inProgressRes = rxResource({
-    stream: () =>
-      defer(() => from(this.contributorContext.getActiveContributorIdAsync())).pipe(
-        switchMap((cId) =>
-          this.translationService.listByContributorObservable(cId, {
-            filter: 'in_progress',
-            page: 1,
-            size: 3,
-            include_phrase_set: true,
-          }),
-        ),
-      ),
-  });
+  readonly activeContributor = computed(() => this.contributorContext.active());
 
-  readonly inProgress = computed(() => this.inProgressRes.value()?.data || []);
+  readonly inProgressRes = injectQuery(() =>
+    this.translationService.listByContributor(
+      this.activeContributor()!.id,
+      this.listByContributorFilters,
+    ),
+  );
+
+  readonly listByContributorFilters: ListByContributorOptions = {
+    filter: 'in_progress',
+    page: 1,
+    size: 3,
+    include_phrase_set: true,
+  };
+
+  readonly inProgress = computed(() => this.inProgressRes.data()?.data || []);
 }
