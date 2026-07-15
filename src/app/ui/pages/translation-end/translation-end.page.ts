@@ -19,7 +19,7 @@ import { TranslationSummarySkeleton } from './ui/organisms/translation-summary-s
 })
 export class TranslationEndPage {
   readonly phraseSetId = input.required<string>();
-  readonly phraseSetCount = input.required<number>();
+  readonly phraseCount = input.required<number>();
 
   private readonly translationService = inject(TranslationService);
   private readonly contributorContext = inject(ContributorContextService);

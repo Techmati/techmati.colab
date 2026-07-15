@@ -1,12 +1,5 @@
 import { Translation } from '@/core/types/translation.type';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  input,
-  linkedSignal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { BatchProgressPanelSkeleton } from '../batch-progress-panel-skeleton/batch-progress-panel-skeleton';
 
@@ -22,16 +15,15 @@ export class BatchProgressPanel {
 
   private readonly router = inject(Router);
 
-  readonly progressPercentage = linkedSignal<number | undefined, number>({
-    source: () => this.translation()?.progressPercentage || 0,
-    computation: (source, previous) => source || previous?.value || 0,
-  });
+  readonly progressPercentage = computed<number>(() => this.translation()?.progressPercentage || 0);
 
   constructor() {
     effect(() => {
       const t = this.translation();
       if (t && t.completed) {
-        this.router.navigate(['/translate', t.id, 'end']);
+        this.router.navigate(['/translate', t.id, 'end'], {
+          queryParams: { phraseCount: this.translation()?.phraseCount },
+        });
       }
     });
   }
