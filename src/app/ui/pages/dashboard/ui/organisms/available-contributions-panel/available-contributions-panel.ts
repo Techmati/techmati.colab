@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 
+import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardEmptyComponent } from '@/shared/components/empty';
 import { DatePipe } from '@angular/common';
-import { rxResource } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
+import { injectQuery } from '@tanstack/angular-query-experimental';
 import { AvailableContributionsPanelSkeleton } from '../available-contributions-panel-skeleton/available-contributions-panel-skeleton';
 
 @Component({
@@ -24,12 +25,21 @@ import { AvailableContributionsPanelSkeleton } from '../available-contributions-
 })
 export class AvailableContributionsPanel {
   private readonly phraseSetService = inject(PhraseSetsService);
+  private readonly contributorContextService = inject(ContributorContextService);
 
-  readonly phraseSetsRes = rxResource({
-    stream: () => this.phraseSetService.getFiltered({ page: 1, size: 3, filter: 'untouched' }),
+  protected readonly phraseSetsRes = injectQuery(() => {
+    const contributorId = this.contributorContextService.active()?.id;
+    return {
+      ...this.phraseSetService.getFiltered({
+        page: 1,
+        size: 3,
+        filter: 'untouched',
+        contributorId: contributorId!,
+      }),
+      active: !!contributorId,
+    };
   });
-
-  readonly phraseSets = computed(() => this.phraseSetsRes.value()?.data ?? []);
+  readonly phraseSets = computed(() => this.phraseSetsRes.data()?.data ?? []);
 
   date(string: string) {
     return new Date(string);

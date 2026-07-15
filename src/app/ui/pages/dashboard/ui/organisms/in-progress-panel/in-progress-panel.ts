@@ -21,12 +21,13 @@ export class InProgressPanel {
 
   readonly activeContributor = computed(() => this.contributorContext.active());
 
-  readonly inProgressRes = injectQuery(() =>
-    this.translationService.listByContributor(
-      this.activeContributor()!.id,
-      this.listByContributorFilters,
-    ),
-  );
+  readonly inProgressRes = injectQuery(() => {
+    const id = this.activeContributor()?.id;
+    return {
+      ...this.translationService.listByContributor(id!, this.listByContributorFilters),
+      enabled: !!id,
+    };
+  });
 
   readonly listByContributorFilters: ListByContributorOptions = {
     filter: 'in_progress',

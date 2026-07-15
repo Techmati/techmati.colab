@@ -16,6 +16,7 @@ export interface GetFilteredOptions {
   page: number;
   size: number;
   filter?: PhraseSetFilter;
+  contributorId?: string;
 }
 
 @Injectable({
@@ -41,10 +42,16 @@ export class PhraseSetsService {
     });
   }
 
-  getFiltered({ page, size, filter }: GetFilteredOptions): Observable<PaginatedPhraseSets> {
+  getFiltered({ page, size, filter, contributorId }: GetFilteredOptions) {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
     if (filter) params = params.set('filter', filter);
-    return this.client.get<PaginatedPhraseSets>(this.phraseSetsApi, { params });
+    if (contributorId) params = params.set('contributorId', contributorId);
+
+    return queryOptions({
+      queryKey: ['phraseSets', { page, size, filter, contributorId }],
+      queryFn: () =>
+        lastValueFrom(this.client.get<PaginatedPhraseSets>(this.phraseSetsApi, { params })),
+    });
   }
 
   getNextPending(): Observable<{ phraseSet: PhraseSet | null; state: 'in-progress' | 'finished' }> {

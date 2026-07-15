@@ -45,6 +45,7 @@ export class TranslationService {
   }
 
   listByContributor(contributorId: string, options: ListByContributorOptions = {}) {
+    console.log(contributorId);
     return queryOptions({
       queryKey: ['translations', contributorId, options],
       queryFn: () => lastValueFrom(this.listByContributorObservable(contributorId, options)),
