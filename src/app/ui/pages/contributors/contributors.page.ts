@@ -7,9 +7,12 @@ import { ContributorContextService } from '@/core/service/contributor-context/co
 import { ContributorService } from '@/core/service/contributor/contributor.service';
 import { NahuatlVariantService } from '@/core/service/nahuatl-variant/nahuatl-variant.service';
 import { Contributor } from '@/core/types/contributor.type';
+import { baseToastConfig } from '@/core/view/base-toast.config';
+import { ZardAlertDialogService } from '@/shared/components/alert-dialog';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardDialogService } from '@/shared/components/dialog';
 import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
+import { toast } from 'ngx-sonner';
 import { ActiveContributorCard } from './ui/molecules/active-contributor-card/active-contributor-card';
 import { ContributorCard } from './ui/molecules/contributor-card/contributor-card';
 import {
@@ -36,9 +39,10 @@ type ContributorDialogAction = 'create' | 'edit';
 export class ContributorsPage {
   private readonly contributorService = inject(ContributorService);
   private readonly variantService = inject(NahuatlVariantService);
-
   private readonly contributorContext = inject(ContributorContextService);
+
   private readonly dialogService = inject(ZardDialogService);
+  private readonly alertDialog = inject(ZardAlertDialogService);
 
   readonly contributorsList = injectQuery(() => this.contributorService.list());
   readonly variants = injectQuery(() => this.variantService.list());
@@ -54,6 +58,13 @@ export class ContributorsPage {
     ...this.contributorService.update(),
     onSuccess: () => {
       this.contributorService.invalidateContributorsList();
+    },
+  }));
+
+  readonly deleteContributorMutation = injectMutation(() => ({
+    ...this.contributorService.delete(),
+    onSuccess: () => {
+      this.onDeleteSuccess();
     },
   }));
 
@@ -74,18 +85,18 @@ export class ContributorsPage {
   protected onEdit({ id }: Contributor): void {
     const contributor = this.contributorsList.data()?.find((c) => c.id === id);
     if (!contributor) return;
-    this.openDialog('edit', contributor);
+    this.openCreateUpdateDialog('edit', contributor);
   }
 
-  protected onRemove(id: Contributor): void {
-    void id;
+  protected onRemove({ id }: Contributor): void {
+    this.openDeleteDialog(id);
   }
 
   protected onNewContributor(): void {
-    this.openDialog('create');
+    this.openCreateUpdateDialog('create');
   }
 
-  private openDialog(
+  private openCreateUpdateDialog(
     action: ContributorDialogAction,
     contributor?: import('@/core/types/contributor.type').Contributor,
   ): void {
@@ -122,5 +133,26 @@ export class ContributorsPage {
     } else if (action === 'edit') {
       this.updateContributorMutation.mutate({ id, ...payload });
     }
+  }
+  protected openDeleteDialog(id: string): void {
+    this.alertDialog.confirm({
+      zTitle: '¿Eliminar contribuidor?',
+      zDescription:
+        'Si eliminas este contribuidor, no podrás recuperarlo. Esta acción es irreversible. Las traducciones asociadas tambien se eliminarán. ¿Deseas continuar?',
+      zCancelText: 'Cancelar',
+      zOkText: 'Sí, eliminar',
+      zOkDestructive: true,
+      zOnOk: () => {
+        this.deleteContributorMutation.mutate(id);
+      },
+    });
+  }
+
+  private onDeleteSuccess(): void {
+    this.contributorService.invalidateContributorsList();
+    toast.success('Contribuidor eliminado', {
+      description: 'El contribuidor ha sido eliminado correctamente.',
+      ...baseToastConfig,
+    });
   }
 }

@@ -9,7 +9,7 @@
   </span>
 
   <ul class="flex flex-wrap gap-1">
-    @for (variant of contributor().variants; track variant) {
+    @for (variant of contributor().variants; track variant.id) {
       <li
         class="inline-flex items-center gap-1.5 rounded-[10px] bg-brand-green-600 px-1.5 py-1 text-xs font-normal leading-4 text-white"
       >

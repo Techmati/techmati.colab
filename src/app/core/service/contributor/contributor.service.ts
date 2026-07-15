@@ -59,8 +59,11 @@ export class ContributorService {
     });
   }
 
-  delete(id: string): Observable<{ message: string }> {
-    return this.client.delete<{ message: string }>(API.CONTRIBUTORS.BY_ID(id));
+  delete() {
+    return mutationOptions({
+      mutationFn: (id: string) =>
+        lastValueFrom(this.client.delete<{ message: string }>(API.CONTRIBUTORS.BY_ID(id))),
+    });
   }
 
   invalidateContributorsList() {
