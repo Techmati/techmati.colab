@@ -4,11 +4,9 @@ import { BottomNavBar } from '@/ui/organisms/bottom-nav-bar/bottom-nav-bar';
 import { TopAppBar } from '@/ui/organisms/top-app-bar/top-app-bar';
 
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
-import {
-  ContributorService,
-  CreateContributorPayload,
-} from '@/core/service/contributor/contributor.service';
+import { ContributorService } from '@/core/service/contributor/contributor.service';
 import { NahuatlVariantService } from '@/core/service/nahuatl-variant/nahuatl-variant.service';
+import { Contributor } from '@/core/types/contributor.type';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardDialogService } from '@/shared/components/dialog';
 import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
@@ -20,6 +18,7 @@ import {
 } from './ui/molecules/contributor-form-content/contributor-form-content';
 import { ContributorsHeader } from './ui/organisms/contributors-header/contributors-header';
 
+type ContributorDialogAction = 'create' | 'edit';
 @Component({
   selector: 'tm-contributors-page',
   imports: [
@@ -44,8 +43,15 @@ export class ContributorsPage {
   readonly contributorsList = injectQuery(() => this.contributorService.list());
   readonly variants = injectQuery(() => this.variantService.list());
 
-  readonly createContributor = injectMutation(() => ({
+  readonly createContributorMutation = injectMutation(() => ({
     ...this.contributorService.create(),
+    onSuccess: () => {
+      this.contributorService.invalidateContributorsList();
+    },
+  }));
+
+  readonly updateContributorMutation = injectMutation(() => ({
+    ...this.contributorService.update(),
     onSuccess: () => {
       this.contributorService.invalidateContributorsList();
     },
@@ -61,33 +67,34 @@ export class ContributorsPage {
 
   protected readonly total = computed(() => this.contributorsList.data()?.length || 0);
 
-  protected onActivate(id: string): void {
-    void id;
+  protected onActivate(contributor: Contributor): void {
+    this.contributorContext.setActive(contributor);
   }
 
-  protected onEdit(id: string): void {
+  protected onEdit({ id }: Contributor): void {
     const contributor = this.contributorsList.data()?.find((c) => c.id === id);
     if (!contributor) return;
-    this.openDialog(false, contributor);
+    this.openDialog('edit', contributor);
   }
 
-  protected onRemove(id: string): void {
+  protected onRemove(id: Contributor): void {
     void id;
   }
 
   protected onNewContributor(): void {
-    this.openDialog(true);
+    this.openDialog('create');
   }
 
   private openDialog(
-    isCreate: boolean,
+    action: ContributorDialogAction,
     contributor?: import('@/core/types/contributor.type').Contributor,
   ): void {
     this.dialogService.create<ContributorFormContent, ContributorFormModel>({
-      zTitle: isCreate ? 'Nuevo colaborador' : 'Editar colaborador',
-      zDescription: isCreate
-        ? 'Completa los datos para registrar un nuevo colaborador.'
-        : 'Haz los cambios necesarios para este colaborador.',
+      zTitle: action ? 'Nuevo colaborador' : 'Editar colaborador',
+      zDescription:
+        action == 'create'
+          ? 'Completa los datos para registrar un nuevo colaborador.'
+          : 'Haz los cambios necesarios para este colaborador.',
       zContent: ContributorFormContent,
       zData: { contributor: contributor ?? null } as any,
       zCancelText: 'Cancelar',
@@ -96,21 +103,24 @@ export class ContributorsPage {
       zOnOk: (instance: ContributorFormContent) => {
         const result = instance.validateAndSave();
         if (result === false) return false;
-        this.onDialogSaved(result);
+        this.onDialogConfirmation(result, action);
         return;
       },
     });
   }
 
-  protected onDialogSaved(_payload: ContributorFormModel): void {
-    const payload: CreateContributorPayload = {
-      fullName: _payload.name,
-      variantIds:
-        this.variants
-          .data()
-          ?.map((v) => v.id)
-          .filter((id) => _payload.variants.includes(id)) || [],
+  protected onDialogConfirmation(
+    { id, fullName, variants }: ContributorFormModel,
+    action: ContributorDialogAction,
+  ): void {
+    const payload = {
+      fullName,
+      variantIds: variants.map((v) => v.id),
     };
-    this.createContributor.mutate(payload);
+    if (action === 'create') {
+      this.createContributorMutation.mutate(payload);
+    } else if (action === 'edit') {
+      this.updateContributorMutation.mutate({ id, ...payload });
+    }
   }
 }

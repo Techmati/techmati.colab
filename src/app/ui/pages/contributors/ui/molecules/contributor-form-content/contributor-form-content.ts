@@ -6,11 +6,13 @@ import { ZardInputDirective } from '@/shared/components/input';
 import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
 
 import type { Contributor } from '@/core/types/contributor.type';
+import { NahuatlVariant } from '@/core/types/nahuatl-variant.type';
 import { ContributorVariantsInput } from '../../molecules/contributor-variants-input/contributor-variants-input';
 
 export interface ContributorFormModel {
-  name: string;
-  variants: string[];
+  id: string;
+  fullName: string;
+  variants: NahuatlVariant[];
 }
 
 @Component({
@@ -24,13 +26,14 @@ export class ContributorFormContent {
   protected readonly data: { contributor?: Contributor | null } = inject(Z_MODAL_DATA) ?? {};
 
   readonly model = signal<ContributorFormModel>({
-    name: this.data.contributor?.fullName ?? '',
-    variants: [...(this.data.contributor?.variants.map((v) => v.label) ?? [])],
+    id: this.data.contributor?.id ?? '',
+    fullName: this.data.contributor?.fullName ?? '',
+    variants: [...(this.data.contributor?.variants ?? [])],
   });
 
   readonly form = form(this.model, (schema) => {
-    required(schema.name, { message: 'El nombre es obligatorio.' });
-    maxLength(schema.name, 100, { message: 'El nombre no puede exceder 100 caracteres.' });
+    required(schema.fullName, { message: 'El nombre es obligatorio.' });
+    maxLength(schema.fullName, 100, { message: 'El nombre no puede exceder 100 caracteres.' });
     minLength(schema.variants, 1, { message: 'Debe tener al menos una variante.' });
   });
 

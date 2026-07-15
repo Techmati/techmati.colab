@@ -5,11 +5,11 @@
         class="h-6 inline-flex items-center gap-1 rounded-sm bg-brand-green-600 pl-1.5 pr-1 text-xs font-normal leading-4 text-white"
       >
         <span class="lucide--languages text-sm" aria-hidden="true"></span>
-        {{ variant}}
+        {{ variant.label}}
         <button
           type="button"
           class="flex size-4 items-center justify-center rounded-full text-white/80 transition-colors hover:text-white focus-visible:outline-none"
-          [attr.aria-label]="'Eliminar ' + variant"
+          [attr.aria-label]="'Eliminar ' + variant.label"
           [disabled]="disabled()"
           (click)="removeVariant(variant)"
         >
@@ -32,12 +32,13 @@
     <z-select
       zPlaceholder="Añadir otra variante"
       class="text-xs font-normal leading-4"
-      [(zValue)]="pendingAdd"
-      (zValueChange)="onPendingAddChange()"
+      [zValue]="pendingAdd().id"
+      zLabel="Añadir otra variante"
+      (zValueChange)="onPendingAddChange($event)"
       [class.opacity-50]="disabled()"
     >
       @for (option of availableOptions(); track option) {
-        <z-select-item [zValue]="option">{{ option}}</z-select-item>
+        <z-select-item [zValue]="option.id">{{ option.label}}</z-select-item>
       }
     </z-select>
   }

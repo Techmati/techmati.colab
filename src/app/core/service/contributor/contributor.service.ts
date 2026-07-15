@@ -11,6 +11,7 @@ export interface CreateContributorPayload {
 }
 
 export interface UpdateContributorPayload {
+  id: string;
   fullName?: string;
   variantIds?: string[];
 }
@@ -51,8 +52,11 @@ export class ContributorService {
     });
   }
 
-  update(id: string, payload: UpdateContributorPayload): Observable<Contributor> {
-    return this.client.put<Contributor>(API.CONTRIBUTORS.BY_ID(id), payload);
+  update() {
+    return mutationOptions({
+      mutationFn: (payload: UpdateContributorPayload) =>
+        lastValueFrom(this.client.put<Contributor>(API.CONTRIBUTORS.BY_ID(payload.id), payload)),
+    });
   }
 
   delete(id: string): Observable<{ message: string }> {

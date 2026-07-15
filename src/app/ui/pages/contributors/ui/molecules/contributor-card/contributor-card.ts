@@ -11,23 +11,23 @@ import { ChangeDetectionStrategy, Component, computed, input, output } from '@an
 export class ContributorCard {
   readonly contributor = input.required<Contributor>();
 
-  readonly activate = output<string>();
-  readonly edit = output<string>();
-  readonly remove = output<string>();
+  readonly activate = output<Contributor>();
+  readonly edit = output<Contributor>();
+  readonly remove = output<Contributor>();
 
   protected status = computed(() => (this.contributor().accountUserId ? 'auto' : 'managed'));
   protected statusInfo = computed(() => statusLabels[this.status()]);
 
   protected onActivate(): void {
-    this.activate.emit(this.contributor().id);
+    this.activate.emit(this.contributor());
   }
 
   protected onEdit(): void {
-    this.edit.emit(this.contributor().id);
+    this.edit.emit(this.contributor());
   }
 
   protected onRemove(): void {
-    this.remove.emit(this.contributor().id);
+    this.remove.emit(this.contributor());
   }
 }
 
@@ -35,4 +35,3 @@ const statusLabels: Record<string, { label: string; icon: string }> = {
   auto: { label: 'Auto', icon: 'lucide--zap' },
   managed: { label: 'Gestionado', icon: 'lucide--notebook-tabs' },
 };
-

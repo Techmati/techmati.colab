@@ -9,12 +9,13 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { NahuatlVariantService } from '@/core/service/nahuatl-variant/nahuatl-variant.service';
+import { NahuatlVariant } from '@/core/types/nahuatl-variant.type';
 import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ZardSelectImports } from '@/shared/components/select';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 
-type OnChangeFn = (value: string[]) => void;
+type OnChangeFn = (value: NahuatlVariant[]) => void;
 type OnTouchedFn = () => void;
 
 @Component({
@@ -33,23 +34,38 @@ type OnTouchedFn = () => void;
 })
 export class ContributorVariantsInput implements ControlValueAccessor {
   readonly disabled = signal(false);
-  protected readonly value = signal<string[]>([]);
-  protected readonly pendingAdd = signal('');
+  protected readonly value = signal<NahuatlVariant[]>([]);
+  protected readonly pendingAdd = signal<NahuatlVariant>(EMPTY_VARIANT);
 
   private readonly variantsService = inject(NahuatlVariantService);
+
   protected readonly allVariants = injectQuery(() => this.variantsService.list());
   protected readonly allVariantLabels = computed(
     () => this.allVariants.data()?.map((v) => v.label) || [],
   );
 
-  protected readonly availableOptions = computed(() =>
-    this.allVariantLabels().filter((variant) => !this.value().includes(variant)),
+  protected variantMap = computed(() => {
+    const map = new Map<string, NahuatlVariant>();
+    this.allVariants.data()?.forEach((variant) => {
+      map.set(variant.id, variant);
+    });
+    return map;
+  });
+
+  protected readonly availableOptions = computed(
+    () =>
+      this.allVariants.data()?.filter(
+        (variant) =>
+          !this.value()
+            .map((v) => v.id)
+            .includes(variant.id),
+      ) || [],
   );
 
   private onChange: OnChangeFn = () => undefined;
   private onTouched: OnTouchedFn = () => undefined;
 
-  writeValue(value: string[] | null | undefined): void {
+  writeValue(value: NahuatlVariant[] | null | undefined): void {
     this.value.set(value ?? []);
   }
 
@@ -65,20 +81,36 @@ export class ContributorVariantsInput implements ControlValueAccessor {
     this.disabled.set(isDisabled);
   }
 
-  protected removeVariant(variant: string): void {
-    const next = this.value().filter((v) => v !== variant);
+  protected removeVariant(variant: NahuatlVariant): void {
+    const next = this.value().filter((v) => v.id !== variant.id);
     this.value.set(next);
+    console.log('Removed variant:', variant, 'Next value:', next);
     this.onChange(next);
     this.onTouched();
   }
 
-  protected onPendingAddChange(): void {
-    const nextValue = this.pendingAdd();
+  protected onPendingAddChange(id: string | string[]): void {
+    if (Array.isArray(id)) {
+      this.pendingAdd.set(EMPTY_VARIANT);
+      return;
+    }
+
+    const nextValue = this.getVariant(id);
     if (!nextValue || this.value().includes(nextValue)) return;
     const next = [...this.value(), nextValue];
     this.value.set(next);
     this.onChange(next);
     this.onTouched();
-    this.pendingAdd.set('');
+    this.pendingAdd.set(EMPTY_VARIANT);
+  }
+
+  protected getVariant(id: string) {
+    return this.variantMap().get(id) || EMPTY_VARIANT;
   }
 }
+
+const EMPTY_VARIANT = {
+  id: 'Selectiona una variante...',
+  label: 'Selecciona una variante...',
+  code: '',
+};
