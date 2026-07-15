@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { authenticationGuard } from './core/guard/authentication.guard';
-import { contributorContextGuard } from './core/guard/contributor-context.guard';
 import { ContributorsPage } from './ui/pages/contributors/contributors.page';
 import { DashboardPage } from './ui/pages/dashboard/dashboard.page';
 import { ProfileHistoryPage } from './ui/pages/profile-history/profile-history.page';
@@ -18,12 +17,12 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardPage,
-    canActivate: [authenticationGuard, contributorContextGuard],
+    canActivate: [authenticationGuard],
   },
   {
     path: 'contributors',
     component: ContributorsPage,
-    canActivate: [authenticationGuard, contributorContextGuard],
+    canActivate: [authenticationGuard],
   },
   {
     path: 'admin/dashboard',
@@ -98,26 +97,26 @@ export const routes: Routes = [
   {
     path: 'profile',
     component: ProfilePage,
-    canActivate: [authenticationGuard, contributorContextGuard],
+    canActivate: [authenticationGuard],
   },
   {
     path: 'profile/history',
     component: ProfileHistoryPage,
-    canActivate: [authenticationGuard, contributorContextGuard],
+    canActivate: [authenticationGuard],
   },
   {
     path: 'translate/:phraseSetId',
     component: TranslatePage,
-    canActivate: [authenticationGuard, contributorContextGuard],
+    canActivate: [authenticationGuard],
   },
   {
     path: 'translate/:phraseSetId/end',
     component: TranslationEndPage,
-    canActivate: [authenticationGuard, contributorContextGuard],
+    canActivate: [authenticationGuard],
   },
   {
     path: 'translation/:translationId',
     component: TransEntryPage,
-    canActivate: [authenticationGuard, contributorContextGuard],
+    canActivate: [authenticationGuard],
   },
 ];
