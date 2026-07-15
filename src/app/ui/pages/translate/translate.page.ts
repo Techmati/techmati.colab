@@ -1,7 +1,4 @@
-import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
-import { TranslationService } from '@/core/service/translation/translation.service';
-import { Phrase } from '@/core/types/phrase.type';
-import { type RecordedAudioFile } from '@/core/utils/audio-recorder.util';
+import { Location } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,12 +12,21 @@ import {
 import { form, FormField, minLength, required } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 
+import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
+import { TranslationService } from '@/core/service/translation/translation.service';
+import { Phrase } from '@/core/types/phrase.type';
+import { type RecordedAudioFile } from '@/core/utils/audio-recorder.util';
 import { tryCatch } from '@/core/utils/try.util';
+import { ZardAlertDialogService } from '@/shared/components/alert-dialog';
 import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { BatchProgressPanel } from './ui/organisms/batch-progress-panel/batch-progress-panel';
 import { BottomActionBar } from './ui/organisms/bottom-action-bar/bottom-action-bar';
+import {
+  DialectSelectionContent,
+  type DialectSelectionData,
+} from './ui/organisms/dialect-selection-content/dialect-selection-content';
 import { PronunciationRecorder } from './ui/organisms/pronunciation-recorder/pronunciation-recorder';
 import { SourceTextPanel } from './ui/organisms/source-text-panel/source-text-panel';
 import { TaskTopBar } from './ui/organisms/task-top-bar/task-top-bar';
@@ -48,15 +54,17 @@ export class TranslatePage {
   private readonly destroyRef = inject(DestroyRef);
   private readonly translationService = inject(TranslationService);
   private readonly phraseSetService = inject(PhraseSetsService);
-
   private readonly contributorContext = inject(ContributorContextService);
+  private readonly dialogService = inject(ZardAlertDialogService);
+  private readonly location = inject(Location);
 
   readonly phraseSetId = input.required<string>();
-  readonly phraseId = signal('');
 
   protected readonly isUploading = signal(false);
   protected readonly nextPhraseTick = signal(0);
   protected readonly translationId = signal<string | null>(null);
+  protected readonly dialogResolved = signal(false);
+  protected readonly dialogBusy = signal(false);
 
   protected readonly isLoading = computed(() => this.phraseRes.isLoading() || this.isUploading());
 
@@ -113,21 +121,18 @@ export class TranslatePage {
     });
 
     effect(() => {
-      void this.initTranslation();
-    });
-    effect(() => {
-      console.log(this.phrase());
-    });
-    effect(() => {
-      console.log(this.phraseSetRes.data());
+      void this.showDialectDialog();
     });
   }
 
-  private async initTranslation(): Promise<void> {
-    const contributorId = await this.contributorContext.getActiveContributorIdAsync();
+  private async showDialectDialog(): Promise<void> {
+    const contributorId = this.contributorContext.activeId();
     const phraseSetId = this.phraseSetId();
     if (!contributorId || !phraseSetId) return;
 
+    if (this.dialogResolved()) return;
+
+    // Check for existing in-progress translation
     const existing = await firstValueFrom(
       this.translationService.listByContributorObservable(contributorId, {
         filter: 'in_progress',
@@ -137,18 +142,60 @@ export class TranslatePage {
     );
 
     const match = existing.data.find((t) => t.phraseSetId === phraseSetId && t.inProgress);
-    if (match) {
-      this.translationId.set(match.id);
+    const existingDialectId = match?.dialect?.id ?? null;
+
+    this.dialogService.create<DialectSelectionContent>({
+      zTitle: 'Iniciar traducción',
+      zContent: DialectSelectionContent,
+      zData: { phraseSetId },
+      zCancelText: 'Volver',
+      zOkText: match ? 'Continuar' : 'Iniciar',
+      zMaskClosable: false,
+      zWidth: '350px',
+      zOnOk: (instance) => {
+        if (this.dialogBusy()) return false;
+        this.dialogBusy.set(true);
+
+        if (match) {
+          // Resume existing translation
+          this.translationId.set(match.id);
+          this.dialogResolved.set(true);
+          return;
+        }
+
+        void this.handleNewTranslation(instance, contributorId, phraseSetId);
+        return false;
+      },
+      zOnCancel: () => {
+        this.location.back();
+      },
+    });
+  }
+
+  private async handleNewTranslation(
+    instance: DialectSelectionContent,
+    contributorId: string,
+    phraseSetId: string,
+  ): Promise<void> {
+    const dialectId = instance.getSelectedDialectId();
+
+    const [created, error] = await tryCatch(
+      firstValueFrom(
+        this.translationService.create(contributorId, {
+          phraseSetId,
+          dialectId,
+        }),
+      ),
+    );
+
+    this.dialogBusy.set(false);
+
+    if (error) {
       return;
     }
 
-    const created = await firstValueFrom(
-      this.translationService.create(contributorId, {
-        phraseSetId,
-        dialectId: null,
-      }),
-    );
-    this.translationId.set(created.id);
+    this.translationId.set(created!.id);
+    this.dialogResolved.set(true);
   }
 
   protected async goToNextPhrase() {

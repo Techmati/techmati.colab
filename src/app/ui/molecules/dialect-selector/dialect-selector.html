@@ -1,0 +1,17 @@
+<div class="flex flex-col gap-1.5">
+  <label class="font-ui text-sm font-medium leading-5 text-text-primary" id="dialect-selector-label">
+    Variante de náhuatl
+  </label>
+
+  <z-select
+    zPlaceholder="Selecciona una variante"
+    class="w-full"
+    [(zValue)]="selected"
+    [class.opacity-50]="disabled()"
+    aria-labelledby="dialect-selector-label"
+  >
+    @for (variant of variants(); track variant.id) {
+      <z-select-item [zValue]="variant.id">{{ variant.label }}</z-select-item>
+    }
+  </z-select>
+</div>

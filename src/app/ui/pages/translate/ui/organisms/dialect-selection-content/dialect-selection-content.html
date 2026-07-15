@@ -1,0 +1,58 @@
+<div class="flex flex-col gap-6">
+  @if (phraseSetRes.isPending()) {
+    <div class="space-y-3">
+      <z-skeleton class="h-7 w-3/4 rounded-md" />
+      <z-skeleton class="h-10 w-full rounded-md" />
+      <div class="flex gap-3">
+        <z-skeleton class="h-5 w-24 rounded-md" />
+        <z-skeleton class="h-5 w-28 rounded-md" />
+        <z-skeleton class="h-5 w-20 rounded-md" />
+      </div>
+      <z-skeleton class="h-10 w-full rounded-md" />
+    </div>
+  } @else if (phraseSet(); as ps) {
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-2">
+        <h3 class="font-display text-lg font-semibold leading-6 text-primary">{{ ps.title }}</h3>
+
+        @if (ps.description) {
+          <p class="line-clamp-3 text-sm font-normal leading-5 text-text-secondary">
+            {{ ps.description }}
+          </p>
+        }
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <span class="inline-flex items-center gap-1 text-xs font-medium leading-4 text-text-secondary">
+          <span class="ri--list-check-2 text-base" aria-hidden="true"></span>
+          {{ ps.phraseCount }} frases
+        </span>
+
+        <span class="inline-flex items-center gap-1 text-xs font-medium leading-4 text-text-secondary">
+          <span class="ri--translate-2 text-base" aria-hidden="true"></span>
+          {{ ps.language }}
+        </span>
+
+        @if (ps.publishedAt) {
+          <span class="inline-flex items-center gap-1 text-xs font-medium leading-4 text-text-secondary">
+            <span class="ri--calendar-line text-base" aria-hidden="true"></span>
+            {{ ps.publishedAt | date: 'dd MMM yyyy' }}
+          </span>
+        }
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-3">
+      @if (availableVariants().length > 0) {
+        <tm-dialect-selector
+          [variants]="availableVariants()"
+          [(selected)]="selectedVariantId"
+        />
+      } @else {
+        <p class="rounded-md bg-brand-purple-100 px-3 py-2 text-sm font-normal leading-5 text-text-secondary">
+          No hay variantes disponibles. Contacta al administrador.
+        </p>
+      }
+    </div>
+  }
+</div>
