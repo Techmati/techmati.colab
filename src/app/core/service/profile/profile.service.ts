@@ -20,6 +20,7 @@ export class ProfileService {
       queryFn: () => lastValueFrom(this.client.get<Profile>(this.profileApi)),
     });
   }
+
   canManageContributors(role: TechmatiRole | null | undefined): boolean {
     return role !== null && role !== undefined && COLLECTOR_ROLES.includes(role);
   }
