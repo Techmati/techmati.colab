@@ -69,7 +69,7 @@ export class TranslatePage {
   });
 
   readonly translationRes = injectQuery(() => {
-    const contributorId = this.contributorContext.activeId()!;
+    const contributorId = this.contributorContext.active()!.id;
     const translationId = this.translationId();
     return {
       ...this.translationService.findById(contributorId, translationId),
@@ -96,7 +96,7 @@ export class TranslatePage {
   });
 
   readonly nextPhraseRes = injectQuery(() => {
-    const contributorId = this.contributorContext.activeId()!;
+    const contributorId = this.contributorContext.active()!.id;
     const translationId = this.translationId();
     return {
       ...this.translationService.getNextPending(contributorId, translationId ?? ''),
@@ -155,7 +155,7 @@ export class TranslatePage {
     const phrase = this.nextPhrase();
     const audio = this.model().pronunciation?.file ?? null;
     const translation = this.model().translation;
-    const contributorId = await this.contributorContext.getActiveContributorIdAsync();
+    const contributorId = this.contributorContext.active()!.id;
     const translationId = this.translationId();
     if (!phrase || !audio || !contributorId || !translationId) {
       return;

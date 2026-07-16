@@ -34,10 +34,6 @@ export class ContributorContextService {
 
   readonly activeLoading = computed(() => this.contributorsList.isPending());
 
-  readonly activeId = computed(() => this.active()?.id);
-
-  readonly hasMultiple = computed(() => (this.contributorsList.data() ?? []).length > 1);
-
   constructor() {
     window.addEventListener('beforeunload', () => {
       this.saveSelectedContributorId();
@@ -48,19 +44,11 @@ export class ContributorContextService {
     this.active.set(c);
   }
 
-  async getActiveContributorIdAsync(): Promise<string> {
-    const active = this.active();
-    if (!active) {
-      throw new Error('No active contributor available');
-    }
-    return active.id;
-  }
-
-  getSavedContributorId(): string | null {
+  private getSavedContributorId(): string | null {
     return sessionStorage.getItem(LAST_CONTRIBUTOR_KEY);
   }
 
-  saveSelectedContributorId(): void {
+  private saveSelectedContributorId(): void {
     const selectedId = this.active()?.id;
     if (!selectedId) {
       sessionStorage.removeItem(LAST_CONTRIBUTOR_KEY);

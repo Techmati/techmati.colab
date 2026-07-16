@@ -23,9 +23,10 @@ export class DialectSelectionDialog {
   private readonly contributorContext = inject(ContributorContextService);
   private dialogRef: ZardAlertDialogRef<DialectSelectionContent> | null = null;
 
-  private readonly createMutation = injectMutation(() =>
-    this.translationService.create(this.contributorContext.activeId()!),
-  );
+  private readonly createMutation = injectMutation(() => {
+    const contributor = this.contributorContext.active();
+    return this.translationService.create(contributor!.id);
+  });
 
   open(): void {
     const phraseSetId = this.phraseSetId();
