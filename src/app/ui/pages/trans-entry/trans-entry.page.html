@@ -20,7 +20,7 @@
       <div class="rounded-xl border border-red-500 bg-red-50 p-4 text-sm text-red-700" role="alert">
         No se pudo cargar el resumen de la contribución.
       </div>
-    } @else if (entries().length) {
+    } @else if (entries().length && entryRes.data(); as translation) {
       <div class="flex flex-col gap-4">
         @for (card of entries(); track card.id; let index = $index) {
           <article
@@ -56,6 +56,25 @@
           </article>
         }
       </div>
+      <section class="fixed inset-x-0 bottom-0 border-t border-border-soft bg-surface-card px-4 pb-4 pt-4 shadow-lg z-100">
+        <div class="mx-auto w-full max-w-sm">
+          <button
+            type="button"
+            class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-4 text-sm font-semibold leading-5 text-primary-foreground shadow-md disabled:cursor-not-allowed disabled:opacity-80"
+            (click)="translationDialog.open()"
+
+          >
+            <span class="lucide--redo-2 size-4" aria-hidden="true"></span>
+            Volver a hacer contribución
+          </button>
+        </div>
+      </section>
+      <tm-dialect-selection-dialog
+        #translationDialog
+        [phraseSetId]="translation.phraseSetId"
+        (translationCreated)="onTranslationCreated($event)"
+      />
+
     } @else {
       <div class="rounded-xl border border-border-soft bg-surface-card p-4 shadow-sm" role="status">
         <p class="text-text-secondary text-sm leading-5">No hay traducciones para mostrar.</p>
@@ -63,16 +82,4 @@
     }
   </section>
 
-  <!-- <section class="fixed inset-x-0 bottom-0 border-t border-border-soft bg-surface-card px-4 pb-4 pt-4 shadow-lg z-100"> -->
-  <!--   <div class="mx-auto w-full max-w-sm"> -->
-  <!--     <button -->
-  <!--       type="button" -->
-  <!--       class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-4 text-sm font-semibold leading-5 text-primary-foreground shadow-md disabled:cursor-not-allowed disabled:opacity-80" -->
-  <!--       disabled -->
-  <!--     > -->
-  <!--       <span class="lucide--redo-2 size-4" aria-hidden="true"></span> -->
-  <!--       Volver a hacer contribución -->
-  <!--     </button> -->
-  <!--   </div> -->
-  <!-- </section> -->
 </main>
