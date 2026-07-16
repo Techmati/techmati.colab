@@ -3,10 +3,8 @@ import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.servic
 import { TranslationService } from '@/core/service/translation/translation.service';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { defer, from } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { injectQuery } from '@tanstack/angular-query-experimental';
 import { NextSetActionSkeleton } from './ui/molecules/next-set-action-skeleton/next-set-action-skeleton';
 import { TranslationSummarySkeleton } from './ui/organisms/translation-summary-skeleton/translation-summary-skeleton';
 
@@ -25,16 +23,21 @@ export class TranslationEndPage {
   private readonly contributorContext = inject(ContributorContextService);
   private readonly phraseSetsService = inject(PhraseSetsService);
 
-  readonly translationCountRes = rxResource({
-    stream: () =>
-      defer(() => from(this.contributorContext.getActiveContributorIdAsync())).pipe(
-        switchMap((cId) => this.translationService.getStatsObservable(cId)),
-      ),
+  readonly translationCountRes = injectQuery(() => {
+    const contributor = this.contributorContext.active()!;
+    return {
+      enabled: !!contributor,
+      ...this.translationService.getStats(contributor.id),
+    };
   });
 
-  readonly nextSet = rxResource({
-    stream: () => this.phraseSetsService.getNextPending(),
+  readonly nextSetRes = injectQuery(() => {
+    const contributor = this.contributorContext.active()!;
+    return {
+      enabled: !!contributor,
+      ...this.phraseSetsService.getNextPending(contributor.id),
+    };
   });
 
-  readonly noNextSet = computed(() => this.nextSet.value()?.state === 'finished');
+  readonly noNextSet = computed(() => this.nextSetRes.data()?.state === 'finished');
 }

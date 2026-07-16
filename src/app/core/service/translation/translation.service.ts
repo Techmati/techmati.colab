@@ -7,11 +7,7 @@ import {
 import { Translation, TranslationFilter } from '@/core/types/translation.type';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import {
-  mutationOptions,
-  provideQueryClient,
-  queryOptions,
-  gular-query - experimental';
+import { mutationOptions, queryOptions } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, Observable } from 'rxjs';
 
 export interface ListByContributorOptions {
@@ -67,6 +63,13 @@ export class TranslationService {
     return this.client.get<ContributorTranslationStats>(
       API.CONTRIBUTORS.TRANSLATIONS.STATS(contributorId),
     );
+  }
+
+  getStats(contributorId: string) {
+    return queryOptions({
+      queryKey: ['translation-stats', contributorId],
+      queryFn: () => lastValueFrom(this.getStatsObservable(contributorId)),
+    });
   }
 
   create(contributorId: string) {

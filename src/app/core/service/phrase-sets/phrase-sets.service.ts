@@ -54,9 +54,16 @@ export class PhraseSetsService {
     });
   }
 
-  getNextPending(): Observable<{ phraseSet: PhraseSet | null; state: 'in-progress' | 'finished' }> {
-    return this.client.get<{ phraseSet: PhraseSet | null; state: 'in-progress' | 'finished' }>(
-      API.PHRASE_SETS.NEXT_PENDING,
-    );
+  getNextPending(contributorId: string) {
+    return queryOptions({
+      queryKey: ['phraseSets', 'nextPending'],
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<{ phraseSet: PhraseSet | null; state: 'in-progress' | 'finished' }>(
+            API.PHRASE_SETS.NEXT_PENDING,
+            { params: { contributorId } },
+          ),
+        ),
+    });
   }
 }

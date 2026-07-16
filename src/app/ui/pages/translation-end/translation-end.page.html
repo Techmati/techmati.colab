@@ -20,7 +20,7 @@
     <div class="mt-8 w-full">
       @if (translationCountRes.isLoading()) {
         <tm-translation-summary-skeleton />
-      } @else {
+      } @else if(translationCountRes.data(); as translationCount) {
         <article
           class="w-full rounded-xl border border-border-subtle bg-card p-6 text-left shadow-sm"
         >
@@ -48,7 +48,7 @@
                 aria-hidden="true"
               ></span>
               <p class="font-display mt-1 text-2xl text-brand-green-600">
-                {{ translationCountRes.value()?.todayCount }}
+                {{ translationCount.todayCount }}
               </p>
               <p class="text-sm leading-5 text-text-secondary">Frases hoy</p>
             </div>
@@ -62,9 +62,9 @@
     class="fixed inset-x-0 bottom-0 border-t border-border-subtle bg-card px-4 pb-5 pt-4 shadow-[0_-4px_6px_rgba(0,0,0,0.05)]"
   >
     <div class="mx-auto flex w-full max-w-md flex-col gap-3">
-      @if (nextSet.isLoading()) {
+      @if (nextSetRes.isPending()) {
         <tm-next-set-action-skeleton />
-      } @else {
+      } @else if(nextSetRes.data()?.phraseSet; as phraseSet) {
         <a
           z-button
           zType="default"
@@ -72,7 +72,7 @@
           zFull
           class="justify-center"
           [zDisabled]="noNextSet()"
-          [routerLink]="['/translate', nextSet.value()?.phraseSet]"
+          [routerLink]="['/translate', nextSetRes.data()!.phraseSet!.id]"
         >
           <span class="lucide--skip-forward size-4" aria-hidden="true"></span>
           {{ noNextSet() ? 'No hay más sets disponibles' : 'Siguiente set' }}
