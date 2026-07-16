@@ -32,7 +32,7 @@
               zType="default"
               zSize="sm"
               class="px-3"
-              (click)="selectedPhraseSetId.set(set.id)"
+              (click)="openTranslationDialog(set.id)"
             >
               Ir
               <span class="lucide--chevron-right size-3"></span>
@@ -51,9 +51,11 @@
     </div>
   </article>
 
-  <tm-dialect-selection-dialog
-    [phraseSetId]="selectedPhraseSetId()"
-    (translationCreated)="onTranslationCreated($event)"
-    (cancelled)="selectedPhraseSetId.set(null)"
-  />
+  @if(selectedPhraseSetId(); as phraseSetId){
+    <tm-dialect-selection-dialog
+      [phraseSetId]="phraseSetId"
+      (translationCreated)="onTranslationCreated($event)"
+      (cancelled)="selectedPhraseSetId.set(null)"
+    />
+  }
 }

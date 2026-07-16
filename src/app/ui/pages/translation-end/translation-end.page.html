@@ -72,11 +72,17 @@
           zFull
           class="justify-center"
           [zDisabled]="noNextSet()"
-          (click)="openNextSetDialog()"
+          (click)="translationDialog.open()"
         >
           <span class="lucide--skip-forward size-4" aria-hidden="true"></span>
           {{ noNextSet() ? 'No hay más sets disponibles' : 'Siguiente set' }}
         </button>
+
+        <tm-dialect-selection-dialog
+          #translationDialog
+          [phraseSetId]="phraseSet.id"
+          (translationCreated)="onTranslationCreated($event)"
+        />
       }
       <a z-button zType="outline" zSize="lg" zFull routerLink="/dashboard" class="justify-center">
         <span class="lucide--home" aria-hidden="true"></span>
@@ -85,9 +91,5 @@
     </div>
   </footer>
 
-  <tm-dialect-selection-dialog
-    [phraseSetId]="nextPhraseSet()?.id || null"
-    (translationCreated)="onTranslationCreated($event)"
-    (cancelled)="nextPhraseSet.set(null)"
-  />
+
 </main>

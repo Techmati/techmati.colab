@@ -1,10 +1,9 @@
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { TranslationService } from '@/core/service/translation/translation.service';
-import { PhraseSet } from '@/core/types/phrase-set.type';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { DialectSelectionDialog } from '@/ui/organisms/dialect-selection-dialog/dialect-selection-dialog';
-import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { NextSetActionSkeleton } from './ui/molecules/next-set-action-skeleton/next-set-action-skeleton';
@@ -32,8 +31,6 @@ export class TranslationEndPage {
   private readonly phraseSetsService = inject(PhraseSetsService);
   private readonly router = inject(Router);
 
-  protected readonly nextPhraseSet = signal<PhraseSet | null>(null);
-
   readonly translationCountRes = injectQuery(() => {
     const contributor = this.contributorContext.active()!;
     return {
@@ -52,14 +49,7 @@ export class TranslationEndPage {
 
   readonly noNextSet = computed(() => this.nextSetRes.data()?.state === 'finished');
 
-  openNextSetDialog() {
-    const nextSet = this.nextSetRes.data()?.phraseSet;
-    if (this.noNextSet() || !nextSet) return;
-    this.nextPhraseSet.set(nextSet);
-  }
-
   protected onTranslationCreated(translationId: string): void {
-    this.nextPhraseSet.set(null);
     this.router.navigate(['/translate', translationId]);
   }
 }

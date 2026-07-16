@@ -1,5 +1,13 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  computed,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 
@@ -25,9 +33,12 @@ import { AvailableContributionsPanelSkeleton } from '../available-contributions-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AvailableContributionsPanel {
+  private readonly translationDialog = viewChild.required(DialectSelectionDialog);
+
   private readonly phraseSetService = inject(PhraseSetsService);
   private readonly contributorContextService = inject(ContributorContextService);
   private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   protected readonly phraseSetsRes = injectQuery(() => {
     const contributorId = this.contributorContextService.active()?.id;
@@ -47,6 +58,12 @@ export class AvailableContributionsPanel {
 
   date(string: string) {
     return new Date(string);
+  }
+
+  protected openTranslationDialog(phraseSetId: string): void {
+    this.selectedPhraseSetId.set(phraseSetId);
+    this.cdr.detectChanges();
+    this.translationDialog().open();
   }
 
   protected onTranslationCreated(translationId: string): void {
