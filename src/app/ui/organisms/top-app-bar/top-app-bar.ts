@@ -2,16 +2,15 @@ import type { TechmatiRole } from '@/core/dto/profile.dto';
 import { AuthenticationService } from '@/core/service/authentication/authentication.service';
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { ProfileService } from '@/core/service/profile/profile.service';
-import { ZardBadgeComponent } from '@/shared/components/badge';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 
 @Component({
   selector: 'tm-top-app-bar',
-  imports: [ZardBadgeComponent, ZardButtonComponent, ZardSkeletonComponent],
+  imports: [ZardButtonComponent, ZardSkeletonComponent, RouterLink],
   templateUrl: './top-app-bar.html',
   styleUrl: './top-app-bar.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
