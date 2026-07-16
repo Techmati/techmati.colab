@@ -110,7 +110,7 @@ export const routes: Routes = [
     canActivate: [authenticationGuard],
   },
   {
-    path: 'translate/:phraseSetId/end',
+    path: 'translate/:translationId/end',
     component: TranslationEndPage,
     canActivate: [authenticationGuard],
   },

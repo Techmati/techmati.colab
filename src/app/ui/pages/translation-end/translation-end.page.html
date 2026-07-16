@@ -1,4 +1,4 @@
-<main class="translation-end-page min-h-screen bg-background">
+<main class="translation-end-page min-h-screen bg-background mb-25 sm:mb-10 md:mb-0">
   <section class="mx-auto flex w-full max-w-md flex-col items-center px-5 py-5 text-center">
     <div
       class="celebration-shell relative mb-6 inline-flex size-48 items-center justify-center rounded-full border-4 border-white bg-brand-green-100/60 shadow-xl"
@@ -59,24 +59,24 @@
   </section>
 
   <footer
-    class="fixed inset-x-0 bottom-0 border-t border-border-subtle bg-card px-4 pb-5 pt-4 shadow-[0_-4px_6px_rgba(0,0,0,0.05)]"
+    class="fixed inset-x-0 bottom-0 border-t border-border-subtle bg-card px-4 pb-5 pt-4 shadow-lg"
   >
     <div class="mx-auto flex w-full max-w-md flex-col gap-3">
       @if (nextSetRes.isPending()) {
         <tm-next-set-action-skeleton />
       } @else if(nextSetRes.data()?.phraseSet; as phraseSet) {
-        <a
+        <button
           z-button
           zType="default"
           zSize="lg"
           zFull
           class="justify-center"
           [zDisabled]="noNextSet()"
-          [routerLink]="['/translate', nextSetRes.data()!.phraseSet!.id]"
+          (click)="openNextSetDialog()"
         >
           <span class="lucide--skip-forward size-4" aria-hidden="true"></span>
           {{ noNextSet() ? 'No hay más sets disponibles' : 'Siguiente set' }}
-        </a>
+        </button>
       }
       <a z-button zType="outline" zSize="lg" zFull routerLink="/dashboard" class="justify-center">
         <span class="lucide--home" aria-hidden="true"></span>
@@ -84,4 +84,10 @@
       </a>
     </div>
   </footer>
+
+  <tm-dialect-selection-dialog
+    [phraseSetId]="nextPhraseSet()?.id || null"
+    (translationCreated)="onTranslationCreated($event)"
+    (cancelled)="nextPhraseSet.set(null)"
+  />
 </main>

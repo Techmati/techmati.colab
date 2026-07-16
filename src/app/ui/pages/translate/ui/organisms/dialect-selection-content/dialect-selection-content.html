@@ -30,7 +30,7 @@
 
         <span class="inline-flex items-center gap-1 text-xs font-medium leading-4 text-text-secondary">
           <span class="ri--translate-2 text-base" aria-hidden="true"></span>
-          {{ ps.language }}
+          {{ ps.language | tmLanguage}}
         </span>
 
         @if (ps.publishedAt) {

@@ -1,18 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  input,
-  output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, output } from '@angular/core';
 
-import { Location } from '@angular/common';
 import { injectMutation } from '@tanstack/angular-query-experimental';
 
-import { ZardAlertDialogService } from '@/shared/components/alert-dialog';
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { TranslationService } from '@/core/service/translation/translation.service';
+import { ZardAlertDialogRef, ZardAlertDialogService } from '@/shared/components/alert-dialog';
 import { DialectSelectionContent } from '@/ui/pages/translate/ui/organisms/dialect-selection-content/dialect-selection-content';
 
 @Component({
@@ -29,9 +21,7 @@ export class DialectSelectionDialog {
   private readonly dialogService = inject(ZardAlertDialogService);
   private readonly translationService = inject(TranslationService);
   private readonly contributorContext = inject(ContributorContextService);
-  private readonly location = inject(Location);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private dialogRef: any = null;
+  private dialogRef: ZardAlertDialogRef<DialectSelectionContent> | null = null;
 
   private readonly createMutation = injectMutation(() =>
     this.translationService.create(this.contributorContext.activeId()!),
@@ -74,3 +64,4 @@ export class DialectSelectionDialog {
     });
   }
 }
+
