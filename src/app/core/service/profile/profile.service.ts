@@ -24,4 +24,8 @@ export class ProfileService {
   canManageContributors(role: TechmatiRole | null | undefined): boolean {
     return role !== null && role !== undefined && COLLECTOR_ROLES.includes(role);
   }
+
+  canAccessAdminPanel(role: TechmatiRole | null | undefined): boolean {
+    return role !== null && role !== undefined && role !== 'user';
+  }
 }

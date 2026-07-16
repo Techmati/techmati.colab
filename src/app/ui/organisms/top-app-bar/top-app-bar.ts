@@ -30,6 +30,15 @@ export class TopAppBar {
 
     return fullName.split(/\s+/)[0] ?? '';
   });
+
+  protected readonly canAcessAdminPanel = computed(() =>
+    this.profileService.canAccessAdminPanel(this.profile()?.role),
+  );
+
+  protected readonly canManageContributors = computed(() =>
+    this.profileService.canManageContributors(this.profile()?.role),
+  );
+
   private readonly roleLabels: Record<TechmatiRole, string> = {
     root: 'Super Administrador',
     admin: 'Administrador',
