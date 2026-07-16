@@ -1,8 +1,8 @@
-@if (completedSets.isLoading()) {
+@if (completedSetsRes.isPending()) {
   <tm-history-list-panel-skeleton />
-} @else {
+} @else if(completedSetsRes.data(); as sets){
   <div class="space-y-3">
-    @for (set of sets()?.data ?? []; track set.id) {
+    @for (set of sets.data; track set.id) {
       <tm-contribution-card [card]="set" />
     }
   </div>
