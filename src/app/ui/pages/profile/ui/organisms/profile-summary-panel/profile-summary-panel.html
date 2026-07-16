@@ -1,6 +1,6 @@
 @if (stats.isLoading()) {
   <tm-profile-summary-panel-skeleton />
-} @else {
+} @else if(stats.data(); as stats){
   <article class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
     <header class="mb-3 flex items-center justify-between">
       <h2 class="text-text-secondary text-base font-semibold leading-6">Traducciones</h2>
@@ -15,15 +15,15 @@
     </header>
 
     <p class="font-display text-text-primary text-3xl font-bold leading-tight">
-      {{ stats.value()?.entriesCount }}
+      {{ stats.entriesCount }}
     </p>
     <p class="mt-1 flex items-center gap-1 text-sm font-medium text-brand-green-600">
       <span class="lucide--trending-up" aria-hidden="true"></span>
-      +{{ stats.value()?.thisWeekCount }} esta semana
+      +{{ stats.thisWeekCount }} esta semana
     </p>
     <p class="mt-1 flex items-center gap-1 text-sm font-medium text-brand-purple-600">
       <span class="lucide--trending-up" aria-hidden="true"></span>
-      +{{ stats.value()?.todayCount }} hoy
+      +{{ stats.todayCount }} hoy
     </p>
   </article>
 }

@@ -97,10 +97,16 @@ export class TranslationService {
     });
   }
 
-  getDetail(contributorId: string, translationId: string): Observable<Translation> {
-    return this.client.get<Translation>(
-      API.CONTRIBUTORS.TRANSLATIONS.DETAIL(contributorId, translationId),
-    );
+  getDetail(contributorId: string, translationId: string) {
+    return queryOptions({
+      queryKey: ['translation-detail', contributorId, translationId],
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<Translation>(
+            API.CONTRIBUTORS.TRANSLATIONS.DETAIL(contributorId, translationId),
+          ),
+        ),
+    });
   }
 
   delete(contributorId: string, translationId: string): Observable<{ message: string }> {

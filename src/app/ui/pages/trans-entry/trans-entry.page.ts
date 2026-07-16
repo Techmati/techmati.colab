@@ -2,10 +2,8 @@ import { ContributorContextService } from '@/core/service/contributor-context/co
 import { TranslationService } from '@/core/service/translation/translation.service';
 import { ZardDividerComponent } from '@/shared/components/divider';
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { defer, from } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
+import { injectQuery } from '@tanstack/angular-query-experimental';
 import { WavesAudioPlayer } from '../../molecules/waves-audio-player/waves-audio-player';
 import { TransEntrySkeleton } from './ui/organisms/trans-entry-skeleton/trans-entry-skeleton';
 
@@ -24,15 +22,20 @@ export class TransEntryPage {
   private readonly translationService = inject(TranslationService);
   private readonly contributorContext = inject(ContributorContextService);
 
-  protected readonly entryRes = rxResource({
-    params: computed(() => ({ translationId: this.translationId() })),
-    stream: ({ params: { translationId } }) =>
-      defer(() => from(this.contributorContext.getActiveContributorIdAsync())).pipe(
-        switchMap((cId) => this.translationService.getDetail(cId, translationId)),
-      ),
+  protected readonly entryRes = injectQuery(() => {
+    const contributor = this.contributorContext.active()!;
+    const translationId = this.translationId();
+    return {
+      ...this.translationService.getDetail(contributor.id, translationId),
+      enabled: !!contributor && !!translationId,
+    };
   });
 
-  protected readonly entries = computed(() => this.entryRes.value()?.entries ?? []);
+  protected readonly entries = computed(() => this.entryRes.data()?.entries ?? []);
+
+  constructor() {
+    effect(() => console.log(this.entryRes.data()));
+  }
 
   protected goBack(): void {
     this.location.back();
