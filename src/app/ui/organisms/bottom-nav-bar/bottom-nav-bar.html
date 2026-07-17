@@ -3,10 +3,10 @@
   aria-label="Navegación principal"
 >
   <ul class="mx-auto h-full max-w-sm flex justify-center">
-    <li class="min-w-33">
+    <li class="min-w-28 md:min-w-33">
       @let dashboardActive = active() === 'dashboard';
       <a
-        class="text-muted-foreground flex flex-col items-center justify-center gap-1 text-base border-t-2 border-solid border-transparent p-2"
+        class="text-muted-foreground flex flex-col items-center justify-center gap-1 text-sm sm:text-base border-t-2 border-solid border-transparent p-2"
         [class.item-active]="dashboardActive"
         routerLink="/dashboard"
       >
@@ -17,10 +17,10 @@
         Dashboard
       </a>
     </li>
-    <li class="min-w-33">
+    <li class="md:min-w-33 min-w-28">
       @let profileActive = active() === 'profile';
       <a
-        class="text-muted-foreground flex flex-col items-center justify-center gap-1 text-base border-t-2 border-solid border-transparent p-2"
+        class="text-muted-foreground flex flex-col items-center justify-center gap-1 text-sm sm:text-base border-t-2 border-solid border-transparent p-2"
         [class.item-active]="profileActive"
         routerLink="/profile"
       >
@@ -29,10 +29,10 @@
       </a>
     </li>
     @if (canManageContributors()) {
-      <li class="min-w-33">
+      <li class="md:min-w-33 min-w-28">
         @let contributorsActive = active() === 'contributors';
         <a
-          class="text-muted-foreground flex flex-col items-center justify-center gap-1 border-t-2 border-solid border-transparent p-2 text-base"
+          class="text-muted-foreground flex flex-col items-center justify-center gap-1 border-t-2 border-solid border-transparent p-2 text-sm sm:text-base"
           [class.item-active]="contributorsActive"
           routerLink="/contributors"
         >
