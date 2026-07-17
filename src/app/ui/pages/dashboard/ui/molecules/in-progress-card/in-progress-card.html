@@ -1,6 +1,8 @@
 <section class="rounded-lg bg-surface-success-soft p-4 flex flex-col gap-1">
-  <p class="text-brand-green-600 text-sm font-semibold leading-7">
-    {{ task().phraseSet?.title || ('Set #' + task().phraseSetId.slice(0, 8)) }}
+  <p class="text-brand-green-600 text-sm font-semibold leading-4">
+    {{ task().phraseSet?.title || 'Set #' + task().phraseSetId.slice(0, 8) }}
+    •
+    {{ task().dialect?.label }}
   </p>
   <p class="text-text-secondary text-xs leading-4">
     {{ task().phraseCount }} frases • {{ task().lastUpdate | timeAgo }}
