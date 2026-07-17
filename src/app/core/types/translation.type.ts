@@ -1,13 +1,13 @@
-import { NahuatlVariant } from './nahuatl-variant.type';
 import { ContributorSummary } from './contributor.type';
-import { TranslationEntry } from './translation-entry.type';
+import { NahuatlVariant } from './nahuatl-variant.type';
 import { PhraseSet } from './phrase-set.type';
+import { TranslationEntry } from './translation-entry.type';
 
 export interface Translation {
   id: string;
   contributorId: string;
   phraseSetId: string;
-  dialect: NahuatlVariant | null;
+  dialect: NahuatlVariant;
   attemptedAt: string;
   contributedEntriesCount: number;
   progressPercentage: number;

@@ -20,11 +20,11 @@ export class AdminTranslationContributorCard {
   protected readonly progressWidth = computed(
     () => `${this.clampPercentage(this.summary().progressPercentage)}%`,
   );
-  protected readonly statusLabel = computed(() => (this.summary().completed ? 'Completado' : 'Pendiente'));
-  protected readonly statusClass = computed(() =>
-    this.summary().completed
-      ? 'text-xs font-medium leading-4 text-brand-green-600'
-      : 'text-xs font-medium leading-4 text-text-secondary',
+  protected readonly statusLabel = computed(() =>
+    this.summary().completed ? 'Completado' : 'Pendiente',
+  );
+  protected readonly statusColor = computed(() =>
+    this.summary().completed ? ' text-brand-green-600' : 'text-text-secondary',
   );
   protected readonly progressTextClass = computed(() =>
     this.summary().completed
