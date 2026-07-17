@@ -6,9 +6,8 @@ import {
   computed,
   input,
   model,
-  output,
   type TemplateRef,
-  ViewEncapsulation,
+  ViewEncapsulation
 } from '@angular/core';
 
 import type { ClassValue } from 'clsx';
@@ -57,7 +56,7 @@ export class ZardPaginationContentComponent {
   exportAs: 'zPaginationItem',
 })
 export class ZardPaginationItemComponent { }
-// Structural wrapper component for pagination items (<li>). No inputs required.
+// Structural wrapper component for paginaion items (<li>). No inputs required.
 
 @Component({
   selector: 'button[z-pagination-button], a[z-pagination-button]',
@@ -250,7 +249,6 @@ export class ZardPaginationComponent {
 
   readonly class = input<ClassValue>('');
 
-  readonly zPageIndexChange = output<number>();
   readonly Math = Math;
 
   protected readonly classes = computed(() => mergeClasses(paginationVariants(), this.class()));
@@ -261,7 +259,6 @@ export class ZardPaginationComponent {
   goToPage(page: number): void {
     if (!this.zDisabled() && page !== this.zPageIndex()) {
       this.zPageIndex.set(page);
-      this.zPageIndexChange.emit(page);
     }
   }
 }
