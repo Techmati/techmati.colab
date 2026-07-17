@@ -30,6 +30,18 @@
       />
     </z-input-group>
   </label>
+
+  <z-select
+    class="w-full"
+    zPlaceholder="Categoría"
+    [zValue]="category()"
+    (zSelectionChange)="selectCategory($event)"
+  >
+    @for (opt of categoryOptions; track opt.value) {
+      <z-select-item [zValue]="opt.value">{{ opt.label }}</z-select-item>
+    }
+  </z-select>
+
   <ng-template #searchIcon>
     <span class="ri--search-line text-lg text-muted-foreground" aria-hidden="true"></span>
   </ng-template>

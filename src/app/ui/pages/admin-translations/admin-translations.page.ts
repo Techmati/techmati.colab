@@ -3,6 +3,7 @@ import {
   type AdminPhraseSetSortBy,
   type AdminPhraseSetSortDirection,
 } from '@/core/service/admin-phrase-set/admin-phrase-set.service';
+import { PHRASE_SET_CATEGORIES } from '@/core/config/phrase-set-category-labels.config';
 import { AdminBottomNav } from '@/ui/organisms/admin-bottom-nav/admin-bottom-nav';
 import { TopAppBar } from '@/ui/organisms/top-app-bar/top-app-bar';
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
@@ -14,6 +15,7 @@ const SORT_BY_VALUES = [
   'title',
   'phraseCount',
   'contributorsCount',
+  'category',
 ] as const satisfies readonly AdminPhraseSetSortBy[];
 
 const SORT_DIRECTION_VALUES = [
@@ -30,6 +32,7 @@ const SORT_DIRECTION_VALUES = [
 })
 export class AdminTranslationsPage {
   protected readonly searchParam = input('', { alias: 'search' });
+  protected readonly categoryParam = input('all', { alias: 'category' });
   protected readonly minContributorsParam = input('', { alias: 'minContributors' });
   protected readonly sortByParam = input('', { alias: 'sortBy' });
   protected readonly sortDirectionParam = input('', { alias: 'sortDirection' });
@@ -39,6 +42,7 @@ export class AdminTranslationsPage {
 
   protected readonly query = computed<AdminPhraseSetSearchQuery>(() => ({
     search: (this.searchParam() || '').trim(),
+    category: this.normalizeCategory(this.categoryParam()),
     includeStats: true,
     minContributors: this.normalizeMinContributors(this.minContributorsParam()),
     sortBy: this.normalizeSortBy(this.sortByParam()),
@@ -46,6 +50,10 @@ export class AdminTranslationsPage {
     page: this.normalizePage(this.pageParam()),
     size: this.PAGE_SIZE,
   }));
+
+  private normalizeCategory(value: string): string {
+    return (PHRASE_SET_CATEGORIES as readonly string[]).includes(value) ? value : 'all';
+  }
 
   private normalizePage(value: string): number {
     const page = Number(value);

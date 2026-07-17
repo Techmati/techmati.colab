@@ -16,11 +16,12 @@ import {
 } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, Observable } from 'rxjs';
 
-export type AdminPhraseSetSortBy = 'createdAt' | 'title' | 'phraseCount' | 'contributorsCount';
+export type AdminPhraseSetSortBy = 'createdAt' | 'title' | 'phraseCount' | 'contributorsCount' | 'category';
 export type AdminPhraseSetSortDirection = 'asc' | 'desc';
 
 export interface AdminPhraseSetSearchQuery extends Pagination {
   readonly search?: string;
+  readonly category?: string;
   readonly includeStats?: boolean;
   readonly minContributors?: number | null;
   readonly sortBy?: AdminPhraseSetSortBy;
@@ -119,6 +120,7 @@ export class AdminPhraseSetService {
 
   private buildSearchParams({
     search,
+    category,
     includeStats,
     minContributors,
     sortBy,
@@ -131,6 +133,10 @@ export class AdminPhraseSetService {
     const trimmedSearch = search?.trim();
     if (trimmedSearch) {
       params = params.set('search', trimmedSearch);
+    }
+
+    if (category && category !== 'all') {
+      params = params.set('category', category);
     }
 
     if (includeStats !== undefined) {

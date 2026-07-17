@@ -9,6 +9,8 @@ import {
 } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 
+import { PHRASE_SET_CATEGORY_LABELS } from '@/core/config/phrase-set-category-labels.config';
+import { ZardBadgeComponent } from '@/shared/components/badge';
 import { TmLanguagePipe } from '@/core/pipes/tm-language-pipe';
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { NahuatlVariantService } from '@/core/service/nahuatl-variant/nahuatl-variant.service';
@@ -23,7 +25,7 @@ export interface DialectSelectionData {
 
 @Component({
   selector: 'tm-dialect-selection-content',
-  imports: [DatePipe, TmLanguagePipe, ZardSkeletonComponent, DialectSelector],
+  imports: [DatePipe, TmLanguagePipe, ZardBadgeComponent, ZardSkeletonComponent, DialectSelector],
   templateUrl: './dialect-selection-content.html',
   styleUrl: './dialect-selection-content.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,6 +44,11 @@ export class DialectSelectionContent {
   );
 
   readonly phraseSet = computed(() => this.phraseSetRes.data() ?? null);
+
+  protected readonly categoryLabel = computed(() => {
+    const cat = this.phraseSet()?.category;
+    return cat ? PHRASE_SET_CATEGORY_LABELS[cat] : '';
+  });
 
   private readonly contributorVariants = computed(
     () => this.contributorContext.active()?.variants ?? [],

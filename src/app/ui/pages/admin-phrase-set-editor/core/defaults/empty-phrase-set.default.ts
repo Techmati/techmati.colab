@@ -4,5 +4,6 @@ export const EMPTY_PHRASE_SET: NewPhraseSetDraft = {
   title: '',
   description: '',
   language: 'nahuatl_to_spanish',
+  category: 'not_specified',
   published: true,
 };

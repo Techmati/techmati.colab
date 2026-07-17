@@ -143,12 +143,13 @@ export class AdminPhraseSetEditorPage {
   }
 
   private toNewPhraseSetDraft(phraseSet: PhraseSetDraft): NewPhraseSetDraft {
-    const { title, description, language, published } = phraseSet;
+    const { title, description, language, category, published } = phraseSet;
 
     return {
       title,
       description,
       language,
+      category,
       published,
     };
   }

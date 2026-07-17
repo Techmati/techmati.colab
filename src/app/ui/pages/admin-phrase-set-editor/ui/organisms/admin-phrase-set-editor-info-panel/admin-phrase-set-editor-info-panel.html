@@ -48,6 +48,19 @@
 
       <label class="block space-y-1">
         <span class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
+          <span class="ri--hospital-line text-base" aria-hidden="true"></span>
+          Categoría
+        </span>
+        <z-select class="w-full" zPlaceholder="Selecciona una categoría" [formField]="phraseSetForm.category">
+          @for (cat of categoryOptions; track cat.value) {
+            <z-select-item [zValue]="cat.value">{{ cat.label }}</z-select-item>
+          }
+        </z-select>
+      </label>
+      <tm-field-error-advice [field]="form.category" />
+
+      <label class="block space-y-1">
+        <span class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
           <span class="ri--global-line text-base" aria-hidden="true"></span>
           Idioma
         </span>
@@ -84,6 +97,21 @@
       <section class="space-y-1">
         <z-skeleton class="h-4 w-20" />
         <z-skeleton class="h-28 w-full rounded-lg" />
+      </section>
+
+      <section class="space-y-1">
+        <z-skeleton class="h-4 w-24" />
+        <z-skeleton class="h-20 w-full rounded-lg" />
+      </section>
+
+      <section class="space-y-1">
+        <z-skeleton class="h-4 w-20" />
+        <z-skeleton class="h-9 w-full rounded-lg" />
+      </section>
+
+      <section class="space-y-1">
+        <z-skeleton class="h-4 w-20" />
+        <z-skeleton class="h-9 w-full rounded-lg" />
       </section>
 
       <section class="space-y-1">

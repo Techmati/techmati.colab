@@ -13,6 +13,8 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
+import { PHRASE_SET_CATEGORY_LABELS } from '@/core/config/phrase-set-category-labels.config';
+import { ZardBadgeComponent } from '@/shared/components/badge';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardEmptyComponent } from '@/shared/components/empty';
 import { DialectSelectionDialog } from '@/ui/organisms/dialect-selection-dialog/dialect-selection-dialog';
@@ -21,6 +23,7 @@ import { AvailableContributionsPanelSkeleton } from '../available-contributions-
 @Component({
   selector: 'tm-available-contributions-panel',
   imports: [
+    ZardBadgeComponent,
     ZardButtonComponent,
     DatePipe,
     ZardEmptyComponent,
@@ -41,20 +44,24 @@ export class AvailableContributionsPanel {
   private readonly cdr = inject(ChangeDetectorRef);
 
   protected readonly phraseSetsRes = injectQuery(() => {
-    const contributorId = this.contributorContextService.active()?.id;
+    const contributor = this.contributorContextService.active();
     return {
       ...this.phraseSetService.getFiltered({
         page: 1,
         size: 3,
         filter: 'untouched',
-        contributorId: contributorId!,
+        contributorId: contributor?.id,
       }),
-      active: !!contributorId,
+      active: !!contributor,
     };
   });
   readonly phraseSets = computed(() => this.phraseSetsRes.data()?.data ?? []);
 
   protected readonly selectedPhraseSetId = signal<string | null>(null);
+
+  protected categoryLabel(category: string): string {
+    return PHRASE_SET_CATEGORY_LABELS[category as keyof typeof PHRASE_SET_CATEGORY_LABELS] ?? 'Sin especificar';
+  }
 
   date(string: string) {
     return new Date(string);

@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 
+import { PHRASE_SET_CATEGORY_LABELS } from '@/core/config/phrase-set-category-labels.config';
 import { PhraseSet } from '@/core/types/phrase-set.type';
 import { baseToastConfig } from '@/core/view/base-toast.config';
 import { ZardAlertDialogService } from '@/shared/components/alert-dialog';
+import { ZardBadgeComponent } from '@/shared/components/badge';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { ZardToastComponent } from '@/shared/components/toast';
@@ -16,7 +18,7 @@ import { AdminPhraseSetService } from '../../../../../../core/service/admin-phra
 
 @Component({
   selector: 'tm-admin-phrase-set-card',
-  imports: [ZardButtonComponent, ZardSkeletonComponent, RouterLink, ZardToastComponent],
+  imports: [ZardBadgeComponent, ZardButtonComponent, ZardSkeletonComponent, RouterLink, ZardToastComponent],
   templateUrl: './admin-phrase-set-card.html',
   styleUrl: './admin-phrase-set-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,6 +46,9 @@ export class AdminPhraseSetCard {
 
   protected readonly badgeLabel = computed(() =>
     this.phraseSet().published ? 'PUBLICADO' : 'BORRADOR',
+  );
+  protected readonly categoryLabel = computed(
+    () => PHRASE_SET_CATEGORY_LABELS[this.phraseSet().category],
   );
   protected readonly badgeClass = computed(() =>
     this.phraseSet().published

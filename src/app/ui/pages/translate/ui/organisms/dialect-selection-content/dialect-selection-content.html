@@ -33,6 +33,13 @@
           {{ ps.language | tmLanguage}}
         </span>
 
+        @if (categoryLabel()) {
+          <z-badge zShape="pill" class="gap-1">
+            <span class="ri--hospital-line text-xs" aria-hidden="true"></span>
+            {{ categoryLabel() }}
+          </z-badge>
+        }
+
         @if (ps.publishedAt) {
           <span class="inline-flex items-center gap-1 text-xs font-medium leading-4 text-text-secondary">
             <span class="ri--calendar-line text-base" aria-hidden="true"></span>

@@ -1,10 +1,12 @@
 import { Phrase } from './phrase.type';
+import type { PhraseSetCategory } from '@/core/config/phrase-set-category-labels.config';
 
 export interface PhraseSet {
   id: string;
   title: string;
   description?: string;
   language: PhraseSetLanguage;
+  category: PhraseSetCategory;
   published: boolean;
   createdAt: string;
   publishedAt?: string;

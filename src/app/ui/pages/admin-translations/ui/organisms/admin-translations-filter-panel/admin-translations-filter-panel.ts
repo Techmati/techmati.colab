@@ -1,3 +1,4 @@
+import { PHRASE_SET_CATEGORY_OPTIONS } from '@/core/config/phrase-set-category-labels.config';
 import {
   type AdminPhraseSetSortBy,
   type AdminPhraseSetSortDirection,
@@ -32,12 +33,14 @@ interface SortOption {
 })
 export class AdminTranslationsFilterPanel {
   readonly searchParam = input('');
+  readonly categoryParam = input('all');
   readonly minContributorsParam = input('');
   readonly sortByParam = input('');
   readonly sortDirectionParam = input('');
 
   protected readonly search = signal('');
   protected readonly debouncedSearch = signal('');
+  protected readonly category = signal('all');
   protected readonly minContributors = signal('');
   protected readonly sortOption = signal<SortOptionValue>('contributorsCount:desc');
 
@@ -51,12 +54,22 @@ export class AdminTranslationsFilterPanel {
     { label: 'Menos frases', value: 'phraseCount:asc' },
     { label: 'Título A-Z', value: 'title:asc' },
     { label: 'Más recientes', value: 'createdAt:desc' },
+    { label: 'Categoría A-Z', value: 'category:asc' },
+  ];
+
+  protected readonly categoryOptions = [
+    { label: 'Todas', value: 'all' },
+    ...PHRASE_SET_CATEGORY_OPTIONS,
   ];
 
   constructor() {
     effect(() => {
       this.search.set(this.searchParam() || '');
       this.debouncedSearch.set(this.searchParam() || '');
+    });
+
+    effect(() => {
+      this.category.set(this.categoryParam() || 'all');
     });
 
     effect(() => {
@@ -83,6 +96,15 @@ export class AdminTranslationsFilterPanel {
       }
 
       void this.navigateWithFilters({ search: search || null, page: null });
+    });
+  }
+
+  protected selectCategory(value: string | string[]): void {
+    const cat = typeof value === 'string' ? value : 'all';
+    this.category.set(cat);
+    void this.navigateWithFilters({
+      category: cat === 'all' ? null : cat,
+      page: null,
     });
   }
 
@@ -113,12 +135,14 @@ export class AdminTranslationsFilterPanel {
   protected clearFilters(): void {
     this.search.set('');
     this.debouncedSearch.set('');
+    this.category.set('all');
     this.minContributors.set('');
     this.sortOption.set('contributorsCount:desc');
 
     void this.router.navigate([], {
       queryParams: {
         search: null,
+        category: null,
         minContributors: null,
         sortBy: null,
         sortDirection: null,

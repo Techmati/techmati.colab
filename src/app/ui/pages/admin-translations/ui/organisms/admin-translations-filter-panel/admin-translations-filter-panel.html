@@ -28,6 +28,17 @@
         }
       </z-select>
 
+      <z-select
+        class="w-full"
+        zPlaceholder="Categoría"
+        [zValue]="category()"
+        (zSelectionChange)="selectCategory($event)"
+      >
+        @for (opt of categoryOptions; track opt.value) {
+          <z-select-item [zValue]="opt.value">{{ opt.label }}</z-select-item>
+        }
+      </z-select>
+
       <label class="block">
         <span class="sr-only">Mínimo de usuarios contribuyendo</span>
         <z-input-group

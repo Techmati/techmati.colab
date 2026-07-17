@@ -24,6 +24,7 @@ export class AdminPhraseSetsListPanel {
   readonly searchResults = injectQuery(() =>
     this.adminPhraseSetService.searchQuery({
       search: this.searchParam() || '',
+      category: this.categoryParam() || undefined,
       page: this.page(),
       size: this.size,
     }),
@@ -32,6 +33,10 @@ export class AdminPhraseSetsListPanel {
 
   private readonly searchParam = toSignal(
     this.route.queryParamMap.pipe(map((params) => params.get('search') || '')),
+  );
+
+  private readonly categoryParam = toSignal(
+    this.route.queryParamMap.pipe(map((params) => params.get('category') || 'all')),
   );
 
   readonly pages = computed(() => Math.ceil((this.searchResults.data()?.total || 0) / this.size));

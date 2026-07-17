@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, effect, input, model } from '@angular/core';
 
+import { PHRASE_SET_CATEGORY_OPTIONS } from '@/core/config/phrase-set-category-labels.config';
 import type { PhraseSet } from '@/core/types/phrase-set.type';
 import { clone } from '@/core/utils/clone.util';
 import { ZardInputDirective } from '@/shared/components/input';
@@ -32,6 +33,7 @@ export class AdminPhraseSetEditorInfoPanel {
 
   protected readonly phraseSetForm = form(this.phraseSetDraft, (path) => {
     required(path.title, { message: 'No se puede subir un set de frases sin titulo.' });
+    required(path.category, { message: 'Selecciona una categoría para el set de frases.' });
   });
 
   readonly invalid = computed(() => this.phraseSetForm().invalid());
@@ -40,6 +42,8 @@ export class AdminPhraseSetEditorInfoPanel {
     { label: 'Nahuatl a Español', value: 'nahuatl_to_spanish' },
     { label: 'Español a Nahuatl', value: 'spanish_to_nahuatl' },
   ] as const;
+
+  protected readonly categoryOptions = PHRASE_SET_CATEGORY_OPTIONS;
 
   protected onDescriptionInput(event: Event): void {
     const value = (event.target as HTMLTextAreaElement).value;

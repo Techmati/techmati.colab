@@ -16,7 +16,13 @@
             </h3>
           </div>
           <div class="flex justify-between">
-            <p class="text-text-tertiary mt-1 text-xs leading-4">{{ set.phraseCount }} frases</p>
+            <div class="flex items-center gap-2">
+              <p class="text-text-tertiary mt-1 text-xs leading-4">{{ set.phraseCount }} frases</p>
+              <z-badge zShape="pill" class="gap-1">
+                <span class="ri--hospital-line text-xs" aria-hidden="true"></span>
+                {{ categoryLabel(set.category) }}
+              </z-badge>
+            </div>
             @if (set.publishedAt) {
               <p class="text-muted-foreground text-xs leading-4">
                 {{ date(set.publishedAt || '') | date: "d 'de' MMMM 'del' yyyy" : '' : 'es-MX' }}
