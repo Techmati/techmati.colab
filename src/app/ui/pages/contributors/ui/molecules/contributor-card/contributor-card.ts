@@ -1,9 +1,10 @@
 import { Contributor } from '@/core/types/contributor.type';
+import { ZardDividerComponent } from '@/shared/components/divider';
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
 @Component({
   selector: 'tm-contributor-card',
-  imports: [],
+  imports: [ZardDividerComponent],
   templateUrl: './contributor-card.html',
   styleUrl: './contributor-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

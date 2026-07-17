@@ -1,9 +1,10 @@
 import { Contributor } from '@/core/types/contributor.type';
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ZardDividerComponent } from '@/shared/components/divider';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
 @Component({
   selector: 'tm-active-contributor-card',
-  imports: [],
+  imports: [ZardDividerComponent],
   templateUrl: './active-contributor-card.html',
   styleUrl: './active-contributor-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -11,8 +12,13 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 export class ActiveContributorCard {
   readonly contributor = input.required<Contributor>();
 
+  readonly edit = output<Contributor>();
+
   protected status = computed(() => (this.contributor().accountUserId ? 'auto' : 'managed'));
   protected statusInfo = computed(() => statusLabels[this.status()]);
+  protected onEdit(): void {
+    this.edit.emit(this.contributor());
+  }
 }
 
 const statusLabels: Record<string, { label: string; icon: string }> = {

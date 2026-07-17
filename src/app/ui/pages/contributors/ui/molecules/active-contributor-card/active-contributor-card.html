@@ -27,4 +27,17 @@
       </li>
     }
   </ul>
+  <z-divider zSpacing="sm"/>
+  <div class="flex items-center justify-end">
+    <div class="flex items-center gap-1">
+      <button
+        type="button"
+        class="flex size-8 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-surface-soft hover:text-primary focus-visible:outline-none"
+        [attr.aria-label]="'Editar a ' + contributor().fullName"
+        (click)="onEdit()"
+      >
+        <span class="lucide--pencil text-base" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
 </article>
