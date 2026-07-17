@@ -31,6 +31,11 @@ export class TopAppBar {
     return fullName.split(/\s+/)[0] ?? '';
   });
 
+  protected readonly activeContributorInitials = computed(() =>
+    this.extractInitials(this.contributorContext.active()?.fullName),
+  );
+  protected readonly roleLabelInitials = computed(() => this.extractInitials(this.roleLabel()));
+
   protected readonly canAcessAdminPanel = computed(() =>
     this.profileService.canAccessAdminPanel(this.profile()?.role),
   );
@@ -69,5 +74,14 @@ export class TopAppBar {
     } finally {
       this.isSigningOut.set(false);
     }
+  }
+
+  private extractInitials(str: string | null | undefined) {
+    if (!str) return '??';
+    const parts = str.split(' ').filter((part) => part.length > 0);
+    const first = parts[0]?.[0] ?? '';
+    const last = parts.length > 1 ? parts[parts.length - 1]?.[0] : '';
+
+    return `${first}${last}`.toUpperCase();
   }
 }
