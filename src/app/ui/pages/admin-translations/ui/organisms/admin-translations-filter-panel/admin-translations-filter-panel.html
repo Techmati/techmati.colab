@@ -8,11 +8,10 @@
         <span class="lucide--search"></span>
         Buscar
       </span>
-      <z-input-group [zAddonAfter]="searchIcon" class="bg-card shadow-sm">
+      <z-input-group [zAddonBefore]="searchIcon" [zAddonAfter]="search() ? clearSearch : ''" class="bg-card shadow-sm">
         <input
           z-input
-          type="search"
-          placeholder="Buscar conjunto de frases..."
+          placeholder="Buscar conjuntos..."
           class="h-9 rounded-lg bg-card text-sm shadow-sm"
           [(ngModel)]="search"
         />
@@ -99,6 +98,17 @@
 
   <ng-template #searchIcon>
     <span class="ri--search-line text-base text-text-secondary" aria-hidden="true"></span>
+  </ng-template>
+
+  <ng-template #clearSearch>
+    <button
+      type="button"
+      class="inline-flex items-center justify-center text-text-secondary hover:text-text-primary"
+      aria-label="Limpiar búsqueda"
+      (click)="search.set('')"
+    >
+      <span class="lucide--x text-base" aria-hidden="true"></span>
+    </button>
   </ng-template>
 
   <ng-template #contributorsIcon>

@@ -1,5 +1,5 @@
 <section
-  class="rounded-xl border border-[#d3e4fe] bg-card p-4 shadow-sm"
+  class="rounded-xl border border-border bg-card p-4 shadow-sm"
   aria-label="Búsqueda y filtros de frases"
 >
   <div class="space-y-1">
@@ -8,10 +8,13 @@
         <span class="lucide--search"></span>
         Buscar
       </span>
-      <z-input-group [zAddonAfter]="searchIcon" class="bg-card shadow-sm">
+      <z-input-group
+        [zAddonBefore]="searchIcon"
+        [zAddonAfter]="search() ? clearSearch : ''"
+        class="bg-card shadow-sm"
+      >
         <input
           z-input
-          type="search"
           placeholder="Buscar conjuntos..."
           class="h-9 rounded-lg bg-card text-sm shadow-sm"
           [(ngModel)]="search"
@@ -24,7 +27,7 @@
       zType="default"
       zFull
       type="button"
-      [routerLink]="['/admin','phrase-sets','new']"
+      [routerLink]="['/admin', 'phrase-sets', 'new']"
       class="h-10 rounded-lg border-brand-green-600 bg-brand-green-600 text-sm font-semibold text-white shadow-sm hover:bg-brand-green-500 hover:text-white mt-2"
     >
       <span class="ri--add-circle-line text-lg" aria-hidden="true"></span>
@@ -34,9 +37,10 @@
     <z-accordion zDefaultValue="filters">
       <z-accordion-item zTitle="Filtros" zValue="filters" zIcon="lucide--filter">
         <div class="space-y-2">
-
           <div class="space-y-1">
-            <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
+            <span
+              class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground"
+            >
               <span class="ri--hospital-line"></span>
               Categoría
             </span>
@@ -51,7 +55,6 @@
               }
             </z-select>
           </div>
-
         </div>
         <div class="flex justify-end mt-2">
           <button
@@ -68,10 +71,20 @@
         </div>
       </z-accordion-item>
     </z-accordion>
-
   </div>
 
   <ng-template #searchIcon>
     <span class="ri--search-line text-base text-text-secondary" aria-hidden="true"></span>
+  </ng-template>
+
+  <ng-template #clearSearch>
+    <button
+      type="button"
+      class="inline-flex items-center justify-center text-text-secondary hover:text-text-primary"
+      aria-label="Limpiar búsqueda"
+      (click)="search.set('')"
+    >
+      <span class="lucide--x text-base" aria-hidden="true"></span>
+    </button>
   </ng-template>
 </section>
