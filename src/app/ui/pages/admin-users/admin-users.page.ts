@@ -8,6 +8,7 @@ import {
   signal,
 } from '@angular/core';
 
+import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ZardInputDirective } from '@/shared/components/input';
 import { ZardInputGroupComponent } from '@/shared/components/input-group';
 import { ZardPaginationComponent } from '@/shared/components/pagination';
@@ -49,6 +50,7 @@ const STATUS_FILTER_VALUES = [
     AdminUserCard,
     AdminUsersFilterPanel,
     FormsModule,
+    ZardEmptyComponent,
     ZardInputDirective,
     ZardInputGroupComponent,
     ZardPaginationComponent,
@@ -91,6 +93,8 @@ export class AdminUsersPage {
   protected readonly pages = computed(() =>
     Math.ceil((this.searchResults.data()?.total || 0) / this.PAGE_SIZE),
   );
+
+  protected readonly hasResults = computed(() => (this.searchResults.data()?.total ?? 0) > 0);
 
   constructor() {
     effect(() => {

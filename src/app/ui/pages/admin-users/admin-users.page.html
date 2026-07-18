@@ -6,7 +6,7 @@
     <header class="space-y-3">
       <h1 class="font-display text-3xl font-bold leading-9 text-primary">Usuarios</h1>
 
-      <z-input-group [zAddonBefore]="searchIcon" class="bg-card shadow-sm">
+      <z-input-group [zAddonBefore]="searchIcon" [zAddonAfter]="clearSearch" class="bg-card shadow-sm">
         <input
           z-input
           type="search"
@@ -15,10 +15,20 @@
           aria-label="Buscar usuarios"
           [(ngModel)]="search"
         />
-        <ng-template #searchIcon>
-          <span class="lucide--search"></span>
-        </ng-template>
       </z-input-group>
+      <ng-template #searchIcon>
+        <span class="lucide--search"></span>
+      </ng-template>
+      <ng-template #clearSearch>
+        <button
+          type="button"
+          class="inline-flex items-center justify-center text-text-secondary hover:text-text-primary"
+          aria-label="Limpiar búsqueda"
+          (click)="search.set('')"
+        >
+          <span class="lucide--x text-base" aria-hidden="true"></span>
+        </button>
+      </ng-template>
     </header>
 
     <tm-admin-users-filter-panel
@@ -53,20 +63,28 @@
         } @else {
           @for (user of searchResults.data()?.users; track user.id) {
             <tm-admin-user-card [user]="user" />
+          } @empty {
+            <z-empty
+              zTitle="Sin usuarios"
+              zDescription="No hay usuarios que coincidan con estos filtros."
+              zIcon="lucide--users"
+            />
           }
         }
       </div>
     </section>
 
-    <section class="rounded-xl border border-border-subtle bg-card p-2 shadow-sm">
-      <z-pagination
-        zAriaLabel="Paginación de usuarios"
-        [zTotal]="pages()"
-        [zPageIndex]="page()"
-        (zPageIndexChange)="selectPage($event)"
-        class="w-full justify-center"
-      />
-    </section>
+    @if (hasResults() && pages() > 1) {
+      <section class="rounded-xl border border-border-subtle bg-card p-2 shadow-sm">
+        <z-pagination
+          zAriaLabel="Paginación de usuarios"
+          [zTotal]="pages()"
+          [zPageIndex]="page()"
+          (zPageIndexChange)="selectPage($event)"
+          class="w-full justify-center"
+        />
+      </section>
+    }
   </section>
 
   <tm-admin-bottom-nav />
