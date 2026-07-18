@@ -24,3 +24,8 @@ export interface AdminTranslationListItem extends Translation {
 }
 
 export type TranslationFilter = 'all' | 'in_progress' | 'completed';
+
+export interface TranslationRequestFlags {
+  includeContributor?: boolean;
+  includePhraseSet?: boolean;
+}

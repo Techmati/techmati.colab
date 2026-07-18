@@ -1,4 +1,4 @@
-import { type Translation } from '@/core/types/translation.type';
+import { AdminContributorTranslationDetail } from '@/core/types/admin-translation.type';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
@@ -10,14 +10,15 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminTranslationUserSummaryPanel {
-  readonly summary = input<Translation | null>(null);
+  readonly summary = input<AdminContributorTranslationDetail | null>(null);
   readonly isLoading = input.required<boolean>();
 
-  protected readonly totalPhrases = computed(() => this.summary()?.phraseCount ?? 0);
+  protected readonly totalPhrases = computed(() => this.summary()?.translation?.phraseCount ?? 0);
   protected readonly progressWidth = computed(
-    () => `${Math.min(100, Math.max(0, this.summary()?.progressPercentage ?? 0))}%`,
+    () => `${Math.min(100, Math.max(0, this.summary()?.translation?.progressPercentage ?? 0))}%`,
   );
   protected readonly progressText = computed(
-    () => `${this.summary()?.contributedEntriesCount ?? 0}/${this.totalPhrases()} frases`,
+    () =>
+      `${this.summary()?.translation?.contributedEntriesCount ?? 0}/${this.totalPhrases()} frases`,
   );
 }

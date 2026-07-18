@@ -13,6 +13,7 @@ import { ZardButtonComponent } from '@/shared/components/button';
 export class AdminTranslationUserContributionsTopBar {
   readonly phraseSetTitle = input<string | null>(null);
   readonly userName = input<string | null>(null);
+  readonly translationVariant = input<string | null>(null);
 
   private readonly location = inject(Location);
 

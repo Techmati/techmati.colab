@@ -1,3 +1,4 @@
+import { NahuatlVariant } from '@/core/types/nahuatl-variant.type';
 import { type TranslationEntry } from '@/core/types/translation-entry.type';
 import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
@@ -12,6 +13,7 @@ import { AdminTranslationUserEntryCard } from '../../molecules/admin-translation
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminTranslationUserEntriesPanel {
+  readonly dialect = input.required<NahuatlVariant | null>();
   readonly entries = input.required<readonly TranslationEntry[]>();
   readonly isLoading = input.required<boolean>();
 }

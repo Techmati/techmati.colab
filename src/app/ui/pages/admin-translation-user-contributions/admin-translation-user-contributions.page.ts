@@ -10,8 +10,8 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
-import { AdminTranslationUserEntriesPanel } from './ui/organisms/admin-translation-user-entries-panel/admin-translation-user-entries-panel';
 import { AdminTranslationUserContributionsTopBar } from './ui/organisms/admin-translation-user-contributions-top-bar/admin-translation-user-contributions-top-bar';
+import { AdminTranslationUserEntriesPanel } from './ui/organisms/admin-translation-user-entries-panel/admin-translation-user-entries-panel';
 import { AdminTranslationUserSummaryPanel } from './ui/organisms/admin-translation-user-summary-panel/admin-translation-user-summary-panel';
 
 @Component({
@@ -41,6 +41,7 @@ export class AdminTranslationUserContributionsPage {
     this.adminTranslationService.searchContributorTranslationDetail(
       this.contributorId(),
       this.translationId(),
+      { includeContributor: true, includePhraseSet: true },
     ),
   );
 

@@ -1,15 +1,16 @@
 import { API } from '@/core/config/api-uris.config';
 import { AdminContributorTranslationDetail } from '@/core/types/admin-translation.type';
-import { Pagination } from '@/core/types/utils.type';
 import {
   AdminTranslationListItem,
   Translation,
   TranslationFilter,
+  TranslationRequestFlags,
 } from '@/core/types/translation.type';
+import { Pagination } from '@/core/types/utils.type';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { keepPreviousData, queryOptions } from '@tanstack/angular-query-experimental';
-import { Observable, lastValueFrom } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 
 export interface ListByPhraseSetOptions extends Pagination {
   filter?: TranslationFilter;
@@ -21,7 +22,7 @@ export interface ListByContributorAdminOptions extends Pagination {
   include_phrase_set?: boolean;
 }
 
-export interface ListByContributorAdminSearchParams extends ListByContributorAdminOptions {}
+export interface ListByContributorAdminSearchParams extends ListByContributorAdminOptions { }
 
 @Injectable({
   providedIn: 'root',
@@ -33,9 +34,7 @@ export class AdminTranslationService {
     phraseSetId: string,
     { filter, search, page, size }: ListByPhraseSetOptions,
   ): Observable<{ data: AdminTranslationListItem[]; total: number }> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
+    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
     if (filter) params = params.set('filter', filter);
     if (search) params = params.set('search', search);
 
@@ -45,10 +44,7 @@ export class AdminTranslationService {
     );
   }
 
-  searchListByPhraseSet(
-    phraseSetId: string,
-    options: ListByPhraseSetOptions,
-  ) {
+  searchListByPhraseSet(phraseSetId: string, options: ListByPhraseSetOptions) {
     return queryOptions({
       queryKey: ['admin', 'phrase-set-translations', phraseSetId, options],
       queryFn: () => lastValueFrom(this.listByPhraseSet(phraseSetId, options)),
@@ -60,9 +56,7 @@ export class AdminTranslationService {
     contributorId: string,
     { filter, page, size, include_phrase_set }: ListByContributorAdminOptions,
   ): Observable<{ data: Translation[]; total: number }> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
+    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
     if (filter) params = params.set('filter', filter);
     if (include_phrase_set) params = params.set('include_phrase_set', 'true');
 
@@ -72,10 +66,7 @@ export class AdminTranslationService {
     );
   }
 
-  searchListByContributor(
-    contributorId: string,
-    options: ListByContributorAdminSearchParams,
-  ) {
+  searchListByContributor(contributorId: string, options: ListByContributorAdminSearchParams) {
     return queryOptions({
       queryKey: ['admin', 'contributor-translations', contributorId, options],
       queryFn: () => lastValueFrom(this.listByContributor(contributorId, options)),
@@ -92,11 +83,20 @@ export class AdminTranslationService {
     );
   }
 
-  searchContributorTranslationDetail(contributorId: string, translationId: string) {
+  searchContributorTranslationDetail(
+    contributorId: string,
+    translationId: string,
+    flags: TranslationRequestFlags = {},
+  ) {
     return queryOptions({
       queryKey: ['admin', 'contributor-translation-detail', contributorId, translationId],
       queryFn: () =>
-        lastValueFrom(this.getContributorTranslationDetail(contributorId, translationId)),
+        lastValueFrom(
+          this.client.get<AdminContributorTranslationDetail>(
+            API.ADMIN.CONTRIBUTORS.TRANSLATION_DETAIL(contributorId, translationId),
+            { params: new HttpParams({ fromObject: flags as Record<string, string> }) },
+          ),
+        ),
     });
   }
 }

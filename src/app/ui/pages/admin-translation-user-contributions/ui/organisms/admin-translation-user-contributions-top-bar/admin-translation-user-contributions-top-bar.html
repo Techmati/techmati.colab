@@ -1,5 +1,5 @@
 <header class="sticky top-0 z-20 border-b border-border-subtle bg-card/95 shadow-sm backdrop-blur">
-  <div class="relative mx-auto flex h-[88px] w-full max-w-3xl items-center justify-center px-14">
+  <div class="relative mx-auto flex h-17 w-full max-w-3xl items-center justify-center px-14">
     <button
       z-button
       zType="ghost"
@@ -15,12 +15,9 @@
 
     <div class="min-w-0 text-center text-primary">
       <p class="truncate text-base font-semibold leading-5">
-        Conjunto -{{ phraseSetTitle() || 'Conjunto de frases' }}
+        Conjunto -{{ phraseSetTitle() || 'Cargando...' }}
       </p>
       <p class="text-sm font-light leading-5">Contribuciones</p>
-      <h1 class="truncate font-display text-xl font-semibold leading-7">
-        {{ userName() || 'Colaborador' }}
-      </h1>
     </div>
   </div>
 </header>
