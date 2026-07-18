@@ -1,7 +1,7 @@
 <article class="rounded-xl border border-border-subtle bg-surface-card p-4 shadow-sm">
   <div class="flex items-start justify-between gap-3">
     <h3 class="text-secondary-foreground text-base font-medium leading-8">
-      {{ card().phraseSet?.title || ('Set #' + card().phraseSetId.slice(0, 8)) }}
+      {{ card().phraseSet?.title || 'Set #' + card().phraseSetId.slice(0, 8) }}
     </h3>
     <p class="text-text-tertiary text-xs leading-5">
       {{ card().attemptedAt | date: "d 'de' MMMM yyyy" : '' : 'es-MX' }}
@@ -24,6 +24,11 @@
   </p>
 
   <div class="mt-3 flex items-center justify-end gap-2">
+    <!-- TODO: Wire it to the language selection modal -->
+    <button z-button zType="default" zSize="sm">
+      <span class="lucide--redo" aria-hidden="true"></span>
+      Volver a hacer
+    </button>
     <button z-button zType="outline" zSize="sm" (click)="goToDetails()">
       <span class="lucide--notebook-pen" aria-hidden="true"></span>
       Detalles
