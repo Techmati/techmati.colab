@@ -2,9 +2,12 @@
   class="rounded-xl border border-[#d3e4fe] bg-card p-4 shadow-sm"
   aria-label="Búsqueda y filtros de traducciones"
 >
-  <div class="space-y-4">
-    <label class="block">
-      <span class="sr-only">Buscar conjunto de frases</span>
+  <div class="space-y-1">
+    <div class="space-y-1">
+      <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
+        <span class="lucide--search"></span>
+        Buscar
+      </span>
       <z-input-group [zAddonAfter]="searchIcon" class="bg-card shadow-sm">
         <input
           z-input
@@ -14,65 +17,84 @@
           [(ngModel)]="search"
         />
       </z-input-group>
-    </label>
-
-    <div class="space-y-2">
-      <z-select
-        class="w-full"
-        zPlaceholder="Ordenar por"
-        [zValue]="sortOption()"
-        (zSelectionChange)="selectSort($event)"
-      >
-        @for (option of sortOptions; track option.value) {
-          <z-select-item [zValue]="option.value">{{ option.label }}</z-select-item>
-        }
-      </z-select>
-
-      <z-select
-        class="w-full"
-        zPlaceholder="Categoría"
-        [zValue]="category()"
-        (zSelectionChange)="selectCategory($event)"
-      >
-        @for (opt of categoryOptions; track opt.value) {
-          <z-select-item [zValue]="opt.value">{{ opt.label }}</z-select-item>
-        }
-      </z-select>
-
-      <label class="block">
-        <span class="sr-only">Mínimo de usuarios contribuyendo</span>
-        <z-input-group
-          [zAddonBefore]="contributorsIcon"
-          [zAddonAfter]="contributorsSuffix"
-          class="bg-card shadow-sm"
-        >
-          <input
-            z-input
-            type="number"
-            inputmode="numeric"
-            min="1"
-            placeholder="Más de"
-            class="h-9 rounded-lg bg-card text-sm shadow-sm"
-            [ngModel]="minContributors()"
-            (ngModelChange)="updateMinContributors($event)"
-          />
-        </z-input-group>
-      </label>
     </div>
 
-    <div class="flex justify-end">
-      <button
-        z-button
-        zType="outline"
-        zSize="sm"
-        type="button"
-        class="rounded-lg bg-card text-sm font-semibold"
-        (click)="clearFilters()"
-      >
-        <span class="lucide--x text-base" aria-hidden="true"></span>
-        Borrar filtros
-      </button>
-    </div>
+    <z-accordion zDefaultValue="filters">
+      <z-accordion-item zTitle="Filtros" zValue="filters" zIcon="lucide--filter">
+        <div class="space-y-2">
+
+          <div class="space-y-1">
+            <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
+              <span class="lucide--list-ordered"></span>
+              Ordenar por
+            </span>
+            <z-select
+              class="w-full"
+              zPlaceholder="Ordenar por"
+              [zValue]="sortOption()"
+              (zSelectionChange)="selectSort($event)"
+            >
+              @for (option of sortOptions; track option.value) {
+                <z-select-item [zValue]="option.value">{{ option.label }}</z-select-item>
+              }
+            </z-select>
+          </div>
+
+          <div class="space-y-1">
+            <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
+              <span class="ri--hospital-line"></span>
+              Categoría
+            </span>
+            <z-select
+              class="w-full"
+              zPlaceholder="Categoría"
+              [zValue]="category()"
+              (zSelectionChange)="selectCategory($event)"
+            >
+              @for (opt of categoryOptions; track opt.value) {
+                <z-select-item [zValue]="opt.value">{{ opt.label }}</z-select-item>
+              }
+            </z-select>
+          </div>
+
+          <div class="space-y-1">
+            <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
+              <span class="ri--group-line"></span>
+              Contribuciones
+            </span>
+            <z-input-group
+              [zAddonBefore]="contributorsIcon"
+              [zAddonAfter]="contributorsSuffix"
+            >
+              <input
+                z-input
+                type="number"
+                inputmode="numeric"
+                min="1"
+                placeholder="..."
+                class="text-center"
+                [ngModel]="minContributors()"
+                (ngModelChange)="updateMinContributors($event)"
+              />
+            </z-input-group>
+          </div>
+        </div>
+        <div class="flex justify-end mt-2">
+          <button
+            z-button
+            zType="outline"
+            zSize="sm"
+            type="button"
+            class="rounded-lg bg-card text-sm font-semibold"
+            (click)="clearFilters()"
+          >
+            <span class="lucide--x text-base" aria-hidden="true"></span>
+            Borrar filtros
+          </button>
+        </div>
+      </z-accordion-item>
+    </z-accordion>
+
   </div>
 
   <ng-template #searchIcon>
@@ -80,7 +102,6 @@
   </ng-template>
 
   <ng-template #contributorsIcon>
-    <span class="ri--group-line text-base text-text-secondary" aria-hidden="true"></span>
     <span>Más de</span>
   </ng-template>
 

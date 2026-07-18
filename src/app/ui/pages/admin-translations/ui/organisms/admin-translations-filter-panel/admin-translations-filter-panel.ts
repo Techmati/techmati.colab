@@ -3,6 +3,7 @@ import {
   type AdminPhraseSetSortBy,
   type AdminPhraseSetSortDirection,
 } from '@/core/service/admin-phrase-set/admin-phrase-set.service';
+import { ZardAccordionImports } from '@/shared/components/accordion';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardInputDirective } from '@/shared/components/input';
 import { ZardInputGroupComponent } from '@/shared/components/input-group';
@@ -26,6 +27,7 @@ interface SortOption {
     ZardInputDirective,
     ZardInputGroupComponent,
     ...ZardSelectImports,
+    ...ZardAccordionImports,
   ],
   templateUrl: './admin-translations-filter-panel.html',
   styleUrl: './admin-translations-filter-panel.css',
@@ -152,7 +154,9 @@ export class AdminTranslationsFilterPanel {
     });
   }
 
-  private navigateWithFilters(queryParams: Record<string, string | number | null>): Promise<boolean> {
+  private navigateWithFilters(
+    queryParams: Record<string, string | number | null>,
+  ): Promise<boolean> {
     return this.router.navigate([], {
       queryParams,
       queryParamsHandling: 'merge',
