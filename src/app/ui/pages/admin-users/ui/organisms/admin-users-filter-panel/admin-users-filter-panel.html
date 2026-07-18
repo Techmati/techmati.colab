@@ -1,47 +1,101 @@
-<section class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm" aria-label="Filtros">
-  <div class="space-y-4">
-    <div class="space-y-2">
-      <div class="flex items-center gap-1 text-xs font-medium uppercase tracking-[0.05em] text-text-secondary">
-        <span class="lucide--square-user text-base" aria-hidden="true"></span>
-        Rol
-      </div>
-
-      <div class="flex gap-2 overflow-x-auto">
-        @for (option of roleOptions; track option.value) {
-          <button
-            z-button
-            zSize="xs"
-            type="button"
-            class="h-5.5 rounded-full px-2.5"
-            [zType]="selectedRole() === option.value ? 'default' : 'outline'"
-            (click)="roleChange.emit(option.value)"
-          >
-            {{ option.label }}
-          </button>
-        }
-      </div>
+<section
+  class="rounded-xl border border-[#d3e4fe] bg-card p-4 shadow-sm"
+  aria-label="Búsqueda y filtros de usuarios"
+>
+  <div class="space-y-1">
+    <div class="space-y-1">
+      <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
+        <span class="lucide--search"></span>
+        Buscar
+      </span>
+      <z-input-group [zAddonBefore]="searchIcon" [zAddonAfter]="clearSearch" class="bg-card shadow-sm">
+        <input
+          z-input
+          type="search"
+          placeholder="Buscar usuarios..."
+          class="h-9 rounded-lg bg-card text-sm shadow-sm"
+          [(ngModel)]="search"
+        />
+      </z-input-group>
     </div>
 
-    <div class="space-y-2">
-      <div class="flex items-center gap-1 text-xs font-medium uppercase tracking-wider text-text-secondary">
-        <span class="lucide--info text-base" aria-hidden="true"></span>
-        Estado
-      </div>
+    <z-accordion zDefaultValue="filters">
+      <z-accordion-item zTitle="Filtros" zValue="filters" zIcon="lucide--filter">
+        <div class="space-y-2">
 
-      <div class="flex gap-2 overflow-x-auto">
-        @for (option of statusOptions; track option.value) {
+          <div class="space-y-1">
+            <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
+              <span class="lucide--square-user"></span>
+              Rol
+            </span>
+            <div class="flex gap-2 flex-wrap">
+              @for (option of roleOptions; track option.value) {
+                <button
+                  z-button
+                  zSize="xs"
+                  type="button"
+                  class="h-5.5 rounded-full px-2.5"
+                  [zType]="selectedRole() === option.value ? 'default' : 'outline'"
+                  (click)="selectRole(option.value)"
+                >
+                  {{ option.label }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
+              <span class="lucide--info"></span>
+              Estado
+            </span>
+            <div class="flex gap-2 flex-wrap">
+              @for (option of statusOptions; track option.value) {
+                <button
+                  z-button
+                  zSize="xs"
+                  type="button"
+                  class="h-[22px] rounded-full px-2.5"
+                  [zType]="selectedStatus() === option.value ? 'secondary' : 'outline'"
+                  (click)="selectStatus(option.value)"
+                >
+                  {{ option.label }}
+                </button>
+              }
+            </div>
+          </div>
+
+        </div>
+        <div class="flex justify-end mt-2">
           <button
             z-button
-            zSize="xs"
+            zType="outline"
+            zSize="sm"
             type="button"
-            class="h-[22px] rounded-full px-2.5"
-            [zType]="selectedStatus() === option.value ? 'secondary' : 'outline'"
-            (click)="statusChange.emit(option.value)"
+            class="rounded-lg bg-card text-sm font-semibold"
+            (click)="clearFilters()"
           >
-            {{ option.label }}
+            <span class="lucide--x text-base" aria-hidden="true"></span>
+            Borrar filtros
           </button>
-        }
-      </div>
-    </div>
+        </div>
+      </z-accordion-item>
+    </z-accordion>
+
   </div>
+
+  <ng-template #searchIcon>
+    <span class="ri--search-line text-base text-text-secondary" aria-hidden="true"></span>
+  </ng-template>
+
+  <ng-template #clearSearch>
+    <button
+      type="button"
+      class="inline-flex items-center justify-center text-text-secondary hover:text-text-primary"
+      aria-label="Limpiar búsqueda"
+      (click)="search.set('')"
+    >
+      <span class="lucide--x text-base" aria-hidden="true"></span>
+    </button>
+  </ng-template>
 </section>

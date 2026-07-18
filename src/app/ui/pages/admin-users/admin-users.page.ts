@@ -9,38 +9,16 @@ import {
 } from '@angular/core';
 
 import { ZardEmptyComponent } from '@/shared/components/empty';
-import { ZardInputDirective } from '@/shared/components/input';
-import { ZardInputGroupComponent } from '@/shared/components/input-group';
 import { ZardPaginationComponent } from '@/shared/components/pagination';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { AdminBottomNav } from '@/ui/organisms/admin-bottom-nav/admin-bottom-nav';
 import { TopAppBar } from '@/ui/organisms/top-app-bar/top-app-bar';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
-import {
-  AdminUserRoleFilter,
-  AdminUserStatusFilter,
-  AdminUsersQuery,
-} from './core/dto/admin-users-query.dto';
+import { AdminUserRoleFilter, AdminUsersQuery } from './core/dto/admin-users-query.dto';
 import { AdminUsersService } from './core/service/admin-users.service';
 import { AdminUserCard } from './ui/molecules/admin-user-card/admin-user-card';
 import { AdminUsersFilterPanel } from './ui/organisms/admin-users-filter-panel/admin-users-filter-panel';
-
-const ROLE_FILTER_VALUES = [
-  'all',
-  'root',
-  'admin',
-  'moderator',
-  'analyst',
-  'user',
-] as const satisfies readonly AdminUserRoleFilter[];
-
-const STATUS_FILTER_VALUES = [
-  'all',
-  'active',
-  'banned',
-] as const satisfies readonly AdminUserStatusFilter[];
 
 @Component({
   selector: 'tm-admin-users-page',
@@ -49,10 +27,7 @@ const STATUS_FILTER_VALUES = [
     AdminBottomNav,
     AdminUserCard,
     AdminUsersFilterPanel,
-    FormsModule,
     ZardEmptyComponent,
-    ZardInputDirective,
-    ZardInputGroupComponent,
     ZardPaginationComponent,
     ZardSkeletonComponent,
   ],
@@ -66,16 +41,11 @@ export class AdminUsersPage {
   protected readonly statusParam = input('', { alias: 'status' });
   protected readonly pageParam = input('', { alias: 'page' });
 
-  protected readonly search = signal('');
-  protected readonly debouncedSearch = signal('');
-  protected readonly selectedRole = signal<AdminUserRoleFilter>('all');
-  protected readonly selectedStatus = signal<AdminUserStatusFilter>('all');
   protected readonly page = signal(1);
 
   private readonly router = inject(Router);
   private readonly adminUsersService = inject(AdminUsersService);
 
-  private readonly DEBOUNCE_DELAY = 750;
   private readonly PAGE_SIZE = 10;
 
   protected readonly usersQuery = computed<AdminUsersQuery>(() => ({
@@ -98,72 +68,26 @@ export class AdminUsersPage {
 
   constructor() {
     effect(() => {
-      this.search.set(this.searchParam() || '');
-    });
-
-    effect(() => {
-      this.selectedRole.set(this.normalizeRoleFilter(this.roleParam()));
-    });
-
-    effect(() => {
-      this.selectedStatus.set(this.normalizeStatusFilter(this.statusParam()));
-    });
-
-    effect(() => {
       this.page.set(this.normalizePage(this.pageParam()));
-    });
-
-    effect(() => {
-      const search = this.debouncedSearch();
-      this.router.navigate([], {
-        queryParams: { search },
-        queryParamsHandling: 'merge',
-      });
-    });
-
-    effect((onCleanup) => {
-      const search = this.search().trim();
-      const timeoutId = setTimeout(() => {
-        this.debouncedSearch.set(search);
-      }, this.DEBOUNCE_DELAY);
-      onCleanup(() => clearTimeout(timeoutId));
-    });
-  }
-
-  protected selectRole(role: AdminUserRoleFilter): void {
-    this.selectedRole.set(role);
-    this.router.navigate([], {
-      queryParams: { role },
-      queryParamsHandling: 'merge',
-    });
-  }
-
-  protected selectStatus(status: AdminUserStatusFilter): void {
-    this.selectedStatus.set(status);
-    this.router.navigate([], {
-      queryParams: { status },
-      queryParamsHandling: 'merge',
     });
   }
 
   protected selectPage(page: number): void {
     this.page.set(page);
-    this.router.navigate([], {
-      queryParams: { page },
+    void this.router.navigate([], {
+      queryParams: { page: page > 1 ? page : null },
       queryParamsHandling: 'merge',
     });
   }
 
   private normalizeRoleFilter(value: string): AdminUserRoleFilter {
-    return (ROLE_FILTER_VALUES as readonly string[]).includes(value)
-      ? (value as AdminUserRoleFilter)
-      : 'all';
+    const values: AdminUserRoleFilter[] = ['all', 'root', 'admin', 'moderator', 'analyst', 'collector', 'user'];
+    return values.includes(value as AdminUserRoleFilter) ? (value as AdminUserRoleFilter) : 'all';
   }
 
-  private normalizeStatusFilter(value: string): AdminUserStatusFilter {
-    return (STATUS_FILTER_VALUES as readonly string[]).includes(value)
-      ? (value as AdminUserStatusFilter)
-      : 'all';
+  private normalizeStatusFilter(value: string): 'all' | 'active' | 'banned' {
+    const values = ['all', 'active', 'banned'] as const;
+    return values.includes(value as typeof values[number]) ? (value as typeof values[number]) : 'all';
   }
 
   private normalizePage(value: string): number {

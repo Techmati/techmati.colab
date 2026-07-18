@@ -3,39 +3,12 @@
   <tm-top-app-bar />
 
   <section class="mx-auto flex w-full max-w-3xl flex-col gap-5 px-5 py-5">
-    <header class="space-y-3">
-      <h1 class="font-display text-3xl font-bold leading-9 text-primary">Usuarios</h1>
-
-      <z-input-group [zAddonBefore]="searchIcon" [zAddonAfter]="clearSearch" class="bg-card shadow-sm">
-        <input
-          z-input
-          type="search"
-          class="h-9 rounded-lg bg-card pr-10 text-sm shadow-sm"
-          placeholder="Buscar..."
-          aria-label="Buscar usuarios"
-          [(ngModel)]="search"
-        />
-      </z-input-group>
-      <ng-template #searchIcon>
-        <span class="lucide--search"></span>
-      </ng-template>
-      <ng-template #clearSearch>
-        <button
-          type="button"
-          class="inline-flex items-center justify-center text-text-secondary hover:text-text-primary"
-          aria-label="Limpiar búsqueda"
-          (click)="search.set('')"
-        >
-          <span class="lucide--x text-base" aria-hidden="true"></span>
-        </button>
-      </ng-template>
-    </header>
+    <h1 class="font-display text-3xl font-bold leading-9 text-primary">Usuarios</h1>
 
     <tm-admin-users-filter-panel
-      [selectedRole]="selectedRole()"
-      [selectedStatus]="selectedStatus()"
-      (roleChange)="selectRole($event)"
-      (statusChange)="selectStatus($event)"
+      [searchParam]="searchParam()"
+      [roleParam]="roleParam()"
+      [statusParam]="statusParam()"
     />
 
     <section class="space-y-3" aria-labelledby="admin-users-results-heading">
