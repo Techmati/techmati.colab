@@ -3,7 +3,7 @@ import { Contributor } from '@/core/types/contributor.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { mutationOptions, QueryClient, queryOptions } from '@tanstack/angular-query-experimental';
-import { lastValueFrom, map, Observable } from 'rxjs';
+import { lastValueFrom, map } from 'rxjs';
 
 export interface CreateContributorPayload {
   fullName: string;
@@ -23,12 +23,6 @@ export class ContributorService {
   private readonly client = inject(HttpClient);
   private readonly queryClient = inject(QueryClient);
 
-  listObservable(): Observable<Contributor[]> {
-    return this.client
-      .get<{ data: Contributor[] }>(API.CONTRIBUTORS.LIST)
-      .pipe(map((response) => response.data));
-  }
-
   list() {
     return queryOptions({
       queryKey: ['contributors'],
@@ -39,10 +33,6 @@ export class ContributorService {
             .pipe(map((response) => response.data)),
         ),
     });
-  }
-
-  findById(id: string): Observable<Contributor> {
-    return this.client.get<Contributor>(API.CONTRIBUTORS.BY_ID(id));
   }
 
   create() {

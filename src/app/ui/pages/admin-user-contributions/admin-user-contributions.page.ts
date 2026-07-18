@@ -48,11 +48,11 @@ export class AdminUserContributionsPage {
   protected readonly page = signal(1);
 
   protected readonly statsQuery = injectQuery(() =>
-    this.adminStatsService.searchContributorTranslations(this.contributorId()),
+    this.adminStatsService.contributorTranslations(this.contributorId()),
   );
 
   protected readonly translationsQuery = injectQuery(() =>
-    this.adminTranslationService.searchListByContributor(this.contributorId(), {
+    this.adminTranslationService.listByContributor(this.contributorId(), {
       page: this.page(),
       size: this.PAGE_SIZE,
       filter: this.TRANSLATION_FILTER,

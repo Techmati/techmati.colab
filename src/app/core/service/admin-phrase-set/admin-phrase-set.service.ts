@@ -14,7 +14,7 @@ import {
   QueryClient,
   queryOptions,
 } from '@tanstack/angular-query-experimental';
-import { lastValueFrom, Observable } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 
 export type AdminPhraseSetSortBy = 'createdAt' | 'title' | 'phraseCount' | 'contributorsCount' | 'category';
 export type AdminPhraseSetSortDirection = 'asc' | 'desc';
@@ -45,66 +45,50 @@ export class AdminPhraseSetService {
   private readonly client = inject(HttpClient);
   private readonly queryClient = inject(QueryClient);
 
-  private readonly searchApi = API.ADMIN.PHRASE_SET.SEARCH;
+  readonly searchApi = API.ADMIN.PHRASE_SET.SEARCH;
 
-  search<TPhraseSet extends PhraseSet = PhraseSet>(
-    query: AdminPhraseSetSearchQuery,
-  ): Observable<AdminPhraseSetSearchResponse<TPhraseSet>> {
-    return this.client.get<AdminPhraseSetSearchResponse<TPhraseSet>>(this.searchApi, {
-      params: this.buildSearchParams(query),
-    });
-  }
-
-  searchQuery<TPhraseSet extends PhraseSet = PhraseSet>(query: AdminPhraseSetSearchQuery) {
+  search<TPhraseSet extends PhraseSet = PhraseSet>(query: AdminPhraseSetSearchQuery) {
     return queryOptions({
       queryKey: ['admin', 'phrase-set-search', query],
-      queryFn: () => lastValueFrom(this.search<TPhraseSet>(query)),
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<AdminPhraseSetSearchResponse<TPhraseSet>>(this.searchApi, {
+            params: this.buildSearchParams(query),
+          }),
+        ),
       placeholderData: keepPreviousData,
     });
   }
 
-  findPhrases(phraseSetId: string, { page, size }: Pagination): Observable<PaginatedPhrases> {
+  findPhrases(phraseSetId: string, { page, size }: Pagination) {
     const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
-    return this.client.get<PaginatedPhrases>(API.ADMIN.PHRASE_SET.PHRASES(phraseSetId), { params });
-  }
-
-  findPhrasesQuery(phraseSetId: string, params: Pagination) {
     return queryOptions({
-      queryKey: ['admin', 'phrase-set-phrases', phraseSetId, params],
-      queryFn: () => lastValueFrom(this.findPhrases(phraseSetId, params)),
+      queryKey: ['admin', 'phrase-set-phrases', phraseSetId, { page, size }],
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<PaginatedPhrases>(API.ADMIN.PHRASE_SET.PHRASES(phraseSetId), { params }),
+        ),
     });
   }
 
-  findById(phraseSetId: string): Observable<PhraseSet> {
-    return this.client.get<PhraseSet>(API.ADMIN.PHRASE_SET.BY_ID(phraseSetId));
-  }
-
-  findByIdQuery(phraseSetId: string) {
+  findById(phraseSetId: string) {
     return queryOptions({
       queryKey: ['admin', 'phrase-set', phraseSetId],
-      queryFn: () => lastValueFrom(this.findById(phraseSetId)),
+      queryFn: () => lastValueFrom(this.client.get<PhraseSet>(API.ADMIN.PHRASE_SET.BY_ID(phraseSetId))),
     });
   }
 
-  create(phraseSet: PhraseSetCreatePayload): Observable<PhraseSet> {
-    return this.client.post<PhraseSet>(this.searchApi, phraseSet);
+  create(phraseSet: PhraseSetCreatePayload) {
+    return mutationOptions({
+      mutationFn: () => lastValueFrom(this.client.post<PhraseSet>(this.searchApi, phraseSet)),
+    });
   }
 
-  createMutation() {
-    return {
-      mutationFn: (phraseSet: PhraseSetCreatePayload) => lastValueFrom(this.create(phraseSet)),
-    };
-  }
-
-  update(phraseSetId: string, phraseSet: PhraseSetUpdatePayload): Observable<PhraseSet> {
-    return this.client.put<PhraseSet>(API.ADMIN.PHRASE_SET.BY_ID(phraseSetId), phraseSet);
-  }
-
-  updateMutation(phraseSetId: string) {
-    return {
-      mutationFn: (phraseSet: PhraseSetUpdatePayload) =>
-        lastValueFrom(this.update(phraseSetId, phraseSet)),
-    };
+  update(phraseSetId: string, phraseSet: PhraseSetUpdatePayload) {
+    return mutationOptions({
+      mutationFn: () =>
+        lastValueFrom(this.client.put<PhraseSet>(API.ADMIN.PHRASE_SET.BY_ID(phraseSetId), phraseSet)),
+    });
   }
 
   delete(phraseSetId: string) {

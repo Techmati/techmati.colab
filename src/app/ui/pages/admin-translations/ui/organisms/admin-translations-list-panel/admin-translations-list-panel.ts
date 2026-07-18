@@ -30,7 +30,7 @@ export class AdminTranslationsListPanel {
   private readonly router = inject(Router);
 
   protected readonly searchResults = injectQuery(() =>
-    this.adminPhraseSetService.searchQuery<PhraseSetWithStats>(this.query()),
+    this.adminPhraseSetService.search<PhraseSetWithStats>(this.query()),
   );
 
   protected readonly phraseSets = computed(() => this.searchResults.data()?.data ?? []);

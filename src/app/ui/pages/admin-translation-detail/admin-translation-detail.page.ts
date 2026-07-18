@@ -34,11 +34,11 @@ export class AdminTranslationDetailPage {
   protected readonly page = signal(1);
 
   protected readonly phraseSetQuery = injectQuery(() =>
-    this.adminPhraseSetService.findByIdQuery(this.phraseSetId()),
+    this.adminPhraseSetService.findById(this.phraseSetId()),
   );
 
   protected readonly translationsQuery = injectQuery(() =>
-    this.adminTranslationService.searchListByPhraseSet(this.phraseSetId(), {
+    this.adminTranslationService.listByPhraseSet(this.phraseSetId(), {
       page: this.page(),
       size: this.PAGE_SIZE,
       search: this.searchParam() || undefined,

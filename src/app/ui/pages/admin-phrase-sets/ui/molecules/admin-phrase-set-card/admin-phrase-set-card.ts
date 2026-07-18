@@ -33,7 +33,7 @@ export class AdminPhraseSetCard {
   private readonly location = inject(Location);
 
   readonly phrases = injectQuery(() =>
-    this.adminPhraseSetService.findPhrasesQuery(this.phraseSet().id, { page: 1, size: 3 }),
+    this.adminPhraseSetService.findPhrases(this.phraseSet().id, { page: 1, size: 3 }),
   );
 
   readonly previewPhrases = computed(() => this.phrases.data()?.data || []);

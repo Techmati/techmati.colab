@@ -9,7 +9,7 @@ import { Pagination } from '@/core/types/utils.type';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { keepPreviousData, queryOptions } from '@tanstack/angular-query-experimental';
-import { Observable, lastValueFrom } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,65 +17,52 @@ import { Observable, lastValueFrom } from 'rxjs';
 export class AdminStatsService {
   private readonly client = inject(HttpClient);
 
-  overview(): Observable<StatsOverview> {
-    return this.client.get<StatsOverview>(API.ADMIN.STATS.OVERVIEW);
-  }
-
-  searchOverview() {
+  overview() {
     return queryOptions({
       queryKey: ['admin-stats', 'overview'],
-      queryFn: () => lastValueFrom(this.overview()),
+      queryFn: () => lastValueFrom(this.client.get<StatsOverview>(API.ADMIN.STATS.OVERVIEW)),
     });
   }
 
-  latestContributions({ page, size }: Pagination): Observable<{ data: LatestContributionDto[]; total: number }> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
-
-    return this.client.get<{ data: LatestContributionDto[]; total: number }>(
-      API.ADMIN.STATS.LATEST_CONTRIBUTIONS,
-      { params },
-    );
-  }
-
-  searchLatestContributions({ page, size }: Pagination) {
+  latestContributions({ page, size }: Pagination) {
+    const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return queryOptions({
       queryKey: ['admin-stats', 'latest-contributions', page, size],
-      queryFn: () => lastValueFrom(this.latestContributions({ page, size })),
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<{ data: LatestContributionDto[]; total: number }>(
+            API.ADMIN.STATS.LATEST_CONTRIBUTIONS,
+            { params },
+          ),
+        ),
       placeholderData: keepPreviousData,
     });
   }
 
-  latestUsers({ page, size }: Pagination): Observable<{ data: LatestUserDto[]; total: number }> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
-
-    return this.client.get<{ data: LatestUserDto[]; total: number }>(
-      API.ADMIN.STATS.LATEST_USERS,
-      { params },
-    );
-  }
-
-  searchLatestUsers({ page, size }: Pagination) {
+  latestUsers({ page, size }: Pagination) {
+    const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return queryOptions({
       queryKey: ['admin-stats', 'latest-users', page, size],
-      queryFn: () => lastValueFrom(this.latestUsers({ page, size })),
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<{ data: LatestUserDto[]; total: number }>(
+            API.ADMIN.STATS.LATEST_USERS,
+            { params },
+          ),
+        ),
       placeholderData: keepPreviousData,
     });
   }
 
-  contributorTranslations(contributorId: string): Observable<ContributorTranslationStats> {
-    return this.client.get<ContributorTranslationStats>(
-      API.ADMIN.STATS.CONTRIBUTOR_TRANSLATIONS(contributorId),
-    );
-  }
-
-  searchContributorTranslations(contributorId: string) {
+  contributorTranslations(contributorId: string) {
     return queryOptions({
       queryKey: ['admin-stats', 'contributor-translations', contributorId],
-      queryFn: () => lastValueFrom(this.contributorTranslations(contributorId)),
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<ContributorTranslationStats>(
+            API.ADMIN.STATS.CONTRIBUTOR_TRANSLATIONS(contributorId),
+          ),
+        ),
     });
   }
 }

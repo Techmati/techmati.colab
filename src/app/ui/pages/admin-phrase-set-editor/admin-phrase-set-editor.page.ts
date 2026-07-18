@@ -54,14 +54,14 @@ export class AdminPhraseSetEditorPage {
   readonly created = signal(false);
 
   readonly phraseSetQuery = injectQuery(() => ({
-    ...this.adminPhraseSetService.findByIdQuery(this.phraseSetId()),
+    ...this.adminPhraseSetService.findById(this.phraseSetId()),
     enabled: !this.isCreating(),
   }));
 
   readonly phraseSet = computed(() => this.phraseSetQuery.data() ?? null);
 
   readonly phraseSetPhrasesQuery = injectQuery(() => ({
-    ...this.adminPhraseSetService.findPhrasesQuery(this.phraseSetId(), { page: 1, size: 100 }),
+    ...this.adminPhraseSetService.findPhrases(this.phraseSetId(), { page: 1, size: 100 }),
     enabled: !this.isCreating(),
   }));
 
@@ -78,14 +78,20 @@ export class AdminPhraseSetEditorPage {
   readonly deleteDisabled = computed(() => this.isCreating());
 
   readonly phraseSetUpdateMutation = injectMutation(() => ({
-    ...this.adminPhraseSetService.updateMutation(this.phraseSetId()),
-    onSuccess: (data) => this.onUpdateSuccess(data),
+    ...this.adminPhraseSetService.update(this.phraseSetId(), this.buildUpdatePayload()),
+    onSuccess: (data) => {
+      this.adminPhraseSetService.invalidateSearch();
+      this.onUpdateSuccess(data);
+    },
     onError: () => this.onUpdateError(this.buildUpdatePayload()),
   }));
 
   readonly phraseSetCreateMutation = injectMutation(() => ({
-    ...this.adminPhraseSetService.createMutation(),
-    onSuccess: (data) => this.onCreationSuccess(data),
+    ...this.adminPhraseSetService.create(this.buildCreatePayload()),
+    onSuccess: (data) => {
+      this.adminPhraseSetService.invalidateSearch();
+      this.onCreationSuccess(data);
+    },
     onError: () => this.onCreationError(this.buildCreatePayload()),
   }));
 
@@ -106,12 +112,12 @@ export class AdminPhraseSetEditorPage {
   protected save() {
     console.log(this.isCreating());
     if (this.isCreating()) {
-      this.phraseSetCreateMutation.mutate(this.buildCreatePayload());
+      this.phraseSetCreateMutation.mutate();
       console.log('Creating new phrase set', this.buildCreatePayload());
       return;
     }
 
-    this.phraseSetUpdateMutation.mutate(this.buildUpdatePayload());
+    this.phraseSetUpdateMutation.mutate();
   }
 
   protected discard(): void {

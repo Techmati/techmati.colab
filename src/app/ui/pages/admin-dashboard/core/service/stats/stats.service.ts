@@ -7,6 +7,7 @@ import { LatestContributionsResponseDto } from '../../dto/latest-contributions-r
 import { LatestUsersResponseDto } from '../../dto/latest-users-response.dto';
 import { StatsResponseDto } from '../../dto/stats.response.dto';
 
+// TODO: merge with core AdminStatsService and consolidate DTOs (core and page-local duplicate the same endpoints)
 @Injectable({
   providedIn: 'root',
 })

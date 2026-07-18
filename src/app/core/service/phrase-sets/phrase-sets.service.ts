@@ -3,7 +3,7 @@ import { PhraseSet, PhraseSetWithPhrasesDto } from '@/core/types/phrase-set.type
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { queryOptions } from '@tanstack/angular-query-experimental';
-import { lastValueFrom, map, Observable } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 
 export type PhraseSetFilter = 'all' | 'incomplete' | 'complete' | 'untouched';
 
@@ -26,13 +26,6 @@ export class PhraseSetsService {
   private readonly phraseSetsApi = API.PHRASE_SETS.PAGINATED;
   private readonly phraseSetByIdApi = API.PHRASE_SETS.BY_ID;
   private readonly client = inject(HttpClient);
-
-  getPhraseSets(page: number, size: number): Observable<PhraseSet[]> {
-    const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
-    return this.client
-      .get<PaginatedPhraseSets>(this.phraseSetsApi, { params })
-      .pipe(map((response) => response.data));
-  }
 
   getPhraseSetById(id: string) {
     return queryOptions({

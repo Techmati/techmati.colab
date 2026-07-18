@@ -29,7 +29,7 @@ export class TransEntryPage {
     const contributor = this.contributorContext.active()!;
     const translationId = this.translationId();
     return {
-      ...this.translationService.getDetail(contributor.id, translationId),
+      ...this.translationService.findById(contributor.id, translationId),
       enabled: !!contributor && !!translationId,
     };
   });

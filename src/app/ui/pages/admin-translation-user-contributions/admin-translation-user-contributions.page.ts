@@ -38,10 +38,9 @@ export class AdminTranslationUserContributionsPage {
   protected readonly page = signal(1);
 
   protected readonly detailQuery = injectQuery(() =>
-    this.adminTranslationService.searchContributorTranslationDetail(
+    this.adminTranslationService.getContributorTranslationDetail(
       this.contributorId(),
       this.translationId(),
-      { includeContributor: true, includePhraseSet: true },
     ),
   );
 

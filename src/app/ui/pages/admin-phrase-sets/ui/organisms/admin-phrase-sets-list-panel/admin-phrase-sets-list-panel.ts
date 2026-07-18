@@ -26,7 +26,7 @@ export class AdminPhraseSetsListPanel {
   readonly size = 10;
 
   readonly searchResults = injectQuery(() =>
-    this.adminPhraseSetService.searchQuery({
+    this.adminPhraseSetService.search({
       search: this.searchParam() || '',
       category: this.categoryParam() || undefined,
       page: this.page(),
