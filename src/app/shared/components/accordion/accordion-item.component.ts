@@ -1,7 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, input, signal, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  signal,
+  ViewEncapsulation,
+} from '@angular/core';
 
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideChevronDown } from '@ng-icons/lucide';
 import type { ClassValue } from 'clsx';
 
 import type { ZardAccordionComponent } from '@/shared/components/accordion/accordion.component';
@@ -14,7 +19,7 @@ import { mergeClasses } from '@/shared/utils/merge-classes';
 
 @Component({
   selector: 'z-accordion-item',
-  imports: [NgIcon],
+  imports: [],
   template: `
     <button
       type="button"
@@ -24,12 +29,16 @@ import { mergeClasses } from '@/shared/utils/merge-classes';
       [class]="triggerClasses()"
       (click)="toggle()"
     >
-      {{ zTitle() }}
-      <ng-icon
-        name="lucideChevronDown"
-        class="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200"
+      <span class="space-x-2">
+        @if (zIcon(); as icon) {
+          <span [class]="icon"></span>
+        }
+        {{ zTitle() }}
+      </span>
+      <span
+        class="lucide--chevron-down text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200"
         [class]="isOpen() ? 'rotate-180' : ''"
-      />
+      ></span>
     </button>
 
     <div
@@ -48,7 +57,7 @@ import { mergeClasses } from '@/shared/utils/merge-classes';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  viewProviders: [provideIcons({ lucideChevronDown })],
+  viewProviders: [],
   host: {
     '[class]': 'itemClasses()',
     '[attr.data-state]': "isOpen() ? 'open' : 'closed'",
@@ -58,20 +67,25 @@ import { mergeClasses } from '@/shared/utils/merge-classes';
 export class ZardAccordionItemComponent {
   readonly zTitle = input<string>('');
   readonly zValue = input<string>('');
+  readonly zIcon = input<string>('');
   readonly class = input<ClassValue>('');
 
   accordion!: ZardAccordionComponent;
   readonly isOpen = signal(false);
 
-  protected readonly itemClasses = computed(() => mergeClasses(accordionItemVariants(), this.class()));
+  protected readonly itemClasses = computed(() =>
+    mergeClasses(accordionItemVariants(), this.class()),
+  );
   protected readonly triggerClasses = computed(() => mergeClasses(accordionTriggerVariants()));
-  protected readonly contentClasses = computed(() => mergeClasses(accordionContentVariants({ isOpen: this.isOpen() })));
+  protected readonly contentClasses = computed(() =>
+    mergeClasses(accordionContentVariants({ isOpen: this.isOpen() })),
+  );
 
   toggle(): void {
     if (this.accordion) {
       this.accordion.toggleItem(this);
     } else {
-      this.isOpen.update(v => !v);
+      this.isOpen.update((v) => !v);
     }
   }
 }
