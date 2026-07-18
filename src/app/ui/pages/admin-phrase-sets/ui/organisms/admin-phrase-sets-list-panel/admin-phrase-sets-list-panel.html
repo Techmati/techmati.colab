@@ -35,6 +35,17 @@
       }
     }
   </div>
-<!-- TODO: bind the page param to the route query params -->
-  <z-pagination [zTotal]="pages()" [(zPageIndex)]="page"></z-pagination>
+
+  @if (hasResults() && pages() > 1) {
+    <section
+      class="inline-flex max-w-full rounded-xl border border-border-subtle bg-card p-2 shadow-sm"
+      aria-label="Paginación de conjuntos"
+    >
+      <z-pagination
+        [zTotal]="pages()"
+        [zPageIndex]="page()"
+        (zPageIndexChange)="selectPage($event)"
+      ></z-pagination>
+    </section>
+  }
 </section>
