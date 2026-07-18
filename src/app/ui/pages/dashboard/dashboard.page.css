@@ -1,7 +1,3 @@
 :host {
   display: block;
 }
-
-.dashboard-page {
-  background: var(--color-background);
-}
