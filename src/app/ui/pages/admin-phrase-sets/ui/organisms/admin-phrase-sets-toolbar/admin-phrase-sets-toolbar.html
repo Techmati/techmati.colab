@@ -1,48 +1,77 @@
-<section class="space-y-4" aria-labelledby="admin-phrase-sets-title">
-  <h1
-    id="admin-phrase-sets-title"
-    class="font-display text-3xl font-semibold leading-tight text-primary"
-  >
-    Frases
-  </h1>
+<section
+  class="rounded-xl border border-[#d3e4fe] bg-card p-4 shadow-sm"
+  aria-label="Búsqueda y filtros de frases"
+>
+  <div class="space-y-1">
+    <div class="space-y-1">
+      <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
+        <span class="lucide--search"></span>
+        Buscar
+      </span>
+      <z-input-group [zAddonAfter]="searchIcon" class="bg-card shadow-sm">
+        <input
+          z-input
+          type="search"
+          placeholder="Buscar conjuntos..."
+          class="h-9 rounded-lg bg-card text-sm shadow-sm"
+          [(ngModel)]="search"
+        />
+      </z-input-group>
+    </div>
 
-  <button
-    z-button
-    zType="default"
-    zFull
-    type="button"
-    [routerLink]="['/admin','phrase-sets','new']"
-    class="h-14 rounded-xl border-brand-green-600 bg-brand-green-600 text-sm font-semibold text-white shadow-md hover:bg-brand-green-500 hover:text-white"
-  >
-    <span class="ri--add-circle-line text-lg" aria-hidden="true"></span>
-    Nuevo Set de Frases
-  </button>
+    <button
+      z-button
+      zType="default"
+      zFull
+      type="button"
+      [routerLink]="['/admin','phrase-sets','new']"
+      class="h-10 rounded-lg border-brand-green-600 bg-brand-green-600 text-sm font-semibold text-white shadow-sm hover:bg-brand-green-500 hover:text-white mt-2"
+    >
+      <span class="ri--add-circle-line text-lg" aria-hidden="true"></span>
+      Nuevo Set
+    </button>
 
-  <label class="relative block">
-    <span class="sr-only">Buscar frases</span>
-    <z-input-group [zAddonBefore]="searchIcon" class="bg-card shadow-sm">
-      <input
-        z-input
-        type="search"
-        placeholder="Buscar..."
-        class="h-9 rounded-lg bg-card pr-10 text-sm shadow-sm"
-        [(ngModel)]="search"
-      />
-    </z-input-group>
-  </label>
+    <z-accordion zDefaultValue="filters">
+      <z-accordion-item zTitle="Filtros" zValue="filters" zIcon="lucide--filter">
+        <div class="space-y-2">
 
-  <z-select
-    class="w-full"
-    zPlaceholder="Categoría"
-    [zValue]="category()"
-    (zSelectionChange)="selectCategory($event)"
-  >
-    @for (opt of categoryOptions; track opt.value) {
-      <z-select-item [zValue]="opt.value">{{ opt.label }}</z-select-item>
-    }
-  </z-select>
+          <div class="space-y-1">
+            <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
+              <span class="ri--hospital-line"></span>
+              Categoría
+            </span>
+            <z-select
+              class="w-full"
+              zPlaceholder="Categoría"
+              [zValue]="category()"
+              (zSelectionChange)="selectCategory($event)"
+            >
+              @for (opt of categoryOptions; track opt.value) {
+                <z-select-item [zValue]="opt.value">{{ opt.label }}</z-select-item>
+              }
+            </z-select>
+          </div>
+
+        </div>
+        <div class="flex justify-end mt-2">
+          <button
+            z-button
+            zType="outline"
+            zSize="sm"
+            type="button"
+            class="rounded-lg bg-card text-sm font-semibold"
+            (click)="clearFilters()"
+          >
+            <span class="lucide--x text-base" aria-hidden="true"></span>
+            Borrar filtros
+          </button>
+        </div>
+      </z-accordion-item>
+    </z-accordion>
+
+  </div>
 
   <ng-template #searchIcon>
-    <span class="ri--search-line text-lg text-muted-foreground" aria-hidden="true"></span>
+    <span class="ri--search-line text-base text-text-secondary" aria-hidden="true"></span>
   </ng-template>
 </section>

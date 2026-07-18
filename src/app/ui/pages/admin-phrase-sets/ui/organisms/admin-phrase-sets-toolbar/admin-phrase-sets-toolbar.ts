@@ -1,6 +1,7 @@
 import { PHRASE_SET_CATEGORY_OPTIONS } from '@/core/config/phrase-set-category-labels.config';
 import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 
+import { ZardAccordionImports } from '@/shared/components/accordion';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardInputDirective } from '@/shared/components/input';
 import { ZardInputGroupComponent } from '@/shared/components/input-group';
@@ -11,6 +12,7 @@ import { Router, RouterLink } from '@angular/router';
 @Component({
   selector: 'tm-admin-phrase-sets-toolbar',
   imports: [
+    ...ZardAccordionImports,
     ZardButtonComponent,
     ZardInputDirective,
     ZardInputGroupComponent,
@@ -65,6 +67,20 @@ export class AdminPhraseSetsToolbar {
     this.category.set(cat);
     this.router.navigate([], {
       queryParams: { category: cat === 'all' ? null : cat },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  protected clearFilters(): void {
+    this.search.set('');
+    this.debouncedSearch.set('');
+    this.category.set('all');
+
+    void this.router.navigate([], {
+      queryParams: {
+        search: null,
+        category: null,
+      },
       queryParamsHandling: 'merge',
     });
   }
