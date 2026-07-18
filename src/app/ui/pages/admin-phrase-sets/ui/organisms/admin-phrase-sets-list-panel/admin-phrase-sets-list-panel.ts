@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 
+import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ZardPaginationComponent } from '@/shared/components/pagination';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -11,7 +12,7 @@ import { AdminPhraseSetCard } from '../../molecules/admin-phrase-set-card/admin-
 
 @Component({
   selector: 'tm-admin-phrase-sets-list-panel',
-  imports: [AdminPhraseSetCard, ZardSkeletonComponent, ZardPaginationComponent],
+  imports: [AdminPhraseSetCard, ZardEmptyComponent, ZardSkeletonComponent, ZardPaginationComponent],
   templateUrl: './admin-phrase-sets-list-panel.html',
   styleUrl: './admin-phrase-sets-list-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

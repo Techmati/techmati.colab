@@ -26,6 +26,12 @@
     }@else{
       @for (phraseSet of searchResults.data()?.data; track phraseSet.id) {
         <tm-admin-phrase-set-card [phraseSet]="phraseSet" />
+      } @empty {
+        <z-empty
+          zTitle="Sin conjuntos"
+          zDescription="No hay conjuntos de frases que coincidan con estos filtros."
+          zIcon="ri--file-text-line"
+        />
       }
     }
   </div>
