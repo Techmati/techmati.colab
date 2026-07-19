@@ -3,4 +3,5 @@ export interface ContributorTranslationStats {
   completedAttempts: number;
   thisWeekCount: number;
   todayCount: number;
+  currentStreak: number;
 }

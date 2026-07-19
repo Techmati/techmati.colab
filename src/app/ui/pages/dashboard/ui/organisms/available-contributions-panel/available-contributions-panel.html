@@ -1,67 +1,75 @@
-@if (phraseSetsRes.isLoading()) {
+@if (isPending()) {
   <tm-available-contributions-panel-skeleton />
-} @else {
-  <article class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm min-h-85">
-    <header class="mb-4 flex items-center justify-center gap-2 text-xl">
-      <span class="lucide--languages text-primary"></span>
-      <h2 class="font-display font-semibold text-primary">Contribuciones disponibles</h2>
-    </header>
+} @else if (phraseSets().length > 0) {
+  <section class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
+    <div class="mb-4 flex items-center gap-3">
+      <span class="flex size-10 items-center justify-center rounded-lg bg-brand-purple-100">
+        <span class="lucide--sparkles text-xl text-primary" aria-hidden="true"></span>
+      </span>
+      <h2 class="font-display text-lg font-semibold leading-7 text-text-primary">
+        Nuevas<br />oportunidades
+      </h2>
+    </div>
 
-    <div class="space-y-3">
-      @for (set of phraseSets(); track set.id) {
-        <section class="rounded-xl border border-border-subtle bg-surface-card p-4 shadow-sm">
-          <div class="flex items-start justify-between gap-3 text-xl flex-wrap">
-            <h3 class="text-secondary-foreground text-base font-medium leading-7">
-              {{ set.title }}
-            </h3>
-            @if (set.publishedAt) {
-              <p class="text-muted-foreground text-xs leading-4">
-                {{ date(set.publishedAt || '') | date: "d 'de' MMMM 'del' yyyy" : '' : 'es-MX' }}
-              </p>
-            } @else {
-              <p class="text-muted-foreground text-xs leading-4">No publicada aún</p>
-            }
-          </div>
-          <div class="flex justify-between">
-            <div class="flex items-center gap-2 flex-wrap shrink">
-              <p class="text-text-tertiary mt-1 text-xs leading-4">{{ set.phraseCount }} frases</p>
-              <z-badge zShape="pill" class="gap-1">
-                <span class="ri--hospital-line text-xs" aria-hidden="true"></span>
-                {{ categoryLabel(set.category) }}
-              </z-badge>
+    <div class="flex flex-col gap-4">
+      @for (ps of phraseSets(); track ps.id) {
+        <article
+          class="relative flex flex-col gap-3 rounded-xl border border-border-subtle bg-surface-card p-4 shadow-sm"
+        >
+          <div class="absolute left-0 top-0 h-full w-[5px] rounded-l-xl bg-primary"></div>
+
+          <div class="flex flex-col gap-1 pl-3">
+            <h3 class="font-ui text-base font-semibold leading-6 text-text-primary">{{ ps.title }}</h3>
+
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1 rounded-md bg-brand-purple-100 px-2 py-0.5 text-xs font-medium leading-4 text-primary">
+                <span class="lucide--list-checks" aria-hidden="true"></span>
+                {{ ps.phraseCount }} frases
+              </span>
+
+              @if (ps.language) {
+                <span class="inline-flex items-center gap-1 text-xs font-normal leading-4 text-text-secondary">
+                  <span class="lucide--languages" aria-hidden="true"></span>
+                  {{ ps.language }}
+                </span>
+              }
+
+              @if (ps.category) {
+                <span class="inline-flex items-center gap-1 rounded-md bg-surface-soft px-2 py-0.5 text-xs font-medium leading-4 text-text-secondary">
+                  {{ ps.category }}
+                </span>
+              }
             </div>
           </div>
 
-          <div class="mt-3 flex justify-end">
+          <div class="flex items-center justify-between pl-3">
+            <div class="h-2 w-32 rounded-full bg-[#e5eeff]">
+              <div class="h-full w-0 rounded-full bg-primary"></div>
+            </div>
+
             <button
               z-button
-              zType="default"
-              zSize="sm"
-              class="px-3"
-              (click)="openTranslationDialog(set.id)"
+              class="bg-primary text-white hover:bg-primary/80"
+              (click)="openDialog(ps.id)"
             >
               Ir
-              <span class="lucide--chevron-right size-3"></span>
+              <span class="lucide--chevron-right size-4" aria-hidden="true"></span>
             </button>
           </div>
-        </section>
-      } @empty {
-        <z-empty
-          zIcon="game-icons--hummingbird text-brand-green-500"
-          zTitle="¡Muchas gracias!"
-          zDescription="No hay contribuciones disponibles en este momento, pero tu ayuda nos es muy valiosa. ¡Gracias por tu interés en contribuir! Habra mas contribuciones disponibles pronto."
-          class="text-primary"
-        >
-        </z-empty>
+        </article>
       }
     </div>
-  </article>
+  </section>
 
-  @if(selectedPhraseSetId(); as phraseSetId){
-    <tm-dialect-selection-dialog
-      [phraseSetId]="phraseSetId"
-      (translationCreated)="onTranslationCreated($event)"
-      (cancelled)="selectedPhraseSetId.set(null)"
-    />
-  }
+  <tm-dialect-selection-dialog
+    (translationCreated)="onTranslationCreated($event)"
+    (cancelled)="void 0"
+  />
+} @else {
+  <z-empty
+    zIcon="game-icons--hummingbird text-brand-green-500"
+    zTitle="¡Muchas gracias!"
+    zDescription="No hay contribuciones disponibles en este momento, pero tu ayuda nos es muy valiosa. ¡Gracias por tu interés en contribuir! Habra mas contribuciones disponibles pronto."
+    class="text-primary"
+  />
 }

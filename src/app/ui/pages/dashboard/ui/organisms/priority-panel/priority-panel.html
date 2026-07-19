@@ -1,0 +1,60 @@
+@if (isPending()) {
+  <div class="space-y-3">
+    <z-skeleton class="h-6 w-48 rounded-md" />
+    <z-skeleton class="h-40 w-full rounded-xl" />
+    <z-skeleton class="h-40 w-full rounded-xl" />
+  </div>
+} @else if (prioritySets().length > 0) {
+  <section class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
+    <div class="mb-4 flex items-center gap-3">
+      <span class="flex size-10 items-center justify-center rounded-lg bg-red-100">
+        <span class="lucide--alert-triangle text-xl text-red-600" aria-hidden="true"></span>
+      </span>
+      <h2 class="font-display text-lg font-semibold leading-7 text-text-primary">
+        Prioridad: Pocas<br />contribuciones
+      </h2>
+    </div>
+
+    <div class="flex flex-col gap-4">
+      @for (ps of prioritySets(); track ps.id) {
+        <article class="relative flex flex-col gap-4 rounded-xl border border-border-subtle bg-surface-card p-4 shadow-sm">
+          <div class="absolute left-0 top-0 h-full w-[5px] rounded-l-xl bg-red-600"></div>
+
+          <div class="flex flex-col gap-1 pl-3">
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center rounded bg-red-600 px-1.5 py-0.5 text-[10px] font-semibold leading-3 text-white">
+                {{ ps.stats?.contributorsCount ?? 0 }} contribuyentes
+              </span>
+              <span class="text-xs font-normal leading-4 text-text-secondary">Urgente</span>
+            </div>
+
+            <h3 class="font-ui text-base font-semibold leading-6 text-text-primary">{{ ps.title }}</h3>
+
+            <p class="text-sm font-normal leading-5 text-text-secondary">
+              {{ ps.phraseCount }} frases
+              @if (ps.language) {
+                <span> • {{ ps.language }}</span>
+              }
+            </p>
+          </div>
+
+          <div class="flex justify-end pl-3">
+            <button
+              z-button
+              class="bg-brand-green-600 text-white hover:bg-brand-green-700"
+              (click)="openDialog(ps.id)"
+            >
+              Ir
+              <span class="lucide--chevron-right size-4" aria-hidden="true"></span>
+            </button>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+}
+
+<tm-dialect-selection-dialog
+  (translationCreated)="onTranslationCreated($event)"
+  (cancelled)="void 0"
+/>

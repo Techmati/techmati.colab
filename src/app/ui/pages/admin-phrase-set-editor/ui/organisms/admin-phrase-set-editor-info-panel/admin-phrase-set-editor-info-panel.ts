@@ -39,8 +39,8 @@ export class AdminPhraseSetEditorInfoPanel {
   readonly invalid = computed(() => this.phraseSetForm().invalid());
 
   protected readonly languageOptions = [
-    { label: 'Nahuatl a Español', value: 'nahuatl_to_spanish' },
-    { label: 'Español a Nahuatl', value: 'spanish_to_nahuatl' },
+    { label: 'Traducir a Español', value: 'nahuatl_to_spanish' },
+    { label: 'Traducir desde Español', value: 'spanish_to_nahuatl' },
   ] as const;
 
   protected readonly categoryOptions = PHRASE_SET_CATEGORY_OPTIONS;

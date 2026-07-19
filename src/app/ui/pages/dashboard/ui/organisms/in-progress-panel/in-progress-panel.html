@@ -1,18 +1,58 @@
-@if (inProgressRes.isLoading()) {
+@if (inProgressRes.isPending()) {
   <tm-in-progress-panel-skeleton />
-} @else {
-  <article class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
-    <header class="mb-4 flex items-center text-xl text-brand-green-600 justify-center gap-2">
-      <span class="ri--progress-5-line" aria-hidden="true"></span>
-      <h2 class="font-display font-semibold leading-9 text-brand-green-600">En progreso</h2>
-    </header>
+} @else if (inProgress().length > 0) {
+  <section class="flex flex-col gap-4 rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="flex size-10 items-center justify-center rounded-lg bg-[#6c5ce7]">
+          <span class="lucide--loader text-xl text-white" aria-hidden="true"></span>
+        </span>
+        <h2 class="font-display text-lg font-semibold leading-7 text-text-primary">En progreso</h2>
+      </div>
 
-    <div class="space-y-3">
-      @for (task of inProgress(); track task) {
-        <tm-in-progress-card [task]="task" />
-      } @empty {
-        <p class="text-center text-sm text-text-secondary">No tienes tareas en progreso.</p>
-      }
     </div>
-  </article>
+
+    <z-carousel [zControls]="'none'" class="min-w-0 overflow-hidden">
+      <z-carousel-content>
+        @for (task of inProgress(); track task.id) {
+          <z-carousel-item class="basis-[90%] sm:basis-[60%] md:basis-[45%]">
+            <article class="flex h-full flex-col gap-4 rounded-xl border border-border-subtle bg-surface-card p-4 shadow-sm">
+              <h3 class="font-ui text-base font-semibold leading-6 text-text-primary">
+                {{ task.phraseSet?.title ?? ('Set ' + task.phraseSetId.slice(0, 8)) }}
+              </h3>
+
+              <p class="text-sm font-normal leading-5 text-text-secondary">
+                {{ task.phraseCount }} frases
+                @if (task.dialect) {
+                  <span> • {{ task.dialect.label }}</span>
+                }
+              </p>
+
+              <div class="flex flex-col gap-2">
+                <div class="flex items-center justify-between text-xs font-medium leading-4">
+                  <span class="text-text-secondary">{{ task.contributedEntriesCount }}/{{ task.phraseCount }}</span>
+                  <span class="text-text-secondary">{{ task.progressPercentage }}%</span>
+                </div>
+                <div class="h-2 w-full rounded-full bg-[#e5eeff]">
+                  <div
+                    class="h-full rounded-full bg-primary transition-all"
+                    [style.width.%]="task.progressPercentage"
+                  ></div>
+                </div>
+              </div>
+
+              <button
+                z-button
+                class="mt-auto w-full"
+                (click)="continue(task.id)"
+              >
+                Continuar
+                <span class="lucide--chevron-right size-4" aria-hidden="true"></span>
+              </button>
+            </article>
+          </z-carousel-item>
+        }
+      </z-carousel-content>
+    </z-carousel>
+  </section>
 }

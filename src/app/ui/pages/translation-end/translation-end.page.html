@@ -72,7 +72,7 @@
           zFull
           class="justify-center"
           [zDisabled]="noNextSet()"
-          (click)="translationDialog.open()"
+          (click)="translationDialog.open(phraseSet.id)"
         >
           <span class="lucide--skip-forward size-4" aria-hidden="true"></span>
           {{ noNextSet() ? 'No hay más sets disponibles' : 'Siguiente set' }}
@@ -80,7 +80,6 @@
 
         <tm-dialect-selection-dialog
           #translationDialog
-          [phraseSetId]="phraseSet.id"
           (translationCreated)="onTranslationCreated($event)"
         />
       }

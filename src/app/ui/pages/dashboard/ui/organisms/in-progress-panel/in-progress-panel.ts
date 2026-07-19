@@ -4,13 +4,15 @@ import {
   TranslationService,
 } from '@/core/service/translation/translation.service';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
-import { InProgressCard } from '../../molecules/in-progress-card/in-progress-card';
+import { ZardButtonComponent } from '@/shared/components/button';
+import { ZardCarouselImports } from '@/shared/components/carousel/carousel.imports';
 import { InProgressPanelSkeleton } from '../in-progress-panel-skeleton/in-progress-panel-skeleton';
 
 @Component({
   selector: 'tm-in-progress-panel',
-  imports: [InProgressCard, InProgressPanelSkeleton],
+  imports: [ZardButtonComponent, ...ZardCarouselImports, InProgressPanelSkeleton],
   templateUrl: './in-progress-panel.html',
   styleUrl: './in-progress-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,6 +20,7 @@ import { InProgressPanelSkeleton } from '../in-progress-panel-skeleton/in-progre
 export class InProgressPanel {
   private readonly translationService = inject(TranslationService);
   private readonly contributorContext = inject(ContributorContextService);
+  private readonly router = inject(Router);
 
   readonly activeContributor = computed(() => this.contributorContext.active());
 
@@ -32,9 +35,13 @@ export class InProgressPanel {
   readonly listByContributorFilters: ListByContributorOptions = {
     filter: 'in_progress',
     page: 1,
-    size: 3,
+    size: 10,
     include_phrase_set: true,
   };
 
   readonly inProgress = computed(() => this.inProgressRes.data()?.data || []);
+
+  protected continue(taskId: string): void {
+    this.router.navigate(['/translate', taskId]);
+  }
 }

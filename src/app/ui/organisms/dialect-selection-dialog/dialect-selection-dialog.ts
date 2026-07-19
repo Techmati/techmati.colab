@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
 
 import { injectMutation } from '@tanstack/angular-query-experimental';
 
@@ -12,9 +12,9 @@ import { DialectSelectionContent } from '@/ui/pages/translate/ui/organisms/diale
   imports: [],
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  exportAs: 'dialectDialog',
 })
 export class DialectSelectionDialog {
-  readonly phraseSetId = input.required<string>();
   readonly translationCreated = output<string>();
   readonly cancelled = output<void>();
 
@@ -28,8 +28,7 @@ export class DialectSelectionDialog {
     return this.translationService.create(contributor!.id);
   });
 
-  open(): void {
-    const phraseSetId = this.phraseSetId();
+  open(phraseSetId: string): void {
     this.dialogRef = this.dialogService.create({
       zTitle: 'Iniciar traducción',
       zContent: DialectSelectionContent,
