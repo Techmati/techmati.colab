@@ -28,34 +28,52 @@
   @if (familiesQuery.isPending()) {
     <z-skeleton class="h-9 w-full"></z-skeleton>
   } @else {
-    <z-select
-      zPlaceholder="Familia"
-      class="text-xs font-normal leading-4"
-      [zValue]="selectedFamilyId()"
-      (zValueChange)="onFamilySelect($event)"
-    >
-      @for (family of familiesQuery.data()?.data ?? []; track family.id) {
-        <z-select-item [zValue]="family.id">{{ family.name }}</z-select-item>
-      }
-    </z-select>
+    <div class="grid grid-cols-2 gap-3">
+      <div class="space-y-1">
+        <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
+          <span class="ri--global-line"></span>
+          Familia
+        </span>
+        <z-select
+          class="w-full"
+          zPlaceholder="Familia"
+          [zValue]="selectedFamilyId()"
+          (zValueChange)="onFamilySelect($event)"
+        >
+          @for (family of familiesQuery.data()?.data ?? []; track family.id) {
+            <z-select-item [zValue]="family.id">{{ family.name }}</z-select-item>
+          }
+        </z-select>
+      </div>
 
-    @if (selectedFamilyId()) {
-      <z-select
-        zPlaceholder="Grupo"
-        class="text-xs font-normal leading-4"
-        [zValue]="selectedGroupId()"
-        (zValueChange)="onGroupSelect($event)"
-      >
-        @for (group of groupsQuery.data()?.data ?? []; track group.id) {
-          <z-select-item [zValue]="group.id">{{ group.name }}</z-select-item>
-        }
-      </z-select>
-    }
+      <div class="space-y-1">
+        <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
+          <span class="ri--group-line"></span>
+          Grupo
+        </span>
+        <z-select
+          class="w-full"
+          zPlaceholder="Grupo"
+          [zDisabled]="!selectedFamilyId()"
+          [zValue]="selectedGroupId()"
+          (zValueChange)="onGroupSelect($event)"
+        >
+          @for (group of groupsQuery.data()?.data ?? []; track group.id) {
+            <z-select-item [zValue]="group.id">{{ group.name }}</z-select-item>
+          }
+        </z-select>
+      </div>
+    </div>
 
-    @if (selectedGroupId()) {
+    <div class="space-y-1">
+      <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
+        <span class="lucide--languages"></span>
+        Variante
+      </span>
       <z-select
+        class="w-full"
         zPlaceholder="Variante"
-        class="text-xs font-normal leading-4"
+        [zDisabled]="!selectedGroupId()"
         [zValue]="''"
         (zValueChange)="onVariantSelect($event)"
       >
@@ -63,6 +81,6 @@
           <z-select-item [zValue]="variant.id">{{ variant.autodenominacion ? variant.name + ' (' + variant.autodenominacion + ')' : variant.name }}</z-select-item>
         }
       </z-select>
-    }
+    </div>
   }
 </div>

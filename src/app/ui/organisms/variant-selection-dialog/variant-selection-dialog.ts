@@ -15,7 +15,7 @@ import { VariantSelectionContent } from '@/ui/pages/translate/ui/organisms/varia
   exportAs: 'variantDialog',
 })
 export class VariantSelectionDialog {
-  readonly phraseSetId = input.required<string>();
+  readonly phraseSetId = input('');
   readonly translationCreated = output<string>();
   readonly cancelled = output<void>();
 
