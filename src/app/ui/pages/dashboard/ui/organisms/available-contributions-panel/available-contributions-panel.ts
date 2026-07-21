@@ -7,7 +7,7 @@ import { ContributorContextService } from '@/core/service/contributor-context/co
 import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardEmptyComponent } from '@/shared/components/empty';
-import { DialectSelectionDialog } from '@/ui/organisms/dialect-selection-dialog/dialect-selection-dialog';
+import { VariantSelectionDialog } from '@/ui/organisms/variant-selection-dialog/variant-selection-dialog';
 import { AvailableContributionsPanelSkeleton } from '../available-contributions-panel-skeleton/available-contributions-panel-skeleton';
 
 @Component({
@@ -16,7 +16,7 @@ import { AvailableContributionsPanelSkeleton } from '../available-contributions-
     ZardButtonComponent,
     ZardEmptyComponent,
     AvailableContributionsPanelSkeleton,
-    DialectSelectionDialog,
+    VariantSelectionDialog,
   ],
   templateUrl: './available-contributions-panel.html',
   styleUrl: './available-contributions-panel.css',
@@ -27,7 +27,7 @@ export class AvailableContributionsPanel {
   private readonly contributorContextService = inject(ContributorContextService);
   private readonly router = inject(Router);
 
-  protected readonly dialog = viewChild.required(DialectSelectionDialog);
+  protected readonly dialog = viewChild.required(VariantSelectionDialog);
 
   protected readonly phraseSetsRes = injectQuery(() => {
     const contributorId = this.contributorContextService.active()?.id;

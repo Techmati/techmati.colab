@@ -8,14 +8,16 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { NahuatlVariantService } from '@/core/service/nahuatl-variant/nahuatl-variant.service';
-import { NahuatlVariant } from '@/core/types/nahuatl-variant.type';
+import type { LanguageVariant } from '@/core/types/language-variant.type';
 import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ZardSelectImports } from '@/shared/components/select';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { injectQuery } from '@tanstack/angular-query-experimental';
+import { LanguageFamilyService } from '@/core/service/language-family/language-family.service';
+import { LanguageGroupService } from '@/core/service/language-group/language-group.service';
+import { LanguageVariantService } from '@/core/service/language-variant/language-variant.service';
 
-type OnChangeFn = (value: NahuatlVariant[]) => void;
+type OnChangeFn = (value: LanguageVariant[]) => void;
 type OnTouchedFn = () => void;
 
 @Component({
@@ -34,27 +36,33 @@ type OnTouchedFn = () => void;
 })
 export class ContributorVariantsInput implements ControlValueAccessor {
   readonly disabled = signal(false);
-  protected readonly value = signal<NahuatlVariant[]>([]);
-  protected readonly pendingAdd = signal<NahuatlVariant>(EMPTY_VARIANT);
+  protected readonly value = signal<LanguageVariant[]>([]);
+  protected readonly pendingAdd = signal<string>('');
 
-  private readonly variantsService = inject(NahuatlVariantService);
+  private readonly languageFamilyService = inject(LanguageFamilyService);
+  private readonly languageGroupService = inject(LanguageGroupService);
+  private readonly languageVariantService = inject(LanguageVariantService);
 
-  protected readonly allVariants = injectQuery(() => this.variantsService.list());
-  protected readonly allVariantLabels = computed(
-    () => this.allVariants.data()?.map((v) => v.label) || [],
-  );
+  readonly familiesQuery = injectQuery(() => this.languageFamilyService.list());
 
-  protected variantMap = computed(() => {
-    const map = new Map<string, NahuatlVariant>();
-    this.allVariants.data()?.forEach((variant) => {
-      map.set(variant.id, variant);
-    });
-    return map;
-  });
+  protected readonly selectedFamilyId = signal('');
+  protected readonly selectedGroupId = signal('');
+
+  readonly groupsQuery = injectQuery(() => ({
+    ...this.languageFamilyService.groups(this.selectedFamilyId()),
+    enabled: !!this.selectedFamilyId(),
+  }));
+
+  readonly variantsQuery = injectQuery(() => ({
+    ...this.languageGroupService.variants(this.selectedGroupId()),
+    enabled: !!this.selectedGroupId(),
+  }));
+
+  protected readonly allVariants = computed(() => this.variantsQuery.data()?.data ?? []);
 
   protected readonly availableOptions = computed(
     () =>
-      this.allVariants.data()?.filter(
+      this.allVariants().filter(
         (variant) =>
           !this.value()
             .map((v) => v.id)
@@ -65,7 +73,7 @@ export class ContributorVariantsInput implements ControlValueAccessor {
   private onChange: OnChangeFn = () => undefined;
   private onTouched: OnTouchedFn = () => undefined;
 
-  writeValue(value: NahuatlVariant[] | null | undefined): void {
+  writeValue(value: LanguageVariant[] | null | undefined): void {
     this.value.set(value ?? []);
   }
 
@@ -81,36 +89,32 @@ export class ContributorVariantsInput implements ControlValueAccessor {
     this.disabled.set(isDisabled);
   }
 
-  protected removeVariant(variant: NahuatlVariant): void {
+  protected removeVariant(variant: LanguageVariant): void {
     const next = this.value().filter((v) => v.id !== variant.id);
     this.value.set(next);
-    console.log('Removed variant:', variant, 'Next value:', next);
     this.onChange(next);
     this.onTouched();
   }
 
-  protected onPendingAddChange(id: string | string[]): void {
-    if (Array.isArray(id)) {
-      this.pendingAdd.set(EMPTY_VARIANT);
-      return;
-    }
+  protected onFamilySelect(value: string | string[]): void {
+    this.selectedFamilyId.set(typeof value === 'string' ? value : '');
+    this.selectedGroupId.set('');
+  }
 
-    const nextValue = this.getVariant(id);
-    if (!nextValue || this.value().includes(nextValue)) return;
-    const next = [...this.value(), nextValue];
+  protected onGroupSelect(value: string | string[]): void {
+    this.selectedGroupId.set(typeof value === 'string' ? value : '');
+  }
+
+  protected onVariantSelect(value: string | string[]): void {
+    const id = typeof value === 'string' ? value : '';
+    if (!id || this.value().some((v) => v.id === id)) return;
+    const variant = this.allVariants().find((v) => v.id === id);
+    if (!variant) return;
+    const next = [...this.value(), variant];
     this.value.set(next);
     this.onChange(next);
     this.onTouched();
-    this.pendingAdd.set(EMPTY_VARIANT);
-  }
-
-  protected getVariant(id: string) {
-    return this.variantMap().get(id) || EMPTY_VARIANT;
+    this.selectedFamilyId.set('');
+    this.selectedGroupId.set('');
   }
 }
-
-const EMPTY_VARIANT = {
-  id: 'Selectiona una variante...',
-  label: 'Selecciona una variante...',
-  code: '',
-};

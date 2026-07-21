@@ -1,4 +1,4 @@
-import { NahuatlVariant } from './nahuatl-variant.type';
+import { LanguageVariant } from './language-variant.type';
 
 export interface Contributor {
   id: string;
@@ -6,7 +6,7 @@ export interface Contributor {
   accountUserId: string | null;
   fullName: string;
   createdAt: string;
-  variants: NahuatlVariant[];
+  variants: LanguageVariant[];
 }
 
 export interface ContributorSummary {

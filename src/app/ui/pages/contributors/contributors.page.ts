@@ -5,7 +5,6 @@ import { TopAppBar } from '@/ui/organisms/top-app-bar/top-app-bar';
 
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { ContributorService } from '@/core/service/contributor/contributor.service';
-import { NahuatlVariantService } from '@/core/service/nahuatl-variant/nahuatl-variant.service';
 import { Contributor } from '@/core/types/contributor.type';
 import { baseToastConfig } from '@/core/view/base-toast.config';
 import { ZardAlertDialogService } from '@/shared/components/alert-dialog';
@@ -38,15 +37,12 @@ type ContributorDialogAction = 'create' | 'edit';
 })
 export class ContributorsPage {
   private readonly contributorService = inject(ContributorService);
-  private readonly variantService = inject(NahuatlVariantService);
   private readonly contributorContext = inject(ContributorContextService);
 
   private readonly dialogService = inject(ZardDialogService);
   private readonly alertDialog = inject(ZardAlertDialogService);
 
   readonly contributorsList = injectQuery(() => this.contributorService.list());
-  readonly variants = injectQuery(() => this.variantService.list());
-
   readonly createContributorMutation = injectMutation(() => ({
     ...this.contributorService.create(),
     onSuccess: () => {

@@ -1,5 +1,5 @@
-import { NahuatlVariant } from '@/core/types/nahuatl-variant.type';
 import { type TranslationEntry } from '@/core/types/translation-entry.type';
+import type { LanguageVariant } from '@/core/types/language-variant.type';
 import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
@@ -13,7 +13,7 @@ import { AdminTranslationUserEntryCard } from '../../molecules/admin-translation
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminTranslationUserEntriesPanel {
-  readonly dialect = input.required<NahuatlVariant | null>();
   readonly entries = input.required<readonly TranslationEntry[]>();
+  readonly variant = input<LanguageVariant | null>(null);
   readonly isLoading = input.required<boolean>();
 }

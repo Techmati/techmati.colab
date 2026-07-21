@@ -1,52 +1,65 @@
-import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 
 import { injectMutation } from '@tanstack/angular-query-experimental';
 
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { TranslationService } from '@/core/service/translation/translation.service';
 import { ZardAlertDialogRef, ZardAlertDialogService } from '@/shared/components/alert-dialog';
-import { DialectSelectionContent } from '@/ui/pages/translate/ui/organisms/dialect-selection-content/dialect-selection-content';
+import { VariantSelectionContent } from '@/ui/pages/translate/ui/organisms/variant-selection-content/variant-selection-content';
 
 @Component({
-  selector: 'tm-dialect-selection-dialog',
+  selector: 'tm-variant-selection-dialog',
   imports: [],
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  exportAs: 'dialectDialog',
+  exportAs: 'variantDialog',
 })
-export class DialectSelectionDialog {
+export class VariantSelectionDialog {
+  readonly phraseSetId = input.required<string>();
   readonly translationCreated = output<string>();
   readonly cancelled = output<void>();
 
   private readonly dialogService = inject(ZardAlertDialogService);
   private readonly translationService = inject(TranslationService);
   private readonly contributorContext = inject(ContributorContextService);
-  private dialogRef: ZardAlertDialogRef<DialectSelectionContent> | null = null;
+  private dialogRef: ZardAlertDialogRef<VariantSelectionContent> | null = null;
 
   private readonly createMutation = injectMutation(() => {
     const contributor = this.contributorContext.active();
     return this.translationService.create(contributor!.id);
   });
 
-  open(phraseSetId: string): void {
+  open(phraseSetId?: string): void {
+    const id = phraseSetId ?? this.phraseSetId();
+    if (!id) return;
+    this.openWithId(id);
+  }
+
+  private openWithId(phraseSetId: string): void {
     this.dialogRef = this.dialogService.create({
       zTitle: 'Iniciar traducción',
-      zContent: DialectSelectionContent,
+      zContent: VariantSelectionContent,
       zData: { phraseSetId },
       zCancelText: 'Volver',
       zOkText: 'Iniciar',
       zMaskClosable: false,
       zWidth: '350px',
       zOnOk: (instance) => {
-        const dialectId = (instance as DialectSelectionContent).getSelectedDialectId();
+        const variantId = (instance as VariantSelectionContent).getSelectedVariantId();
         this.createMutation.mutate(
-          { phraseSetId, dialectId },
+          { phraseSetId, variantId },
           {
             onSuccess: (translation) => {
               this.dialogRef?.close();
               this.translationCreated.emit(translation.id);
             },
           },
+        );
+        console.log(
+          'Creating translation with phraseSetId:',
+          phraseSetId,
+          'and variantId:',
+          variantId,
         );
         return false;
       },

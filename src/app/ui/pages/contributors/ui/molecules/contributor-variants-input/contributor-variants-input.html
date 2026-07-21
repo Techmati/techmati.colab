@@ -1,22 +1,22 @@
 <div class="flex flex-col gap-3 max-h-80vh">
   <div class="flex flex-wrap gap-1">
-    @for (variant of value(); track variant) {
+    @for (variant of value(); track variant.id) {
       <span
         class="h-6 inline-flex items-center gap-1 rounded-sm bg-brand-green-600 pl-1.5 pr-1 text-xs font-normal leading-4 text-white"
       >
         <span class="lucide--languages text-sm" aria-hidden="true"></span>
-        {{ variant.label}}
+        {{ variant.name }}
         <button
           type="button"
           class="flex size-4 items-center justify-center rounded-full text-white/80 transition-colors hover:text-white focus-visible:outline-none"
-          [attr.aria-label]="'Eliminar ' + variant.label"
+          [attr.aria-label]="'Eliminar ' + variant.name"
           [disabled]="disabled()"
           (click)="removeVariant(variant)"
         >
           <span class="lucide--x text-xs" aria-hidden="true"></span>
         </button>
       </span>
-    }@empty {
+    } @empty {
       <z-empty
         zTitle="No hay variantes"
         zDescription="Agrega al menos una variante para registrar al contribuidor."
@@ -25,21 +25,44 @@
     }
   </div>
 
-  @if(allVariants.isPending()) {
+  @if (familiesQuery.isPending()) {
     <z-skeleton class="h-9 w-full"></z-skeleton>
-  }
-  @else if (allVariants.data() && availableOptions().length > 0) {
+  } @else {
     <z-select
-      zPlaceholder="Añadir otra variante"
+      zPlaceholder="Familia"
       class="text-xs font-normal leading-4"
-      [zValue]="pendingAdd().id"
-      zLabel="Añadir otra variante"
-      (zValueChange)="onPendingAddChange($event)"
-      [class.opacity-50]="disabled()"
+      [zValue]="selectedFamilyId()"
+      (zValueChange)="onFamilySelect($event)"
     >
-      @for (option of availableOptions(); track option) {
-        <z-select-item [zValue]="option.id">{{ option.label}}</z-select-item>
+      @for (family of familiesQuery.data()?.data ?? []; track family.id) {
+        <z-select-item [zValue]="family.id">{{ family.name }}</z-select-item>
       }
     </z-select>
+
+    @if (selectedFamilyId()) {
+      <z-select
+        zPlaceholder="Grupo"
+        class="text-xs font-normal leading-4"
+        [zValue]="selectedGroupId()"
+        (zValueChange)="onGroupSelect($event)"
+      >
+        @for (group of groupsQuery.data()?.data ?? []; track group.id) {
+          <z-select-item [zValue]="group.id">{{ group.name }}</z-select-item>
+        }
+      </z-select>
+    }
+
+    @if (selectedGroupId()) {
+      <z-select
+        zPlaceholder="Variante"
+        class="text-xs font-normal leading-4"
+        [zValue]="''"
+        (zValueChange)="onVariantSelect($event)"
+      >
+        @for (variant of allVariants(); track variant.id) {
+          <z-select-item [zValue]="variant.id">{{ variant.autodenominacion ? variant.name + ' (' + variant.autodenominacion + ')' : variant.name }}</z-select-item>
+        }
+      </z-select>
+    }
   }
 </div>

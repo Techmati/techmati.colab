@@ -23,8 +23,8 @@
 
               <p class="text-sm font-normal leading-5 text-text-secondary">
                 {{ task.phraseCount }} frases
-                @if (task.dialect) {
-                  <span> • {{ task.dialect.label }}</span>
+                @if (task.variant) {
+                  <span> • {{ task.variant.name }}</span>
                 }
               </p>
 

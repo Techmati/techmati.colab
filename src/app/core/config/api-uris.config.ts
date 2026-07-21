@@ -28,9 +28,18 @@ const API = {
         `${BASE_URL}/contributors/${cId}/translations/${tId}/entries`,
     },
   },
-  NAHUATL_VARIANTS: {
-    LIST: `${BASE_URL}/nahuatl-variants`,
-    BY_ID: (id: string) => `${BASE_URL}/nahuatl-variants/${id}`,
+  LANGUAGE_FAMILIES: {
+    LIST: `${BASE_URL}/language-families`,
+    BY_ID: (id: string) => `${BASE_URL}/language-families/${id}`,
+    GROUPS: (familyId: string) => `${BASE_URL}/language-families/${familyId}/groups`,
+  },
+  LANGUAGE_GROUPS: {
+    BY_ID: (id: string) => `${BASE_URL}/language-groups/${id}`,
+    VARIANTS: (groupId: string) => `${BASE_URL}/language-groups/${groupId}/variants`,
+  },
+  LANGUAGE_VARIANTS: {
+    LIST: `${BASE_URL}/language-variants`,
+    BY_ID: (id: string) => `${BASE_URL}/language-variants/${id}`,
   },
   ADMIN: {
     STATS: {

@@ -5,7 +5,7 @@
     <z-skeleton class="h-52 w-full rounded-xl" />
   } @else {
     @for (entry of entries(); track entry.id) {
-      <tm-admin-translation-user-entry-card [entry]="entry" [dialect]="dialect()" />
+      <tm-admin-translation-user-entry-card [entry]="entry" [variant]="variant()" />
     } @empty {
       <z-empty
         zTitle="Sin traducciones"

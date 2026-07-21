@@ -1,4 +1,5 @@
 import { Contributor } from '@/core/types/contributor.type';
+import type { LanguageVariant } from '@/core/types/language-variant.type';
 import { ZardDividerComponent } from '@/shared/components/divider';
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
@@ -16,6 +17,10 @@ export class ActiveContributorCard {
 
   protected status = computed(() => (this.contributor().accountUserId ? 'auto' : 'managed'));
   protected statusInfo = computed(() => statusLabels[this.status()]);
+
+  protected variantName(v: { name: string; autodenominacion: string | null }): string {
+    return v.autodenominacion ? `${v.name} (${v.autodenominacion})` : v.name;
+  }
   protected onEdit(): void {
     this.edit.emit(this.contributor());
   }

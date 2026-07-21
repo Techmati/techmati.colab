@@ -6,13 +6,13 @@ import { ZardInputDirective } from '@/shared/components/input';
 import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
 
 import type { Contributor } from '@/core/types/contributor.type';
-import { NahuatlVariant } from '@/core/types/nahuatl-variant.type';
+import type { LanguageVariant } from '@/core/types/language-variant.type';
 import { ContributorVariantsInput } from '../../molecules/contributor-variants-input/contributor-variants-input';
 
 export interface ContributorFormModel {
   id: string;
   fullName: string;
-  variants: NahuatlVariant[];
+  variants: LanguageVariant[];
 }
 
 @Component({

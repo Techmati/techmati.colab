@@ -1,7 +1,7 @@
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { TranslationService } from '@/core/service/translation/translation.service';
 import { ZardDividerComponent } from '@/shared/components/divider';
-import { DialectSelectionDialog } from '@/ui/organisms/dialect-selection-dialog/dialect-selection-dialog';
+import { VariantSelectionDialog } from '@/ui/organisms/variant-selection-dialog/variant-selection-dialog';
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { TransEntrySkeleton } from './ui/organisms/trans-entry-skeleton/trans-en
 
 @Component({
   selector: 'tm-trans-entry-page',
-  imports: [WavesAudioPlayer, ZardDividerComponent, TransEntrySkeleton, DialectSelectionDialog],
+  imports: [WavesAudioPlayer, ZardDividerComponent, TransEntrySkeleton, VariantSelectionDialog],
   templateUrl: './trans-entry.page.html',
   styleUrl: './trans-entry.page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

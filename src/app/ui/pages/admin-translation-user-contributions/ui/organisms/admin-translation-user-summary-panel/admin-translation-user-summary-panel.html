@@ -20,7 +20,7 @@
           {{ translation.contributor?.fullName || 'Cargando...' }}
         </h1>
         <h2 class="truncate font-display text-lg font-light leading-7">
-          {{ translation.translation.dialect.label || 'Cargando...' }}
+          {{ translation.translation.variant?.name || translation.translation.variant?.autodenominacion || 'Cargando...' }}
         </h2>
       </div>
       <div class="flex justify-between">

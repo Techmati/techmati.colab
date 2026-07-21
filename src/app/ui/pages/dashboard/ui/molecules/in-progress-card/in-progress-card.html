@@ -2,7 +2,7 @@
   <p class="text-brand-green-600 text-sm font-semibold leading-4">
     {{ task().phraseSet?.title || 'Set #' + task().phraseSetId.slice(0, 8) }}
     •
-    {{ task().dialect?.label }}
+    {{ task().variant?.name || task().variant?.autodenominacion }}
   </p>
   <p class="text-text-secondary text-xs leading-4">
     {{ task().phraseCount }} frases • {{ task().lastUpdate | timeAgo }}

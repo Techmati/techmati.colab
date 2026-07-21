@@ -68,7 +68,7 @@ export class TranslationService {
   create(contributorId: string) {
     return mutationOptions({
       mutationKey: ['translation', 'create', contributorId],
-      mutationFn: (payload: { phraseSetId: string; dialectId: string | null }) =>
+      mutationFn: (payload: { phraseSetId: string; variantId: string | null }) =>
         lastValueFrom(
           this.client.post<Translation>(
             API.CONTRIBUTORS.TRANSLATIONS.CREATE(contributorId),

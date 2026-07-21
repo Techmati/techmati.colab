@@ -1,5 +1,5 @@
 import { ContributorSummary } from './contributor.type';
-import { NahuatlVariant } from './nahuatl-variant.type';
+import { LanguageVariant } from './language-variant.type';
 import { PhraseSet } from './phrase-set.type';
 import { TranslationEntry } from './translation-entry.type';
 
@@ -7,7 +7,7 @@ export interface Translation {
   id: string;
   contributorId: string;
   phraseSetId: string;
-  dialect: NahuatlVariant;
+  variant: LanguageVariant | null;
   attemptedAt: string;
   contributedEntriesCount: number;
   progressPercentage: number;
@@ -24,8 +24,3 @@ export interface AdminTranslationListItem extends Translation {
 }
 
 export type TranslationFilter = 'all' | 'in_progress' | 'completed';
-
-export interface TranslationRequestFlags {
-  includeContributor?: boolean;
-  includePhraseSet?: boolean;
-}

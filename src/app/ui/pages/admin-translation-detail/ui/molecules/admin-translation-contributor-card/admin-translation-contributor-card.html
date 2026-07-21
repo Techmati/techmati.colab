@@ -27,7 +27,7 @@
       <span class="text-xs font-medium leading-4">•</span>
       <div class="font-medium leading-4 text-brand-green-500 flex gap-2 align-center">
         <span class="text-sm lucide--languages"></span>
-        <span class="text-xs ">{{summary().dialect.label}}</span>
+        <span class="text-xs ">{{summary().variant?.name || summary().variant?.autodenominacion || '—'}}</span>
       </div>
     </div>
 

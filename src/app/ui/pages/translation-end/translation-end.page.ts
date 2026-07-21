@@ -2,7 +2,7 @@ import { ContributorContextService } from '@/core/service/contributor-context/co
 import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { TranslationService } from '@/core/service/translation/translation.service';
 import { ZardButtonComponent } from '@/shared/components/button';
-import { DialectSelectionDialog } from '@/ui/organisms/dialect-selection-dialog/dialect-selection-dialog';
+import { VariantSelectionDialog } from '@/ui/organisms/variant-selection-dialog/variant-selection-dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
@@ -16,7 +16,7 @@ import { TranslationSummarySkeleton } from './ui/organisms/translation-summary-s
     ZardButtonComponent,
     NextSetActionSkeleton,
     TranslationSummarySkeleton,
-    DialectSelectionDialog,
+    VariantSelectionDialog,
   ],
   templateUrl: './translation-end.page.html',
   styleUrl: './translation-end.page.css',

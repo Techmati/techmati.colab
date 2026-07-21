@@ -31,8 +31,8 @@
                   {{ task.phraseSet?.title ?? 'Traducción' }}
                 </h3>
                 <p class="text-sm font-normal leading-5 text-text-secondary">
-                  @if (task.dialect) {
-                    {{ task.dialect.label }} completo
+                  @if (task.variant) {
+                    {{ task.variant.name }} completo
                   }
                 </p>
 
@@ -59,8 +59,11 @@
     </section>
   }
 
-  <tm-dialect-selection-dialog
-    (translationCreated)="onTranslationCreated($event)"
-    (cancelled)="void 0"
-  />
+  @if(selectedPhraseSetId(); as phraseSetId) {
+    <tm-variant-selection-dialog
+      (translationCreated)="onTranslationCreated($event)"
+      [phraseSetId]="phraseSetId"
+      (cancelled)="selectedPhraseSetId.set(null)"
+    />
+  }
 </div>
