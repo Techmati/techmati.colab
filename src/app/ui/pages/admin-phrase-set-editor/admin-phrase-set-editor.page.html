@@ -8,6 +8,19 @@
       [isLoading]="!isCreating() && phraseSetQuery.isPending()"
       [(phraseSetDraft)]="phraseSetDraft"
     />
+
+    <button
+      z-button
+      zType="outline"
+      zFull
+      type="button"
+      class="h-10 rounded-xl text-sm font-semibold"
+      (click)="uploadJson()"
+    >
+      <span class="ri--upload-2-line text-lg" aria-hidden="true"></span>
+      Subir JSON
+    </button>
+
     <tm-admin-phrase-set-editor-phrases-panel
       #phrasesPanel
       [phraseSetId]="phraseSetId()"

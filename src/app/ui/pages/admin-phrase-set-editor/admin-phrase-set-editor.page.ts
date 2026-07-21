@@ -11,6 +11,7 @@ import {
 
 import { PhraseSet } from '@/core/types/phrase-set.type';
 import { ZardAlertDialogService } from '@/shared/components/alert-dialog';
+import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardToastComponent } from '@/shared/components/toast';
 import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
 import { ExternalToast, toast } from 'ngx-sonner';
@@ -19,14 +20,15 @@ import { EMPTY_PHRASE_SET } from './core/defaults/empty-phrase-set.default';
 import { PhraseDraft, PhraseDraftPayload } from './core/types/phrase-derivations.type';
 import {
   NewPhraseSetDraft,
-  PhraseSetCreatePayload,
   PhraseSetDraft,
+  PhraseSetCreatePayload,
   PhraseSetUpdatePayload,
 } from './core/types/phrase-set-derivations.type';
 import { AdminPhraseSetEditorActions } from './ui/organisms/admin-phrase-set-editor-actions/admin-phrase-set-editor-actions';
 import { AdminPhraseSetEditorInfoPanel } from './ui/organisms/admin-phrase-set-editor-info-panel/admin-phrase-set-editor-info-panel';
 import { AdminPhraseSetEditorPhrasesPanel } from './ui/organisms/admin-phrase-set-editor-phrases-panel/admin-phrase-set-editor-phrases-panel';
 import { AdminPhraseSetEditorTopBar } from './ui/organisms/admin-phrase-set-editor-top-bar/admin-phrase-set-editor-top-bar';
+import { JsonUploadContent } from './ui/organisms/json-upload-content/json-upload-content';
 
 @Component({
   selector: 'tm-admin-phrase-set-editor-page',
@@ -35,6 +37,7 @@ import { AdminPhraseSetEditorTopBar } from './ui/organisms/admin-phrase-set-edit
     AdminPhraseSetEditorInfoPanel,
     AdminPhraseSetEditorPhrasesPanel,
     AdminPhraseSetEditorActions,
+    ZardButtonComponent,
     ZardToastComponent,
   ],
   templateUrl: './admin-phrase-set-editor.page.html',
@@ -126,6 +129,48 @@ export class AdminPhraseSetEditorPage {
 
   protected delete(): void {
     this.deleteMutation.mutate();
+  }
+
+  protected uploadJson(): void {
+    this.alertDialog.create({
+      zTitle: 'Subir JSON',
+      zContent: JsonUploadContent,
+      zWidth: '480px',
+      zCancelText: 'Cancelar',
+      zOkText: 'Cargar',
+      zMaskClosable: false,
+      zData: {
+        onParsed: (data: {
+          title: string;
+          description?: string;
+          language: string;
+          category: string;
+          published: boolean;
+          phrases: { sourceText: string; position: number }[];
+        }) => {
+          this.phraseSetDraft.set({
+            ...EMPTY_PHRASE_SET,
+            title: data.title,
+            description: data.description ?? '',
+            language: data.language as 'nahuatl_to_spanish' | 'spanish_to_nahuatl',
+            category: data.category as never,
+            published: data.published,
+          });
+          this.phrasesDrafts.set(
+            data.phrases.map((p) => ({
+              draftId: `json-${crypto.randomUUID?.() ?? Math.random().toString(36).slice(2)}`,
+              phraseSetId: this.phraseSetId(),
+              sourceText: p.sourceText,
+              position: p.position,
+            })),
+          );
+        },
+      },
+      zOnOk: (instance) => {
+        const content = instance as JsonUploadContent;
+        return content.parseAndReturn() ? undefined : false;
+      },
+    });
   }
 
   private buildUpdatePayload(): PhraseSetUpdatePayload {
