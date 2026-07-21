@@ -9,20 +9,20 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import type { LanguageVariant } from '@/core/types/language-variant.type';
+import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardEmptyComponent } from '@/shared/components/empty';
 import { ZardSelectImports } from '@/shared/components/select';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { LanguageFamilyService } from '@/core/service/language-family/language-family.service';
 import { LanguageGroupService } from '@/core/service/language-group/language-group.service';
-import { LanguageVariantService } from '@/core/service/language-variant/language-variant.service';
 
 type OnChangeFn = (value: LanguageVariant[]) => void;
 type OnTouchedFn = () => void;
 
 @Component({
   selector: 'tm-contributor-variants-input',
-  imports: [...ZardSelectImports, ZardEmptyComponent, ZardSkeletonComponent],
+  imports: [ZardButtonComponent, ...ZardSelectImports, ZardEmptyComponent, ZardSkeletonComponent],
   templateUrl: './contributor-variants-input.html',
   styleUrl: './contributor-variants-input.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,11 +37,10 @@ type OnTouchedFn = () => void;
 export class ContributorVariantsInput implements ControlValueAccessor {
   readonly disabled = signal(false);
   protected readonly value = signal<LanguageVariant[]>([]);
-  protected readonly pendingAdd = signal<string>('');
+  protected readonly pendingVariantId = signal('');
 
   private readonly languageFamilyService = inject(LanguageFamilyService);
   private readonly languageGroupService = inject(LanguageGroupService);
-  private readonly languageVariantService = inject(LanguageVariantService);
 
   readonly familiesQuery = injectQuery(() => this.languageFamilyService.list());
 
@@ -69,6 +68,11 @@ export class ContributorVariantsInput implements ControlValueAccessor {
             .includes(variant.id),
       ) || [],
   );
+
+  protected readonly canAdd = computed(() => {
+    const id = this.pendingVariantId();
+    return !!id && !this.value().some((v) => v.id === id);
+  });
 
   private onChange: OnChangeFn = () => undefined;
   private onTouched: OnTouchedFn = () => undefined;
@@ -99,14 +103,20 @@ export class ContributorVariantsInput implements ControlValueAccessor {
   protected onFamilySelect(value: string | string[]): void {
     this.selectedFamilyId.set(typeof value === 'string' ? value : '');
     this.selectedGroupId.set('');
+    this.pendingVariantId.set('');
   }
 
   protected onGroupSelect(value: string | string[]): void {
     this.selectedGroupId.set(typeof value === 'string' ? value : '');
+    this.pendingVariantId.set('');
   }
 
   protected onVariantSelect(value: string | string[]): void {
-    const id = typeof value === 'string' ? value : '';
+    this.pendingVariantId.set(typeof value === 'string' ? value : '');
+  }
+
+  protected addVariant(): void {
+    const id = this.pendingVariantId();
     if (!id || this.value().some((v) => v.id === id)) return;
     const variant = this.allVariants().find((v) => v.id === id);
     if (!variant) return;
@@ -114,7 +124,6 @@ export class ContributorVariantsInput implements ControlValueAccessor {
     this.value.set(next);
     this.onChange(next);
     this.onTouched();
-    this.selectedFamilyId.set('');
-    this.selectedGroupId.set('');
+    this.pendingVariantId.set('');
   }
 }

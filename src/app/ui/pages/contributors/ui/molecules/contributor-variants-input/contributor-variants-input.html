@@ -74,7 +74,7 @@
         class="w-full"
         zPlaceholder="Variante"
         [zDisabled]="!selectedGroupId()"
-        [zValue]="''"
+        [zValue]="pendingVariantId()"
         (zValueChange)="onVariantSelect($event)"
       >
         @for (variant of allVariants(); track variant.id) {
@@ -82,5 +82,18 @@
         }
       </z-select>
     </div>
+
+    <button
+      z-button
+      zType="outline"
+      zSize="sm"
+      type="button"
+      class="w-full"
+      [zDisabled]="!canAdd()"
+      (click)="addVariant()"
+    >
+      <span class="lucide--plus text-base" aria-hidden="true"></span>
+      Añadir variante
+    </button>
   }
 </div>
