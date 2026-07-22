@@ -9,7 +9,6 @@ import localeEsMx from '@angular/common/locales/es-MX';
 import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { withDevtools } from '@tanstack/angular-query-experimental/devtools';
 import { routes } from './app.routes'
-  ;
 
 registerLocaleData(localeEsMx);
 export const appConfig: ApplicationConfig = {
@@ -22,6 +21,15 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding(),
     ),
     provideZard(),
-    provideTanStackQuery(new QueryClient(), withDevtools()),
+    provideTanStackQuery(
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 1000 * 60 * 5, // 5 minutes
+          },
+        },
+      }),
+      withDevtools(),
+    ),
   ],
 };
