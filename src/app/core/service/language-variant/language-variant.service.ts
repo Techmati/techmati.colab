@@ -4,7 +4,7 @@ import type { LanguageGroup } from '@/core/types/language-group.type';
 import type { LanguageFamily } from '@/core/types/language-family.type';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { mutationOptions, queryOptions } from '@tanstack/angular-query-experimental';
+import { keepPreviousData, mutationOptions, queryOptions } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 
 export interface CreateLanguageVariantPayload {
@@ -26,11 +26,42 @@ export interface LanguageVariantResponse extends LanguageVariant {
   family?: LanguageFamily | null;
 }
 
+export interface VariantSearchParams {
+  search?: string;
+  includeGroup?: boolean;
+  includeFamily?: boolean;
+  groupId?: string;
+  page?: number;
+  size?: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class LanguageVariantService {
   private readonly client = inject(HttpClient);
+
+  search(params: VariantSearchParams = {}) {
+    let httpParams = new HttpParams()
+      .set('page', (params.page ?? 1).toString())
+      .set('size', (params.size ?? 20).toString());
+    if (params.search) httpParams = httpParams.set('search', params.search);
+    if (params.includeGroup) httpParams = httpParams.set('include_group', 'true');
+    if (params.includeFamily) httpParams = httpParams.set('include_family', 'true');
+    if (params.groupId) httpParams = httpParams.set('group_id', params.groupId);
+
+    return queryOptions({
+      queryKey: ['language-variants', 'search', params],
+      queryFn: () =>
+        lastValueFrom(
+          this.client.get<{ data: LanguageVariantResponse[]; total: number }>(
+            API.LANGUAGE_VARIANTS.SEARCH,
+            { params: httpParams },
+          ),
+        ),
+      placeholderData: keepPreviousData,
+    });
+  }
 
   findById(id: string, includeGroup = false, includeFamily = false) {
     let params = new HttpParams();

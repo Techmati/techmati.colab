@@ -1,4 +1,5 @@
-<div class="flex flex-col gap-3 max-h-80vh">
+<div class="flex flex-col gap-3">
+  <!-- Already-selected variant chips -->
   <div class="flex flex-wrap gap-1">
     @for (variant of value(); track variant.id) {
       <span
@@ -25,75 +26,23 @@
     }
   </div>
 
-  @if (familiesQuery.isPending()) {
-    <z-skeleton class="h-9 w-full"></z-skeleton>
-  } @else {
-    <div class="grid grid-cols-2 gap-3">
-      <div class="space-y-1">
-        <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
-          <span class="ri--global-line"></span>
-          Familia
-        </span>
-        <z-select
-          class="w-full"
-          zPlaceholder="Familia"
-          [zValue]="selectedFamilyId()"
-          (zValueChange)="onFamilySelect($event)"
-        >
-          @for (family of familiesQuery.data()?.data ?? []; track family.id) {
-            <z-select-item [zValue]="family.id">{{ family.name }}</z-select-item>
-          }
-        </z-select>
-      </div>
+  <!-- Search + selection panel -->
+  <tm-variant-search-input
+    [disabled]="disabled()"
+    [(selectedVariant)]="pendingVariant"
+  />
 
-      <div class="space-y-1">
-        <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
-          <span class="ri--group-line"></span>
-          Grupo
-        </span>
-        <z-select
-          class="w-full"
-          zPlaceholder="Grupo"
-          [zDisabled]="!selectedFamilyId()"
-          [zValue]="selectedGroupId()"
-          (zValueChange)="onGroupSelect($event)"
-        >
-          @for (group of groupsQuery.data()?.data ?? []; track group.id) {
-            <z-select-item [zValue]="group.id">{{ group.name }}</z-select-item>
-          }
-        </z-select>
-      </div>
-    </div>
-
-    <div class="space-y-1">
-      <span class="flex items-center gap-1 text-xs font-medium leading4 text-muted-foreground">
-        <span class="lucide--languages"></span>
-        Variante
-      </span>
-      <z-select
-        class="w-full"
-        zPlaceholder="Variante"
-        [zDisabled]="!selectedGroupId()"
-        [zValue]="pendingVariantId()"
-        (zValueChange)="onVariantSelect($event)"
-      >
-        @for (variant of allVariants(); track variant.id) {
-          <z-select-item [zValue]="variant.id">{{ variant.autodenominacion ? variant.name + ' (' + variant.autodenominacion + ')' : variant.name }}</z-select-item>
-        }
-      </z-select>
-    </div>
-
-    <button
-      z-button
-      zType="outline"
-      zSize="sm"
-      type="button"
-      class="w-full"
-      [zDisabled]="!canAdd()"
-      (click)="addVariant()"
-    >
-      <span class="lucide--plus text-base" aria-hidden="true"></span>
-      Añadir variante
-    </button>
-  }
+  <!-- Add button -->
+  <button
+    z-button
+    zType="outline"
+    zSize="sm"
+    type="button"
+    class="w-full"
+    [zDisabled]="!canAdd()"
+    (click)="addVariant()"
+  >
+    <span class="lucide--plus text-base" aria-hidden="true"></span>
+    Añadir variante
+  </button>
 </div>

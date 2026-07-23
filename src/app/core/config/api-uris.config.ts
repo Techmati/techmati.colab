@@ -39,6 +39,7 @@ const API = {
   },
   LANGUAGE_VARIANTS: {
     LIST: `${BASE_URL}/language-variants`,
+    SEARCH: `${BASE_URL}/language-variants`,
     BY_ID: (id: string) => `${BASE_URL}/language-variants/${id}`,
   },
   ADMIN: {
