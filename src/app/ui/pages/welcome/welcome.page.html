@@ -1,7 +1,8 @@
 <main class="welcome-page bg-card h-dvh w-dvw">
-  <section class="size-full flex bg-white">
-    <video class="w-1/2" src="res/video_1.mp4" loop autoplay></video>
-    <div class="items-center justify-center flex w-1/2 bg-card">
+  <section class="size-full md:flex bg-white relative">
+    <div
+      class="items-center justify-center flex size-full md:w-1/2 bg-card absolute md:relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:translate-x-0 md:translate-y-0 md:top-0 md:left-0"
+    >
       <tm-welcome-panel
         [isLoading]="isLoading()"
         [error]="error()"
@@ -12,5 +13,11 @@
         (modeChanged)="clearMessages()"
       />
     </div>
+    <video
+      class="hidden md:block md:relative md:blur-none md:w-1/2 md:object-contain"
+      src="res/video_1.mp4"
+      loop
+      autoplay
+    ></video>
   </section>
 </main>
