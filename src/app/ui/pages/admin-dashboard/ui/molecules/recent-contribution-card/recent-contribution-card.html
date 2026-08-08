@@ -1,4 +1,4 @@
-<article class="flex items-start gap-3 rounded-2xl border border-border-subtle bg-surface-card p-4">
+<article class="flex items-start gap-3 rounded-2xl border border-border bg-card p-4">
   <div
     class="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-purple-100 text-sm font-bold text-primary"
   >
@@ -8,16 +8,16 @@
   <div class="min-w-0 flex-1">
     <div class="flex items-start justify-between gap-3">
       <div class="min-w-0">
-        <h3 class="truncate text-sm font-semibold leading-5 text-text-primary">
+        <h3 class="truncate text-sm font-semibold leading-5 text-foreground">
           {{ contribution().contributorName || 'Anónimo' }}
         </h3>
-        <p class="mt-1 text-xs leading-4 text-text-secondary">
+        <p class="mt-1 text-xs leading-4 text-muted-foreground">
           {{ contribution().phraseSetTitle || ('Set #' + contribution().phraseSetId.slice(0, 8)) }}
           • {{ contribution().contributedEntriesCount }} entradas
         </p>
       </div>
 
-      <time class="shrink-0 text-xs leading-4 text-text-tertiary">{{
+      <time class="shrink-0 text-xs leading-4 text-muted-foreground">{{
         contribution().lastUpdate | timeAgo
       }}</time>
     </div>

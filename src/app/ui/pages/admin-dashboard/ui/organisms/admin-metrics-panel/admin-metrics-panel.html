@@ -9,11 +9,11 @@
     </div>
 
     <div class="min-w-0">
-      <p class="text-sm font-medium leading-5 text-text-secondary">Contribuciones hoy</p>
+      <p class="text-sm font-medium leading-5 text-muted-foreground">Contribuciones hoy</p>
       @if (todayStats.isPending()) {
         <z-skeleton class="w-full h-9.5"></z-skeleton>
       } @else {
-        <p class="font-display text-3xl font-bold leading-tight text-text-primary">
+        <p class="font-display text-3xl font-bold leading-tight text-foreground">
           {{ todayStats.data()?.todayContributions }}
         </p>
       }
@@ -29,11 +29,11 @@
     </div>
 
     <div class="min-w-0">
-      <p class="text-sm font-medium leading-5 text-text-secondary">Nuevos usuarios</p>
+      <p class="text-sm font-medium leading-5 text-muted-foreground">Nuevos usuarios</p>
       @if (todayStats.isPending()) {
         <z-skeleton class="w-full h-9.5"></z-skeleton>
       } @else {
-        <p class="font-display text-3xl font-bold leading-tight text-text-primary">
+        <p class="font-display text-3xl font-bold leading-tight text-foreground">
           {{ todayStats.data()?.todayNewUsers }}
         </p>
       }

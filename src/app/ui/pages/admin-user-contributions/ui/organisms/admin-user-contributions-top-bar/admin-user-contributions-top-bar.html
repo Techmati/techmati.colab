@@ -1,4 +1,4 @@
-<header class="sticky top-0 z-20 border-b border-border-subtle bg-card/95 shadow-sm backdrop-blur">
+<header class="sticky top-0 z-20 border-b border-border bg-card/95 shadow-sm backdrop-blur">
   <div class="relative mx-auto flex h-20 w-full max-w-3xl items-center justify-center px-14">
     <button
       z-button
@@ -6,7 +6,7 @@
       zSize="icon"
       zShape="circle"
       type="button"
-      class="absolute left-3 text-text-primary"
+      class="absolute left-3 text-foreground"
       aria-label="Volver"
       (click)="goBack()"
     >
@@ -14,8 +14,8 @@
     </button>
 
     <div class="min-w-0 text-center">
-      <p class="text-xs font-medium leading-4 text-text-secondary">Usuario</p>
-      <p class="truncate text-xs font-medium leading-4 text-text-secondary">
+      <p class="text-xs font-medium leading-4 text-muted-foreground">Usuario</p>
+      <p class="truncate text-xs font-medium leading-4 text-muted-foreground">
         {{ userName() || 'Cargando usuario' }}
       </p>
       <h1 class="font-display text-2xl font-bold leading-8 text-primary">Contribuciones</h1>

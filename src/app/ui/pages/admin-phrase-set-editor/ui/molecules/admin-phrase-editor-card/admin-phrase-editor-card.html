@@ -1,5 +1,5 @@
 <article
-  class="flex flex-col items-center gap-2 rounded-lg border border-border-subtle bg-card p-2 shadow-sm"
+  class="flex flex-col items-center gap-2 rounded-lg border border-border bg-card p-2 shadow-sm"
 >
   <div class="flex items-center gap-2 w-full">
     <button
@@ -27,7 +27,7 @@
 
     <button
       type="button"
-      class="flex size-9 shrink-0 items-center justify-center rounded-full text-text-secondary hover:bg-surface-soft hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      class="flex size-9 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       [attr.aria-label]="'Eliminar frase ' + phrase().position"
       (click)="delete.emit(phrase().draftId)"
     >

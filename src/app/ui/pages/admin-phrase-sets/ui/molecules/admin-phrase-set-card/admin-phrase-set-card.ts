@@ -53,7 +53,7 @@ export class AdminPhraseSetCard {
   protected readonly badgeClass = computed(() =>
     this.phraseSet().published
       ? 'shrink-0 rounded-full bg-brand-green-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-brand-green-600'
-      : 'shrink-0 rounded-full bg-surface-soft px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-text-secondary',
+      : 'shrink-0 rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground',
   );
 
   protected readonly cardClass = computed(() =>
@@ -61,7 +61,7 @@ export class AdminPhraseSetCard {
       'rounded-xl bg-card p-4 shadow-sm transition-all duration-300 ease-out',
       this.isExpanded()
         ? 'border-2 border-primary -translate-y-px'
-        : 'border border-border-subtle hover:border-brand-purple-200',
+        : 'border border-border hover:border-brand-purple-200',
     ].join(' '),
   );
 

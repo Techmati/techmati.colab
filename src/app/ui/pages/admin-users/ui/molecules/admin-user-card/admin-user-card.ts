@@ -50,7 +50,7 @@ export class AdminUserCard {
     moderator: 'bg-primary text-primary-foreground',
     analyst: 'bg-brand-green-500 text-white',
     collector: 'bg-brand-purple-500 text-white',
-    user: 'bg-card text-foreground border-border-subtle',
+    user: 'bg-card text-foreground border-border',
   };
 
   protected readonly avatarClasses = computed(() => {
@@ -58,11 +58,11 @@ export class AdminUserCard {
 
     return {
       root: 'bg-brand-purple-100 text-primary',
-      admin: 'bg-[#d8e5e2] text-[#121e1c]',
-      moderator: 'bg-brand-purple-100 text-[#160066]',
-      analyst: 'bg-[#6ffbbe] text-[#002113]',
+      admin: 'bg-[var(--muted)] text-[var(--foreground)]',
+      moderator: 'bg-brand-purple-100 text-[var(--primary)]',
+      analyst: 'bg-[var(--primary)] text-[var(--primary-foreground)]',
       collector: 'bg-brand-purple-200 text-primary',
-      user: 'bg-[#d8e5e2] text-[#121e1c]',
+      user: 'bg-[var(--muted)] text-[var(--foreground)]',
     }[role];
   });
 }

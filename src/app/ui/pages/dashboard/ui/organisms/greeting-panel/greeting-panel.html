@@ -2,24 +2,24 @@
   <tm-greeting-panel-skeleton />
 } @else {
   <div class="flex flex-col gap-2">
-    <h1 class="font-display text-3xl font-bold leading-tight tracking-tight text-text-primary">
+    <h1 class="font-display text-3xl font-bold leading-tight tracking-tight text-foreground">
       Hola, <span class="text-primary">{{ singleName() }}</span>
     </h1>
 
-    <div class="flex flex-col items-center gap-3 rounded-xl border border-border-subtle bg-card p-2 shadow-sm">
+    <div class="flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-2 shadow-sm">
       <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-purple-100">
         <span class="lucide--hand-heart text-xl text-primary" aria-hidden="true"></span>
       </span>
 
       <div class="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span class="text-sm font-medium leading-4 text-text-secondary text-center">Racha diaria</span>
+        <span class="text-sm font-medium leading-4 text-muted-foreground text-center">Racha diaria</span>
         <span class="text-lg font-semibold leading-5 text-primary text-center">
           {{ currentStreak() }} {{ currentStreak() === 1 ? 'día activo' : 'días activos' }}
         </span>
       </div>
 
       @if (currentStreak() > 0) {
-        <span class="shrink-0 text-sm font-normal leading-2 text-text-secondary text-center">
+        <span class="shrink-0 text-sm font-normal leading-2 text-muted-foreground text-center">
           ¡Muchas gracias!
         </span>
       }

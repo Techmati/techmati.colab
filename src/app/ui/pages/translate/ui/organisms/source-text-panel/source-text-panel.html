@@ -1,4 +1,4 @@
-<article class="rounded-xl border border-border-soft bg-card px-6 py-6 shadow-sm">
+<article class="rounded-xl border border-border bg-card px-6 py-6 shadow-sm">
   <header class="mb-3 flex items-center gap-2">
     <span
       class="inline-flex size-6 items-center justify-center rounded-md bg-secondary text-primary"
@@ -12,7 +12,7 @@
   </header>
 
   <h2
-    class="font-display text-text-primary text-2xl font-bold leading-tight text-center"
+    class="font-display text-foreground text-2xl font-bold leading-tight text-center"
     [ngClass]="isLoading() ? 'animate-pulse text-muted-foreground' : ''"
   >
     {{ isLoading() ? 'Cargando...' : text() }}
@@ -20,7 +20,7 @@
 
   <z-divider zSpacing="default"></z-divider>
   <div>
-    <p class="text-text-secondary text-sm font-semibold">
+    <p class="text-muted-foreground text-sm font-semibold">
       <span class="lucide--circle-alert align-middle text-muted-foreground"></span>
       Contexto: {{ context() || 'Sin contexto disponible.' }}
     </p>

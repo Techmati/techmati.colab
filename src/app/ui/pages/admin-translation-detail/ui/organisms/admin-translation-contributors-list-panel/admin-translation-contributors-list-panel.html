@@ -7,7 +7,7 @@
       Contribuyentes
     </h2>
 
-    <p class="shrink-0 text-xs font-medium leading-4 text-text-secondary">
+    <p class="shrink-0 text-xs font-medium leading-4 text-muted-foreground">
       @if (isLoading()) {
         <span class="animate-pulse">Cargando</span>
       } @else {
@@ -36,7 +36,7 @@
 
   @if (pages() > 1) {
     <section
-      class="inline-flex max-w-full rounded-xl border border-border-subtle bg-card p-2 shadow-sm"
+      class="inline-flex max-w-full rounded-xl border border-border bg-card p-2 shadow-sm"
       aria-label="Paginación de contribuyentes"
     >
       <z-pagination

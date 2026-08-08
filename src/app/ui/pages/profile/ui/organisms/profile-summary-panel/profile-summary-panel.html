@@ -1,9 +1,9 @@
 @if (stats.isLoading()) {
   <tm-profile-summary-panel-skeleton />
 } @else if(stats.data(); as stats){
-  <article class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
+  <article class="rounded-xl border border-border bg-card p-4 shadow-sm">
     <header class="mb-3 flex items-center justify-between">
-      <h2 class="text-text-secondary text-base font-semibold leading-6">Traducciones</h2>
+      <h2 class="text-muted-foreground text-base font-semibold leading-6">Traducciones</h2>
       <div class="flex items-center gap-2">
         <span class="badge bg-secondary text-primary"
           ><span class="lucide--languages size-4" aria-hidden="true"></span
@@ -14,7 +14,7 @@
       </div>
     </header>
 
-    <p class="font-display text-text-primary text-3xl font-bold leading-tight">
+    <p class="font-display text-foreground text-3xl font-bold leading-tight">
       {{ stats.entriesCount }}
     </p>
     <p class="mt-1 flex items-center gap-1 text-sm font-medium text-brand-green-600">

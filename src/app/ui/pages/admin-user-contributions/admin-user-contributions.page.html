@@ -13,9 +13,9 @@
           Contribuciones recientes
         </h2>
         @if(isTranslationsLoading()) {
-          <p class="text-sm font-medium leading-5 text-text-secondary animate-pulse">Cargando...</p>
+          <p class="text-sm font-medium leading-5 text-muted-foreground animate-pulse">Cargando...</p>
         } @else {
-          <p class="text-sm font-medium leading-5 text-text-secondary">{{ total() }} en total</p>
+          <p class="text-sm font-medium leading-5 text-muted-foreground">{{ total() }} en total</p>
         }
       </div>
 
@@ -37,7 +37,7 @@
 
     @if (pages() > 1) {
       <section
-        class="rounded-2xl border border-border-subtle bg-card p-3 shadow-sm"
+        class="rounded-2xl border border-border bg-card p-3 shadow-sm"
         aria-label="Paginación de contribuciones"
       >
         <z-pagination

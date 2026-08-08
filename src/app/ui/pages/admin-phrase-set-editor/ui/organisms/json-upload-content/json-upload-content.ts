@@ -8,13 +8,13 @@ import { ZardInputDirective } from '@/shared/components/input';
   imports: [ZardInputDirective],
   template: `
     <div class="space-y-3">
-      <p class="text-sm leading-5 text-text-secondary">
-        Pega el JSON del set de frases. Debe incluir <code class="rounded bg-surface-soft px-1 text-xs font-mono">title</code>,
-        <code class="rounded bg-surface-soft px-1 text-xs font-mono">language</code>,
-        <code class="rounded bg-surface-soft px-1 text-xs font-mono">category</code>,
-        <code class="rounded bg-surface-soft px-1 text-xs font-mono">phrases</code> y opcionalmente
-        <code class="rounded bg-surface-soft px-1 text-xs font-mono">description</code> y
-        <code class="rounded bg-surface-soft px-1 text-xs font-mono">published</code>.
+      <p class="text-sm leading-5 text-muted-foreground">
+        Pega el JSON del set de frases. Debe incluir <code class="rounded bg-muted px-1 text-xs font-mono">title</code>,
+        <code class="rounded bg-muted px-1 text-xs font-mono">language</code>,
+        <code class="rounded bg-muted px-1 text-xs font-mono">category</code>,
+        <code class="rounded bg-muted px-1 text-xs font-mono">phrases</code> y opcionalmente
+        <code class="rounded bg-muted px-1 text-xs font-mono">description</code> y
+        <code class="rounded bg-muted px-1 text-xs font-mono">published</code>.
       </p>
       <textarea
         z-input

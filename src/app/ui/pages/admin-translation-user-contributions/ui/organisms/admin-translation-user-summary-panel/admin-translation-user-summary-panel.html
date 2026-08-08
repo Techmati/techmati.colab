@@ -1,4 +1,4 @@
-<article class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
+<article class="rounded-xl border border-border bg-card p-4 shadow-sm">
   @if (isLoading()) {
     <div class="flex items-center justify-between gap-4">
       <div class="flex min-w-0 flex-1 items-center gap-4">
@@ -25,10 +25,10 @@
       </div>
       <div class="flex justify-between">
         <div class="flex min-w-0 flex-col gap-1">
-          <h3 class="text-sm font-semibold leading-5 tracking-[0.01em] text-text-primary">
+          <h3 class="text-sm font-semibold leading-5 tracking-[0.01em] text-foreground">
             Progreso de la traducción
           </h3>
-          <p class="text-xs font-medium leading-4 text-text-secondary">
+          <p class="text-xs font-medium leading-4 text-muted-foreground">
             {{ progressText() }}
           </p>
         </div>
@@ -36,10 +36,10 @@
         <div class="w-32 shrink-0 text-right">
           <p class="font-display font-semibold leading-8">
             <span class="text-2xl text-primary">{{ translation.translation.contributedEntriesCount }}</span>
-            <span class="text-xl text-text-secondary"> / {{ totalPhrases() }}</span>
+            <span class="text-xl text-muted-foreground"> / {{ totalPhrases() }}</span>
           </p>
-          <p class="text-xs font-medium leading-4 text-text-secondary">Frases Completadas</p>
-          <div class="mt-2 h-2 overflow-hidden rounded-full bg-[#d3e4fe]">
+          <p class="text-xs font-medium leading-4 text-muted-foreground">Frases Completadas</p>
+          <div class="mt-2 h-2 overflow-hidden rounded-full bg-[var(--border)]">
             <div class="h-full rounded-full bg-brand-green-600" [style.width]="progressWidth()"></div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 <section
-  class="rounded-xl border border-[#d3e4fe] bg-card p-4 shadow-sm"
+  class="rounded-xl border border-[var(--border)] bg-card p-4 shadow-sm"
   aria-label="Búsqueda y filtros de usuarios"
 >
   <div class="space-y-1">
@@ -85,13 +85,13 @@
   </div>
 
   <ng-template #searchIcon>
-    <span class="ri--search-line text-base text-text-secondary" aria-hidden="true"></span>
+    <span class="ri--search-line text-base text-muted-foreground" aria-hidden="true"></span>
   </ng-template>
 
   <ng-template #clearSearch>
     <button
       type="button"
-      class="inline-flex items-center justify-center text-text-secondary hover:text-text-primary"
+      class="inline-flex items-center justify-center text-muted-foreground hover:text-foreground"
       aria-label="Limpiar búsqueda"
       (click)="search.set('')"
     >

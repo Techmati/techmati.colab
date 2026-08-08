@@ -1,5 +1,5 @@
 <article
-  class="flex items-center justify-between gap-3 rounded-xl border border-border-subtle bg-card p-4 shadow-sm"
+  class="flex items-center justify-between gap-3 rounded-xl border border-border bg-card p-4 shadow-sm"
 >
   <div class="flex min-w-0 items-center gap-4">
     <div
@@ -10,13 +10,13 @@
     </div>
 
     <div class="min-w-0 space-y-0.5">
-      <h3 class="truncate text-sm font-semibold leading-5 tracking-[0.01em] text-text-primary">
+      <h3 class="truncate text-sm font-semibold leading-5 tracking-[0.01em] text-foreground">
         {{ user().fullName }}
       </h3>
       <p class="truncate text-xs font-bold leading-4 text-brand-green-600">
         @{{ user().username }}
       </p>
-      <p class="truncate text-xs font-medium leading-4 text-text-secondary">
+      <p class="truncate text-xs font-medium leading-4 text-muted-foreground">
         {{ user().email ?? ('Miembro desde ' + (user().createdAt | date: 'dd MMM yyyy')) }}
       </p>
 
@@ -32,7 +32,7 @@
     zType="ghost"
     zSize="icon"
     type="button"
-    class="text-text-secondary hover:text-primary"
+    class="text-muted-foreground hover:text-primary"
     [routerLink]="['/admin', 'users', user().id]"
     [attr.aria-label]="'Ver perfil de ' + user().fullName"
   >

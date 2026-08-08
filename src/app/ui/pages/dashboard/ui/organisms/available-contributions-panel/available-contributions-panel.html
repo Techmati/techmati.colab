@@ -1,12 +1,12 @@
 @if (isPending()) {
   <tm-available-contributions-panel-skeleton />
 } @else if (phraseSets().length > 0) {
-  <section class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
+  <section class="rounded-xl border border-border bg-card p-4 shadow-sm">
     <div class="mb-4 flex items-center gap-3">
       <span class="flex size-10 items-center justify-center rounded-lg bg-brand-purple-100">
         <span class="lucide--sparkles text-xl text-primary" aria-hidden="true"></span>
       </span>
-      <h2 class="font-display text-lg font-semibold leading-7 text-text-primary">
+      <h2 class="font-display text-lg font-semibold leading-7 text-foreground">
         Nuevas<br />oportunidades
       </h2>
     </div>
@@ -14,12 +14,12 @@
     <div class="flex flex-col gap-4">
       @for (ps of phraseSets(); track ps.id) {
         <article
-          class="relative flex flex-col gap-3 rounded-xl border border-border-subtle bg-surface-card p-4 shadow-sm"
+          class="relative flex flex-col gap-3 rounded-xl border border-border bg-card p-4 shadow-sm"
         >
           <div class="absolute left-0 top-0 h-full w-[5px] rounded-l-xl bg-primary"></div>
 
           <div class="flex flex-col gap-1 pl-3">
-            <h3 class="font-ui text-base font-semibold leading-6 text-text-primary">{{ ps.title }}</h3>
+            <h3 class="font-ui text-base font-semibold leading-6 text-foreground">{{ ps.title }}</h3>
 
             <div class="flex flex-wrap items-center gap-2">
               <span class="inline-flex items-center gap-1 rounded-md bg-brand-purple-100 px-2 py-0.5 text-xs font-medium leading-4 text-primary">
@@ -28,14 +28,14 @@
               </span>
 
               @if (ps.language) {
-                <span class="inline-flex items-center gap-1 text-xs font-normal leading-4 text-text-secondary">
+                <span class="inline-flex items-center gap-1 text-xs font-normal leading-4 text-muted-foreground">
                   <span class="lucide--languages" aria-hidden="true"></span>
                   {{ ps.language }}
                 </span>
               }
 
               @if (ps.category) {
-                <span class="inline-flex items-center gap-1 rounded-md bg-surface-soft px-2 py-0.5 text-xs font-medium leading-4 text-text-secondary">
+                <span class="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs font-medium leading-4 text-muted-foreground">
                   {{ ps.category }}
                 </span>
               }
@@ -43,7 +43,7 @@
           </div>
 
           <div class="flex items-center justify-between pl-3">
-            <div class="h-2 w-32 rounded-full bg-[#e5eeff]">
+            <div class="h-2 w-32 rounded-full bg-[var(--muted)]">
               <div class="h-full w-0 rounded-full bg-primary"></div>
             </div>
 

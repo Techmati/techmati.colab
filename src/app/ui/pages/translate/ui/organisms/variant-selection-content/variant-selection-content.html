@@ -16,19 +16,19 @@
         <h3 class="font-display text-lg font-semibold leading-6 text-primary">{{ ps.title }}</h3>
 
         @if (ps.description) {
-          <p class="line-clamp-3 text-sm font-normal leading-5 text-text-secondary">
+          <p class="line-clamp-3 text-sm font-normal leading-5 text-muted-foreground">
             {{ ps.description }}
           </p>
         }
       </div>
 
       <div class="flex flex-wrap gap-3">
-        <span class="inline-flex items-center gap-1 text-xs font-medium leading-4 text-text-secondary">
+        <span class="inline-flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
           <span class="ri--list-check-2 text-base" aria-hidden="true"></span>
           {{ ps.phraseCount }} frases
         </span>
 
-        <span class="inline-flex items-center gap-1 text-xs font-medium leading-4 text-text-secondary">
+        <span class="inline-flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
           <span class="ri--translate-2 text-base" aria-hidden="true"></span>
           {{ ps.language | tmLanguage}}
         </span>
@@ -41,7 +41,7 @@
         }
 
         @if (ps.publishedAt) {
-          <span class="inline-flex items-center gap-1 text-xs font-medium leading-4 text-text-secondary">
+          <span class="inline-flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
             <span class="ri--calendar-line text-base" aria-hidden="true"></span>
             {{ ps.publishedAt | date: 'dd MMM yyyy' }}
           </span>
@@ -57,7 +57,7 @@
               type="button"
               class="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium leading-5 transition"
               [class.bg-brand-purple-100.text-primary]="selectedVariant()?.id === v.id"
-              [class.bg-surface-soft.text-text-secondary]="selectedVariant()?.id !== v.id"
+              [class.bg-muted.text-muted-foreground]="selectedVariant()?.id !== v.id"
               (click)="selectContributorVariant(v)"
             >
               <span class="lucide--languages text-sm" aria-hidden="true"></span>
@@ -72,7 +72,7 @@
             <div class="relative rounded-xl bg-brand-purple-100 p-3 shadow-sm">
               <button
                 type="button"
-                class="absolute right-2 top-2 inline-flex size-5 items-center justify-center rounded-full text-text-secondary hover:text-text-primary focus-visible:outline-none"
+                class="absolute right-2 top-2 inline-flex size-5 items-center justify-center rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none"
                 aria-label="Quitar variante"
                 (click)="selectedVariant.set(null)"
               >
@@ -83,9 +83,9 @@
               </p>
             </div>
           } @else {
-            <div class="flex items-center gap-2 rounded-lg border border-dashed border-border-subtle px-3 py-2">
-              <span class="lucide--languages text-sm text-text-tertiary" aria-hidden="true"></span>
-              <p class="text-sm leading-5 text-text-secondary">Selecciona una variante</p>
+            <div class="flex items-center gap-2 rounded-lg border border-dashed border-border px-3 py-2">
+              <span class="lucide--languages text-sm text-muted-foreground" aria-hidden="true"></span>
+              <p class="text-sm leading-5 text-muted-foreground">Selecciona una variante</p>
             </div>
           }
         </div>

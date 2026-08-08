@@ -1,17 +1,17 @@
-<section class="rounded-lg bg-surface-success-soft p-4 flex flex-col gap-1">
+<section class="rounded-lg bg-accent p-4 flex flex-col gap-1">
   <p class="text-brand-green-600 text-sm font-semibold leading-4">
     {{ task().phraseSet?.title || 'Set #' + task().phraseSetId.slice(0, 8) }}
     •
     {{ task().variant?.name || task().variant?.autodenominacion }}
   </p>
-  <p class="text-text-secondary text-xs leading-4">
+  <p class="text-muted-foreground text-xs leading-4">
     {{ task().phraseCount }} frases • {{ task().lastUpdate | timeAgo }}
   </p>
-  <div class="flex items-center justify-between text-xs leading-4 text-text-secondary">
+  <div class="flex items-center justify-between text-xs leading-4 text-muted-foreground">
     <span>{{ task().contributedEntriesCount }}/{{ task().phraseCount }} completadas</span>
     <span>{{ task().progressPercentage }}%</span>
   </div>
-  <div class="h-1.5 rounded-full bg-border-subtle">
+  <div class="h-1.5 rounded-full bg-border">
     <div
       class="h-full rounded-full bg-brand-green-600"
       [style]="{ width: task().progressPercentage + '%' }"

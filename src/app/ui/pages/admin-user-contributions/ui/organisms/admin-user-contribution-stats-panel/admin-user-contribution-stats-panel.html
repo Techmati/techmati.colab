@@ -1,4 +1,4 @@
-<article class="rounded-2xl border border-border-subtle bg-card p-5 shadow-sm shadow-primary/10">
+<article class="rounded-2xl border border-border bg-card p-5 shadow-sm shadow-primary/10">
   @if (isLoading()) {
     <div class="grid w-full grid-cols-2 gap-3">
       <z-skeleton class="h-24 rounded-xl" />
@@ -12,28 +12,28 @@
         <strong class="block font-display text-3xl font-bold leading-9 text-primary">
           {{ stats()?.entriesCount ?? 0 }}
         </strong>
-        <span class="text-xs font-medium leading-4 text-text-secondary">Entradas</span>
+        <span class="text-xs font-medium leading-4 text-muted-foreground">Entradas</span>
       </section>
 
       <section class="rounded-xl bg-brand-green-100 px-3 py-4 text-center">
         <strong class="block font-display text-3xl font-bold leading-9 text-brand-green-600">
           {{ stats()?.completedAttempts ?? 0 }}
         </strong>
-        <span class="text-xs font-medium leading-4 text-text-secondary">Intentos completados</span>
+        <span class="text-xs font-medium leading-4 text-muted-foreground">Intentos completados</span>
       </section>
 
-      <section class="rounded-xl bg-surface-soft px-3 py-4 text-center">
-        <strong class="block font-display text-3xl font-bold leading-9 text-text-primary">
+      <section class="rounded-xl bg-muted px-3 py-4 text-center">
+        <strong class="block font-display text-3xl font-bold leading-9 text-foreground">
           {{ stats()?.thisWeekCount ?? 0 }}
         </strong>
-        <span class="text-xs font-medium leading-4 text-text-secondary">Esta semana</span>
+        <span class="text-xs font-medium leading-4 text-muted-foreground">Esta semana</span>
       </section>
 
-      <section class="rounded-xl bg-surface-soft px-3 py-4 text-center">
-        <strong class="block font-display text-3xl font-bold leading-9 text-text-primary">
+      <section class="rounded-xl bg-muted px-3 py-4 text-center">
+        <strong class="block font-display text-3xl font-bold leading-9 text-foreground">
           {{ stats()?.todayCount ?? 0 }}
         </strong>
-        <span class="text-xs font-medium leading-4 text-text-secondary">Hoy</span>
+        <span class="text-xs font-medium leading-4 text-muted-foreground">Hoy</span>
       </section>
     </div>
   }

@@ -24,7 +24,7 @@ export class AdminTranslationContributorCard {
     this.summary().completed ? 'Completado' : 'Pendiente',
   );
   protected readonly statusColor = computed(() =>
-    this.summary().completed ? ' text-brand-green-600' : 'text-text-secondary',
+    this.summary().completed ? ' text-brand-green-600' : 'text-muted-foreground',
   );
   protected readonly progressTextClass = computed(() =>
     this.summary().completed

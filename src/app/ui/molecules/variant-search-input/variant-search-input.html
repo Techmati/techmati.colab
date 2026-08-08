@@ -2,14 +2,14 @@
   <!-- Search input -->
   <div class="relative">
     <div
-      class="flex items-center gap-2 rounded-lg border border-border-subtle bg-card px-3 py-2 shadow-sm"
+      class="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 shadow-sm"
       [class.border-primary]="isFocused()"
     >
-      <span class="lucide--search text-sm text-text-secondary" aria-hidden="true"></span>
+      <span class="lucide--search text-sm text-muted-foreground" aria-hidden="true"></span>
       <input
         #searchInput
         type="search"
-        class="min-w-0 flex-1 bg-transparent text-sm leading-5 text-text-primary outline-none placeholder:text-text-tertiary"
+        class="min-w-0 flex-1 bg-transparent text-sm leading-5 text-foreground outline-none placeholder:text-muted-foreground"
         placeholder="Buscar variante..."
         [disabled]="disabled()"
         [value]="search()"
@@ -24,7 +24,7 @@
     <!-- Dropdown -->
     @if (showDropdown()) {
       <div
-        class="absolute left-0 right-0 top-full z-50 mt-1 max-h-60 overflow-y-auto rounded-lg border border-border-subtle bg-card shadow-lg"
+        class="absolute left-0 right-0 top-full z-50 mt-1 max-h-60 overflow-y-auto rounded-lg border border-border bg-card shadow-lg"
       >
         @if (resultsQuery.isPending()) {
           <div class="space-y-2 p-3">
@@ -32,30 +32,30 @@
             <z-skeleton class="h-12 w-full rounded-md" />
           </div>
         } @else if (results().length === 0) {
-          <p class="p-3 text-center text-sm leading-5 text-text-secondary">
+          <p class="p-3 text-center text-sm leading-5 text-muted-foreground">
             No se encontraron variantes
           </p>
         } @else {
           @for (variant of results(); track variant.id) {
             <button
               type="button"
-              class="flex w-full flex-col gap-0.5 px-3 py-2 text-left transition hover:bg-surface-soft focus-visible:bg-surface-soft focus-visible:outline-none"
+              class="flex w-full flex-col gap-0.5 px-3 py-2 text-left transition hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
               [class.bg-brand-purple-100]="selectedVariant()?.id === variant.id"
               (mousedown)="$event.preventDefault()"
               (click)="select(variant)"
             >
-              <div class="flex items-center gap-1 text-xs leading-4 text-text-secondary">
+              <div class="flex items-center gap-1 text-xs leading-4 text-muted-foreground">
                 @if (variant.family) {
                   <span class="ri--global-line" aria-hidden="true"></span>
                   {{ variant.family.name }}
                 }
                 @if (variant.group) {
-                  <span class="text-border-subtle mx-0.5" aria-hidden="true">•</span>
+                  <span class="text-border mx-0.5" aria-hidden="true">•</span>
                   <span class="ri--group-line" aria-hidden="true"></span>
                   {{ variant.group.name }}
                 }
               </div>
-              <p class="text-sm font-medium leading-5 text-text-primary">
+              <p class="text-sm font-medium leading-5 text-foreground">
                 {{ variant.name }}{{ variant.autodenominacion ? ' (' + variant.autodenominacion + ')' : '' }}
               </p>
             </button>
@@ -73,19 +73,19 @@
       >
         <button
           type="button"
-          class="absolute right-2 top-2 inline-flex size-5 items-center justify-center rounded-full text-text-secondary hover:text-text-primary focus-visible:outline-none"
+          class="absolute right-2 top-2 inline-flex size-5 items-center justify-center rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none"
           aria-label="Quitar variante"
           (click)="clear()"
         >
           <span class="lucide--x text-sm" aria-hidden="true"></span>
         </button>
-        <div class="flex items-center gap-1 text-xs leading-4 text-text-secondary">
+        <div class="flex items-center gap-1 text-xs leading-4 text-muted-foreground">
           @if (variant.family) {
             <span class="ri--global-line" aria-hidden="true"></span>
             {{ variant.family.name }}
           }
           @if (variant.group) {
-            <span class="text-border-subtle mx-0.5" aria-hidden="true">•</span>
+            <span class="text-border mx-0.5" aria-hidden="true">•</span>
             <span class="ri--group-line" aria-hidden="true"></span>
             {{ variant.group.name }}
           }
@@ -95,9 +95,9 @@
         </p>
       </div>
     } @else {
-      <div class="flex items-center gap-2 rounded-lg border border-dashed border-border-subtle px-3 py-2">
-        <span class="lucide--languages text-sm text-text-tertiary" aria-hidden="true"></span>
-        <p class="text-sm leading-5 text-text-secondary">Selecciona una variante</p>
+      <div class="flex items-center gap-2 rounded-lg border border-dashed border-border px-3 py-2">
+        <span class="lucide--languages text-sm text-muted-foreground" aria-hidden="true"></span>
+        <p class="text-sm leading-5 text-muted-foreground">Selecciona una variante</p>
       </div>
     }
   </div>

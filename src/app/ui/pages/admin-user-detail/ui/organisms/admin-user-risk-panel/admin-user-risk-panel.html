@@ -1,4 +1,4 @@
-<article class="rounded-xl border border-border-subtle bg-card p-4 shadow-sm">
+<article class="rounded-xl border border-border bg-card p-4 shadow-sm">
   <header class="mb-4 flex items-center justify-center gap-2">
     <span class="lucide--shield-alert text-xl text-destructive" aria-hidden="true"></span>
     <h2 class="font-display text-xl font-semibold leading-7 text-destructive">Zona de riesgo</h2>
@@ -9,7 +9,7 @@
       <span class="lucide--id-card text-xl" aria-hidden="true"></span>
       Rol
     </h3>
-    <p class="text-base leading-6 text-text-secondary">
+    <p class="text-base leading-6 text-muted-foreground">
       Cambiar el rol de un usuario le dará o revocará acciones que tenga permitido realizar.
       Asigna roles con precaución.
     </p>
@@ -27,7 +27,7 @@
     </z-select>
   </section>
 
-  <div class="my-4 h-px w-full bg-border-subtle"></div>
+  <div class="my-4 h-px w-full bg-border"></div>
 
   <section class="flex flex-col items-center gap-3">
     <div class="w-full space-y-2">
@@ -35,7 +35,7 @@
         <span class="lucide--ban text-xl" aria-hidden="true"></span>
         Banear usuario
       </h3>
-      <p class="text-base leading-6 text-text-secondary">
+      <p class="text-base leading-6 text-muted-foreground">
         Banear a un usuario revocará inmediatamente su capacidad para enviar traducciones o acceder
         al dashboard.
       </p>
@@ -47,7 +47,7 @@
       type="button"
       [zLoading]="isUpdatingBanState()"
       [zDisabled]="isUpdatingBanState()"
-      class="h-12 min-w-32 bg-[#ba1a1a] px-6 text-sm font-semibold leading-5 text-white hover:bg-[#9f1717] hover:text-white"
+      class="h-12 min-w-32 bg-[var(--destructive)] px-6 text-sm font-semibold leading-5 text-white hover:bg-[var(--destructive)] hover:text-white"
       (click)="toggleBanState()"
     >
       <span class="lucide--ban text-xl" aria-hidden="true"></span>

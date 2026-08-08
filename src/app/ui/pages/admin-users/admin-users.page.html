@@ -19,7 +19,7 @@
         >
           Usuarios Encontrados
         </h2>
-        <p class="text-xs leading-4 text-text-secondary">
+        <p class="text-xs leading-4 text-muted-foreground">
           @if (isLoading) {
             <span class="animate-pulse">Cargando</span>
           } @else {
@@ -48,7 +48,7 @@
     </section>
 
     @if (hasResults() && pages() > 1) {
-      <section class="rounded-xl border border-border-subtle bg-card p-2 shadow-sm">
+      <section class="rounded-xl border border-border bg-card p-2 shadow-sm">
         <z-pagination
           zAriaLabel="Paginación de usuarios"
           [zTotal]="pages()"

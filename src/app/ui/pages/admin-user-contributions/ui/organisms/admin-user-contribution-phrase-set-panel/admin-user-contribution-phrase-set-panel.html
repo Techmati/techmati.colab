@@ -1,4 +1,4 @@
-<article class="rounded-2xl border border-border-subtle bg-card p-4 shadow-sm">
+<article class="rounded-2xl border border-border bg-card p-4 shadow-sm">
   <header class="mb-4 flex items-center justify-center gap-2 text-center">
     <span class="lucide--history text-xl text-primary" aria-hidden="true"></span>
     <h2 class="font-display text-xl font-semibold leading-7 text-primary">
@@ -7,10 +7,10 @@
   </header>
 
   <div class="space-y-2">
-    <p class="text-sm leading-5 text-text-secondary">
+    <p class="text-sm leading-5 text-muted-foreground">
       {{ contribution().contributedEntriesCount }} / {{ contribution().phraseCount }} frases
     </p>
-    <p class="text-xs leading-4 text-text-tertiary">
+    <p class="text-xs leading-4 text-muted-foreground">
       {{ contribution().inProgress ? 'En progreso' : 'Completado' }} •
       {{ contribution().attemptedAt | date: 'd MMM yyyy' : '' : 'es-MX' }}
     </p>

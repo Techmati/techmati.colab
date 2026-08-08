@@ -1,5 +1,5 @@
 <article
-  class="min-h-85 rounded-xl border border-border-subtle bg-card p-4 shadow-sm"
+  class="min-h-85 rounded-xl border border-border bg-card p-4 shadow-sm"
   role="status"
   aria-label="Cargando contribuciones disponibles"
 >
@@ -10,7 +10,7 @@
 
     <div class="space-y-3">
       @for (item of [1, 2, 3]; track item) {
-        <section class="space-y-3 rounded-xl border border-border-subtle bg-surface-card p-4">
+        <section class="space-y-3 rounded-xl border border-border bg-card p-4">
           <z-skeleton class="h-5 w-3/4" />
           <div class="flex justify-between gap-4">
             <z-skeleton class="h-4 w-20" />

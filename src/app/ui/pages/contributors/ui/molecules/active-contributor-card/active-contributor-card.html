@@ -1,5 +1,5 @@
 <article
-  class="active-card relative flex flex-col gap-2 rounded-xl border border-primary bg-primary/10 p-4 shadow-[0_4px_24px_rgba(83,65,205,0.15)]"
+  class="active-card relative flex flex-col gap-2 rounded-xl border border-primary bg-primary/10 p-4 shadow-[0_4px_24px_rgba(96,165,250,0.15)]"
 >
   <span
     class="absolute right-4 top-4 flex size-8 items-center justify-center rounded-full bg-primary text-white"
@@ -11,7 +11,7 @@
   <h3 class="font-ui text-lg font-medium leading-7 text-primary">{{ contributor().fullName }}</h3>
 
   <span
-    class="inline-flex w-fit items-center gap-1 rounded-md border border-border-soft bg-surface-soft px-2 py-1 text-xs font-medium leading-4 text-text-primary"
+    class="inline-flex w-fit items-center gap-1 rounded-md border border-border bg-muted px-2 py-1 text-xs font-medium leading-4 text-foreground"
   >
     <span [class]="statusInfo().icon" class="text-sm text-brand-green-600" aria-hidden="true"></span>
     {{ statusInfo().label }}
@@ -32,7 +32,7 @@
     <div class="flex items-center gap-1">
       <button
         type="button"
-        class="flex size-8 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-surface-soft hover:text-primary focus-visible:outline-none"
+        class="flex size-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-primary focus-visible:outline-none"
         [attr.aria-label]="'Editar a ' + contributor().fullName"
         (click)="onEdit()"
       >

@@ -11,12 +11,12 @@
       </div>
 
       <p
-        class="flex flex-wrap items-center gap-1 text-xs font-medium leading-4 text-text-secondary"
+        class="flex flex-wrap items-center gap-1 text-xs font-medium leading-4 text-muted-foreground"
       >
         <span>{{ phraseSet().phraseCount }} frases</span>
-        <span class="text-border-subtle" aria-hidden="true">•</span>
+        <span class="text-border" aria-hidden="true">•</span>
         <span>{{ phraseSet().createdAt }}</span>
-        <span class="text-border-subtle" aria-hidden="true">•</span>
+        <span class="text-border" aria-hidden="true">•</span>
         <z-badge zShape="pill" class="gap-1">
           <span class="ri--hospital-line text-xs" aria-hidden="true"></span>
           {{ categoryLabel() }}
@@ -26,7 +26,7 @@
 
     <button
       type="button"
-      class="flex size-9 shrink-0 items-center justify-center rounded-lg hover:bg-surface-soft hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      class="flex size-9 shrink-0 items-center justify-center rounded-lg hover:bg-muted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       [attr.aria-label]="
         (isExpanded() ? 'Contraer set de frases ' : 'Expandir set de frases ') + phraseSet().title
       "
@@ -56,7 +56,7 @@
           <ul class="space-y-2">
             @for (phrase of previewPhrases(); track phrase) {
               <li
-                class="rounded-md border border-brand-purple-100 bg-card px-3 py-2 text-base leading-6 text-text-primary"
+                class="rounded-md border border-brand-purple-100 bg-card px-3 py-2 text-base leading-6 text-foreground"
               >
                 {{ phrase.sourceText }}
               </li>

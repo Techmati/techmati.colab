@@ -80,8 +80,8 @@ export class WavesAudioPlayer implements AfterViewInit {
 
     this.waveSurfer = WaveSurfer.create({
       container: this.waveformContainer().nativeElement,
-      waveColor: 'rgb(218, 222, 245)',
-      progressColor: 'rgb(95, 96, 197)',
+      waveColor: 'rgb(224, 242, 254)',
+      progressColor: 'rgb(96, 165, 250)',
       barWidth: 3,
       barGap: 2,
       barRadius: 50,

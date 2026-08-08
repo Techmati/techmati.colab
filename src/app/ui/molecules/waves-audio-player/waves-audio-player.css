@@ -44,7 +44,7 @@
 }
 
 .audio-player--panel {
-  background: #f8f9ff;
+  background: var(--muted);
   border-radius: 0.5rem;
   box-shadow: none;
   gap: 1rem;
