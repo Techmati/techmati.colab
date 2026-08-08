@@ -1,13 +1,16 @@
-<main class="welcome-page min-h-screen bg-background px-5 py-10 md:py-20">
-  <section class="mx-auto w-full max-w-sm">
-    <tm-welcome-panel
-      [isLoading]="isLoading()"
-      [error]="error()"
-      [success]="success()"
-      (googleSignInRequested)="signInWithGoogle()"
-      (passwordSignInRequested)="signInWithPassword($event)"
-      (passwordSignUpRequested)="signUpWithPassword($event)"
-      (modeChanged)="clearMessages()"
-    />
+<main class="welcome-page bg-card h-dvh w-dvw">
+  <section class="size-full flex bg-white">
+    <video class="w-1/2" src="res/video_1.mp4" loop autoplay></video>
+    <div class="items-center justify-center flex w-1/2 bg-card">
+      <tm-welcome-panel
+        [isLoading]="isLoading()"
+        [error]="error()"
+        [success]="success()"
+        (googleSignInRequested)="signInWithGoogle()"
+        (passwordSignInRequested)="signInWithPassword($event)"
+        (passwordSignUpRequested)="signUpWithPassword($event)"
+        (modeChanged)="clearMessages()"
+      />
+    </div>
   </section>
 </main>
