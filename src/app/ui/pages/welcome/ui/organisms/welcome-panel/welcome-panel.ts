@@ -36,7 +36,7 @@ export class WelcomePanel {
     { value: 'sign-up', label: 'Crear cuenta' },
   ];
 
-  protected readonly logoUrl = '/res/brand.jpg';
+  protected readonly logoUrl = '/res/brand.jpeg';
 
   protected selectMode(mode: string): void {
     if (mode !== 'sign-in' && mode !== 'sign-up') {

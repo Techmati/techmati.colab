@@ -96,7 +96,7 @@ and aliases defined in `components.json`.
 
 ### `public`
 
-Static assets use root-relative URLs, for example `/res/brand.jpg`. Keep static application assets
+Static assets use root-relative URLs, for example `/res/brand.jpeg`. Keep static application assets
 here and render static images through the established optimized-image path.
 
 ## Naming and Imports

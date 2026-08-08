@@ -13,7 +13,7 @@ export class AppBanner {
 
   protected readonly visible = signal(true);
   protected readonly showIcon = signal(false);
-  protected readonly logoUrl = '/res/brand.jpg';
+  protected readonly logoUrl = '/res/brand.jpeg';
   // 'https://www.figma.com/api/mcp/asset/9755c7a2-d4eb-487c-ab41-04aee4b6b7e0';
 
   constructor() {
