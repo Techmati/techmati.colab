@@ -13,16 +13,19 @@ export const routes: Routes = [
   {
     path: '',
     component: WelcomePage,
+    title: 'Bienvenido - Techmati Colab',
   },
   {
     path: 'dashboard',
     component: DashboardPage,
     canActivate: [authenticationGuard],
+    title: 'Inicio - Techmati Colab',
   },
   {
     path: 'contributors',
     component: ContributorsPage,
     canActivate: [authenticationGuard],
+    title: 'Contribuidores - Techmati Colab',
   },
   {
     path: 'admin/dashboard',
@@ -31,6 +34,7 @@ export const routes: Routes = [
         (module) => module.AdminDashboardPage,
       ),
     canActivate: [authenticationGuard],
+    title: 'Administrador - Techmati Colab',
   },
   {
     path: 'admin/phrase-sets',
@@ -39,6 +43,7 @@ export const routes: Routes = [
         (module) => module.AdminPhraseSetsPage,
       ),
     canActivate: [authenticationGuard],
+    title: 'Set de Frases - Techmati Colab',
   },
   {
     path: 'admin/phrase-sets/:phraseSetId/translations',
