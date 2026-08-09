@@ -3,5 +3,5 @@
 }
 
 .top-app-bar {
-  border-bottom: 1px solid color-mix(in oklab, var(--color-border-subtle) 70%, white);
+  border-bottom: 1px solid color-mix(in oklab, var(--color-border) 70%, white);
 }

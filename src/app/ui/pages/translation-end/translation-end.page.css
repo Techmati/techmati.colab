@@ -3,7 +3,7 @@
 }
 
 .translation-end-page {
-  background-image: linear-gradient(90deg, var(--color-surface-soft), var(--color-surface-page));
+  background-image: linear-gradient(90deg, var(--color-muted), var(--color-background));
 }
 
 .celebration-shell::before {

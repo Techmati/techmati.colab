@@ -5,5 +5,5 @@
 .item-active {
   color: var(--color-primary);
   border-top-color: var(--color-primary);
-  background: color-mix(in oklab, var(--color-surface-soft) 55%, white);
+  background: color-mix(in oklab, var(--color-muted) 55%, white);
 }

@@ -3,5 +3,5 @@
 }
 
 .welcome-page {
-  background: linear-gradient(180deg, var(--color-surface-page), var(--color-surface-canvas));
+  background: linear-gradient(180deg, var(--color-background), var(--color-background));
 }
