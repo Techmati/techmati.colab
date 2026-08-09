@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@ang
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '@/core/service/authentication/authentication.service';
+import { FirstTimeSetupData } from './core/types/first-time-setup-data.type';
 import { WelcomePanel } from './ui/organisms/welcome-panel/welcome-panel';
 import { AuthCredentials, SignUpCredentials } from './welcome-auth.type';
 
@@ -69,6 +70,8 @@ export class WelcomePage {
       this.isLoading.set(false);
     }
   }
+
+  async requestFirstTimeSetup(contributorData: FirstTimeSetupData): Promise<void> { }
 
   clearMessages(): void {
     this.error.set(null);

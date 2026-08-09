@@ -1,0 +1,50 @@
+<div class="flex flex-col gap-3 items-center">
+  <!-- Already-selected variant chips -->
+  <div class="flex flex-wrap gap-1 w-full max-w-97.5" [class]="value().length > 0 ? 'mt-2' : ''">
+    @for (variant of value(); track variant.id) {
+      <div
+        class="relative rounded-xl bg-brand-purple-100 p-3 shadow-sm w-full"
+      >
+        <button
+          type="button"
+          class="absolute right-2 top-2 inline-flex size-5 items-center justify-center rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none"
+          aria-label="Quitar variante"
+          (click)="removeVariant(variant)"
+          [disabled]="disabled()"
+        >
+          <span class="lucide--x text-sm" aria-hidden="true"></span>
+        </button>
+        <div class="flex items-center gap-1 text-xs leading-4 text-muted-foreground">
+          @if (variant.family) {
+            <span class="ri--global-line" aria-hidden="true"></span>
+            {{ variant.family.name }}
+          }
+          @if (variant.group) {
+            <span class="text-border mx-0.5" aria-hidden="true">•</span>
+            <span class="ri--group-line" aria-hidden="true"></span>
+            {{ variant.group.name }}
+          }
+        </div>
+        <p class="mt-0.5 text-sm font-semibold leading-5 text-primary">
+          {{ variant.name }}{{ variant.autodenominacion ? ' (' + variant.autodenominacion + ')' : '' }}
+        </p>
+      </div>
+    }
+  </div>
+
+  <!-- Search + selection panel -->
+  <tm-variant-search-input
+    class="w-full"
+    [search]="search()"
+    [disabled]="disabled()"
+    (selectedVariantChange)="addVariant($event)"
+    [showSelectedVariant]="false"
+  />
+
+  <z-button-group>
+    <button z-button type="button" zType="outline" (click)="setSearch('Náhuatl')">Náhuatl</button>
+    <button z-button type="button" zType="outline" (click)="setSearch('Mixteco')">Mixteco</button>
+    <button z-button type="button" zType="outline" (click)="setSearch('Zapoteco')">Zapoteco</button>
+  </z-button-group>
+
+</div>

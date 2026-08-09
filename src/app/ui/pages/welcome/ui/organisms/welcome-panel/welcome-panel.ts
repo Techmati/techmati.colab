@@ -4,15 +4,24 @@ import { ChangeDetectionStrategy, Component, computed, input, output, signal } f
 import { ZardButtonComponent } from '@/shared/components/button';
 import { type SegmentedOption, ZardSegmentedComponent } from '@/shared/components/segmented';
 
+import { FirstTimeSetupData } from '../../../core/types/first-time-setup-data.type';
 import { AuthCredentials, SignUpCredentials } from '../../../welcome-auth.type';
+import { FirstTimeForm } from '../first-time-form/first-time-form';
 import { LoginForm } from '../login-form/login-form';
 import { SignupForm } from '../signup-form/signup-form';
 
-type AuthMode = 'sign-in' | 'sign-up';
+type AuthMode = 'sign-in' | 'sign-up' | 'quick-flow';
 
 @Component({
   selector: 'tm-welcome-panel',
-  imports: [NgOptimizedImage, ZardButtonComponent, ZardSegmentedComponent, LoginForm, SignupForm],
+  imports: [
+    NgOptimizedImage,
+    ZardButtonComponent,
+    ZardSegmentedComponent,
+    LoginForm,
+    SignupForm,
+    FirstTimeForm,
+  ],
   templateUrl: './welcome-panel.html',
   styleUrl: './welcome-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,6 +34,7 @@ export class WelcomePanel {
   readonly googleSignInRequested = output();
   readonly passwordSignInRequested = output<AuthCredentials>();
   readonly passwordSignUpRequested = output<SignUpCredentials>();
+  readonly firstTimeSetupRequested = output<FirstTimeSetupData>();
   readonly modeChanged = output<AuthMode>();
 
   protected readonly mode = signal<AuthMode>('sign-in');
@@ -32,6 +42,7 @@ export class WelcomePanel {
   protected readonly isSignIn = computed(() => this.mode() === 'sign-in');
   protected readonly displayedError = computed(() => this.formError() ?? this.error());
   protected readonly authOptions: SegmentedOption[] = [
+    { value: 'quick-flow', label: 'Primera vez' },
     { value: 'sign-in', label: 'Iniciar sesión' },
     { value: 'sign-up', label: 'Crear cuenta' },
   ];
@@ -39,7 +50,7 @@ export class WelcomePanel {
   protected readonly logoUrl = '/res/brand.jpeg';
 
   protected selectMode(mode: string): void {
-    if (mode !== 'sign-in' && mode !== 'sign-up') {
+    if (mode !== 'sign-in' && mode !== 'sign-up' && mode !== 'quick-flow') {
       return;
     }
 
@@ -60,6 +71,11 @@ export class WelcomePanel {
   protected requestPasswordSignUp(credentials: SignUpCredentials): void {
     this.formError.set(null);
     this.passwordSignUpRequested.emit(credentials);
+  }
+
+  protected requestFirstTimeSetup(contributorData: FirstTimeSetupData): void {
+    this.formError.set(null);
+    this.firstTimeSetupRequested.emit(contributorData);
   }
 
   protected setFormError(message: string | null): void {

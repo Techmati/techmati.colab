@@ -15,7 +15,7 @@
     <z-segmented
       class="w-full"
       zAriaLabel="Selecciona una opción de autenticación"
-      zDefaultValue="sign-in"
+      zDefaultValue="quick-flow"
       [zOptions]="authOptions"
       (zChange)="selectMode($event)"
     />
@@ -23,21 +23,29 @@
     <div
       class="mt-5"
       role="tabpanel"
-      [id]="isSignIn() ? 'sign-in-panel' : 'sign-up-panel'"
-      [attr.aria-labelledby]="isSignIn() ? 'sign-in-tab' : 'sign-up-tab'"
     >
-      @if (isSignIn()) {
-        <tm-login-form
-          [isLoading]="isLoading()"
-          (submitted)="requestPasswordSignIn($event)"
-          (errorMessage)="setFormError($event)"
-        />
-      } @else {
-        <tm-signup-form
-          [isLoading]="isLoading()"
-          (submitted)="requestPasswordSignUp($event)"
-          (errorMessage)="setFormError($event)"
-        />
+      @switch (mode()) {
+        @case('sign-in') {
+          <tm-login-form
+            [isLoading]="isLoading()"
+            (submitted)="requestPasswordSignIn($event)"
+            (errorMessage)="setFormError($event)"
+          />
+        }
+        @case('sign-up') {
+          <tm-signup-form
+            [isLoading]="isLoading()"
+            (submitted)="requestPasswordSignUp($event)"
+            (errorMessage)="setFormError($event)"
+          />
+        }
+        @case('quick-flow') {
+          <tm-first-time-form
+            [isLoading]="isLoading()"
+            (submitted)="requestFirstTimeSetup($event)"
+            (errorMessage)="setFormError($event)"
+          />
+        }
       }
     </div>
 

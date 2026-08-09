@@ -6,6 +6,7 @@ import {
   ElementRef,
   inject,
   input,
+  linkedSignal,
   model,
   signal,
   viewChild,
@@ -13,8 +14,8 @@ import {
 import { FormsModule } from '@angular/forms';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 
-import type { LanguageVariant } from '@/core/types/language-variant.type';
 import { LanguageVariantService } from '@/core/service/language-variant/language-variant.service';
+import type { LanguageVariant } from '@/core/types/language-variant.type';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 
 @Component({
@@ -26,11 +27,14 @@ import { ZardSkeletonComponent } from '@/shared/components/skeleton';
 })
 export class VariantSearchInput {
   readonly disabled = input(false);
+  readonly search = input('');
+  readonly showSelectedVariant = input(true);
+
   readonly selectedVariant = model<LanguageVariant | null>(null);
 
   private readonly variantService = inject(LanguageVariantService);
 
-  protected readonly search = signal('');
+  protected readonly _search = linkedSignal(() => this.search());
   protected readonly debouncedSearch = signal('');
   protected readonly isFocused = signal(false);
 
@@ -52,15 +56,14 @@ export class VariantSearchInput {
 
   protected readonly results = computed(() => this.resultsQuery.data()?.data ?? []);
 
-  readonly showDropdown = computed(
-    () => this.isFocused() && this.debouncedSearch().length > 0 && !this.resultsQuery.isPending(),
-  );
-
   readonly isSelected = computed(() => this.selectedVariant() !== null);
 
   constructor() {
+    effect(() =>
+      console.log('is focused', this.isFocused(), 'focused element: ', document.activeElement),
+    );
     effect((onCleanup) => {
-      const search = this.search().trim();
+      const search = this._search().trim();
       if (search.length === 0) {
         this.debouncedSearch.set('');
         return;
@@ -72,8 +75,18 @@ export class VariantSearchInput {
     });
   }
 
+  async focus() {
+    setTimeout(() => {
+      this.searchInput()?.nativeElement.focus();
+    }, 150);
+  }
+
+  clear(): void {
+    this.selectedVariant.set(null);
+  }
+
   protected onInput(value: string): void {
-    this.search.set(value);
+    this._search.set(value);
   }
 
   protected onFocus(): void {
@@ -82,6 +95,7 @@ export class VariantSearchInput {
 
   protected onBlur(): void {
     // Delay to allow click on a result before closing
+    console.log('on blur', this.isFocused(), 'focused element: ', document.activeElement);
     setTimeout(() => {
       this.isFocused.set(false);
     }, 150);
@@ -89,13 +103,9 @@ export class VariantSearchInput {
 
   protected select(variant: LanguageVariant): void {
     this.selectedVariant.set(variant);
-    this.search.set('');
+    this._search.set('');
     this.debouncedSearch.set('');
     this.isFocused.set(false);
-  }
-
-  protected clear(): void {
-    this.selectedVariant.set(null);
   }
 
   protected onKeydown(event: KeyboardEvent): void {

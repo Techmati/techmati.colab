@@ -10,6 +10,7 @@
         (googleSignInRequested)="signInWithGoogle()"
         (passwordSignInRequested)="signInWithPassword($event)"
         (passwordSignUpRequested)="signUpWithPassword($event)"
+        (firstTimeSetupRequested)="requestFirstTimeSetup($event)"
         (modeChanged)="clearMessages()"
       />
     </div>
@@ -18,6 +19,7 @@
       src="res/video_1.mp4"
       loop
       autoplay
+      muted
     ></video>
   </section>
 </main>

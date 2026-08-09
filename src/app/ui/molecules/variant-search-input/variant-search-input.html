@@ -12,8 +12,7 @@
         class="min-w-0 flex-1 bg-transparent text-sm leading-5 text-foreground outline-none placeholder:text-muted-foreground"
         placeholder="Buscar variante..."
         [disabled]="disabled()"
-        [value]="search()"
-        (input)="onInput($any($event.target).value)"
+        [(ngModel)]="_search"
         (focus)="onFocus()"
         (blur)="onBlur()"
         (keydown)="onKeydown($event)"
@@ -22,7 +21,7 @@
     </div>
 
     <!-- Dropdown -->
-    @if (showDropdown()) {
+    @if (isFocused()) {
       <div
         class="absolute left-0 right-0 top-full z-50 mt-1 max-h-60 overflow-y-auto rounded-lg border border-border bg-card shadow-lg"
       >
@@ -66,39 +65,36 @@
   </div>
 
   <!-- Selection panel -->
-  <div class="min-h-12">
-    @if (selectedVariant(); as variant) {
-      <div
-        class="relative rounded-xl bg-brand-purple-100 p-3 shadow-sm"
-      >
-        <button
-          type="button"
-          class="absolute right-2 top-2 inline-flex size-5 items-center justify-center rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none"
-          aria-label="Quitar variante"
-          (click)="clear()"
+  @if(showSelectedVariant()){
+    <div >
+      @if (selectedVariant(); as variant) {
+        <div
+          class="relative rounded-xl bg-brand-purple-100 p-3 shadow-sm"
         >
-          <span class="lucide--x text-sm" aria-hidden="true"></span>
-        </button>
-        <div class="flex items-center gap-1 text-xs leading-4 text-muted-foreground">
-          @if (variant.family) {
-            <span class="ri--global-line" aria-hidden="true"></span>
-            {{ variant.family.name }}
-          }
-          @if (variant.group) {
-            <span class="text-border mx-0.5" aria-hidden="true">•</span>
-            <span class="ri--group-line" aria-hidden="true"></span>
-            {{ variant.group.name }}
-          }
+          <button
+            type="button"
+            class="absolute right-2 top-2 inline-flex size-5 items-center justify-center rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none"
+            aria-label="Quitar variante"
+            (click)="clear()"
+          >
+            <span class="lucide--x text-sm" aria-hidden="true"></span>
+          </button>
+          <div class="flex items-center gap-1 text-xs leading-4 text-muted-foreground">
+            @if (variant.family) {
+              <span class="ri--global-line" aria-hidden="true"></span>
+              {{ variant.family.name }}
+            }
+            @if (variant.group) {
+              <span class="text-border mx-0.5" aria-hidden="true">•</span>
+              <span class="ri--group-line" aria-hidden="true"></span>
+              {{ variant.group.name }}
+            }
+          </div>
+          <p class="mt-0.5 text-sm font-semibold leading-5 text-primary">
+            {{ variant.name }}{{ variant.autodenominacion ? ' (' + variant.autodenominacion + ')' : '' }}
+          </p>
         </div>
-        <p class="mt-0.5 text-sm font-semibold leading-5 text-primary">
-          {{ variant.name }}{{ variant.autodenominacion ? ' (' + variant.autodenominacion + ')' : '' }}
-        </p>
-      </div>
-    } @else {
-      <div class="flex items-center gap-2 rounded-lg border border-dashed border-border px-3 py-2">
-        <span class="lucide--languages text-sm text-muted-foreground" aria-hidden="true"></span>
-        <p class="text-sm leading-5 text-muted-foreground">Selecciona una variante</p>
-      </div>
-    }
-  </div>
+      }
+    </div>
+  }
 </div>

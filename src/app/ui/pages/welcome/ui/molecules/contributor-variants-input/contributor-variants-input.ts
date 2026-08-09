@@ -1,18 +1,17 @@
-import { ChangeDetectionStrategy, Component, computed, forwardRef, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, signal, viewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import type { LanguageVariant } from '@/core/types/language-variant.type';
 import { ZardButtonComponent } from '@/shared/components/button';
-import { ZardEmptyComponent } from '@/shared/components/empty';
+import { ZardButtonGroupComponent } from '@/shared/components/button-group';
 import { VariantSearchInput } from '@/ui/molecules/variant-search-input/variant-search-input';
 
 type OnChangeFn = (value: LanguageVariant[]) => void;
 type OnTouchedFn = () => void;
 
-// TODO: move this component to global molecules
 @Component({
   selector: 'tm-contributor-variants-input',
-  imports: [ZardButtonComponent, ZardEmptyComponent, VariantSearchInput],
+  imports: [ZardButtonComponent, VariantSearchInput, ZardButtonGroupComponent],
   templateUrl: './contributor-variants-input.html',
   styleUrl: './contributor-variants-input.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,13 +24,11 @@ type OnTouchedFn = () => void;
   ],
 })
 export class ContributorVariantsInput implements ControlValueAccessor {
+  readonly searchInput = viewChild(VariantSearchInput);
+
   readonly disabled = signal(false);
   protected readonly value = signal<LanguageVariant[]>([]);
-  protected readonly pendingVariant = signal<LanguageVariant | null>(null);
-
-  protected readonly canAdd = computed(
-    () => !!this.pendingVariant() && !this.value().some((v) => v.id === this.pendingVariant()!.id),
-  );
+  protected readonly search = signal('');
 
   private onChange: OnChangeFn = () => undefined;
   private onTouched: OnTouchedFn = () => undefined;
@@ -52,6 +49,11 @@ export class ContributorVariantsInput implements ControlValueAccessor {
     this.disabled.set(isDisabled);
   }
 
+  setSearch(search: string) {
+    this.search.set(search);
+    this.searchInput()?.focus();
+  }
+
   protected removeVariant(variant: LanguageVariant): void {
     const next = this.value().filter((v) => v.id !== variant.id);
     this.value.set(next);
@@ -59,13 +61,12 @@ export class ContributorVariantsInput implements ControlValueAccessor {
     this.onTouched();
   }
 
-  protected addVariant(): void {
-    const variant = this.pendingVariant();
+  protected addVariant(variant: LanguageVariant | null): void {
     if (!variant || this.value().some((v) => v.id === variant.id)) return;
     const next = [...this.value(), variant];
     this.value.set(next);
     this.onChange(next);
     this.onTouched();
-    this.pendingVariant.set(null);
+    this.searchInput()?.clear();
   }
 }

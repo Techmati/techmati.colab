@@ -1,0 +1,29 @@
+<form class="space-y-4" (submit)="submit($event)" novalidate>
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-col">
+      <label class="text-sm font-medium text-muted-foreground" for="name-input">
+        ¿Como te llamas?
+      </label>
+      <input
+        id="name-input"
+        z-input
+        type="text"
+        class="rounded-lg border border-border bg-card px-3 py-2 font-ui text-base font-normal leading-6 text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        placeholder="Tu nombre completo"
+        [formField]="form.fullName"
+      />
+      <tm-field-error-advice [field]="form.fullName" />
+    </div>
+
+    <div class="flex flex-col">
+      <label class="text-sm font-medium text-muted-foreground" for="variants-input">
+        ¿Que idiomas sabes hablar?
+      </label>
+      <tm-contributor-variants-input id="variants-input" [formField]="form.variants" />
+      <tm-field-error-advice [field]="form.variants" />
+    </div>
+    <button z-button type="submit" [zLoading]="isLoading()" [zDisabled]="form().invalid()">
+      Continuar
+    </button>
+  </div>
+</form>
