@@ -18,21 +18,21 @@ export class AdminActionCard {
 
     if (action.variant === 'outline') {
       return [
-        'h-12 w-full justify-between rounded-xl border-brand-purple-200 bg-card px-4 text-primary',
-        'hover:bg-brand-purple-50 hover:text-primary',
+        'h-12 w-full justify-between rounded-xl border-primary-200 bg-card px-4 text-primary',
+        'hover:bg-primary-50 hover:text-primary',
       ].join(' ');
     }
 
     if (action.tone === 'green') {
       return [
-        'h-12 w-full justify-between rounded-xl border-brand-green-600 bg-brand-green-600 px-4 text-white',
-        'hover:bg-brand-green-500 hover:text-white',
+        'h-12 w-full justify-between rounded-xl border-primary-600 bg-primary-600 px-4 text-white',
+        'hover:bg-primary-500 hover:text-white',
       ].join(' ');
     }
 
     return [
-      'h-12 w-full justify-between rounded-xl border-brand-purple-600 bg-brand-purple-600 px-4 text-white',
-      'hover:bg-brand-purple-500 hover:text-white',
+      'h-12 w-full justify-between rounded-xl border-primary-600 bg-primary-600 px-4 text-white',
+      'hover:bg-primary-500 hover:text-white',
     ].join(' ');
   });
 }

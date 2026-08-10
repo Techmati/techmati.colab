@@ -43,7 +43,7 @@
     [attr.inert]="isExpanded() ? null : ''"
   >
     <div class="overflow-hidden">
-      <section class="mt-3 rounded-lg bg-brand-purple-50 p-4" aria-label="Vista previa de frases">
+      <section class="mt-3 rounded-lg bg-primary-50 p-4" aria-label="Vista previa de frases">
         <h4 class="mb-2 text-xs font-bold uppercase tracking-wider text-primary">Frases:</h4>
 
         @if (phrases.isFetching() || phrases.isLoading()) {
@@ -56,7 +56,7 @@
           <ul class="space-y-2">
             @for (phrase of previewPhrases(); track phrase) {
               <li
-                class="rounded-md border border-brand-purple-100 bg-card px-3 py-2 text-base leading-6 text-foreground"
+                class="rounded-md border border-primary-100 bg-card px-3 py-2 text-base leading-6 text-foreground"
               >
                 {{ phrase.sourceText }}
               </li>
@@ -71,7 +71,7 @@
           zType="default"
           type="button"
           [routerLink]="['/admin/phrase-sets', phraseSet().id]"
-          class="h-8 rounded-lg bg-brand-purple-500 px-3 text-sm font-semibold text-white hover:bg-brand-purple-600 hover:text-white"
+          class="h-8 rounded-lg bg-primary-500 px-3 text-sm font-semibold text-white hover:bg-primary-600 hover:text-white"
         >
           <span class="ri--pencil-line text-base" aria-hidden="true"></span>
           Editar

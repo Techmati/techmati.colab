@@ -56,7 +56,7 @@
             <button
               type="button"
               class="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium leading-5 transition"
-              [class.bg-brand-purple-100.text-primary]="selectedVariant()?.id === v.id"
+              [class.bg-primary-100.text-primary]="selectedVariant()?.id === v.id"
               [class.bg-muted.text-muted-foreground]="selectedVariant()?.id !== v.id"
               (click)="selectContributorVariant(v)"
             >
@@ -69,7 +69,7 @@
         <!-- Selection panel showing the contributor's selected variant -->
         <div class="min-h-12">
           @if (selectedVariant(); as variant) {
-            <div class="relative rounded-xl bg-brand-purple-100 p-3 shadow-sm">
+            <div class="relative rounded-xl bg-primary-100 p-3 shadow-sm">
               <button
                 type="button"
                 class="absolute right-2 top-2 inline-flex size-5 items-center justify-center rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none"

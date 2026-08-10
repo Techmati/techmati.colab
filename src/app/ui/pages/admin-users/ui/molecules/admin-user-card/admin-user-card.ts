@@ -48,8 +48,8 @@ export class AdminUserCard {
     root: 'bg-primary text-primary-foreground',
     admin: 'bg-secondary text-secondary-foreground',
     moderator: 'bg-primary text-primary-foreground',
-    analyst: 'bg-brand-green-500 text-white',
-    collector: 'bg-brand-purple-500 text-white',
+    analyst: 'bg-primary-500 text-white',
+    collector: 'bg-primary-500 text-white',
     user: 'bg-card text-foreground border-border',
   };
 
@@ -57,11 +57,11 @@ export class AdminUserCard {
     const role = this.user().role;
 
     return {
-      root: 'bg-brand-purple-100 text-primary',
+      root: 'bg-primary-100 text-primary',
       admin: 'bg-[var(--muted)] text-[var(--foreground)]',
-      moderator: 'bg-brand-purple-100 text-[var(--primary)]',
+      moderator: 'bg-primary-100 text-[var(--primary)]',
       analyst: 'bg-[var(--primary)] text-[var(--primary-foreground)]',
-      collector: 'bg-brand-purple-200 text-primary',
+      collector: 'bg-primary-200 text-primary',
       user: 'bg-[var(--muted)] text-[var(--foreground)]',
     }[role];
   });

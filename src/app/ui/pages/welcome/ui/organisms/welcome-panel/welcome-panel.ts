@@ -37,14 +37,13 @@ export class WelcomePanel {
   readonly firstTimeSetupRequested = output<FirstTimeSetupData>();
   readonly modeChanged = output<AuthMode>();
 
-  protected readonly mode = signal<AuthMode>('sign-in');
+  protected readonly mode = signal<AuthMode>('quick-flow');
   protected readonly formError = signal<string | null>(null);
   protected readonly isSignIn = computed(() => this.mode() === 'sign-in');
   protected readonly displayedError = computed(() => this.formError() ?? this.error());
   protected readonly authOptions: SegmentedOption[] = [
-    { value: 'quick-flow', label: 'Primera vez' },
+    { value: 'quick-flow', label: 'Registro rapido' },
     { value: 'sign-in', label: 'Iniciar sesión' },
-    { value: 'sign-up', label: 'Crear cuenta' },
   ];
 
   protected readonly logoUrl = '/res/brand.jpeg';

@@ -24,11 +24,11 @@ export class AdminTranslationContributorCard {
     this.summary().completed ? 'Completado' : 'Pendiente',
   );
   protected readonly statusColor = computed(() =>
-    this.summary().completed ? ' text-brand-green-600' : 'text-muted-foreground',
+    this.summary().completed ? ' text-primary-600' : 'text-muted-foreground',
   );
   protected readonly progressTextClass = computed(() =>
     this.summary().completed
-      ? 'text-xs font-bold leading-4 text-brand-green-600'
+      ? 'text-xs font-bold leading-4 text-primary-600'
       : 'text-xs font-bold leading-4 text-primary',
   );
   protected readonly initials = computed(() => {

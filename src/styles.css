@@ -17,23 +17,15 @@
 :root {
   --radius: 0.625rem;
 
-  /* Brand palette (kept for backward compatibility, holds blue values) */
-  --brand-purple-50: oklch(0.977 0.013 236.62);
-  --brand-purple-100: oklch(0.951 0.026 236.8);
-  --brand-purple-200: oklch(0.92 0.06 234);
-  --brand-purple-300: oklch(0.828 0.111 230.3);
-  --brand-purple-400: oklch(0.707 0.165 254.6);
-  --brand-purple-500: oklch(0.546 0.245 262.9);
-  --brand-purple-600: oklch(0.424 0.199 265.6);
-  --brand-purple-700: oklch(0.379 0.146 265.5);
-
-  --brand-green-50: oklch(0.977 0.013 236.62);
-  --brand-green-100: oklch(0.951 0.026 236.8);
-  --brand-green-200: oklch(0.92 0.06 234);
-  --brand-green-300: oklch(0.828 0.111 230.3);
-  --brand-green-400: oklch(0.707 0.165 254.6);
-  --brand-green-500: oklch(0.546 0.245 262.9);
-  --brand-green-600: oklch(0.424 0.199 265.6);
+  /* Primary color scale */
+  --primary-50: oklch(0.977 0.013 236.62);
+  --primary-100: oklch(0.951 0.026 236.8);
+  --primary-200: oklch(0.92 0.06 234);
+  --primary-300: oklch(0.828 0.111 230.3);
+  --primary-400: oklch(0.707 0.165 254.6);
+  --primary-500: oklch(0.546 0.245 262.9);
+  --primary-600: oklch(0.424 0.199 265.6);
+  --primary-700: oklch(0.379 0.146 265.5);
 
   /* Zardui semantic tokens */
   --background: oklch(0.977 0.013 236.62);
@@ -141,22 +133,14 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
 
-  --color-brand-purple-50: var(--brand-purple-50);
-  --color-brand-purple-100: var(--brand-purple-100);
-  --color-brand-purple-200: var(--brand-purple-200);
-  --color-brand-purple-300: var(--brand-purple-300);
-  --color-brand-purple-400: var(--brand-purple-400);
-  --color-brand-purple-500: var(--brand-purple-500);
-  --color-brand-purple-600: var(--brand-purple-600);
-  --color-brand-purple-700: var(--brand-purple-700);
-
-  --color-brand-green-50: var(--brand-green-50);
-  --color-brand-green-100: var(--brand-green-100);
-  --color-brand-green-200: var(--brand-green-200);
-  --color-brand-green-300: var(--brand-green-300);
-  --color-brand-green-400: var(--brand-green-400);
-  --color-brand-green-500: var(--brand-green-500);
-  --color-brand-green-600: var(--brand-green-600);
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
 
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);

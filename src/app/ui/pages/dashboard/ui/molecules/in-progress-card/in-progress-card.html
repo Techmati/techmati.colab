@@ -1,5 +1,5 @@
 <section class="rounded-lg bg-accent p-4 flex flex-col gap-1">
-  <p class="text-brand-green-600 text-sm font-semibold leading-4">
+  <p class="text-primary-600 text-sm font-semibold leading-4">
     {{ task().phraseSet?.title || 'Set #' + task().phraseSetId.slice(0, 8) }}
     •
     {{ task().variant?.name || task().variant?.autodenominacion }}
@@ -13,7 +13,7 @@
   </div>
   <div class="h-1.5 rounded-full bg-border">
     <div
-      class="h-full rounded-full bg-brand-green-600"
+      class="h-full rounded-full bg-primary-600"
       [style]="{ width: task().progressPercentage + '%' }"
     ></div>
   </div>
@@ -22,7 +22,7 @@
       z-button
       zType="outline"
       (click)="continue()"
-      class="border border-border text-brand-green-600 mt-1"
+      class="border border-border text-primary-600 mt-1"
     >
       Continuar
       <span class="lucide--chevron-right"></span>

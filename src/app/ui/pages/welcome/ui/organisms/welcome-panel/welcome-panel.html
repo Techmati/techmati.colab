@@ -32,13 +32,6 @@
             (errorMessage)="setFormError($event)"
           />
         }
-        @case('sign-up') {
-          <tm-signup-form
-            [isLoading]="isLoading()"
-            (submitted)="requestPasswordSignUp($event)"
-            (errorMessage)="setFormError($event)"
-          />
-        }
         @case('quick-flow') {
           <tm-first-time-form
             [isLoading]="isLoading()"

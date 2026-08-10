@@ -3,7 +3,7 @@
 } @else if (phraseSets().length > 0) {
   <section class="rounded-xl border border-border bg-card p-4 shadow-sm">
     <div class="mb-4 flex items-center gap-3">
-      <span class="flex size-10 items-center justify-center rounded-lg bg-brand-purple-100">
+      <span class="flex size-10 items-center justify-center rounded-lg bg-primary-100">
         <span class="lucide--sparkles text-xl text-primary" aria-hidden="true"></span>
       </span>
       <h2 class="font-display text-lg font-semibold leading-7 text-foreground">
@@ -22,7 +22,7 @@
             <h3 class="font-ui text-base font-semibold leading-6 text-foreground">{{ ps.title }}</h3>
 
             <div class="flex flex-wrap items-center gap-2">
-              <span class="inline-flex items-center gap-1 rounded-md bg-brand-purple-100 px-2 py-0.5 text-xs font-medium leading-4 text-primary">
+              <span class="inline-flex items-center gap-1 rounded-md bg-primary-100 px-2 py-0.5 text-xs font-medium leading-4 text-primary">
                 <span class="lucide--list-checks" aria-hidden="true"></span>
                 {{ ps.phraseCount }} frases
               </span>
@@ -67,7 +67,7 @@
   />
 } @else {
   <z-empty
-    zIcon="game-icons--hummingbird text-brand-green-500"
+    zIcon="game-icons--hummingbird text-primary-500"
     zTitle="¡Muchas gracias!"
     zDescription="No hay contribuciones disponibles en este momento, pero tu ayuda nos es muy valiosa. ¡Gracias por tu interés en contribuir! Habra mas contribuciones disponibles pronto."
     class="text-primary"

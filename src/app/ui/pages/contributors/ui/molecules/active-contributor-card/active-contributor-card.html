@@ -13,14 +13,14 @@
   <span
     class="inline-flex w-fit items-center gap-1 rounded-md border border-border bg-muted px-2 py-1 text-xs font-medium leading-4 text-foreground"
   >
-    <span [class]="statusInfo().icon" class="text-sm text-brand-green-600" aria-hidden="true"></span>
+    <span [class]="statusInfo().icon" class="text-sm text-primary-600" aria-hidden="true"></span>
     {{ statusInfo().label }}
   </span>
 
   <ul class="flex flex-wrap gap-1">
     @for (variant of contributor().variants; track variant) {
       <li
-        class="inline-flex items-center gap-1.5 rounded-[10px] bg-brand-green-600 px-1.5 py-1 text-xs font-normal leading-4 text-white"
+        class="inline-flex items-center gap-1.5 rounded-[10px] bg-primary-600 px-1.5 py-1 text-xs font-normal leading-4 text-white"
       >
         <span class="lucide--languages text-sm" aria-hidden="true"></span>
         {{ variantName(variant) }}
