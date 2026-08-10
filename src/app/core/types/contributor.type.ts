@@ -2,7 +2,7 @@ import { LanguageVariant } from './language-variant.type';
 
 export interface Contributor {
   id: string;
-  ownerUserId: string;
+  ownerUserId: string | null;
   accountUserId: string | null;
   fullName: string;
   createdAt: string;
@@ -11,7 +11,7 @@ export interface Contributor {
 
 export interface ContributorSummary {
   id: string;
-  ownerUserId: string;
+  ownerUserId: string | null;
   accountUserId: string | null;
   fullName: string;
   createdAt: string;

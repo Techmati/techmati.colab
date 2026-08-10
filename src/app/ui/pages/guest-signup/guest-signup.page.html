@@ -1,0 +1,47 @@
+<main class="bg-background flex h-dvh w-dvw items-center justify-center px-5">
+  <section
+    class="w-full max-w-md rounded-xl border border-border bg-card px-6 py-7 text-card-foreground shadow-sm"
+    aria-labelledby="signup-title"
+  >
+    <header class="flex flex-col items-center gap-3 text-center">
+      <h1 id="signup-title" class="font-display text-3xl font-semibold leading-9 text-primary">
+        Crea tu cuenta
+      </h1>
+      <p class="max-w-xs text-base leading-6 text-muted-foreground">
+        Completa tu registro para conservar el trabajo que hiciste como invitado.
+      </p>
+    </header>
+
+    <div class="mt-6">
+      <tm-signup-form
+        [isLoading]="isLoading()"
+        (submitted)="signUp($event)"
+        (errorMessage)="error.set($event)"
+      />
+    </div>
+
+    @if (error()) {
+      <div
+        class="mt-4 rounded-sm bg-destructive/20 px-3 py-1.5 text-sm text-destructive"
+        role="alert"
+      >
+        <div class="flex items-center gap-2">
+          <span class="lucide--x-circle shrink-0 text-lg" aria-hidden="true"></span>
+          <span>{{ error() }}</span>
+        </div>
+      </div>
+    }
+
+    @if (success()) {
+      <div
+        class="mt-4 rounded-sm bg-accent px-3 py-1.5 text-sm text-accent-foreground"
+        role="status"
+      >
+        <div class="flex items-center gap-2">
+          <span class="lucide--circle-check shrink-0 text-lg" aria-hidden="true"></span>
+          <span>{{ success() }}</span>
+        </div>
+      </div>
+    }
+  </section>
+</main>

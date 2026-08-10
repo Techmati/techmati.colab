@@ -16,6 +16,14 @@ export const routes: Routes = [
     title: 'Bienvenido - Techmati Colab',
   },
   {
+    path: 'signup',
+    loadComponent: () =>
+      import('./ui/pages/guest-signup/guest-signup.page').then(
+        (module) => module.GuestSignupPage,
+      ),
+    title: 'Crear cuenta - Techmati Colab',
+  },
+  {
     path: 'dashboard',
     component: DashboardPage,
     canActivate: [authenticationGuard],

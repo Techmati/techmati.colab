@@ -2,7 +2,7 @@ import { LanguageVariant } from '@/core/types/language-variant.type';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
 import { Component, input, output, signal } from '@angular/core';
-import { form, FormField, maxLength, minLength, required } from '@angular/forms/signals';
+import { form, FormField, maxLength, required } from '@angular/forms/signals';
 import { FirstTimeSetupData } from '../../../core/types/first-time-setup-data.type';
 import { ContributorVariantsInput } from '../../molecules/contributor-variants-input/contributor-variants-input';
 
@@ -30,7 +30,6 @@ export class FirstTimeForm {
   readonly form = form(this.model, (schema) => {
     required(schema.fullName, { message: 'El nombre es obligatorio.' });
     maxLength(schema.fullName, 100, { message: 'El nombre no puede exceder 100 caracteres.' });
-    minLength(schema.variants, 1, { message: 'Debe tener al menos una variante.' });
   });
 
   getValue() {

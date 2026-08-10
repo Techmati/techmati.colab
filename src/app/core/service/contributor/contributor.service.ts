@@ -1,5 +1,6 @@
 import { API } from '@/core/config/api-uris.config';
 import { Contributor } from '@/core/types/contributor.type';
+import { ClaimGuestPayload, ClaimGuestResponse } from '@/core/types/guest.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { mutationOptions, QueryClient, queryOptions } from '@tanstack/angular-query-experimental';
@@ -53,6 +54,15 @@ export class ContributorService {
     return mutationOptions({
       mutationFn: (id: string) =>
         lastValueFrom(this.client.delete<{ message: string }>(API.CONTRIBUTORS.BY_ID(id))),
+    });
+  }
+
+  claimGuest() {
+    return mutationOptions({
+      mutationFn: (payload: ClaimGuestPayload) =>
+        lastValueFrom(
+          this.client.post<ClaimGuestResponse>(API.CONTRIBUTORS.CLAIM_GUEST, payload),
+        ),
     });
   }
 

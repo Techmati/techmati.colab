@@ -16,6 +16,7 @@ const API = {
   CONTRIBUTORS: {
     LIST: `${BASE_URL}/contributors`,
     BY_ID: (id: string) => `${BASE_URL}/contributors/${id}`,
+    CLAIM_GUEST: `${BASE_URL}/contributors/claim-guest`,
     TRANSLATIONS: {
       LIST: (cId: string) => `${BASE_URL}/contributors/${cId}/translations`,
       STATS: (cId: string) => `${BASE_URL}/contributors/${cId}/translations/stats`,
@@ -41,6 +42,11 @@ const API = {
     LIST: `${BASE_URL}/language-variants`,
     SEARCH: `${BASE_URL}/language-variants`,
     BY_ID: (id: string) => `${BASE_URL}/language-variants/${id}`,
+  },
+  GUEST: {
+    CONTRIBUTOR: `${BASE_URL}/guest/contributors`,
+    SESSION_RECOVER: `${BASE_URL}/guest/session/recover`,
+    LANGUAGE_VARIANTS: `${BASE_URL}/guest/language-variants`,
   },
   ADMIN: {
     STATS: {
