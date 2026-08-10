@@ -6,6 +6,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { keepPreviousData, mutationOptions, queryOptions } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
+import { GuestService } from '../guest/guest.service';
 
 export interface CreateLanguageVariantPayload {
   name: string;
@@ -40,6 +41,7 @@ export interface VariantSearchParams {
 })
 export class LanguageVariantService {
   private readonly client = inject(HttpClient);
+  private readonly guestService = inject(GuestService);
 
   search(params: VariantSearchParams = {}) {
     let httpParams = new HttpParams()
@@ -50,12 +52,16 @@ export class LanguageVariantService {
     if (params.includeFamily) httpParams = httpParams.set('include_family', 'true');
     if (params.groupId) httpParams = httpParams.set('group_id', params.groupId);
 
+    const url = this.guestService.isGuest()
+      ? API.GUEST.LANGUAGE_VARIANTS
+      : API.LANGUAGE_VARIANTS.SEARCH;
+
     return queryOptions({
       queryKey: ['language-variants', 'search', params],
       queryFn: () =>
         lastValueFrom(
           this.client.get<{ data: LanguageVariantResponse[]; total: number }>(
-            API.LANGUAGE_VARIANTS.SEARCH,
+            url,
             { params: httpParams },
           ),
         ),

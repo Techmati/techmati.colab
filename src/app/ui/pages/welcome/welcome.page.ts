@@ -87,6 +87,8 @@ export class WelcomePage {
         variantIds: contributorData.variants.map((variant) => variant.id),
       });
       this.guestService.setSessionToken(response.sessionToken);
+      this.guestService.setRecoveryCode(response.recoveryCode);
+      this.guestService.setContributor(response.contributor);
       this.recoveryCode.set(response.recoveryCode);
       this.success.set('Tu registro rápido está listo. Guarda tu código de recuperación.');
       this.isLoading.set(false);

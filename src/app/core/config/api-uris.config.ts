@@ -47,6 +47,14 @@ const API = {
     CONTRIBUTOR: `${BASE_URL}/guest/contributors`,
     SESSION_RECOVER: `${BASE_URL}/guest/session/recover`,
     LANGUAGE_VARIANTS: `${BASE_URL}/guest/language-variants`,
+    PHRASE_SETS: `${BASE_URL}/guest/phrase-sets`,
+    PHRASE_SETS_NEXT: `${BASE_URL}/guest/phrase-sets/next-pending`,
+    PHRASE_SET_BY_ID: (id: string) => `${BASE_URL}/guest/phrase-sets/${id}`,
+    TRANSLATIONS: `${BASE_URL}/guest/translations`,
+    TRANSLATION_STATS: `${BASE_URL}/guest/translations/stats`,
+    TRANSLATION_BY_ID: (id: string) => `${BASE_URL}/guest/translations/${id}`,
+    TRANSLATION_NEXT_PENDING: (id: string) => `${BASE_URL}/guest/translations/${id}/next-pending`,
+    TRANSLATION_ENTRIES: (id: string) => `${BASE_URL}/guest/translations/${id}/entries`,
   },
   ADMIN: {
     STATS: {

@@ -1,0 +1,54 @@
+<section
+  class="flex flex-col gap-3 rounded-xl border border-primary-200 bg-primary-100 px-4 py-4 shadow-sm"
+  aria-labelledby="guest-banner-title"
+>
+  <div class="flex items-center gap-2">
+    <span class="lucide--user-round shrink-0 text-lg text-primary" aria-hidden="true"></span>
+    <h2 id="guest-banner-title" class="text-sm font-semibold text-primary">
+      Estás contribuyendo como invitado
+    </h2>
+  </div>
+
+  <p class="text-xs leading-5 text-muted-foreground">
+    Tu trabajo no está vinculado a una cuenta. Guarda tu código de recuperación por si pierdes el
+    acceso a este navegador.
+  </p>
+
+  @if (recoveryCode) {
+    <code
+      class="select-all rounded-sm bg-card px-3 py-2 text-center font-mono text-base font-semibold tracking-widest text-primary"
+    >{{ recoveryCode }}</code>
+  }
+
+  <div class="flex flex-col gap-2 sm:flex-row">
+    @if (recoveryCode) {
+      <button
+        z-button
+        zType="outline"
+        zSize="sm"
+        zFull
+        type="button"
+        (click)="copyRecoveryCode()"
+      >
+        @if (isCopied()) {
+          <span class="lucide--check size-4" aria-hidden="true"></span>
+          Código copiado
+        } @else {
+          <span class="lucide--copy size-4" aria-hidden="true"></span>
+          Copiar código
+        }
+      </button>
+    }
+    <button
+      z-button
+      zType="default"
+      zSize="sm"
+      zFull
+      type="button"
+      (click)="goToSignup()"
+    >
+      <span class="lucide--user-plus size-4" aria-hidden="true"></span>
+      Crear cuenta y conservar tu trabajo
+    </button>
+  </div>
+</section>

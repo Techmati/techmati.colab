@@ -1,6 +1,7 @@
 import type { TechmatiRole } from '@/core/dto/profile.dto';
 import { AuthenticationService } from '@/core/service/authentication/authentication.service';
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
+import { GuestService } from '@/core/service/guest/guest.service';
 import { ProfileService } from '@/core/service/profile/profile.service';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardSkeletonComponent } from '@/shared/components/skeleton';
@@ -18,10 +19,12 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 export class TopAppBar {
   private readonly authenticationService = inject(AuthenticationService);
   private readonly contributorContext = inject(ContributorContextService);
+  private readonly guestService = inject(GuestService);
   private readonly profileService = inject(ProfileService);
   private readonly router = inject(Router);
 
   protected readonly isSigningOut = signal(false);
+  protected readonly isGuest = computed(() => this.guestService.isGuest());
   protected readonly profileQuery = injectQuery(() => this.profileService.findCurrent());
   protected readonly profile = computed(() => this.profileQuery.data() ?? null);
   protected readonly contributorLoading = computed(() => this.contributorContext.activeLoading());

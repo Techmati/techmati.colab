@@ -43,7 +43,7 @@ export class GuestSignupPage {
       const sessionToken = this.guestService.getSessionToken();
       if (sessionToken) {
         await this.claimGuestMutation.mutateAsync({ sessionToken });
-        this.guestService.clearSessionToken();
+        this.guestService.clearGuestSession();
       }
 
       this.isLoading.set(false);

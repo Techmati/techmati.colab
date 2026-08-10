@@ -3,7 +3,8 @@ import { PhraseSet, PhraseSetWithPhrasesDto } from '@/core/types/phrase-set.type
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { queryOptions } from '@tanstack/angular-query-experimental';
-import { lastValueFrom, map, Observable } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
+import { GuestService } from '../guest/guest.service';
 
 export type PhraseSetFilter = 'all' | 'incomplete' | 'complete' | 'untouched';
 export type PhraseSetUserSortBy = 'createdAt' | 'contributorsCount';
@@ -29,15 +30,17 @@ export interface GetFilteredOptions {
   providedIn: 'root',
 })
 export class PhraseSetsService {
-  private readonly phraseSetsApi = API.PHRASE_SETS.PAGINATED;
-  private readonly phraseSetByIdApi = API.PHRASE_SETS.BY_ID;
   private readonly client = inject(HttpClient);
+  private readonly guestService = inject(GuestService);
+
+  private readonly isGuest = () => this.guestService.isGuest();
 
   getPhraseSetById(id: string) {
+    const url = this.isGuest() ? API.GUEST.PHRASE_SET_BY_ID(id) : API.PHRASE_SETS.BY_ID(id);
+
     return queryOptions({
       queryKey: ['phraseSet', id],
-      queryFn: () =>
-        lastValueFrom(this.client.get<PhraseSetWithPhrasesDto>(this.phraseSetByIdApi(id))),
+      queryFn: () => lastValueFrom(this.client.get<PhraseSetWithPhrasesDto>(url)),
     });
   }
 
@@ -48,24 +51,27 @@ export class PhraseSetsService {
     if (sort_direction) params = params.set('sort_direction', sort_direction);
     if (include_stats) params = params.set('include_stats', include_stats);
     if (category) params = params.set('category', category);
-    if (contributorId) params = params.set('contributorId', contributorId);
+    if (contributorId && !this.isGuest()) params = params.set('contributorId', contributorId);
+
+    const url = this.isGuest() ? API.GUEST.PHRASE_SETS : API.PHRASE_SETS.PAGINATED;
 
     return queryOptions({
       queryKey: ['phraseSets', { page, size, filter, sort_by, sort_direction, include_stats, category, contributorId }],
-      queryFn: () =>
-        lastValueFrom(this.client.get<PaginatedPhraseSets>(this.phraseSetsApi, { params })),
+      queryFn: () => lastValueFrom(this.client.get<PaginatedPhraseSets>(url, { params })),
     });
   }
 
   getNextPending(contributorId: string) {
+    const url = this.isGuest() ? API.GUEST.PHRASE_SETS_NEXT : API.PHRASE_SETS.NEXT_PENDING;
+    const params = this.isGuest() ? undefined : { contributorId };
+
     return queryOptions({
       queryKey: ['phraseSets', 'nextPending'],
       queryFn: () =>
         lastValueFrom(
-          this.client.get<{ phraseSet: PhraseSet | null; state: 'in-progress' | 'finished' }>(
-            API.PHRASE_SETS.NEXT_PENDING,
-            { params: { contributorId } },
-          ),
+          this.client.get<{ phraseSet: PhraseSet | null; state: 'in-progress' | 'finished' }>(url, {
+            params,
+          }),
         ),
     });
   }

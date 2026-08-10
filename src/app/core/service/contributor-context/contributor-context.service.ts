@@ -1,3 +1,4 @@
+import { GuestService } from '@/core/service/guest/guest.service';
 import { ContributorService } from '@/core/service/contributor/contributor.service';
 import { Contributor } from '@/core/types/contributor.type';
 import { computed, inject, Injectable, linkedSignal } from '@angular/core';
@@ -10,13 +11,20 @@ const LAST_CONTRIBUTOR_KEY = 'lastContributorId';
   providedIn: 'root',
 })
 export class ContributorContextService {
+  private readonly guestService = inject(GuestService);
   private readonly contributorService = inject(ContributorService);
   private readonly profileService = inject(ProfileService);
 
   private readonly contributorsList = injectQuery(() => this.contributorService.list());
   private readonly profile = injectQuery(() => this.profileService.findCurrent());
 
+  readonly isGuest = computed(() => this.guestService.isGuest());
+
   readonly active = linkedSignal(() => {
+    if (this.guestService.isGuest()) {
+      return this.guestService.contributor();
+    }
+
     const list = this.contributorsList.data() ?? [];
 
     if (this.contributorsList.isPending() || list.length === 0) {
@@ -32,7 +40,9 @@ export class ContributorContextService {
     return selectedContributor;
   });
 
-  readonly activeLoading = computed(() => this.contributorsList.isPending());
+  readonly activeLoading = computed(() =>
+    this.guestService.isGuest() ? false : this.contributorsList.isPending(),
+  );
 
   constructor() {
     window.addEventListener('beforeunload', () => {
