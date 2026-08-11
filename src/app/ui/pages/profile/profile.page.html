@@ -17,6 +17,43 @@
 
     <tm-profile-summary-panel />
     <tm-profile-contributions-panel />
+
+    @if (isGuest() && recoveryCode) {
+      <section
+        class="flex flex-col gap-3 rounded-xl border border-border bg-card px-4 py-4 shadow-sm"
+        aria-labelledby="guest-recovery-title"
+      >
+        <div class="flex items-center gap-2">
+          <span class="lucide--key-round shrink-0 text-lg text-primary" aria-hidden="true"></span>
+          <h2 id="guest-recovery-title" class="text-sm font-semibold text-primary">
+            Tu código de recuperación
+          </h2>
+        </div>
+        <p class="text-xs leading-5 text-muted-foreground">
+          Si pierdes el acceso a este navegador, este código es la única forma de recuperar tu
+          trabajo.
+        </p>
+        <code
+          class="select-all rounded-sm bg-primary-100 px-3 py-2 text-center font-mono text-base font-semibold tracking-widest text-primary"
+        >{{ recoveryCode }}</code>
+        <button
+          z-button
+          zType="outline"
+          zSize="sm"
+          zFull
+          type="button"
+          (click)="copyRecoveryCode()"
+        >
+          @if (isCopied()) {
+            <span class="lucide--check size-4" aria-hidden="true"></span>
+            Código copiado
+          } @else {
+            <span class="lucide--copy size-4" aria-hidden="true"></span>
+            Copiar código
+          }
+        </button>
+      </section>
+    }
   </section>
   <tm-bottom-nav-bar active="profile" />
 </main>

@@ -1,5 +1,5 @@
-import { GuestService } from '@/core/service/guest/guest.service';
 import { ContributorService } from '@/core/service/contributor/contributor.service';
+import { GuestService } from '@/core/service/guest/guest.service';
 import { Contributor } from '@/core/types/contributor.type';
 import { computed, inject, Injectable, linkedSignal } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
@@ -15,7 +15,10 @@ export class ContributorContextService {
   private readonly contributorService = inject(ContributorService);
   private readonly profileService = inject(ProfileService);
 
-  private readonly contributorsList = injectQuery(() => this.contributorService.list());
+  private readonly contributorsList = injectQuery(() => ({
+    enabled: !this.guestService.isGuest(),
+    ...this.contributorService.list(),
+  }));
   private readonly profile = injectQuery(() => this.profileService.findCurrent());
 
   readonly isGuest = computed(() => this.guestService.isGuest());

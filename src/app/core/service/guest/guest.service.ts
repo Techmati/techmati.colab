@@ -7,7 +7,7 @@ import {
   RecoverSessionPayload,
 } from '@/core/types/guest.type';
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { mutationOptions } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 
@@ -21,7 +21,10 @@ export class GuestService {
   private readonly client = inject(HttpClient);
 
   readonly contributor = signal<Contributor | null>(null);
-  readonly isGuest = computed(() => this.getSessionToken() !== null);
+
+  isGuest() {
+    return this.getSessionToken() !== null;
+  }
 
   create() {
     return mutationOptions({

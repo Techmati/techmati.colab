@@ -12,119 +12,76 @@
   </header>
 
   <div class="mt-8">
-    @if (recoveryCode(); as code) {
-      <section
-        class="rounded-sm bg-accent/60 px-4 py-4 text-accent-foreground"
-        aria-labelledby="recovery-code-title"
+    <z-segmented
+      class="w-full"
+      zAriaLabel="Selecciona una opción de autenticación"
+      zDefaultValue="quick-flow"
+      [zOptions]="authOptions"
+      (zChange)="selectMode($event)"
+    />
+
+    <div class="mt-5" role="tabpanel">
+      @switch (mode()) {
+        @case('sign-in') {
+          <tm-login-form
+            [isLoading]="isLoading()"
+            (submitted)="requestPasswordSignIn($event)"
+            (errorMessage)="setFormError($event)"
+          />
+        }
+        @case('quick-flow') {
+          <tm-first-time-form
+            [isLoading]="isLoading()"
+            (submitted)="requestFirstTimeSetup($event)"
+            (errorMessage)="setFormError($event)"
+          />
+        }
+      }
+    </div>
+
+    @if (displayedError()) {
+      <div
+        class="mt-4 rounded-sm bg-destructive/20 px-3 py-1.5 text-sm text-destructive"
+        role="alert"
       >
         <div class="flex items-center gap-2">
-          <span class="lucide--key-round shrink-0 text-lg" aria-hidden="true"></span>
-          <h2 id="recovery-code-title" class="font-semibold text-sm">Tu código de recuperación</h2>
+          <span class="lucide--x-circle shrink-0 text-lg" aria-hidden="true"></span>
+          <span>{{ displayedError() }}</span>
         </div>
-        <p class="mt-2 text-xs leading-5 text-muted-foreground">
-          Guarda este código. Si pierdes el acceso a tu navegador, es la única forma de recuperar
-          tu trabajo.
-        </p>
-        <code
-          class="mt-3 block select-all rounded-sm bg-card px-3 py-2 text-center font-mono text-base font-semibold tracking-widest text-primary"
-        >{{ code }}</code>
-        <div class="mt-3 flex flex-col gap-2">
-          <button
-            z-button
-            zType="outline"
-            zSize="sm"
-            zFull
-            type="button"
-            (click)="copyRecoveryCode()"
-          >
-            <span class="lucide--copy size-4" aria-hidden="true"></span>
-            Copiar código
-          </button>
-          <button
-            z-button
-            zType="default"
-            zSize="sm"
-            zFull
-            type="button"
-            (click)="requestSignup()"
-          >
-            <span class="lucide--user-plus size-4" aria-hidden="true"></span>
-            Completar registro
-          </button>
-        </div>
-      </section>
-    } @else {
-      <z-segmented
-        class="w-full"
-        zAriaLabel="Selecciona una opción de autenticación"
-        zDefaultValue="quick-flow"
-        [zOptions]="authOptions"
-        (zChange)="selectMode($event)"
-      />
-
-      <div class="mt-5" role="tabpanel">
-        @switch (mode()) {
-          @case('sign-in') {
-            <tm-login-form
-              [isLoading]="isLoading()"
-              (submitted)="requestPasswordSignIn($event)"
-              (errorMessage)="setFormError($event)"
-            />
-          }
-          @case('quick-flow') {
-            <tm-first-time-form
-              [isLoading]="isLoading()"
-              (submitted)="requestFirstTimeSetup($event)"
-              (errorMessage)="setFormError($event)"
-            />
-          }
-        }
       </div>
-
-      @if (displayedError()) {
-        <div
-          class="mt-4 rounded-sm bg-destructive/20 px-3 py-1.5 text-sm text-destructive"
-          role="alert"
-        >
-          <div class="flex items-center gap-2">
-            <span class="lucide--x-circle shrink-0 text-lg" aria-hidden="true"></span>
-            <span>{{ displayedError() }}</span>
-          </div>
-        </div>
-      }
-
-      @if (success()) {
-        <div
-          class="mt-4 rounded-sm bg-accent px-3 py-1.5 text-sm text-accent-foreground"
-          role="status"
-        >
-          <div class="flex items-center gap-2">
-            <span class="lucide--circle-check shrink-0 text-lg" aria-hidden="true"></span>
-            <span>{{ success() }}</span>
-          </div>
-        </div>
-      }
-
-      <div class="my-5 flex items-center gap-3" aria-hidden="true">
-        <span class="h-px flex-1 bg-border"></span>
-        <span class="text-xs font-medium text-muted-foreground">O continúa con</span>
-        <span class="h-px flex-1 bg-border"></span>
-      </div>
-
-      <button
-        z-button
-        zType="outline"
-        zSize="lg"
-        zFull
-        type="button"
-        class="font-semibold"
-        [zLoading]="isLoading()"
-        [zDisabled]="isLoading()"
-        (click)="googleSignInRequested.emit()"
-      >
-        <span class="lucide--log-in size-5" aria-hidden="true"></span>
-        Continuar con Google
-      </button>
     }
+
+    @if (success()) {
+      <div
+        class="mt-4 rounded-sm bg-accent px-3 py-1.5 text-sm text-accent-foreground"
+        role="status"
+      >
+        <div class="flex items-center gap-2">
+          <span class="lucide--circle-check shrink-0 text-lg" aria-hidden="true"></span>
+          <span>{{ success() }}</span>
+        </div>
+      </div>
+    }
+
+    <div class="my-5 flex items-center gap-3" aria-hidden="true">
+      <span class="h-px flex-1 bg-border"></span>
+      <span class="text-xs font-medium text-muted-foreground">O continúa con</span>
+      <span class="h-px flex-1 bg-border"></span>
+    </div>
+
+    <button
+      z-button
+      zType="outline"
+      zSize="lg"
+      zFull
+      type="button"
+      class="font-semibold"
+      [zLoading]="isLoading()"
+      [zDisabled]="isLoading()"
+      (click)="googleSignInRequested.emit()"
+    >
+      <span class="lucide--log-in size-5" aria-hidden="true"></span>
+      Continuar con Google
+    </button>
   </div>
 </div>

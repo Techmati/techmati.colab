@@ -22,7 +22,6 @@ export class WelcomePage {
   readonly isLoading = signal(false);
   readonly error = signal<string | null>(null);
   readonly success = signal<string | null>(null);
-  readonly recoveryCode = signal<string | null>(null);
 
   private readonly guestCreateMutation = injectMutation(() => this.guestService.create());
 
@@ -79,7 +78,6 @@ export class WelcomePage {
 
   async requestFirstTimeSetup(contributorData: FirstTimeSetupData): Promise<void> {
     this.startRequest();
-    this.recoveryCode.set(null);
 
     try {
       const response = await this.guestCreateMutation.mutateAsync({
@@ -89,17 +87,12 @@ export class WelcomePage {
       this.guestService.setSessionToken(response.sessionToken);
       this.guestService.setRecoveryCode(response.recoveryCode);
       this.guestService.setContributor(response.contributor);
-      this.recoveryCode.set(response.recoveryCode);
-      this.success.set('Tu registro rápido está listo. Guarda tu código de recuperación.');
       this.isLoading.set(false);
+      this.goToDashboard();
     } catch {
       this.error.set('No se pudo completar el registro rápido. Inténtalo de nuevo.');
       this.isLoading.set(false);
     }
-  }
-
-  goToSignup(): void {
-    void this.router.navigate(['/signup']);
   }
 
   clearMessages(): void {
@@ -113,6 +106,8 @@ export class WelcomePage {
   }
 
   private goToDashboard() {
-    void this.router.navigate(['/dashboard']);
+    console.log('navigating');
+    this.router.navigate(['/dashboard']);
+    console.log('navigated');
   }
 }

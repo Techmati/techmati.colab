@@ -22,12 +22,10 @@ export class WelcomePanel {
   readonly isLoading = input.required<boolean>();
   readonly error = input<string | null>();
   readonly success = input<string | null>();
-  readonly recoveryCode = input<string | null>();
 
   readonly googleSignInRequested = output();
   readonly passwordSignInRequested = output<AuthCredentials>();
   readonly firstTimeSetupRequested = output<FirstTimeSetupData>();
-  readonly signupRequested = output();
   readonly modeChanged = output<AuthMode>();
 
   protected readonly mode = signal<AuthMode>('quick-flow');
@@ -63,16 +61,6 @@ export class WelcomePanel {
   protected requestFirstTimeSetup(contributorData: FirstTimeSetupData): void {
     this.formError.set(null);
     this.firstTimeSetupRequested.emit(contributorData);
-  }
-
-  protected requestSignup(): void {
-    this.signupRequested.emit();
-  }
-
-  protected copyRecoveryCode(): void {
-    const code = this.recoveryCode();
-    if (!code) return;
-    void navigator.clipboard.writeText(code);
   }
 
   protected setFormError(message: string | null): void {
