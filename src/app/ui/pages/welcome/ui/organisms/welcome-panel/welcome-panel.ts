@@ -5,7 +5,7 @@ import { ZardButtonComponent } from '@/shared/components/button';
 import { type SegmentedOption, ZardSegmentedComponent } from '@/shared/components/segmented';
 
 import { FirstTimeSetupData } from '../../../core/types/first-time-setup-data.type';
-import { AuthCredentials, SignUpCredentials } from '../../../welcome-auth.type';
+import { AuthCredentials } from '../../../welcome-auth.type';
 import { FirstTimeForm } from '../first-time-form/first-time-form';
 import { LoginForm } from '../login-form/login-form';
 
@@ -13,7 +13,13 @@ type AuthMode = 'sign-in' | 'quick-flow';
 
 @Component({
   selector: 'tm-welcome-panel',
-  imports: [NgOptimizedImage, ZardButtonComponent, ZardSegmentedComponent, LoginForm, FirstTimeForm],
+  imports: [
+    NgOptimizedImage,
+    ZardButtonComponent,
+    ZardSegmentedComponent,
+    LoginForm,
+    FirstTimeForm,
+  ],
   templateUrl: './welcome-panel.html',
   styleUrl: './welcome-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
