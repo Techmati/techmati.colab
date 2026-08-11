@@ -10,8 +10,6 @@ export const authenticationGuard: CanActivateFn = async () => {
 
   await authenticationService.whenInitialized();
 
-  console.log('is authenticated: ', authenticationService.isAuthenticated());
-
   return authenticationService.isAuthenticated() || guestService.isGuest()
     ? true
     : router.createUrlTree(['/']);

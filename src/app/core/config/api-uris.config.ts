@@ -44,7 +44,8 @@ const API = {
     BY_ID: (id: string) => `${BASE_URL}/language-variants/${id}`,
   },
   GUEST: {
-    CONTRIBUTOR: `${BASE_URL}/guest/contributors`,
+    CREATE: `${BASE_URL}/guest/contributors`,
+    CONTRIBUTOR: `${BASE_URL}/guest/contributor`,
     SESSION_RECOVER: `${BASE_URL}/guest/session/recover`,
     LANGUAGE_VARIANTS: `${BASE_URL}/guest/language-variants`,
     PHRASE_SETS: `${BASE_URL}/guest/phrase-sets`,

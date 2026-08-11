@@ -3,16 +3,17 @@ import {
   ListByContributorOptions,
   TranslationService,
 } from '@/core/service/translation/translation.service';
+import { ZardButtonComponent } from '@/shared/components/button';
+import { ZardCarouselImports } from '@/shared/components/carousel/carousel.imports';
+import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
-import { ZardButtonComponent } from '@/shared/components/button';
-import { ZardCarouselImports } from '@/shared/components/carousel/carousel.imports';
 import { InProgressPanelSkeleton } from '../in-progress-panel-skeleton/in-progress-panel-skeleton';
 
 @Component({
   selector: 'tm-in-progress-panel',
-  imports: [ZardButtonComponent, ...ZardCarouselImports, InProgressPanelSkeleton],
+  imports: [ZardButtonComponent, ...ZardCarouselImports, InProgressPanelSkeleton, JsonPipe],
   templateUrl: './in-progress-panel.html',
   styleUrl: './in-progress-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,10 +27,7 @@ export class InProgressPanel {
 
   readonly inProgressRes = injectQuery(() => {
     const id = this.activeContributor()?.id;
-    return {
-      ...this.translationService.listByContributor(id!, this.listByContributorFilters),
-      enabled: !!id,
-    };
+    return this.translationService.listByContributor(id, this.listByContributorFilters);
   });
 
   readonly listByContributorFilters: ListByContributorOptions = {

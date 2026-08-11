@@ -41,13 +41,12 @@ export class RepeatVariantPanel {
   readonly completedRes = injectQuery(() => {
     const id = this.contributorContext.active()?.id;
     return {
-      ...this.translationService.listByContributor(id!, {
+      ...this.translationService.listByContributor(id, {
         filter: 'completed',
         page: 1,
         size: 10,
         include_phrase_set: true,
       }),
-      enabled: !!id,
     };
   });
 

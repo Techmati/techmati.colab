@@ -69,7 +69,7 @@ export class TranslatePage {
   });
 
   readonly translationRes = injectQuery(() => {
-    const contributorId = this.contributorContext.active()!.id;
+    const contributorId = this.contributorContext.active()?.id;
     const translationId = this.translationId();
     return {
       ...this.translationService.findById(contributorId, translationId),
@@ -96,7 +96,7 @@ export class TranslatePage {
   });
 
   readonly nextPhraseRes = injectQuery(() => {
-    const contributorId = this.contributorContext.active()!.id;
+    const contributorId = this.contributorContext.active()?.id;
     const translationId = this.translationId();
     return {
       ...this.translationService.getNextPending(contributorId, translationId ?? ''),

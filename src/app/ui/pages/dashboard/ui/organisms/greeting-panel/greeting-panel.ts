@@ -23,14 +23,15 @@ export class GreetingPanel {
     () => this.authenticationService.displayName().split(' ')[0] ?? 'Contribuidor',
   );
 
-  private readonly activeId = computed(() => this.contributorContext.active()?.id);
-
-  readonly statsRes = injectQuery(() => ({
-    ...this.translationService.getStats(this.activeId()!),
-    enabled: !!this.activeId(),
-  }));
+  readonly statsRes = injectQuery(() => {
+    const active = this.contributorContext.active();
+    return {
+      ...this.translationService.getStats(active?.id),
+    };
+  });
 
   protected readonly currentStreak = computed(() =>
     Math.max(this.statsRes.data()?.currentStreak ?? 0, 0),
   );
 }
+

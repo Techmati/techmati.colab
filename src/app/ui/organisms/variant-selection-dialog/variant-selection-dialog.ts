@@ -26,7 +26,7 @@ export class VariantSelectionDialog {
 
   private readonly createMutation = injectMutation(() => {
     const contributor = this.contributorContext.active();
-    return this.translationService.create(contributor!.id);
+    return this.translationService.create(contributor?.id);
   });
 
   open(phraseSetId?: string): void {

@@ -46,7 +46,6 @@ export class PriorityPanel {
         include_stats: 'true',
         contributorId: contributorId!,
       }),
-      enabled: !!contributorId,
     };
   });
 
