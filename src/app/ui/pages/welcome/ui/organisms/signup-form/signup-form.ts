@@ -1,9 +1,17 @@
-import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  linkedSignal,
+  output,
+} from '@angular/core';
 import { email, form, FormField, minLength, required } from '@angular/forms/signals';
 
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardInputDirective } from '@/shared/components/input';
 
+import { GuestService } from '@/core/service/guest/guest.service';
 import { SignUpCredentials } from '../../../welcome-auth.type';
 
 @Component({
@@ -15,16 +23,18 @@ import { SignUpCredentials } from '../../../welcome-auth.type';
 })
 export class SignupForm {
   readonly isLoading = input.required<boolean>();
+  readonly fullName = input<string | null>();
 
   readonly submitted = output<SignUpCredentials>();
   readonly errorMessage = output<string | null>();
 
-  protected readonly model = signal<SignUpCredentials>({
-    fullName: '',
+  protected readonly model = linkedSignal<SignUpCredentials>(() => ({
+    fullName: this.fullName() ?? '',
     username: '',
     email: '',
     password: '',
-  });
+  }));
+
   protected readonly form = form(this.model, (schema) => {
     required(schema.fullName, { message: 'El nombre completo es obligatorio.' });
     minLength(schema.fullName, 2, {
@@ -41,6 +51,8 @@ export class SignupForm {
       message: 'La contraseña debe tener al menos 6 caracteres.',
     });
   });
+
+  private readonly guestService = inject(GuestService);
 
   protected submit(event: Event): void {
     event.preventDefault();
