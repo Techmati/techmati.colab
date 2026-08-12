@@ -4,6 +4,6 @@ export interface AuthCredentials {
 }
 
 export interface SignUpCredentials extends AuthCredentials {
-  fullName: string;
+  fullName: string | null;
   username: string;
 }

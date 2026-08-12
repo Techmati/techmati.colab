@@ -7,7 +7,7 @@ import { FirstTimeSetupData } from '../../../core/types/first-time-setup-data.ty
 import { ContributorVariantsInput } from '../../molecules/contributor-variants-input/contributor-variants-input';
 
 export interface ContributorFormModel {
-  fullName: string;
+  alias: string;
   variants: LanguageVariant[];
 }
 
@@ -23,13 +23,13 @@ export class FirstTimeForm {
   readonly errorMessage = output<string | null>();
 
   readonly model = signal<ContributorFormModel>({
-    fullName: '',
+    alias: '',
     variants: [],
   });
 
   readonly form = form(this.model, (schema) => {
-    required(schema.fullName, { message: 'El nombre es obligatorio.' });
-    maxLength(schema.fullName, 100, { message: 'El nombre no puede exceder 100 caracteres.' });
+    required(schema.alias, { message: 'El alias es obligatorio.' });
+    maxLength(schema.alias, 100, { message: 'El alias no puede exceder 100 caracteres.' });
   });
 
   getValue() {

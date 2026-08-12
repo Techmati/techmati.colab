@@ -6,7 +6,7 @@ export interface StatsOverview {
 export interface LatestContributionDto {
   translationId: string;
   contributorId: string;
-  contributorName: string | null;
+  contributorAlias: string | null;
   ownerUserId: string | null;
   accountUserId: string | null;
   phraseSetId: string;
@@ -21,7 +21,7 @@ export interface LatestContributionDto {
 
 export interface LatestUserDto {
   id: string;
-  fullName: string;
+  fullName: string | null;
   username: string;
   email: string | null;
   createdAt: string;

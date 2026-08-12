@@ -3,18 +3,18 @@
     <div class="flex flex-col gap-2">
       <div class="flex flex-col">
         <label class="text-sm font-medium text-muted-foreground" for="name-input">
-          ¿Como te llamas?
+          ¿Como te quieres identificar en techmati?
         </label>
         <input
           id="name-input"
           z-input
           type="text"
           class="rounded-lg border border-border bg-card px-3 py-2 font-ui text-base font-normal leading-6 text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          placeholder="Tu nombre completo"
-          [formField]="form.fullName"
+          placeholder="Inserta un alias"
+          [formField]="form.alias"
         />
       </div>
-      <tm-field-error-advice [field]="form.fullName" />
+      <tm-field-error-advice [field]="form.alias" />
     </div>
 
     <div class="flex flex-col">

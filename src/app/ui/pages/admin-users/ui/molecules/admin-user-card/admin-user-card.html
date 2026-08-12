@@ -11,7 +11,7 @@
 
     <div class="min-w-0 space-y-0.5">
       <h3 class="truncate text-sm font-semibold leading-5 tracking-[0.01em] text-foreground">
-        {{ user().fullName }}
+        {{ displayName() }}
       </h3>
       <p class="truncate text-xs font-bold leading-4 text-primary-600">
         @{{ user().username }}
@@ -34,7 +34,7 @@
     type="button"
     class="text-muted-foreground hover:text-primary"
     [routerLink]="['/admin', 'users', user().id]"
-    [attr.aria-label]="'Ver perfil de ' + user().fullName"
+    [attr.aria-label]="'Ver perfil de ' + displayName()"
   >
     <span class="lucide--chevron-right text-xl" aria-hidden="true"></span>
   </button>

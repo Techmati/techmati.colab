@@ -9,7 +9,7 @@
     <div class="flex items-start justify-between gap-3">
       <div class="min-w-0">
         <h3 class="truncate text-sm font-semibold leading-5 text-foreground">
-          {{ contribution().contributorName || 'Anónimo' }}
+          {{ contribution().contributorAlias || 'Anónimo' }}
         </h3>
         <p class="mt-1 text-xs leading-4 text-muted-foreground">
           {{ contribution().phraseSetTitle || ('Set #' + contribution().phraseSetId.slice(0, 8)) }}

@@ -29,13 +29,13 @@ export class TopAppBar {
   protected readonly profile = computed(() => this.profileQuery.data() ?? null);
   protected readonly contributorLoading = computed(() => this.contributorContext.activeLoading());
   protected readonly activeContributorFirstName = computed(() => {
-    const fullName = this.contributorContext.active()?.fullName.trim() ?? '';
+    const fullName = this.contributorContext.active()?.alias.trim() ?? '';
 
     return fullName.split(/\s+/)[0] ?? '';
   });
 
   protected readonly activeContributorInitials = computed(() =>
-    this.extractInitials(this.contributorContext.active()?.fullName),
+    this.extractInitials(this.contributorContext.active()?.alias),
   );
   protected readonly roleLabelInitials = computed(() => this.extractInitials(this.roleLabel()));
 

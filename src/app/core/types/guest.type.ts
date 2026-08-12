@@ -6,7 +6,7 @@ export interface GuestSessionCredentials {
 }
 
 export interface CreateGuestContributorPayload {
-  fullName: string;
+  alias: string;
   variantIds?: string[];
 }
 

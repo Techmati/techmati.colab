@@ -32,8 +32,8 @@ export class AdminTranslationContributorCard {
       : 'text-xs font-bold leading-4 text-primary',
   );
   protected readonly initials = computed(() => {
-    const fullName = this.contributor()?.fullName ?? '';
-    const parts = fullName.split(' ').filter((part) => part.length > 0);
+    const alias = this.contributor()?.alias ?? '';
+    const parts = alias.split(' ').filter((part) => part.length > 0);
     const first = parts[0]?.[0] ?? '';
     const last = parts.length > 1 ? parts[parts.length - 1]?.[0] : '';
     return `${first}${last}`.toUpperCase() || '??';

@@ -29,17 +29,13 @@ export class SignupForm {
   readonly errorMessage = output<string | null>();
 
   protected readonly model = linkedSignal<SignUpCredentials>(() => ({
-    fullName: this.fullName() ?? '',
+    fullName: '',
     username: '',
     email: '',
     password: '',
   }));
 
   protected readonly form = form(this.model, (schema) => {
-    required(schema.fullName, { message: 'El nombre completo es obligatorio.' });
-    minLength(schema.fullName, 2, {
-      message: 'El nombre completo debe tener al menos 2 caracteres.',
-    });
     required(schema.username, { message: 'El nombre de usuario es obligatorio.' });
     minLength(schema.username, 3, {
       message: 'El nombre de usuario debe tener al menos 3 caracteres.',

@@ -14,7 +14,7 @@ export class RecentContributionCard {
   readonly contribution = input.required<RecentContributionDto>();
 
   readonly initials = computed(() => {
-    const name = this.contribution().contributorName || '';
+    const name = this.contribution().contributorAlias || '';
     const parts = name.split(' ').filter(Boolean);
     const first = parts[0]?.[0] ?? '';
     const last = parts.length > 1 ? parts[parts.length - 1][0] : '';

@@ -117,11 +117,11 @@ export class ContributorsPage {
   }
 
   protected onDialogConfirmation(
-    { id, fullName, variants }: ContributorFormModel,
+    { id, alias, variants }: ContributorFormModel,
     action: ContributorDialogAction,
   ): void {
     const payload = {
-      fullName,
+      alias,
       variantIds: variants.map((v) => v.id),
     };
     if (action === 'create') {

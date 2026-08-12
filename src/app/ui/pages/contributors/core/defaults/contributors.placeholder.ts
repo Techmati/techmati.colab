@@ -15,7 +15,7 @@ export const CONTRIBUTORS_PLACEHOLDER: Contributor[] = [
     id: 'contrib-1',
     ownerUserId: 'usr-carlos',
     accountUserId: 'usr-carlos',
-    fullName: 'Carlos Mendoza',
+    alias: 'Carlos Mendoza',
     createdAt: '2024-01-15T10:00:00.000Z',
     variants: [
       {
@@ -30,7 +30,7 @@ export const CONTRIBUTORS_PLACEHOLDER: Contributor[] = [
     id: 'contrib-2',
     ownerUserId: 'usr-maria',
     accountUserId: null,
-    fullName: 'María Hernández',
+    alias: 'María Hernández',
     createdAt: '2024-02-20T10:00:00.000Z',
     variants: [
       {
@@ -45,7 +45,7 @@ export const CONTRIBUTORS_PLACEHOLDER: Contributor[] = [
     id: 'contrib-3',
     ownerUserId: 'usr-juan',
     accountUserId: null,
-    fullName: 'Juan Pérez',
+    alias: 'Juan Pérez',
     createdAt: '2024-03-10T10:00:00.000Z',
     variants: [
       {

@@ -66,7 +66,7 @@ export class AuthenticationService {
   async signUpWithPassword(
     email: string,
     password: string,
-    fullName: string,
+    fullName: string | null,
     username: string,
   ): Promise<boolean> {
     this.errorState.set(null);
@@ -77,7 +77,7 @@ export class AuthenticationService {
       options: {
         emailRedirectTo: window.location.origin,
         data: {
-          full_name: fullName,
+          full_name: fullName?.trim() || null,
           username,
         },
       },

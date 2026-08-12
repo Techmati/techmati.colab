@@ -11,7 +11,7 @@ import { ContributorVariantsInput } from '../../molecules/contributor-variants-i
 
 export interface ContributorFormModel {
   id: string;
-  fullName: string;
+  alias: string;
   variants: LanguageVariant[];
 }
 
@@ -27,13 +27,13 @@ export class ContributorFormContent {
 
   readonly model = signal<ContributorFormModel>({
     id: this.data.contributor?.id ?? '',
-    fullName: this.data.contributor?.fullName ?? '',
+    alias: this.data.contributor?.alias ?? '',
     variants: [...(this.data.contributor?.variants ?? [])],
   });
 
   readonly form = form(this.model, (schema) => {
-    required(schema.fullName, { message: 'El nombre es obligatorio.' });
-    maxLength(schema.fullName, 100, { message: 'El nombre no puede exceder 100 caracteres.' });
+    required(schema.alias, { message: 'El alias es obligatorio.' });
+    maxLength(schema.alias, 100, { message: 'El alias no puede exceder 100 caracteres.' });
     minLength(schema.variants, 1, { message: 'Debe tener al menos una variante.' });
   });
 

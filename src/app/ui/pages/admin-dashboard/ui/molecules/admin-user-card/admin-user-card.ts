@@ -12,9 +12,16 @@ import { Profile } from '@/core/dto/profile.dto';
 export class AdminUserCard {
   readonly user = input.required<Profile>();
 
+  readonly displayName = computed(() => {
+    const fullName = this.user().fullName?.trim();
+    return fullName || this.user().username || 'No proporcionado';
+  });
+
   readonly initials = computed(() => {
-    const [firstName, lastName] = this.user().fullName.split(' ');
-    return `${firstName[0]}${lastName[0]}`;
+    const parts = this.displayName().split(' ').filter((part) => part.length > 0);
+    const first = parts[0]?.[0] ?? '';
+    const last = parts.length > 1 ? parts[parts.length - 1]?.[0] : '';
+    return `${first}${last}`.toUpperCase() || '??';
   });
 
   readonly role = computed(

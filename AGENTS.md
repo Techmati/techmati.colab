@@ -823,7 +823,7 @@ where possible:
 ```ts
 protected readonly user: Profile = {
   id: 'usr-carlos-mendoza',
-  fullName: 'Carlos Mendoza',
+  fullName: 'Carlos Mendoza', // Opcional: profiles.full_name es nullable (string | null)
   username: 'cmendoza_tl',
   email: 'carlos.mendoza@tlacuilo.org',
   bannedUntil: null,
@@ -831,6 +831,11 @@ protected readonly user: Profile = {
   createdAt: '2023-10-12T10:00:00.000Z',
 };
 ```
+
+Contributor display names use `alias` (the contributor aggregate no longer has a
+`fullName`/`full_name`; only `alias`). `Profile.full_name` keeps its column name but is
+nullable, so render a fallback (e.g. `user().fullName ?? user().username ?? 'No proporcionado'`)
+in admin surfaces that display it.
 
 When backend wiring is added, remove local filtering and placeholder transformation code that will
 become obsolete. Keep placeholder data only for pieces that are still explicitly unwired.

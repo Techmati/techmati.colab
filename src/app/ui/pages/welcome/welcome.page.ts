@@ -81,7 +81,7 @@ export class WelcomePage {
 
     try {
       const response = await this.guestCreateMutation.mutateAsync({
-        fullName: contributorData.fullName,
+        alias: contributorData.alias,
         variantIds: contributorData.variants.map((variant) => variant.id),
       });
       this.guestService.setSessionToken(response.sessionToken);

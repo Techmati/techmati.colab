@@ -1,5 +1,5 @@
 <article class="flex flex-col gap-2 rounded-xl border border-border bg-card p-4 shadow-sm">
-  <h3 class="font-ui text-lg font-medium leading-7 text-foreground">{{ contributor().fullName }}</h3>
+  <h3 class="font-ui text-lg font-medium leading-7 text-foreground">{{ contributor().alias }}</h3>
 
   <span
     class="inline-flex w-fit items-center gap-1 rounded-md border border-border bg-muted px-2 py-1 text-xs font-medium leading-4 text-foreground"
@@ -33,7 +33,7 @@
       <button
         type="button"
         class="flex size-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-primary focus-visible:outline-none"
-        [attr.aria-label]="'Editar a ' + contributor().fullName"
+        [attr.aria-label]="'Editar a ' + contributor().alias"
         (click)="onEdit()"
       >
         <span class="lucide--pencil text-base" aria-hidden="true"></span>
@@ -41,7 +41,7 @@
       <button
         type="button"
         class="flex size-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-destructive focus-visible:outline-none"
-        [attr.aria-label]="'Eliminar a ' + contributor().fullName"
+        [attr.aria-label]="'Eliminar a ' + contributor().alias"
         (click)="onRemove()"
       >
         <span class="lucide--trash-2 text-base" aria-hidden="true"></span>

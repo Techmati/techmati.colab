@@ -4,7 +4,7 @@ export type TechmatiRole = (typeof TECHMATI_ROLES)[number];
 
 export interface Profile {
   id: string;
-  fullName: string;
+  fullName: string | null;
   username: string;
   email: string | null;
   bannedUntil: string | null;

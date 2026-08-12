@@ -26,7 +26,7 @@ export class GuestSignupPage {
   readonly error = signal<string | null>(null);
   readonly success = signal<string | null>(null);
 
-  readonly fullName = computed(() => this.guestService.contributor()?.fullName ?? null);
+  readonly fullName = computed(() => this.guestService.contributor()?.alias ?? null);
 
   protected readonly logoUrl = '/res/brand.jpeg';
 

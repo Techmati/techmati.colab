@@ -7,13 +7,13 @@ import { mutationOptions, QueryClient, queryOptions } from '@tanstack/angular-qu
 import { lastValueFrom, map } from 'rxjs';
 
 export interface CreateContributorPayload {
-  fullName: string;
+  alias: string;
   variantIds: string[];
 }
 
 export interface UpdateContributorPayload {
   id: string;
-  fullName?: string;
+  alias?: string;
   variantIds?: string[];
 }
 

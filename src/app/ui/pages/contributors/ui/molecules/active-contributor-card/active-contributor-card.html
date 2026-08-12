@@ -8,7 +8,7 @@
     <span class="lucide--check text-base font-bold"></span>
   </span>
 
-  <h3 class="font-ui text-lg font-medium leading-7 text-primary">{{ contributor().fullName }}</h3>
+  <h3 class="font-ui text-lg font-medium leading-7 text-primary">{{ contributor().alias }}</h3>
 
   <span
     class="inline-flex w-fit items-center gap-1 rounded-md border border-border bg-muted px-2 py-1 text-xs font-medium leading-4 text-foreground"
@@ -33,7 +33,7 @@
       <button
         type="button"
         class="flex size-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-primary focus-visible:outline-none"
-        [attr.aria-label]="'Editar a ' + contributor().fullName"
+        [attr.aria-label]="'Editar a ' + contributor().alias"
         (click)="onEdit()"
       >
         <span class="lucide--pencil text-base" aria-hidden="true"></span>

@@ -17,7 +17,7 @@
     <div class="flex flex-col items-center justify-between gap-4">
       <div class="flex flex-col gap-1 items-center">
         <h1 class="truncate font-display text-xl text-primary font-semibold leading-7">
-          {{ translation.contributor?.fullName || 'Cargando...' }}
+          {{ translation.contributor?.alias || 'Cargando...' }}
         </h1>
         <h2 class="truncate font-display text-lg font-light leading-7">
           {{ translation.translation.variant?.name || translation.translation.variant?.autodenominacion || 'Cargando...' }}
