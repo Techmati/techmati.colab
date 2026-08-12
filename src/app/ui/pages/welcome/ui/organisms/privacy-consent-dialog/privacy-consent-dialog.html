@@ -1,0 +1,38 @@
+<div class="flex flex-col gap-5">
+  <div class="space-y-2 text-sm leading-6 text-muted-foreground">
+    <p>Necesitamos un alias y los idiomas o variantes que conoces.</p>
+    <p>
+      Las traducciones escritas y grabaciones que realices serán utilizadas para investigación y
+      entrenamiento de modelos de IA de Techmati.
+    </p>
+    <p>Puedes participar sin proporcionar tu nombre real.</p>
+    <p>Tus datos personales no forman parte del corpus de entrenamiento.</p>
+  </div>
+
+  <a
+    href="/privacy"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="text-sm font-medium text-primary underline underline-offset-4 hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+  >
+    Ver Aviso de Privacidad Integral
+  </a>
+
+  <div class="rounded-lg border border-border bg-muted/40 px-4 py-3">
+    <z-switch zId="privacy-consent" [(zChecked)]="consent">
+      Acepto el tratamiento descrito en el aviso
+    </z-switch>
+  </div>
+
+  <button
+    z-button
+    zType="default"
+    zSize="lg"
+    zFull
+    type="button"
+    [zDisabled]="!consent() || submitting()"
+    (click)="confirm()"
+  >
+    Continuar
+  </button>
+</div>

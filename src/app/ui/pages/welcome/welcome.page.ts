@@ -4,8 +4,13 @@ import { injectMutation } from '@tanstack/angular-query-experimental';
 
 import { AuthenticationService } from '@/core/service/authentication/authentication.service';
 import { GuestService } from '@/core/service/guest/guest.service';
+import { ZardDialogService } from '@/shared/components/dialog';
 import { FirstTimeSetupData } from './core/types/first-time-setup-data.type';
 import { WelcomePanel } from './ui/organisms/welcome-panel/welcome-panel';
+import {
+  PrivacyConsentDialog,
+  type PrivacyConsentDialogData,
+} from './ui/organisms/privacy-consent-dialog/privacy-consent-dialog';
 import { AuthCredentials, SignUpCredentials } from './welcome-auth.type';
 
 @Component({
@@ -19,6 +24,7 @@ export class WelcomePage {
   private readonly authenticationService = inject(AuthenticationService);
   private readonly guestService = inject(GuestService);
   private readonly router = inject(Router);
+  private readonly dialogService = inject(ZardDialogService);
   readonly isLoading = signal(false);
   readonly error = signal<string | null>(null);
   readonly success = signal<string | null>(null);
@@ -76,7 +82,21 @@ export class WelcomePage {
     }
   }
 
-  async requestFirstTimeSetup(contributorData: FirstTimeSetupData): Promise<void> {
+  requestFirstTimeSetup(contributorData: FirstTimeSetupData): void {
+    this.dialogService.create<PrivacyConsentDialog, PrivacyConsentDialogData>({
+      zTitle: 'Antes de contribuir',
+      zContent: PrivacyConsentDialog,
+      zData: { onConfirm: () => this.completeFirstTimeSetup(contributorData) },
+      zHideFooter: true,
+      zWidth: '440px',
+    });
+  }
+
+  private async completeFirstTimeSetup(contributorData: FirstTimeSetupData): Promise<void> {
+    if (this.isLoading()) {
+      return;
+    }
+
     this.startRequest();
 
     try {

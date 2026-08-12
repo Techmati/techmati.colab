@@ -24,6 +24,12 @@ export const routes: Routes = [
     title: 'Crear cuenta - Techmati Colab',
   },
   {
+    path: 'privacy',
+    loadComponent: () =>
+      import('./ui/pages/privacy/privacy.page').then((module) => module.PrivacyPage),
+    title: 'Aviso de Privacidad - Techmati Colab',
+  },
+  {
     path: 'dashboard',
     component: DashboardPage,
     canActivate: [authenticationGuard],
