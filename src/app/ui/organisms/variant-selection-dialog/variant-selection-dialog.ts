@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 
-import { injectMutation } from '@tanstack/angular-query-experimental';
+import { injectIsMutating, injectMutation } from '@tanstack/angular-query-experimental';
 
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { TranslationService } from '@/core/service/translation/translation.service';
@@ -29,6 +29,10 @@ export class VariantSelectionDialog {
     return this.translationService.create(contributor?.id);
   });
 
+  private readonly isCreateMutationRunning = injectIsMutating({
+    mutationKey: ['translation', 'create', this.contributorContext.active()?.id],
+  });
+
   open(phraseSetId?: string): void {
     const id = phraseSetId ?? this.phraseSetId();
     if (!id) return;
@@ -45,6 +49,7 @@ export class VariantSelectionDialog {
       zMaskClosable: false,
       zWidth: '350px',
       zOnOk: (instance) => {
+        if (this.isCreateMutationRunning()) return;
         const variantId = (instance as VariantSelectionContent).getSelectedVariantId();
         this.createMutation.mutate(
           { phraseSetId, variantId },
@@ -55,13 +60,6 @@ export class VariantSelectionDialog {
             },
           },
         );
-        console.log(
-          'Creating translation with phraseSetId:',
-          phraseSetId,
-          'and variantId:',
-          variantId,
-        );
-        return false;
       },
       zOnCancel: () => {
         this.cancelled.emit();
