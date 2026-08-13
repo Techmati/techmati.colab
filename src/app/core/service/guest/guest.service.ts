@@ -21,6 +21,7 @@ export class GuestService {
   private readonly client = inject(HttpClient);
 
   private readonly contributorRes = injectQuery(() => {
+    this.isGuestTick();
     const sessionToken = this.getSessionToken();
 
     const headers = new HttpHeaders();
@@ -44,6 +45,7 @@ export class GuestService {
   readonly isGuestTick = signal(0);
 
   readonly isGuest = computed((): boolean => {
+    this.isGuestTick();
     return this.getSessionToken() !== null || this.contributor() !== null;
   });
 
@@ -73,8 +75,8 @@ export class GuestService {
   }
 
   setSessionToken(token: string): void {
-    this.isGuestTick.update((v) => v + 1);
     sessionStorage.setItem(GUEST_TOKEN_KEY, token);
+    this.emitChange();
   }
 
   getRecoveryCode(): string | null {
@@ -83,6 +85,7 @@ export class GuestService {
 
   setRecoveryCode(code: string): void {
     sessionStorage.setItem(GUEST_RECOVERY_CODE_KEY, code);
+    this.emitChange();
   }
 
   clearGuestSession(): void {
@@ -94,6 +97,10 @@ export class GuestService {
 
   clearSessionToken(): void {
     sessionStorage.removeItem(GUEST_TOKEN_KEY);
+    this.isGuestTick.update((v) => v + 1);
+  }
+
+  private emitChange() {
     this.isGuestTick.update((v) => v + 1);
   }
 }

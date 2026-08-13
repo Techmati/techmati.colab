@@ -9,6 +9,11 @@ export const authenticationGuard: CanActivateFn = async () => {
   const router = inject(Router);
 
   await authenticationService.whenInitialized();
+  console.log(
+    'authenticationGuard',
+    authenticationService.isAuthenticated(),
+    guestService.isGuest(),
+  );
 
   return authenticationService.isAuthenticated() || guestService.isGuest()
     ? true

@@ -1,0 +1,38 @@
+<form class="space-y-4" (submit)="submit($event)" novalidate>
+  <div class="space-y-2">
+    <label for="recovery-code" class="text-sm font-medium text-muted-foreground">
+      Código de recuperación
+    </label>
+    <input
+      id="recovery-code"
+      z-input
+      type="text"
+      autocomplete="one-time-code"
+      inputmode="text"
+      spellcheck="false"
+      placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      [formField]="form.recoveryCode"
+      [zStatus]="form.recoveryCode().touched() && form.recoveryCode().invalid() ? 'error' : undefined"
+    />
+    @if (form.recoveryCode().touched() && form.recoveryCode().invalid()) {
+      <div class="text-sm text-destructive" role="alert">
+        @for (validationError of form.recoveryCode().errors(); track validationError.kind) {
+          <p>{{ validationError.message }}</p>
+        }
+      </div>
+    }
+  </div>
+
+  <button
+    z-button
+    zType="default"
+    zSize="lg"
+    zFull
+    type="submit"
+    class="font-semibold"
+    [zLoading]="isLoading()"
+    [zDisabled]="isLoading()"
+  >
+    Recuperar sesión
+  </button>
+</form>

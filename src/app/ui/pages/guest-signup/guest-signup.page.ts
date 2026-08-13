@@ -45,9 +45,16 @@ export class GuestSignupPage {
       );
       this.success.set('Cuenta creada. Vinculando tu trabajo como invitado...');
 
+      const contributorId = this.guestService.contributor()?.id;
+      if (!contributorId) {
+        this.error.set('No se pudo crear la cuenta. Verifica tus datos e inténtalo de nuevo.');
+        this.isLoading.set(false);
+        return;
+      }
+
       const sessionToken = this.guestService.getSessionToken();
       if (sessionToken) {
-        await this.claimGuestMutation.mutateAsync({ sessionToken });
+        await this.claimGuestMutation.mutateAsync({ contributorId, sessionToken });
         this.guestService.clearGuestSession();
       }
 

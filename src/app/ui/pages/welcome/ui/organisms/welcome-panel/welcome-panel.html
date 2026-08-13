@@ -36,6 +36,13 @@
             (errorMessage)="setFormError($event)"
           />
         }
+        @case('recovery') {
+          <tm-recovery-form
+            [isLoading]="isLoading()"
+            (submitted)="requestRecovery($event)"
+            (errorMessage)="setFormError($event)"
+          />
+        }
       }
     </div>
 
@@ -62,26 +69,5 @@
         </div>
       </div>
     }
-
-    <div class="my-5 flex items-center gap-3" aria-hidden="true">
-      <span class="h-px flex-1 bg-border"></span>
-      <span class="text-xs font-medium text-muted-foreground">O continúa con</span>
-      <span class="h-px flex-1 bg-border"></span>
-    </div>
-
-    <button
-      z-button
-      zType="outline"
-      zSize="lg"
-      zFull
-      type="button"
-      class="font-semibold"
-      [zLoading]="isLoading()"
-      [zDisabled]="isLoading()"
-      (click)="googleSignInRequested.emit()"
-    >
-      <span class="lucide--log-in size-5" aria-hidden="true"></span>
-      Continuar con Google
-    </button>
   </div>
 </div>

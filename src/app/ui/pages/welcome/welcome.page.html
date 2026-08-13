@@ -7,9 +7,9 @@
         [isLoading]="isLoading()"
         [error]="error()"
         [success]="success()"
-        (googleSignInRequested)="signInWithGoogle()"
         (passwordSignInRequested)="signInWithPassword($event)"
         (firstTimeSetupRequested)="requestFirstTimeSetup($event)"
+        (recoveryRequested)="recoverWithCode($event)"
         (modeChanged)="clearMessages()"
       />
     </div>

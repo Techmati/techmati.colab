@@ -1,6 +1,6 @@
 import { supabaseClient } from '@/core/config/supabase-client.config';
 import { computed, DestroyRef, effect, inject, Injectable, signal } from '@angular/core';
-import type { Provider, Session, User } from '@supabase/supabase-js';
+import type { Session, User } from '@supabase/supabase-js';
 
 @Injectable({
   providedIn: 'root',
@@ -31,22 +31,6 @@ export class AuthenticationService {
     this.destroyRef.onDestroy(() => subscription.unsubscribe());
     this.sessionInitialization = this.loadInitialSession();
     effect(() => console.log('Jwt: ', this.session()?.access_token));
-  }
-
-  async signInWithOAuth(provider: Provider): Promise<void> {
-    this.errorState.set(null);
-
-    const { error } = await supabaseClient.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo: window.location.origin,
-      },
-    });
-
-    if (error) {
-      this.errorState.set(error.message);
-      throw error;
-    }
   }
 
   async signInWithPassword(email: string, password: string): Promise<void> {

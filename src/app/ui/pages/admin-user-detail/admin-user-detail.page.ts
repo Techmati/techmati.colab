@@ -47,12 +47,12 @@ export class AdminUserDetailPage {
 
   protected readonly user = computed(() => this.userQuery.data() ?? null);
 
-  protected readonly autoContributorQuery = injectQuery(() =>
-    this.adminUserDetailService.getAutoContributorId(this.userId()),
+  protected readonly userContributorQuery = injectQuery(() =>
+    this.adminUserDetailService.getUserContributorId(this.userId()),
   );
 
-  protected readonly autoContributorId = computed(
-    () => this.autoContributorQuery.data()?.contributorId ?? null,
+  protected readonly userContributorId = computed(
+    () => this.userContributorQuery.data()?.contributorId ?? null,
   );
 
   protected readonly assignRoleMutation = injectMutation(() =>

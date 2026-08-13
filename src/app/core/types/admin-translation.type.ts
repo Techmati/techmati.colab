@@ -10,6 +10,6 @@ export interface AdminContributorTranslationDetail {
   phraseSet?: PhraseSet;
 }
 
-export interface AutoContributor {
+export interface UserContributor {
   contributorId: string;
 }

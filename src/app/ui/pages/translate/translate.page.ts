@@ -9,14 +9,16 @@ import {
   signal,
 } from '@angular/core';
 import { form, FormField, minLength, required } from '@angular/forms/signals';
-import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
+import { injectMutation, injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { TranslationService } from '@/core/service/translation/translation.service';
 import { Phrase } from '@/core/types/phrase.type';
 import { type RecordedAudioFile } from '@/core/utils/audio-recorder.util';
+import { ZardAlertDialogService } from '@/shared/components/alert-dialog';
 import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
+import { Router } from '@angular/router';
 import { BatchProgressPanel } from './ui/organisms/batch-progress-panel/batch-progress-panel';
 import { BottomActionBar } from './ui/organisms/bottom-action-bar/bottom-action-bar';
 import { PronunciationRecorder } from './ui/organisms/pronunciation-recorder/pronunciation-recorder';
@@ -47,6 +49,9 @@ export class TranslatePage {
   private readonly translationService = inject(TranslationService);
   private readonly phraseSetService = inject(PhraseSetsService);
   private readonly contributorContext = inject(ContributorContextService);
+  private readonly queryClient = inject(QueryClient);
+  private readonly alertDialog = inject(ZardAlertDialogService);
+  private readonly router = inject(Router);
 
   readonly translationId = input.required<string>();
 
@@ -131,6 +136,15 @@ export class TranslatePage {
     },
   }));
 
+  readonly deleteTranslationMutation = injectMutation(() => {
+    const contributorId = this.contributorContext.active()?.id;
+    const translationId = this.translationId();
+    return {
+      ...this.translationService.delete(contributorId, translationId),
+      onSuccess: () => this.onDeleteSuccess(contributorId, translationId),
+    };
+  });
+
   constructor() {
     this.destroyRef.onDestroy(() => {
       const currentAudio = this.model().pronunciation;
@@ -168,5 +182,29 @@ export class TranslatePage {
       payload: { phraseId: phrase.id, translation },
       audio,
     });
+  }
+
+  protected onCancelRequested(): void {
+    this.alertDialog.confirm({
+      zTitle: '¿Cancelar esta contribución?',
+      zDescription:
+        'Se descartará el intento de traducción en curso. Esta acción no se puede deshacer.',
+      zCancelText: 'Cancelar',
+      zOkText: 'Cancelar contribución',
+      zOkDestructive: true,
+      zOnOk: () => {
+        this.deleteTranslationMutation.mutate();
+      },
+    });
+  }
+
+  private async onDeleteSuccess(
+    contributorId: string | undefined,
+    translationId: string,
+  ): Promise<void> {
+    await this.queryClient.invalidateQueries({ queryKey: ['translations'] });
+    await this.queryClient.invalidateQueries({ queryKey: ['translation-stats'] });
+    await this.queryClient.invalidateQueries({ queryKey: ['translation', contributorId, translationId] });
+    await this.router.navigate(['/dashboard']);
   }
 }

@@ -77,7 +77,7 @@ const API = {
       BAN: (userId: string) => `${BASE_URL}/admin/users/${userId}/ban`,
       UNBAN: (userId: string) => `${BASE_URL}/admin/users/${userId}/unban`,
       ASSIGN_ROLE: (userId: string) => `${BASE_URL}/admin/users/${userId}/role`,
-      AUTO_CONTRIBUTOR: (userId: string) => `${BASE_URL}/admin/users/${userId}/auto-contributor`,
+      CONTRIBUTOR: (userId: string) => `${BASE_URL}/admin/users/${userId}/contributor`,
     },
     CONTRIBUTORS: {
       TRANSLATIONS: (cId: string) => `${BASE_URL}/admin/contributors/${cId}/translations`,

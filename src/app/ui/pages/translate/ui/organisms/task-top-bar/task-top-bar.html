@@ -8,5 +8,15 @@
     <span class="lucide--x size-5" aria-hidden="true"></span>
   </button>
   <h1 class="font-display text-primary text-xl font-semibold leading-9">Traducir</h1>
-  <span class="size-8" aria-hidden="true"></span>
+  <button
+    z-button
+    zType="destructive"
+    zSize="icon"
+    zShape="circle"
+    type="button"
+    aria-label="Cancelar contribución"
+    (click)="cancelRequested.emit()"
+  >
+    <span class="lucide--trash-2 size-5" aria-hidden="true"></span>
+  </button>
 </header>

@@ -1,6 +1,6 @@
 import { API } from '@/core/config/api-uris.config';
 import { Profile, TechmatiRole } from '@/core/dto/profile.dto';
-import { AutoContributor } from '@/core/types/admin-translation.type';
+import { UserContributor } from '@/core/types/admin-translation.type';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import {
@@ -24,13 +24,11 @@ export class AdminUserDetailService {
     });
   }
 
-  getAutoContributorId(userId: string) {
+  getUserContributorId(userId: string) {
     return queryOptions({
-      queryKey: ['users', userId, 'auto-contributor'],
+      queryKey: ['users', userId, 'contributor'],
       queryFn: () =>
-        lastValueFrom(
-          this.client.get<AutoContributor>(API.ADMIN.USERS.AUTO_CONTRIBUTOR(userId)),
-        ),
+        lastValueFrom(this.client.get<UserContributor>(API.ADMIN.USERS.CONTRIBUTOR(userId))),
     });
   }
 

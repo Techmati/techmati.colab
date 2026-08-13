@@ -30,6 +30,7 @@ export class WelcomePage {
   readonly success = signal<string | null>(null);
 
   private readonly guestCreateMutation = injectMutation(() => this.guestService.create());
+  private readonly guestRecoverMutation = injectMutation(() => this.guestService.recover());
 
   constructor() {
     effect(() => {
@@ -37,17 +38,6 @@ export class WelcomePage {
         this.goToDashboard();
       }
     });
-  }
-
-  async signInWithGoogle(): Promise<void> {
-    this.startRequest();
-
-    try {
-      await this.authenticationService.signInWithOAuth('google');
-    } catch {
-      this.error.set('No se pudo iniciar sesión con Google. Por favor, inténtalo de nuevo.');
-      this.isLoading.set(false);
-    }
   }
 
   async signInWithPassword(credentials: AuthCredentials): Promise<void> {
@@ -78,6 +68,25 @@ export class WelcomePage {
       }
     } catch {
       this.error.set('No se pudo crear la cuenta. Verifica tus datos e inténtalo de nuevo.');
+      this.isLoading.set(false);
+    }
+  }
+
+  async recoverWithCode(credentials: { recoveryCode: string }): Promise<void> {
+    this.startRequest();
+
+    try {
+      const response = await this.guestRecoverMutation.mutateAsync({
+        recoveryCode: credentials.recoveryCode,
+      });
+      this.guestService.setSessionToken(response.sessionToken);
+      this.guestService.setRecoveryCode(response.recoveryCode);
+      this.isLoading.set(false);
+      this.goToDashboard();
+    } catch {
+      this.error.set(
+        'No se pudo recuperar la sesión con ese código. Verifica el código e inténtalo de nuevo.',
+      );
       this.isLoading.set(false);
     }
   }

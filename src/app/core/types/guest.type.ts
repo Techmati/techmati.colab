@@ -21,6 +21,7 @@ export interface RecoverSessionPayload {
 }
 
 export interface ClaimGuestPayload {
+  contributorId: string;
   sessionToken: string;
 }
 

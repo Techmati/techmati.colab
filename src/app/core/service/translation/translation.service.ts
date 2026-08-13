@@ -95,6 +95,17 @@ export class TranslationService {
     });
   }
 
+  delete(contributorId: string | undefined, translationId: string) {
+    const url = this.isGuest()
+      ? API.GUEST.TRANSLATION_BY_ID(translationId)
+      : API.CONTRIBUTORS.TRANSLATIONS.DELETE(contributorId!, translationId);
+
+    return mutationOptions({
+      mutationKey: ['translation', 'delete', contributorId, translationId],
+      mutationFn: () => lastValueFrom(this.client.delete<{ message: string }>(url)),
+    });
+  }
+
   getNextPending(contributorId: string | undefined, translationId: string) {
     const url = this.isGuest()
       ? API.GUEST.TRANSLATION_NEXT_PENDING(translationId)
