@@ -7,7 +7,7 @@ import { VariantSelectionDialog } from '@/ui/organisms/variant-selection-dialog/
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
-import { injectMutation, injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
+import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
 import { WavesAudioPlayer } from '../../molecules/waves-audio-player/waves-audio-player';
 import { TransEntrySkeleton } from './ui/organisms/trans-entry-skeleton/trans-entry-skeleton';
 
@@ -32,7 +32,6 @@ export class TransEntryPage {
   private readonly contributorContext = inject(ContributorContextService);
   private readonly location = inject(Location);
   private readonly router = inject(Router);
-  private readonly queryClient = inject(QueryClient);
   private readonly alertDialog = inject(ZardAlertDialogService);
 
   protected readonly entryRes = injectQuery(() => {
@@ -49,10 +48,11 @@ export class TransEntryPage {
   readonly deleteTranslationMutation = injectMutation(() => {
     const contributor = this.contributorContext.active();
     const translationId = this.translationId();
-    return {
-      ...this.translationService.delete(contributor?.id, translationId),
-      onSuccess: () => this.onDeleteSuccess(contributor?.id, translationId),
-    };
+    return this.translationService.delete(
+      contributor?.id,
+      translationId,
+      () => this.onDeleteSuccess(),
+    );
   });
 
   constructor() {
@@ -79,14 +79,7 @@ export class TransEntryPage {
     });
   }
 
-  private async onDeleteSuccess(
-    contributorId: string | undefined,
-    translationId: string,
-  ): Promise<void> {
-    await this.queryClient.invalidateQueries({ queryKey: ['translations'] });
-    await this.queryClient.invalidateQueries({ queryKey: ['translation-stats'] });
-    await this.queryClient.invalidateQueries({ queryKey: ['translation', contributorId, translationId] });
-    await this.queryClient.invalidateQueries({ queryKey: ['phraseSets'] });
-    await this.router.navigate(['/dashboard']);
+  private onDeleteSuccess(): void {
+    void this.router.navigate(['/dashboard']);
   }
 }

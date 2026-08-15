@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 
 import { PHRASE_SET_CATEGORY_LABELS } from '@/core/config/phrase-set-category-labels.config';
+import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { PhraseSet } from '@/core/types/phrase-set.type';
 import { baseToastConfig } from '@/core/view/base-toast.config';
 import { ZardAlertDialogService } from '@/shared/components/alert-dialog';
@@ -28,6 +29,7 @@ export class AdminPhraseSetCard {
   protected readonly isExpanded = signal(false);
 
   private readonly adminPhraseSetService = inject(AdminPhraseSetService);
+  private readonly phraseSetsService = inject(PhraseSetsService);
   private readonly alertDialog = inject(ZardAlertDialogService);
 
   private readonly location = inject(Location);
@@ -109,8 +111,7 @@ export class AdminPhraseSetCard {
       description: 'El set de frases ha sido eliminado correctamente.',
       ...baseToastConfig,
     });
-    this.adminPhraseSetService.invalidateSearch();
-    this.adminPhraseSetService.invalidateUserPhraseSets();
+    this.phraseSetsService.invalidateAll();
     this.location.back();
   }
 

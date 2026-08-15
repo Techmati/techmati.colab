@@ -2,7 +2,7 @@ import { API } from '@/core/config/api-uris.config';
 import { PhraseSet, PhraseSetWithPhrasesDto } from '@/core/types/phrase-set.type';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { queryOptions } from '@tanstack/angular-query-experimental';
+import { QueryClient, queryOptions } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { GuestService } from '../guest/guest.service';
 
@@ -32,6 +32,7 @@ export interface GetFilteredOptions {
 export class PhraseSetsService {
   private readonly client = inject(HttpClient);
   private readonly guestService = inject(GuestService);
+  private readonly queryClient = inject(QueryClient);
 
   private readonly isGuest = () => this.guestService.isGuest();
 
@@ -39,7 +40,7 @@ export class PhraseSetsService {
     const url = this.isGuest() ? API.GUEST.PHRASE_SET_BY_ID(id) : API.PHRASE_SETS.BY_ID(id);
 
     return queryOptions({
-      queryKey: ['phraseSet', id],
+      queryKey: ['phrase-set', 'detail', id],
       queryFn: () => lastValueFrom(this.client.get<PhraseSetWithPhrasesDto>(url)),
     });
   }
@@ -56,7 +57,7 @@ export class PhraseSetsService {
     const url = this.isGuest() ? API.GUEST.PHRASE_SETS : API.PHRASE_SETS.PAGINATED;
 
     return queryOptions({
-      queryKey: ['phraseSets', { page, size, filter, sort_by, sort_direction, include_stats, category, contributorId }],
+      queryKey: ['phrase-set', 'search', { page, size, filter, sort_by, sort_direction, include_stats, category, contributorId }],
       queryFn: () => lastValueFrom(this.client.get<PaginatedPhraseSets>(url, { params })),
     });
   }
@@ -66,7 +67,7 @@ export class PhraseSetsService {
     const params = this.isGuest() ? undefined : { contributorId };
 
     return queryOptions({
-      queryKey: ['phraseSets', 'nextPending'],
+      queryKey: ['phrase-set', 'next-pending'],
       queryFn: () =>
         lastValueFrom(
           this.client.get<{ phraseSet: PhraseSet | null; state: 'in-progress' | 'finished' }>(url, {
@@ -74,5 +75,9 @@ export class PhraseSetsService {
           }),
         ),
     });
+  }
+
+  invalidateAll() {
+    this.queryClient.invalidateQueries({ queryKey: ['phrase-set'] });
   }
 }

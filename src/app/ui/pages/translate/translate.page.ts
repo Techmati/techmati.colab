@@ -9,16 +9,19 @@ import {
   signal,
 } from '@angular/core';
 import { form, FormField, minLength, required } from '@angular/forms/signals';
-import { injectMutation, injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
+import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
 
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { TranslationService } from '@/core/service/translation/translation.service';
 import { Phrase } from '@/core/types/phrase.type';
 import { type RecordedAudioFile } from '@/core/utils/audio-recorder.util';
+import { baseToastConfig } from '@/core/view/base-toast.config';
 import { ZardAlertDialogService } from '@/shared/components/alert-dialog';
+import { ZardToastComponent } from '@/shared/components/toast';
 import { FieldErrorAdvice } from '@/ui/molecules/field-error-advice/field-error-advice';
 import { Router } from '@angular/router';
+import { toast } from 'ngx-sonner';
 import { BatchProgressPanel } from './ui/organisms/batch-progress-panel/batch-progress-panel';
 import { BottomActionBar } from './ui/organisms/bottom-action-bar/bottom-action-bar';
 import { PronunciationRecorder } from './ui/organisms/pronunciation-recorder/pronunciation-recorder';
@@ -39,6 +42,7 @@ import { TranslationTextarea } from './ui/organisms/translation-textarea/transla
     BottomActionBar,
     TranslationTaskSkeleton,
     FieldErrorAdvice,
+    ZardToastComponent,
   ],
   templateUrl: './translate.page.html',
   styleUrl: './translate.page.css',
@@ -49,13 +53,15 @@ export class TranslatePage {
   private readonly translationService = inject(TranslationService);
   private readonly phraseSetService = inject(PhraseSetsService);
   private readonly contributorContext = inject(ContributorContextService);
-  private readonly queryClient = inject(QueryClient);
   private readonly alertDialog = inject(ZardAlertDialogService);
   private readonly router = inject(Router);
 
   readonly translationId = input.required<string>();
 
   protected readonly isUploading = signal(false);
+  protected readonly isCancelling = signal(false);
+
+  private cancelToastId: string | number | null = null;
 
   protected readonly model = signal<{
     translation: string;
@@ -120,29 +126,31 @@ export class TranslatePage {
       this.translationRes.isPending() ||
       this.phraseSetRes.isPending() ||
       this.nextPhraseRes.isLoading() ||
-      this.isUploading(),
+      this.isUploading() ||
+      this.isCancelling(),
   );
 
-  readonly submitTranslationMutation = injectMutation(() => ({
-    ...this.translationService.submitEntry(),
-    onSuccess: () => {
-      this.isUploading.set(false);
-      this.nextPhraseRes.refetch();
-      this.translationRes.refetch();
-      this.form().reset({ translation: '', pronunciation: null });
-    },
-    onError: (error) => {
-      console.error('Error submitting translation entry:', error);
-    },
-  }));
+  readonly submitTranslationMutation = injectMutation(() =>
+    this.translationService.submitEntry(
+      () => {
+        this.isUploading.set(false);
+        this.form().reset({ translation: '', pronunciation: null });
+      },
+      (error) => {
+        console.error('Error submitting translation entry:', error);
+      },
+    ),
+  );
 
   readonly deleteTranslationMutation = injectMutation(() => {
     const contributorId = this.contributorContext.active()?.id;
     const translationId = this.translationId();
-    return {
-      ...this.translationService.delete(contributorId, translationId),
-      onSuccess: () => this.onDeleteSuccess(contributorId, translationId),
-    };
+    return this.translationService.delete(
+      contributorId,
+      translationId,
+      () => this.onDeleteSuccess(),
+      () => this.onDeleteError(),
+    );
   });
 
   constructor() {
@@ -193,19 +201,39 @@ export class TranslatePage {
       zOkText: 'Cancelar contribución',
       zOkDestructive: true,
       zOnOk: () => {
+        this.isCancelling.set(true);
+        this.cancelToastId = toast.loading('Cancelando...', {
+          description: 'Eliminando tu contribución.',
+          ...baseToastConfig,
+        });
         this.deleteTranslationMutation.mutate();
       },
     });
   }
 
-  private async onDeleteSuccess(
-    contributorId: string | undefined,
-    translationId: string,
-  ): Promise<void> {
-    await this.queryClient.invalidateQueries({ queryKey: ['translations'] });
-    await this.queryClient.invalidateQueries({ queryKey: ['translation-stats'] });
-    await this.queryClient.invalidateQueries({ queryKey: ['translation', contributorId, translationId] });
-    await this.queryClient.invalidateQueries({ queryKey: ['phraseSets'] });
-    await this.router.navigate(['/dashboard']);
+  private onDeleteSuccess(): void {
+    this.isCancelling.set(false);
+    if (this.cancelToastId !== null) {
+      toast.dismiss(this.cancelToastId);
+      this.cancelToastId = null;
+    }
+    toast.success('Contribución eliminada', {
+      description: 'Tu contribución fue eliminada correctamente.',
+      ...baseToastConfig,
+    });
+    setTimeout(() => this.router.navigate(['/dashboard']), 600);
+  }
+
+  private onDeleteError(): void {
+    this.isCancelling.set(false);
+    if (this.cancelToastId !== null) {
+      toast.dismiss(this.cancelToastId);
+      this.cancelToastId = null;
+    }
+    toast.error('No se pudo cancelar la contribución', {
+      description:
+        'Ocurrió un problema al eliminar la contribución. Revisa tu conexión e inténtalo de nuevo.',
+      ...baseToastConfig,
+    });
   }
 }

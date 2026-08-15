@@ -1,5 +1,5 @@
 <main class="min-h-screen bg-background pb-28">
-  <tm-task-top-bar (cancelRequested)="onCancelRequested()" />
+  <tm-task-top-bar [loading]="isCancelling()" (cancelRequested)="onCancelRequested()" />
 
   <section class="mx-auto flex w-full max-w-sm flex-col gap-4 px-5 pb-5 pt-2">
     <tm-batch-progress-panel [translation]="translationRes.data() ?? null"/>
@@ -20,5 +20,6 @@
     }
   </section>
 
-  <tm-bottom-action-bar [loading]="isUploading()" (continueClick)="goToNextPhrase()" />
+  <tm-bottom-action-bar [loading]="isUploading() || isCancelling()" (continueClick)="goToNextPhrase()" />
+  <z-toaster></z-toaster>
 </main>

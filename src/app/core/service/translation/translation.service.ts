@@ -7,7 +7,7 @@ import {
 import { Translation, TranslationFilter } from '@/core/types/translation.type';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { mutationOptions, queryOptions } from '@tanstack/angular-query-experimental';
+import { QueryClient, mutationOptions, queryOptions } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { GuestService } from '../guest/guest.service';
 
@@ -41,6 +41,7 @@ export interface CreateTranslationPayload {
 export class TranslationService {
   private readonly client = inject(HttpClient);
   private readonly guestService = inject(GuestService);
+  private readonly queryClient = inject(QueryClient);
 
   private readonly isGuest = () => this.guestService.isGuest();
 
@@ -56,7 +57,7 @@ export class TranslationService {
       : API.CONTRIBUTORS.TRANSLATIONS.LIST(contributorId!);
 
     return queryOptions({
-      queryKey: ['translations', contributorId, options],
+      queryKey: ['translation', 'list', contributorId, options],
       queryFn: () => lastValueFrom(this.client.get<PaginatedTranslations>(url, { params })),
     });
   }
@@ -67,12 +68,12 @@ export class TranslationService {
       : API.CONTRIBUTORS.TRANSLATIONS.STATS(contributorId!);
 
     return queryOptions({
-      queryKey: ['translation-stats', contributorId],
+      queryKey: ['translation', 'stats', contributorId],
       queryFn: () => lastValueFrom(this.client.get<ContributorTranslationStats>(url)),
     });
   }
 
-  create(contributorId: string | undefined) {
+  create(contributorId: string | undefined, onSuccess?: () => void, onError?: () => void) {
     const url = this.isGuest()
       ? API.GUEST.TRANSLATIONS
       : API.CONTRIBUTORS.TRANSLATIONS.CREATE(contributorId!);
@@ -81,6 +82,12 @@ export class TranslationService {
       mutationKey: ['translation', 'create', contributorId],
       mutationFn: (payload: CreateTranslationPayload) =>
         lastValueFrom(this.client.post<Translation>(url, payload)),
+      onSuccess: async () => {
+        await this.queryClient.invalidateQueries({ queryKey: ['phrase-set'] });
+        await this.queryClient.invalidateQueries({ queryKey: ['translation'] });
+        onSuccess?.();
+      },
+      onError: () => onError?.(),
     });
   }
 
@@ -90,12 +97,17 @@ export class TranslationService {
       : API.CONTRIBUTORS.TRANSLATIONS.DETAIL(contributorId!, translationId);
 
     return queryOptions({
-      queryKey: ['translation', contributorId, translationId],
+      queryKey: ['translation', 'detail', contributorId, translationId],
       queryFn: () => lastValueFrom(this.client.get<Translation>(url)),
     });
   }
 
-  delete(contributorId: string | undefined, translationId: string) {
+  delete(
+    contributorId: string | undefined,
+    translationId: string,
+    onSuccess?: () => void,
+    onError?: () => void,
+  ) {
     const url = this.isGuest()
       ? API.GUEST.TRANSLATION_BY_ID(translationId)
       : API.CONTRIBUTORS.TRANSLATIONS.DELETE(contributorId!, translationId);
@@ -103,6 +115,12 @@ export class TranslationService {
     return mutationOptions({
       mutationKey: ['translation', 'delete', contributorId, translationId],
       mutationFn: () => lastValueFrom(this.client.delete<{ message: string }>(url)),
+      onSuccess: async () => {
+        await this.queryClient.invalidateQueries({ queryKey: ['phrase-set'] });
+        await this.queryClient.invalidateQueries({ queryKey: ['translation'] });
+        onSuccess?.();
+      },
+      onError: () => onError?.(),
     });
   }
 
@@ -112,7 +130,7 @@ export class TranslationService {
       : API.CONTRIBUTORS.TRANSLATIONS.NEXT_PENDING(contributorId!, translationId);
 
     return queryOptions({
-      queryKey: ['next-pending', contributorId, translationId],
+      queryKey: ['translation', 'next-pending', contributorId, translationId],
       queryFn: () =>
         lastValueFrom(
           this.client.get<{ phraseId: string | null; state: 'in-progress' | 'finished' }>(url),
@@ -120,7 +138,7 @@ export class TranslationService {
     });
   }
 
-  submitEntry() {
+  submitEntry(onSuccess?: () => void, onError?: (error: unknown) => void) {
     return mutationOptions({
       mutationFn: ({ contributorId, translationId, payload, audio }: SubmitEntryPayload) => {
         const formData = new FormData();
@@ -135,6 +153,16 @@ export class TranslationService {
 
         return lastValueFrom(this.client.post<TranslationEntry>(url, formData));
       },
+      onSuccess: async () => {
+        await this.queryClient.invalidateQueries({ queryKey: ['phrase-set'] });
+        await this.queryClient.invalidateQueries({ queryKey: ['translation'] });
+        onSuccess?.();
+      },
+      onError: (error) => onError?.(error),
     });
+  }
+
+  invalidateAll() {
+    this.queryClient.invalidateQueries({ queryKey: ['translation'] });
   }
 }

@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 
 import { ZardButtonComponent } from '@/shared/components/button';
 
@@ -14,6 +14,7 @@ export class TaskTopBar {
   private readonly location = inject(Location);
 
   readonly cancelRequested = output<void>();
+  readonly loading = input(false);
 
   goBack() {
     this.location.back();

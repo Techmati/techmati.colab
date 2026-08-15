@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 
 import { PhraseSet } from '@/core/types/phrase-set.type';
+import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { ZardAlertDialogService } from '@/shared/components/alert-dialog';
 import { ZardButtonComponent } from '@/shared/components/button';
 import { ZardToastComponent } from '@/shared/components/toast';
@@ -49,6 +50,7 @@ export class AdminPhraseSetEditorPage {
   readonly phraseSetId = linkedSignal(() => this.inputPhraseSetId());
 
   private readonly adminPhraseSetService = inject(AdminPhraseSetService);
+  private readonly phraseSetsService = inject(PhraseSetsService);
   private readonly alertDialog = inject(ZardAlertDialogService);
 
   private readonly location = inject(Location);
@@ -83,7 +85,7 @@ export class AdminPhraseSetEditorPage {
   readonly phraseSetUpdateMutation = injectMutation(() => ({
     ...this.adminPhraseSetService.update(this.phraseSetId(), this.buildUpdatePayload()),
     onSuccess: (data) => {
-      this.adminPhraseSetService.invalidateSearch();
+      this.phraseSetsService.invalidateAll();
       this.onUpdateSuccess(data);
     },
     onError: () => this.onUpdateError(this.buildUpdatePayload()),
@@ -92,7 +94,7 @@ export class AdminPhraseSetEditorPage {
   readonly phraseSetCreateMutation = injectMutation(() => ({
     ...this.adminPhraseSetService.create(this.buildCreatePayload()),
     onSuccess: (data) => {
-      this.adminPhraseSetService.invalidateSearch();
+      this.phraseSetsService.invalidateAll();
       this.onCreationSuccess(data);
     },
     onError: () => this.onCreationError(this.buildCreatePayload()),

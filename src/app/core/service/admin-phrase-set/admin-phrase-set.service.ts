@@ -11,7 +11,6 @@ import { inject, Injectable } from '@angular/core';
 import {
   keepPreviousData,
   mutationOptions,
-  QueryClient,
   queryOptions,
 } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
@@ -43,13 +42,12 @@ export interface PaginatedPhrases {
 })
 export class AdminPhraseSetService {
   private readonly client = inject(HttpClient);
-  private readonly queryClient = inject(QueryClient);
 
   readonly searchApi = API.ADMIN.PHRASE_SET.SEARCH;
 
   search<TPhraseSet extends PhraseSet = PhraseSet>(query: AdminPhraseSetSearchQuery) {
     return queryOptions({
-      queryKey: ['admin', 'phrase-set-search', query],
+      queryKey: ['phrase-set', 'admin', 'search', query],
       queryFn: () =>
         lastValueFrom(
           this.client.get<AdminPhraseSetSearchResponse<TPhraseSet>>(this.searchApi, {
@@ -63,7 +61,7 @@ export class AdminPhraseSetService {
   findPhrases(phraseSetId: string, { page, size }: Pagination) {
     const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return queryOptions({
-      queryKey: ['admin', 'phrase-set-phrases', phraseSetId, { page, size }],
+      queryKey: ['phrase-set', 'admin', 'phrases', phraseSetId, { page, size }],
       queryFn: () =>
         lastValueFrom(
           this.client.get<PaginatedPhrases>(API.ADMIN.PHRASE_SET.PHRASES(phraseSetId), { params }),
@@ -73,7 +71,7 @@ export class AdminPhraseSetService {
 
   findById(phraseSetId: string) {
     return queryOptions({
-      queryKey: ['admin', 'phrase-set', phraseSetId],
+      queryKey: ['phrase-set', 'admin', 'detail', phraseSetId],
       queryFn: () => lastValueFrom(this.client.get<PhraseSet>(API.ADMIN.PHRASE_SET.BY_ID(phraseSetId))),
     });
   }
@@ -96,14 +94,6 @@ export class AdminPhraseSetService {
       mutationFn: () =>
         lastValueFrom(this.client.delete<void>(API.ADMIN.PHRASE_SET.BY_ID(phraseSetId))),
     });
-  }
-
-  invalidateSearch() {
-    this.queryClient.invalidateQueries({ queryKey: ['admin', 'phrase-set-search'] });
-  }
-
-  invalidateUserPhraseSets() {
-    this.queryClient.invalidateQueries({ queryKey: ['phraseSets'] });
   }
 
   private buildSearchParams({

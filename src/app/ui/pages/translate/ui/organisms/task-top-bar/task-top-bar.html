@@ -3,6 +3,7 @@
     type="button"
     class="inline-flex size-8 items-center justify-center rounded-full text-muted-foreground"
     aria-label="Volver"
+    [disabled]="loading()"
     (click)="goBack()"
   >
     <span class="lucide--x size-5" aria-hidden="true"></span>
@@ -15,6 +16,8 @@
     zShape="circle"
     type="button"
     aria-label="Cancelar contribución"
+    [zLoading]="loading()"
+    [zDisabled]="loading()"
     (click)="cancelRequested.emit()"
   >
     <span class="lucide--trash-2 size-5" aria-hidden="true"></span>

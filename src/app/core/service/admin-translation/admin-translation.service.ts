@@ -33,7 +33,7 @@ export class AdminTranslationService {
     if (search) params = params.set('search', search);
 
     return queryOptions({
-      queryKey: ['admin', 'phrase-set-translations', phraseSetId, { filter, search, page, size }],
+      queryKey: ['translation', 'admin', 'phrase-set-translations', phraseSetId, { filter, search, page, size }],
       queryFn: () =>
         lastValueFrom(
           this.client.get<{ data: AdminTranslationListItem[]; total: number }>(
@@ -51,7 +51,7 @@ export class AdminTranslationService {
     if (include_phrase_set) params = params.set('include_phrase_set', 'true');
 
     return queryOptions({
-      queryKey: ['admin', 'contributor-translations', contributorId, { filter, page, size, include_phrase_set }],
+      queryKey: ['translation', 'admin', 'contributor-translations', contributorId, { filter, page, size, include_phrase_set }],
       queryFn: () =>
         lastValueFrom(
           this.client.get<{ data: Translation[]; total: number }>(
@@ -65,7 +65,7 @@ export class AdminTranslationService {
 
   getContributorTranslationDetail(contributorId: string, translationId: string) {
     return queryOptions({
-      queryKey: ['admin', 'contributor-translation-detail', contributorId, translationId],
+      queryKey: ['translation', 'admin', 'contributor-translation-detail', contributorId, translationId],
       queryFn: () =>
         lastValueFrom(
           this.client.get<AdminContributorTranslationDetail>(
