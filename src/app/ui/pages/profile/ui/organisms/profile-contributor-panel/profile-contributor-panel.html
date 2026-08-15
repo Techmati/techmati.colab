@@ -1,0 +1,113 @@
+<article class="rounded-xl border border-border bg-card p-4 shadow-sm">
+  <header class="mb-4 flex items-center gap-2">
+    <span class="lucide--user-round text-xl text-primary" aria-hidden="true"></span>
+    <h2 class="font-display text-primary text-xl font-semibold leading-7">
+      Atributos de Contribuidor
+    </h2>
+  </header>
+
+  @if (contributor(); as contributor) {
+    @if (!isEditing()) {
+      <div class="space-y-4">
+        <section class="space-y-1">
+          <p class="text-xs font-medium leading-4 text-muted-foreground">ID</p>
+          <p class="flex min-h-6 items-center gap-2 text-sm leading-6 text-muted-foreground">
+            <span class="lucide--fingerprint shrink-0 text-xl text-primary" aria-hidden="true"></span>
+            <span class="truncate font-mono">{{ contributor.id }}</span>
+          </p>
+        </section>
+
+        <section class="space-y-1">
+          <p class="text-xs font-medium leading-4 text-muted-foreground">Alias</p>
+          <p class="flex min-h-6 items-center gap-2 text-base font-bold leading-6 text-foreground">
+            <span class="lucide--badge-check shrink-0 text-xl text-primary" aria-hidden="true"></span>
+            <span class="truncate">{{ contributor.alias }}</span>
+          </p>
+        </section>
+
+        <section class="space-y-1">
+          <p class="text-xs font-medium leading-4 text-muted-foreground">Variantes</p>
+          <div class="flex flex-wrap gap-1.5">
+            @for (variant of contributor.variants; track variant.id) {
+              <span class="inline-flex flex-col rounded-lg bg-primary-100 px-3 py-1.5">
+                @if (variant.family) {
+                  <span class="text-[10px] leading-3 text-muted-foreground">
+                    {{ variant.family.name }}
+                  </span>
+                }
+                <span class="text-sm font-semibold leading-5 text-primary-700">
+                  {{ variant.name }}
+                </span>
+              </span>
+            } @empty {
+              <p class="text-sm leading-5 text-muted-foreground">Sin variantes.</p>
+            }
+          </div>
+        </section>
+
+        <div class="flex justify-end">
+          <button
+            z-button
+            zType="outline"
+            zSize="icon"
+            zShape="circle"
+            type="button"
+            aria-label="Editar contribuidor"
+            (click)="startEditing()"
+          >
+            <span class="lucide--pencil size-4" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    } @else {
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-3">
+          <label class="font-ui text-sm font-medium leading-5 text-foreground" for="contributor-alias-input">
+            Alias
+          </label>
+          <input
+            id="contributor-alias-input"
+            z-input
+            type="text"
+            class="rounded-lg border border-border bg-card px-3 py-2 font-ui text-base font-normal leading-6 text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            placeholder="Alias del contribuidor"
+            [formField]="form.alias"
+          />
+          <tm-field-error-advice [field]="form.alias" />
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <label class="font-ui text-sm font-medium leading-5 text-foreground" for="contributor-variants-input">
+            Variantes
+          </label>
+          <tm-profile-variants-editor id="contributor-variants-input" [formField]="form.variants" />
+          <tm-field-error-advice [field]="form.variants" />
+        </div>
+
+        <div class="flex items-center justify-end gap-2">
+          <button
+            z-button
+            zType="ghost"
+            zSize="sm"
+            type="button"
+            [zDisabled]="isSaving()"
+            (click)="cancelEditing()"
+          >
+            Cancelar
+          </button>
+          <button
+            z-button
+            zType="default"
+            zSize="sm"
+            type="button"
+            [zLoading]="isSaving()"
+            [zDisabled]="isSaving()"
+            (click)="saveChanges()"
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
+    }
+  }
+</article>

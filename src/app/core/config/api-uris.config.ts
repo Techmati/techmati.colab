@@ -7,6 +7,8 @@ const API = {
   BASE_URL,
   PROFILE: {
     GET: `${BASE_URL}/profile`,
+    UPDATE: `${BASE_URL}/profile`,
+    DELETE: `${BASE_URL}/profile`,
   },
   PHRASE_SETS: {
     BY_ID: (id: string) => `${BASE_URL}/phrase-sets/${id}`,

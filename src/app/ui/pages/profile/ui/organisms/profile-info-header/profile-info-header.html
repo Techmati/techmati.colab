@@ -1,0 +1,15 @@
+<header class="flex items-center gap-4">
+  <div
+    class="flex size-[50px] shrink-0 items-center justify-center rounded-full bg-primary-100 text-base font-bold text-primary-700"
+    aria-hidden="true"
+  >
+    {{ initials() }}
+  </div>
+
+  <div class="min-w-0">
+    <h2 class="truncate font-display text-2xl font-semibold leading-8 text-foreground">
+      {{ name() }}
+    </h2>
+    <p class="truncate text-base leading-6 text-muted-foreground">{{ handle() }}</p>
+  </div>
+</header>

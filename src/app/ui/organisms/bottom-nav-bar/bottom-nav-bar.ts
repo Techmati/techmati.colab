@@ -11,7 +11,7 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BottomNavBar {
-  readonly active = input<'dashboard' | 'profile' | 'contributors'>('dashboard');
+  readonly active = input<'dashboard' | 'contributions' | 'contributors'>('dashboard');
 
   private readonly profileService = inject(ProfileService);
 

@@ -11,3 +11,8 @@ export interface Profile {
   role: TechmatiRole;
   createdAt: string;
 }
+
+export interface UpdateProfilePayload {
+  fullName?: string | null;
+  username?: string;
+}

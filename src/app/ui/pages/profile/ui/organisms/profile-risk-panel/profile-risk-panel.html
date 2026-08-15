@@ -1,0 +1,34 @@
+<article class="rounded-xl border border-border bg-card p-4 shadow-sm">
+  <header class="mb-4 flex items-center gap-2">
+    <span class="lucide--shield-alert text-xl text-destructive" aria-hidden="true"></span>
+    <h2 class="font-display text-destructive text-xl font-semibold leading-7">Zona de riesgo</h2>
+  </header>
+
+  <section class="space-y-3">
+    <h3 class="flex items-center gap-2 text-base leading-6 text-destructive">
+      <span class="lucide--trash-2 text-xl" aria-hidden="true"></span>
+      Eliminar cuenta
+    </h3>
+
+    <p class="text-base leading-6 text-muted-foreground">
+      Techmati eliminará todos los datos de ti de sus servidores, incluyendo perfil, datos como
+      contribuidor y contribuciones.
+      <a routerLink="/privacy" class="text-primary underline underline-offset-4 hover:opacity-80">
+        Conoce más en nuestro Aviso de Privacidad.
+      </a>
+    </p>
+
+    <button
+      z-button
+      zType="default"
+      type="button"
+      class="h-11 min-w-36 bg-[var(--destructive)] px-5 text-sm font-semibold text-white hover:bg-[var(--destructive)] hover:text-white"
+      [zLoading]="isDeleting()"
+      [zDisabled]="isDeleting()"
+      (click)="deleteRequested.emit()"
+    >
+      <span class="lucide--trash-2 size-4" aria-hidden="true"></span>
+      Eliminar cuenta
+    </button>
+  </section>
+</article>

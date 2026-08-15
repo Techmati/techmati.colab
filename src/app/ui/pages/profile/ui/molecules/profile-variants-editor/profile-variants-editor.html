@@ -1,0 +1,47 @@
+<div class="flex flex-col gap-3">
+  <!-- Already-selected variant chips -->
+  <div class="flex flex-wrap gap-1.5">
+    @for (variant of value(); track variant.id) {
+      <span class="inline-flex flex-col rounded-lg bg-primary-100 px-3 py-1.5">
+        @if (variant.family) {
+          <span class="text-[10px] leading-3 text-muted-foreground">{{ variant.family.name }}</span>
+        }
+        <span class="flex items-center gap-1 text-sm font-semibold leading-5 text-primary-700">
+          {{ variant.name }}
+          <button
+            type="button"
+            class="flex size-4 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none"
+            [attr.aria-label]="'Quitar ' + variant.name"
+            [disabled]="disabled()"
+            (click)="removeVariant(variant)"
+          >
+            <span class="lucide--x text-xs" aria-hidden="true"></span>
+          </button>
+        </span>
+      </span>
+    } @empty {
+      <p class="text-xs leading-4 text-muted-foreground">Agrega al menos una variante.</p>
+    }
+  </div>
+
+  <!-- Search + quick selection -->
+  <tm-variant-search-input
+    class="w-full"
+    [search]="search()"
+    [disabled]="disabled()"
+    (selectedVariantChange)="addVariant($event)"
+    [showSelectedVariant]="false"
+  />
+
+  <z-button-group class="flex flex-wrap">
+    <button z-button zType="outline" zSize="sm" type="button" (click)="quickSearch('Náhuatl')">
+      Náhuatl
+    </button>
+    <button z-button zType="outline" zSize="sm" type="button" (click)="quickSearch('Mixteco')">
+      Mixteco
+    </button>
+    <button z-button zType="outline" zSize="sm" type="button" (click)="quickSearch('Zapoteco')">
+      Zapoteco
+    </button>
+  </z-button-group>
+</div>

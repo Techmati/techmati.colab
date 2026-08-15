@@ -1,59 +1,52 @@
-<main class="profile-page min-h-screen bg-background pb-24">
-  <tm-top-app-bar />
+<main class="profile-page min-h-screen bg-background pb-12">
+  <tm-profile-top-bar />
 
   <section class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-5 py-6">
+    <tm-profile-info-header
+      [name]="displayName()"
+      [handle]="handle()"
+      [initials]="initials()"
+    />
+
+    @if (activeContributor(); as contributor) {
+      <tm-profile-contributor-panel
+        [contributor]="contributor"
+        [isSaving]="isSavingContributor()"
+        (save)="onContributorSave($event)"
+      />
+    } @else if (contributorLoading() || isGuest()) {
+      <z-skeleton class="h-72 w-full rounded-xl" />
+    }
+
     @if (isGuest()) {
-      <tm-guest-banner />
+      <tm-profile-account-panel
+        [profile]="null"
+        [isGuest]="true"
+        [isSaving]="false"
+        (save)="onAccountSave($event)"
+      />
+    } @else {
+      @if (profile(); as profile) {
+        <tm-profile-account-panel
+          [profile]="profile"
+          [isGuest]="false"
+          [isSaving]="isSavingProfile()"
+          (save)="onAccountSave($event)"
+        />
+      } @else if (profileLoading()) {
+        <z-skeleton class="h-72 w-full rounded-xl" />
+      }
     }
 
-    <header class="space-y-2">
-      <h1 class="font-display text-primary text-3xl font-bold leading-tight tracking-tight">
-        Mis Contribuciones
-      </h1>
-      <p class="text-muted-foreground text-base leading-7">
-        Resumen de tu impacto en la preservación del Náhuatl.
-      </p>
-    </header>
-
-    <tm-profile-summary-panel />
-    <tm-profile-contributions-panel />
-
-    @if (isGuest() && recoveryCode) {
-      <section
-        class="flex flex-col gap-3 rounded-xl border border-border bg-card px-4 py-4 shadow-sm"
-        aria-labelledby="guest-recovery-title"
-      >
-        <div class="flex items-center gap-2">
-          <span class="lucide--key-round shrink-0 text-lg text-primary" aria-hidden="true"></span>
-          <h2 id="guest-recovery-title" class="text-sm font-semibold text-primary">
-            Tu código de recuperación
-          </h2>
-        </div>
-        <p class="text-xs leading-5 text-muted-foreground">
-          Si pierdes el acceso a este navegador, este código es la única forma de recuperar tu
-          trabajo.
-        </p>
-        <code
-          class="select-all rounded-sm bg-primary-100 px-3 py-2 text-center font-mono text-base font-semibold tracking-widest text-primary"
-        >{{ recoveryCode }}</code>
-        <button
-          z-button
-          zType="outline"
-          zSize="sm"
-          zFull
-          type="button"
-          (click)="copyRecoveryCode()"
-        >
-          @if (isCopied()) {
-            <span class="lucide--check size-4" aria-hidden="true"></span>
-            Código copiado
-          } @else {
-            <span class="lucide--copy size-4" aria-hidden="true"></span>
-            Copiar código
-          }
-        </button>
-      </section>
-    }
+    <tm-profile-risk-panel
+      [isDeleting]="isDeleting()"
+      (deleteRequested)="onDeleteRequested()"
+    />
   </section>
-  <tm-bottom-nav-bar active="profile" />
+
+  <ng-template #collectorWarning>
+    <p class="rounded-lg bg-destructive/10 px-3 py-2 text-sm font-medium leading-5 text-destructive">
+      También se eliminarán los contribuidores que administras y todas sus contribuciones.
+    </p>
+  </ng-template>
 </main>

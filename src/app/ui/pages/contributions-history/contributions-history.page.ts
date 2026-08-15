@@ -8,13 +8,13 @@ import { TopAppBar } from '@/ui/organisms/top-app-bar/top-app-bar';
 import { HistoryListPanel } from './ui/organisms/history-list-panel/history-list-panel';
 
 @Component({
-  selector: 'tm-profile-history-page',
+  selector: 'tm-contributions-history-page',
   imports: [TopAppBar, BottomNavBar, HistoryListPanel, GuestBanner],
-  templateUrl: './profile-history.page.html',
-  styleUrl: './profile-history.page.css',
+  templateUrl: './contributions-history.page.html',
+  styleUrl: './contributions-history.page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileHistoryPage {
+export class ContributionsHistoryPage {
   private readonly guestService = inject(GuestService);
 
   protected readonly isGuest = computed(() => this.guestService.isGuest());

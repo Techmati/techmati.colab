@@ -10,6 +10,11 @@ export interface CreateGuestContributorPayload {
   variantIds?: string[];
 }
 
+export interface UpdateGuestContributorPayload {
+  alias: string;
+  variantIds: string[];
+}
+
 export interface CreateGuestContributorResponse {
   contributor: Contributor;
   sessionToken: string;

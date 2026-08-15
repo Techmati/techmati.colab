@@ -5,6 +5,7 @@ import {
   CreateGuestContributorResponse,
   GuestSessionCredentials,
   RecoverSessionPayload,
+  UpdateGuestContributorPayload,
 } from '@/core/types/guest.type';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { computed, inject, Injectable, linkedSignal, signal } from '@angular/core';
@@ -62,6 +63,20 @@ export class GuestService {
         lastValueFrom(
           this.client.post<GuestSessionCredentials>(API.GUEST.SESSION_RECOVER, payload),
         ),
+    });
+  }
+
+  updateContributor() {
+    return mutationOptions({
+      mutationFn: (payload: UpdateGuestContributorPayload) =>
+        lastValueFrom(this.client.put<Contributor>(API.GUEST.CONTRIBUTOR, payload)),
+    });
+  }
+
+  deleteContributor() {
+    return mutationOptions({
+      mutationFn: () =>
+        lastValueFrom(this.client.delete<{ message: string }>(API.GUEST.CONTRIBUTOR)),
     });
   }
 

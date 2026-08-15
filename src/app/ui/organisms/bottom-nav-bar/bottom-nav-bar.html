@@ -18,14 +18,14 @@
       </a>
     </li>
     <li class="md:min-w-33 min-w-28">
-      @let profileActive = active() === 'profile';
+      @let contributionsActive = active() === 'contributions';
       <a
         class="text-muted-foreground flex flex-col items-center justify-center gap-1 text-sm sm:text-base border-t-2 border-solid border-transparent p-2"
-        [class.item-active]="profileActive"
-        routerLink="/profile"
+        [class.item-active]="contributionsActive"
+        routerLink="/contributions"
       >
-        <span [class]="profileActive ? 'ri--user-fill' : 'ri--user-line'" aria-hidden="true"></span>
-        Perfil
+        <span [class]="contributionsActive ? 'ri--user-fill' : 'ri--user-line'" aria-hidden="true"></span>
+        Contribuciones
       </a>
     </li>
     @if (canManageContributors()) {

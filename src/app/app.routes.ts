@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
 import { authenticationGuard } from './core/guard/authentication.guard';
+import { ContributionsHistoryPage } from './ui/pages/contributions-history/contributions-history.page';
+import { ContributionsPage } from './ui/pages/contributions/contributions.page';
 import { ContributorsPage } from './ui/pages/contributors/contributors.page';
 import { DashboardPage } from './ui/pages/dashboard/dashboard.page';
-import { ProfileHistoryPage } from './ui/pages/profile-history/profile-history.page';
 import { ProfilePage } from './ui/pages/profile/profile.page';
 import { TransEntryPage } from './ui/pages/trans-entry/trans-entry.page';
 import { TranslatePage } from './ui/pages/translate/translate.page';
@@ -114,14 +115,22 @@ export const routes: Routes = [
     canActivate: [authenticationGuard],
   },
   {
+    path: 'contributions',
+    component: ContributionsPage,
+    canActivate: [authenticationGuard],
+    title: 'Mis Contribuciones - Techmati Colab',
+  },
+  {
+    path: 'contributions/history',
+    component: ContributionsHistoryPage,
+    canActivate: [authenticationGuard],
+    title: 'Historial de Contribuciones - Techmati Colab',
+  },
+  {
     path: 'profile',
     component: ProfilePage,
     canActivate: [authenticationGuard],
-  },
-  {
-    path: 'profile/history',
-    component: ProfileHistoryPage,
-    canActivate: [authenticationGuard],
+    title: 'Perfil - Techmati Colab',
   },
   {
     path: 'translate/:translationId',
