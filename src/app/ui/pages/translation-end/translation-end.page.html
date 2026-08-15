@@ -1,4 +1,15 @@
 <main class="translation-end-page min-h-screen bg-background mb-25 sm:mb-10 md:mb-0">
+  <header class="flex items-center gap-4 bg-card px-5 py-4">
+    <button
+      type="button"
+      class="inline-flex size-8 items-center justify-center rounded-full text-primary focus-visible:ring-2 focus-visible:ring-ring"
+      aria-label="Cerrar"
+      (click)="close()"
+    >
+      <span class="lucide--x size-5" aria-hidden="true"></span>
+    </button>
+  </header>
+
   <section class="mx-auto flex w-full max-w-md flex-col items-center px-5 py-5 text-center">
     <div
       class="celebration-shell relative mb-6 inline-flex size-48 items-center justify-center rounded-full border-4 border-white bg-primary-100/60 shadow-xl"

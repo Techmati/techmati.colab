@@ -56,6 +56,8 @@ export class VariantSearchInput {
 
   protected readonly results = computed(() => this.resultsQuery.data()?.data ?? []);
 
+  protected readonly trimmedSearch = computed(() => this._search().trim());
+
   readonly isSelected = computed(() => this.selectedVariant() !== null);
 
   constructor() {

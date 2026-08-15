@@ -29,19 +29,14 @@ type OnTouchedFn = () => void;
   ],
 })
 export class TranslationTextarea implements ControlValueAccessor {
-  readonly language = input<string | null | undefined>();
+  readonly targetLanguage = input<string | null | undefined>(undefined);
 
   readonly disabled = model(false);
   protected readonly value = signal('');
 
-  protected readonly targetLanguage = computed(() => {
-    const language = this.language() || 'spanish_to_nahuatl';
-    const map: { [key: string]: string } = {
-      nahuatl_to_spanish: 'español',
-      spanish_to_nahuatl: 'náhuatl',
-    };
-    return map[language];
-  });
+  protected readonly targetLanguageLabel = computed(
+    () => this.targetLanguage() || 'tu idioma',
+  );
 
   private onChange: OnChangeFn = () => undefined;
   private onTouched: OnTouchedFn = () => undefined;

@@ -143,7 +143,6 @@ export class AdminPhraseSetEditorPage {
         onParsed: (data: {
           title: string;
           description?: string;
-          language: string;
           category: string;
           published: boolean;
           phrases: { sourceText: string; position: number }[];
@@ -152,7 +151,6 @@ export class AdminPhraseSetEditorPage {
             ...EMPTY_PHRASE_SET,
             title: data.title,
             description: data.description ?? '',
-            language: data.language as 'nahuatl_to_spanish' | 'spanish_to_nahuatl',
             category: data.category as never,
             published: data.published,
           });
@@ -194,12 +192,11 @@ export class AdminPhraseSetEditorPage {
   }
 
   private toNewPhraseSetDraft(phraseSet: PhraseSetDraft): NewPhraseSetDraft {
-    const { title, description, language, category, published } = phraseSet;
+    const { title, description, category, published } = phraseSet;
 
     return {
       title,
       description,
-      language,
       category,
       published,
     };

@@ -25,11 +25,15 @@
       <div
         class="absolute left-0 right-0 top-full z-50 mt-1 max-h-60 overflow-y-auto rounded-lg border border-border bg-card shadow-lg"
       >
-        @if (resultsQuery.isPending()) {
+        @if (resultsQuery.isLoading()) {
           <div class="space-y-2 p-3">
             <z-skeleton class="h-12 w-full rounded-md" />
             <z-skeleton class="h-12 w-full rounded-md" />
           </div>
+        } @else if (trimmedSearch().length === 0) {
+          <p class="p-3 text-center text-sm leading-5 text-muted-foreground">
+            Escribe el nombre de tu idioma para buscarlo
+          </p>
         } @else if (results().length === 0) {
           <p class="p-3 text-center text-sm leading-5 text-muted-foreground">
             No se encontraron variantes

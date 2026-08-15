@@ -9,7 +9,7 @@
     } @else {
       <tm-source-text-panel [phrase]="nextPhrase()" [isLoading]="false" />
       <tm-translation-textarea
-        language="spanish_to_nahuatl"
+        [targetLanguage]="translationRes.data()?.variant?.name"
         [disabled]="isLoading()"
         [formField]="form.translation"
       />

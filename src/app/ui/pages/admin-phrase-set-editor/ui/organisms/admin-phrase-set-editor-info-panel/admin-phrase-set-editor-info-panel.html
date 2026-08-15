@@ -59,18 +59,6 @@
       </label>
       <tm-field-error-advice [field]="form.category" />
 
-      <label class="block space-y-1">
-        <span class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
-          <span class="ri--global-line text-base" aria-hidden="true"></span>
-          Idioma
-        </span>
-        <z-select class="w-full" zPlaceholder="Selecciona un idioma" [formField]="phraseSetForm.language">
-          @for (language of languageOptions; track language.value) {
-            <z-select-item [zValue]="language.value">{{ language.label }}</z-select-item>
-          }
-        </z-select>
-      </label>
-
       <section class="space-y-2">
         <p class="flex items-center gap-1 text-xs font-medium leading-4 text-muted-foreground">
           <span class="lucide--eye text-base" aria-hidden="true"></span>

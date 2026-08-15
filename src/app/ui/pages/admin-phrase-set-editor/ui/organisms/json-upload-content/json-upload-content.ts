@@ -10,7 +10,6 @@ import { ZardInputDirective } from '@/shared/components/input';
     <div class="space-y-3">
       <p class="text-sm leading-5 text-muted-foreground">
         Pega el JSON del set de frases. Debe incluir <code class="rounded bg-muted px-1 text-xs font-mono">title</code>,
-        <code class="rounded bg-muted px-1 text-xs font-mono">language</code>,
         <code class="rounded bg-muted px-1 text-xs font-mono">category</code>,
         <code class="rounded bg-muted px-1 text-xs font-mono">phrases</code> y opcionalmente
         <code class="rounded bg-muted px-1 text-xs font-mono">description</code> y
@@ -19,7 +18,7 @@ import { ZardInputDirective } from '@/shared/components/input';
       <textarea
         z-input
         class="min-h-40 w-full resize-none rounded-lg bg-card p-3 text-sm font-mono leading-5 shadow-sm"
-        placeholder='{"title": "Saludos", "language": "nahuatl_to_spanish", "category": "general_conversation", "published": true, "phrases": [{"sourceText": "Hola", "position": 1}]}'
+        placeholder='{"title": "Saludos", "category": "general_conversation", "published": true, "phrases": [{"sourceText": "Hola", "position": 1}]}'
         [value]="jsonText()"
         (input)="onInput($event)"
       ></textarea>
@@ -35,7 +34,7 @@ export class JsonUploadContent {
   protected readonly error = signal('');
 
   private readonly modalData = inject(Z_ALERT_MODAL_DATA, { optional: true }) as
-    | { onParsed: (data: { title: string; description?: string; language: string; category: string; published: boolean; phrases: { sourceText: string; position: number }[] }) => void }
+    | { onParsed: (data: { title: string; description?: string; category: string; published: boolean; phrases: { sourceText: string; position: number }[] }) => void }
     | undefined;
 
   protected onInput(event: Event): void {
@@ -51,14 +50,13 @@ export class JsonUploadContent {
     }
     try {
       const parsed = JSON.parse(text);
-      if (!parsed.title || !parsed.language || !parsed.category || !Array.isArray(parsed.phrases)) {
-        this.error.set('El JSON debe contener title, language, category y phrases.');
+      if (!parsed.title || !parsed.category || !Array.isArray(parsed.phrases)) {
+        this.error.set('El JSON debe contener title, category y phrases.');
         return false;
       }
       this.modalData?.onParsed({
         title: parsed.title,
         description: parsed.description,
-        language: parsed.language,
         category: parsed.category,
         published: parsed.published ?? false,
         phrases: parsed.phrases.map((p: { sourceText: string; position: number }, i: number) => ({

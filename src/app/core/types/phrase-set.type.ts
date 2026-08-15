@@ -5,7 +5,6 @@ export interface PhraseSet {
   id: string;
   title: string;
   description?: string;
-  language: PhraseSetLanguage;
   category: PhraseSetCategory;
   published: boolean;
   createdAt: string;
@@ -13,8 +12,6 @@ export interface PhraseSet {
   phraseCount: number;
   stats?: PhraseSetStats | null;
 }
-
-export type PhraseSetLanguage = 'nahuatl_to_spanish' | 'spanish_to_nahuatl';
 
 export interface PhraseSetWithPhrasesDto extends PhraseSet {
   phrases: Phrase[];

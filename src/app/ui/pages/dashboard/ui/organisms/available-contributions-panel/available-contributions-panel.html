@@ -27,16 +27,9 @@
                 {{ ps.phraseCount }} frases
               </span>
 
-              @if (ps.language) {
-                <span class="inline-flex items-center gap-1 text-xs font-normal leading-4 text-muted-foreground">
-                  <span class="lucide--languages" aria-hidden="true"></span>
-                  {{ ps.language }}
-                </span>
-              }
-
               @if (ps.category) {
                 <span class="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs font-medium leading-4 text-muted-foreground">
-                  {{ ps.category }}
+                  {{ categoryLabel(ps.category) }}
                 </span>
               }
             </div>

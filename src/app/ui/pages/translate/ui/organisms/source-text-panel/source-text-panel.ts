@@ -1,11 +1,10 @@
 import { Phrase } from '@/core/types/phrase.type';
-import { ZardDividerComponent } from '@/shared/components/divider';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, linkedSignal } from '@angular/core';
 
 @Component({
   selector: 'tm-source-text-panel',
-  imports: [ZardDividerComponent, CommonModule],
+  imports: [CommonModule],
   templateUrl: './source-text-panel.html',
   styleUrl: './source-text-panel.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,6 +17,5 @@ export class SourceTextPanel {
     source: () => this.phrase()?.sourceText,
     computation: (source, previous) => source || previous?.value || '',
   });
-  protected readonly context = computed(() => '');
   protected readonly sourceLanguage = computed(() => 'español');
 }

@@ -86,6 +86,7 @@ export class TransEntryPage {
     await this.queryClient.invalidateQueries({ queryKey: ['translations'] });
     await this.queryClient.invalidateQueries({ queryKey: ['translation-stats'] });
     await this.queryClient.invalidateQueries({ queryKey: ['translation', contributorId, translationId] });
+    await this.queryClient.invalidateQueries({ queryKey: ['phraseSets'] });
     await this.router.navigate(['/dashboard']);
   }
 }

@@ -3,6 +3,10 @@ import { Router } from '@angular/router';
 
 import { injectQuery } from '@tanstack/angular-query-experimental';
 
+import {
+  PHRASE_SET_CATEGORY_LABELS,
+  type PhraseSetCategory,
+} from '@/core/config/phrase-set-category-labels.config';
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { ZardButtonComponent } from '@/shared/components/button';
@@ -50,6 +54,10 @@ export class AvailableContributionsPanel {
 
   protected openDialog(psId: string): void {
     this.dialog().open(psId);
+  }
+
+  protected categoryLabel(category: PhraseSetCategory): string {
+    return PHRASE_SET_CATEGORY_LABELS[category];
   }
 
   protected onTranslationCreated(translationId: string): void {

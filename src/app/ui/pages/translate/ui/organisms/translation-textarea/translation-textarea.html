@@ -1,6 +1,6 @@
 <section class="space-y-2">
   <label for="translation" class="text-foreground text-base font-semibold leading-5"
-    >Traducción en {{ targetLanguage() }}</label
+    >Traducción en {{ targetLanguageLabel() }}</label
   >
   <textarea
     id="translation"
@@ -8,7 +8,7 @@
     rows="2"
     class="rounded-xl border-border bg-card px-4 py-4 text-base leading-7"
     placeholder="Escribe la traducción precisa aquí..."
-    [attr.aria-label]="'Traducción en ' + (targetLanguage() || 'nahuatl')"
+    [attr.aria-label]="'Traducción en ' + targetLanguageLabel()"
     [value]="value()"
     [disabled]="disabled()"
     (input)="onInput($event)"

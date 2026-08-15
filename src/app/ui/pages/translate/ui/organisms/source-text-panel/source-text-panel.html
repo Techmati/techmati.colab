@@ -17,12 +17,4 @@
   >
     {{ isLoading() ? 'Cargando...' : text() }}
   </h2>
-
-  <z-divider zSpacing="default"></z-divider>
-  <div>
-    <p class="text-muted-foreground text-sm font-semibold">
-      <span class="lucide--circle-alert align-middle text-muted-foreground"></span>
-      Contexto: {{ context() || 'Sin contexto disponible.' }}
-    </p>
-  </div>
 </article>

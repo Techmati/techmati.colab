@@ -102,6 +102,10 @@ export class AdminPhraseSetService {
     this.queryClient.invalidateQueries({ queryKey: ['admin', 'phrase-set-search'] });
   }
 
+  invalidateUserPhraseSets() {
+    this.queryClient.invalidateQueries({ queryKey: ['phraseSets'] });
+  }
+
   private buildSearchParams({
     search,
     category,

@@ -110,6 +110,7 @@ export class AdminPhraseSetCard {
       ...baseToastConfig,
     });
     this.adminPhraseSetService.invalidateSearch();
+    this.adminPhraseSetService.invalidateUserPhraseSets();
     this.location.back();
   }
 

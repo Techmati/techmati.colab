@@ -52,4 +52,8 @@ export class TranslationEndPage {
   protected onTranslationCreated(translationId: string): void {
     this.router.navigate(['/translate', translationId]);
   }
+
+  protected close(): void {
+    this.router.navigate(['/dashboard']);
+  }
 }

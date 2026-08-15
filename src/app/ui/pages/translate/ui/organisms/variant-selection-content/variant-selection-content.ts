@@ -12,7 +12,6 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 import type { LanguageVariant } from '@/core/types/language-variant.type';
 import { PHRASE_SET_CATEGORY_LABELS } from '@/core/config/phrase-set-category-labels.config';
 import { ZardBadgeComponent } from '@/shared/components/badge';
-import { TmLanguagePipe } from '@/core/pipes/tm-language-pipe';
 import { ContributorContextService } from '@/core/service/contributor-context/contributor-context.service';
 import { PhraseSetsService } from '@/core/service/phrase-sets/phrase-sets.service';
 import { Z_ALERT_MODAL_DATA } from '@/shared/components/alert-dialog';
@@ -25,7 +24,7 @@ export interface VariantSelectionData {
 
 @Component({
   selector: 'tm-variant-selection-content',
-  imports: [DatePipe, TmLanguagePipe, ZardBadgeComponent, ZardSkeletonComponent, VariantSearchInput],
+  imports: [DatePipe, ZardBadgeComponent, ZardSkeletonComponent, VariantSearchInput],
   templateUrl: './variant-selection-content.html',
   styleUrl: './variant-selection-content.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
