@@ -1,5 +1,5 @@
 <div
-  class="rounded-xl border border-border bg-card px-6 py-7 text-card-foreground shadow-sm sm:min-w-94 min-w-[85-dvw]"
+  class="flex flex-col justify-center items-center rounded-xl p-6 border border-border bg-card text-card-foreground shadow-sm md:min-w-94 max-w-[90vw]"
 >
   <header class="flex flex-col items-center gap-4 text-center">
     <img [ngSrc]="logoUrl" width="128" height="128" alt="Techmati" class="h-32 w-32" priority />
@@ -18,9 +18,10 @@
       zDefaultValue="quick-flow"
       [zOptions]="authOptions"
       (zChange)="selectMode($event)"
+      zSize="sm"
     />
 
-    <div class="mt-5" role="tabpanel">
+    <div class="mt-5 px-3" role="tabpanel">
       @switch (mode()) {
         @case('sign-in') {
           <tm-login-form
